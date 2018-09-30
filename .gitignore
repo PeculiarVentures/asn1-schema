@@ -1,0 +1,10 @@
+.vscode/
+build/
+node_modules/
+
+# coverage
+.nyc_output/
+coverage/
+
+# Mac
+.DS_Store
