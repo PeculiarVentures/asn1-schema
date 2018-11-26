@@ -2,6 +2,9 @@
 build/
 node_modules/
 
+# Circle CI
+.circleci/
+
 # coverage
 .nyc_output/
 coverage/
