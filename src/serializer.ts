@@ -1,10 +1,10 @@
-import { Asn1PropTypes, Asn1TypeTypes } from "./enums";
+import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible } from "./helper";
 import { schemaStorage } from "./storage";
 
 const asn1 = require("asn1js");
 
-export class Asn1Serializer {
+export class AsnSerializer {
   public static serialize(obj: any): ArrayBuffer {
     return this.toASN(obj).toBER(false);
   }
@@ -35,7 +35,7 @@ export class Asn1Serializer {
         const converter = item.converter;
         if (!converter) {
           // tslint:disable-next-line:max-line-length
-          throw new Error(`Property '${key}' doesn't have converter for type ${Asn1PropTypes[item.type]} in schema '${target.name}'`);
+          throw new Error(`Property '${key}' doesn't have converter for type ${AsnPropTypes[item.type]} in schema '${target.name}'`);
         }
         if (item.repeated) {
           asn1Item = Array.from(objProp, (element) => converter.toASN(element));
@@ -95,22 +95,22 @@ export class Asn1Serializer {
       }
     }
 
-    let asn1Schema: any;
+    let asnSchema: any;
     switch (schema.type) {
-      case Asn1TypeTypes.Sequence:
-        asn1Schema = new asn1.Sequence({ value: asn1Value });
+      case AsnTypeTypes.Sequence:
+        asnSchema = new asn1.Sequence({ value: asn1Value });
         break;
-      case Asn1TypeTypes.Set:
-        asn1Schema = new asn1.Set({ value: asn1Value });
+      case AsnTypeTypes.Set:
+        asnSchema = new asn1.Set({ value: asn1Value });
         break;
-      case Asn1TypeTypes.Choice:
+      case AsnTypeTypes.Choice:
         if (!asn1Value[0]) {
           throw new Error(`Schema '${target.name}' has wrong data. Choice cannot be empty.`);
         }
-        asn1Schema = asn1Value[0];
+        asnSchema = asn1Value[0];
         break;
     }
 
-    return asn1Schema;
+    return asnSchema;
   }
 }

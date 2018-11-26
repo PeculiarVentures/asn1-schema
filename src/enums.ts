@@ -1,4 +1,4 @@
-export enum Asn1TypeTypes {
+export enum AsnTypeTypes {
   Sequence,
   Set,
   Choice,
@@ -7,7 +7,7 @@ export enum Asn1TypeTypes {
 // TODO: use ASN1 tag number value for Enum
 // NOTE: use names of classes from asn1js module
 //       createAsn1Schema uses Asn1PropType names for asn1js class initialization
-export enum Asn1PropTypes {
+export enum AsnPropTypes {
   Any,
   Boolean,
   OctetString,

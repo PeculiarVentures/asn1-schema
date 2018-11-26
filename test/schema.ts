@@ -1,15 +1,15 @@
 import * as assert from "assert";
 import { schemaStorage } from "../src/storage";
-import { Asn1Prop, Asn1PropTypes } from "../src";
+import { AsnProp, AsnPropTypes } from "../src";
 
 context("Schema", () => {
   it("extending", () => {
     class Parent {
-      @Asn1Prop({ type: Asn1PropTypes.Integer })
+      @AsnProp({ type: AsnPropTypes.Integer })
       public value = 1;
     }
     class Child extends Parent {
-      @Asn1Prop({ type: Asn1PropTypes.Utf8String })
+      @AsnProp({ type: AsnPropTypes.Utf8String })
       public name = "test";
     }
     const parentSchema = schemaStorage.get(Parent);

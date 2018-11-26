@@ -1,29 +1,29 @@
 import * as defaultConverters from "./converters";
-import { Asn1PropTypes, Asn1TypeTypes } from "./enums";
-import { IAsn1Schema, IAsn1SchemaItem } from "./schema";
+import { AsnPropTypes, AsnTypeTypes } from "./enums";
+import { IAsnSchema, IAsnSchemaItem } from "./schema";
 import { schemaStorage } from "./storage";
 
 interface IAsn1TypeOptions {
-  type: Asn1TypeTypes;
+  type: AsnTypeTypes;
 }
 
 interface IAsn1PropOptions {
-  type: Asn1PropTypes | IEmptyConstructor<any>;
+  type: AsnPropTypes | IEmptyConstructor<any>;
   optional?: boolean;
   defaultValue?: any;
   context?: number;
   implicit?: boolean;
-  converter?: IAsn1Converter;
+  converter?: IAsnConverter;
   repeated?: boolean;
 }
 
-export const Asn1Type = (options: IAsn1TypeOptions) => (target: object) => {
+export const AsnType = (options: IAsn1TypeOptions) => (target: object) => {
   const schema = schemaStorage.get(target);
   Object.assign(schema, options);
 };
 
-export const Asn1Prop = (options: IAsn1PropOptions) => (target: object, propertyKey: string) => {
-  let schema: IAsn1Schema;
+export const AsnProp = (options: IAsn1PropOptions) => (target: object, propertyKey: string) => {
+  let schema: IAsnSchema;
   if (!schemaStorage.has(target.constructor)) {
     schema = schemaStorage.createDefault(target.constructor);
     schemaStorage.set(target.constructor, schema);
@@ -31,12 +31,12 @@ export const Asn1Prop = (options: IAsn1PropOptions) => (target: object, property
     schema = schemaStorage.get(target.constructor);
   }
 
-  const copyOptions = Object.assign({}, options) as IAsn1SchemaItem;
+  const copyOptions = Object.assign({}, options) as IAsnSchemaItem;
 
   if (typeof copyOptions.type === "number" && !copyOptions.converter) {
     // Set default converters
-    const converterName = `Asn${Asn1PropTypes[options.type as number]}Converter`;
-    const defaultConverter = (defaultConverters as any)[converterName] as IAsn1Converter;
+    const converterName = `Asn${AsnPropTypes[options.type as number]}Converter`;
+    const defaultConverter = (defaultConverters as any)[converterName] as IAsnConverter;
     if (!defaultConverter) {
       throw new Error(`Cannot get '${converterName}' for property '${propertyKey}' of ${target.constructor.name}`);
     }

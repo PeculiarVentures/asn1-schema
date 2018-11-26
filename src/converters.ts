@@ -7,7 +7,7 @@ const asn1 = require("asn1js");
  * Asn1Prop decorator link custom converters by name of the Asn1PropType
  */
 
-export const AsnAnyConverter: IAsn1Converter<AnyConverterType> = {
+export const AsnAnyConverter: IAsnConverter<AnyConverterType> = {
   fromASN: (value: any) => value instanceof asn1.Null ? null : value.valueBeforeDecode,
   toASN: (value: AnyConverterType) => {
     if (value === null) {
@@ -21,44 +21,44 @@ export const AsnAnyConverter: IAsn1Converter<AnyConverterType> = {
   },
 };
 
-export const AsnIntegerConverter: IAsn1Converter<IntergerConverterType> = {
+export const AsnIntegerConverter: IAsnConverter<IntergerConverterType> = {
   fromASN: (value: any) => !value.valueBlock.valueDec && value.valueBlock.valueHex.byteLength > 0 ?
     value.valueBlock.toString() // Convert number to string
     : value.valueBlock.valueDec, // use number format
   toASN: (value: IntergerConverterType) => new asn1.Integer({ value }),
 };
 
-export const AsnEnumeratedConverter: IAsn1Converter<number> = {
+export const AsnEnumeratedConverter: IAsnConverter<number> = {
   fromASN: (value: any) => value.valueBlock.valueDec,
   toASN: (value: number) => new asn1.Enumerated({ value }),
 };
 
-export const AsnIntegerArrayBufferConverter: IAsn1Converter<ArrayBuffer> = {
+export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer> = {
   fromASN: (value: any) => value.valueBlock.valueHex,
   toASN: (value: ArrayBuffer) => new asn1.Integer({ valueHex: value }),
 };
 
-export const AsnBitStringConverter: IAsn1Converter<ArrayBuffer> = {
+export const AsnBitStringConverter: IAsnConverter<ArrayBuffer> = {
   fromASN: (value: any) => value.valueBlock.valueHex,
   toASN: (value: ArrayBuffer) => new asn1.BitString({ valueHex: value }),
 };
 
-export const AsnObjectIdentifierConverter: IAsn1Converter<string> = {
+export const AsnObjectIdentifierConverter: IAsnConverter<string> = {
   fromASN: (value: any) => value.valueBlock.toString(),
   toASN: (value: string) => new asn1.ObjectIdentifier({ value }),
 };
 
-export const AsnBooleanConverter: IAsn1Converter<boolean> = {
+export const AsnBooleanConverter: IAsnConverter<boolean> = {
   fromASN: (value: any) => value.valueBlock.value,
   toASN: (value: boolean) => new asn1.Boolean({ value }),
 };
 
-export const AsnOctetStringConverter: IAsn1Converter<ArrayBuffer> = {
+export const AsnOctetStringConverter: IAsnConverter<ArrayBuffer> = {
   fromASN: (value: any) => value.valueBlock.valueHex,
   toASN: (value: ArrayBuffer) => new asn1.OctetString({ valueHex: value }),
 };
 
-function createStringConverter(Asn1Type: any): IAsn1Converter<string> {
+function createStringConverter(Asn1Type: any): IAsnConverter<string> {
   return {
     fromASN: (value: any) => value.valueBlock.value,
     toASN: (value: string) => new Asn1Type({ value }),
@@ -78,11 +78,11 @@ export const AsnVisibleStringConverter = createStringConverter(asn1.VisibleStrin
 export const AsnGeneralStringConverter = createStringConverter(asn1.GeneralString);
 export const AsnCharacterStringConverter = createStringConverter(asn1.CharacterString);
 
-export const AsnUTCTimeConverter: IAsn1Converter<Date> = {
+export const AsnUTCTimeConverter: IAsnConverter<Date> = {
   fromASN: (value: any) => value.toDate(),
   toASN: (value: Date) => new asn1.UTCTime({ valueDate: value }),
 };
-export const AsnGeneralizedTimeConverter: IAsn1Converter<Date> = {
+export const AsnGeneralizedTimeConverter: IAsnConverter<Date> = {
   fromASN: (value: any) => value.toDate(),
   toASN: (value: Date) => new asn1.GeneralizedTime({ valueDate: value }),
 };

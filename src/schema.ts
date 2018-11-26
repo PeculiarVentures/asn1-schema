@@ -1,26 +1,26 @@
 /// <reference path="./types.d.ts" />
 
 const asn1 = require("asn1js");
-import { Asn1PropTypes, Asn1TypeTypes } from "./enums";
+import { AsnPropTypes, AsnTypeTypes } from "./enums";
 
-export interface IAsn1SchemaItem {
-  type: Asn1PropTypes | IEmptyConstructor<any>;
+export interface IAsnSchemaItem {
+  type: AsnPropTypes | IEmptyConstructor<any>;
   optional?: boolean;
   defaultValue?: any;
   context?: number;
   implicit?: boolean;
-  converter?: IAsn1Converter;
+  converter?: IAsnConverter;
   repeated?: boolean;
 }
 
-export interface IAsn1Schema {
-  type: Asn1TypeTypes;
-  items: { [key: string]: IAsn1SchemaItem };
+export interface IAsnSchema {
+  type: AsnTypeTypes;
+  items: { [key: string]: IAsnSchemaItem };
   schema?: any;
 }
 
-export class Asn1SchemaStorage {
-  protected items = new Map<object, IAsn1Schema>();
+export class AsnSchemaStorage {
+  protected items = new Map<object, IAsnSchema>();
 
   public has(target: object) {
     return this.items.has(target);
@@ -44,9 +44,9 @@ export class Asn1SchemaStorage {
   public createDefault(target: object) {
     // Initialize default ASN1 schema
     const schema = {
-      type: Asn1TypeTypes.Sequence,
+      type: AsnTypeTypes.Sequence,
       items: {},
-    } as IAsn1Schema;
+    } as IAsnSchema;
 
     // Get and assign schema from parent
     const parentSchema = this.findParentSchema(target);
@@ -68,7 +68,7 @@ export class Asn1SchemaStorage {
       let asn1Item: any;
       if (typeof (item.type) === "number") {
         // type is Asn1PropType Enum
-        const Asn1TypeName = Asn1PropTypes[item.type];
+        const Asn1TypeName = AsnPropTypes[item.type];
         const Asn1Type = asn1[Asn1TypeName];
         if (!Asn1Type) {
           throw new Error(`Cannot get ASN1 class by name '${Asn1TypeName}'`);
@@ -133,23 +133,23 @@ export class Asn1SchemaStorage {
     }
 
     switch (schema.type) {
-      case Asn1TypeTypes.Sequence:
+      case AsnTypeTypes.Sequence:
         return new asn1.Sequence({ value: asn1Value, name: "" });
-      case Asn1TypeTypes.Set:
+      case AsnTypeTypes.Set:
         return new asn1.Set({ value: asn1Value, name: "" });
-      case Asn1TypeTypes.Choice:
+      case AsnTypeTypes.Choice:
         return new asn1.Choice({ value: asn1Value, name: "" });
       default:
         throw new Error(`Unsupported ASN1 type in use`);
     }
   }
 
-  public set(target: object, schema: IAsn1Schema) {
+  public set(target: object, schema: IAsnSchema) {
     this.items.set(target, schema);
     return this;
   }
 
-  protected findParentSchema(target: object): IAsn1Schema | null {
+  protected findParentSchema(target: object): IAsnSchema | null {
     const parent = (target as any).__proto__;
     if (parent) {
       const schema = this.items.get(parent);

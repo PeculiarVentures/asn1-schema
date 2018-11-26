@@ -1,3 +1,3 @@
-import { Asn1SchemaStorage } from "./schema";
+import { AsnSchemaStorage } from "./schema";
 
-export const schemaStorage = new Asn1SchemaStorage();
+export const schemaStorage = new AsnSchemaStorage();

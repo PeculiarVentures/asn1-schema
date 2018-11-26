@@ -1,9 +1,9 @@
 const asn1js = require("asn1js");
 import * as assert from "assert";
-import { Asn1Prop, Asn1PropTypes, Asn1Type, Asn1TypeTypes } from "../src";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "../src";
 import * as Converters from "../src/converters";
-import { Asn1Parser } from "../src/parser";
-import { Asn1Serializer } from "../src/serializer";
+import { AsnParser } from "../src/parser";
+import { AsnSerializer } from "../src/serializer";
 
 function assertBuffer(actual: Buffer, expected: Buffer) {
   assert.equal(Buffer.compare(actual, expected), 0,
@@ -14,7 +14,7 @@ context("Test", () => {
 
   context("Default value", () => {
     class Test {
-      @Asn1Prop({ type: Asn1PropTypes.Integer, defaultValue: 0 })
+      @AsnProp({ type: AsnPropTypes.Integer, defaultValue: 0 })
       public version = 0;
     }
     context("serialize", () => {
@@ -22,14 +22,14 @@ context("Test", () => {
         const obj = new Test();
         obj.version = 1;
 
-        const res = Buffer.from(Asn1Serializer.serialize(obj));
+        const res = Buffer.from(AsnSerializer.serialize(obj));
         assertBuffer(res, Buffer.from([48, 3, 2, 1, 1]));
       });
       it("equal to default", () => {
         const obj = new Test();
         obj.version = 0;
 
-        const res = Buffer.from(Asn1Serializer.serialize(obj));
+        const res = Buffer.from(AsnSerializer.serialize(obj));
         assertBuffer(res, Buffer.from("3000", "hex"));
       });
     });
@@ -40,32 +40,32 @@ context("Test", () => {
     context("CONTEXT-SPECIFIC", () => {
 
       class Child {
-        @Asn1Prop({ type: Asn1PropTypes.Integer })
+        @AsnProp({ type: AsnPropTypes.Integer })
         public value = 2;
-        @Asn1Prop({ type: Asn1PropTypes.Utf8String })
+        @AsnProp({ type: AsnPropTypes.Utf8String })
         public text = "test";
       }
 
-      @Asn1Type({ type: Asn1TypeTypes.Choice })
+      @AsnType({ type: AsnTypeTypes.Choice })
       class Test {
-        @Asn1Prop({ type: Asn1PropTypes.OctetString, context: 0, implicit: true })
+        @AsnProp({ type: AsnPropTypes.OctetString, context: 0, implicit: true })
         public select1?: ArrayBuffer;
-        @Asn1Prop({ type: Asn1PropTypes.Utf8String, context: 1 })
+        @AsnProp({ type: AsnPropTypes.Utf8String, context: 1 })
         public select2?: string;
-        @Asn1Prop({ type: Asn1PropTypes.Integer, context: 2 })
+        @AsnProp({ type: AsnPropTypes.Integer, context: 2 })
         public select3?: number;
-        @Asn1Prop({ type: Child, context: 3, implicit: true })
+        @AsnProp({ type: Child, context: 3, implicit: true })
         public select4?: Child;
       }
       context("EXPLICIT", () => {
         it("serialize", () => {
           const obj = new Test();
           obj.select2 = "test";
-          const buf = Asn1Serializer.serialize(obj);
+          const buf = AsnSerializer.serialize(obj);
           assertBuffer(Buffer.from(buf), Buffer.from("a1060c0474657374", "hex"));
         });
         it("parse", () => {
-          const obj = Asn1Parser.parse(Buffer.from("a1060c0474657374", "hex"), Test);
+          const obj = AsnParser.parse(Buffer.from("a1060c0474657374", "hex"), Test);
           assert.equal(obj.select2, "test");
         });
       });
@@ -74,11 +74,11 @@ context("Test", () => {
           it("serialize", () => {
             const obj = new Test();
             obj.select1 = new Uint8Array([1, 2, 3, 4, 5]).buffer;
-            const buf = Asn1Serializer.serialize(obj);
+            const buf = AsnSerializer.serialize(obj);
             assertBuffer(Buffer.from(buf), Buffer.from("80050102030405", "hex"));
           });
           it("parse", () => {
-            const obj = Asn1Parser.parse(new Uint8Array(Buffer.from("80050102030405", "hex")).buffer, Test);
+            const obj = AsnParser.parse(new Uint8Array(Buffer.from("80050102030405", "hex")).buffer, Test);
             assert.equal(obj.select1!.byteLength, 5);
           });
         });
@@ -88,11 +88,11 @@ context("Test", () => {
             const obj = new Test();
             obj.select4 = new Child();
 
-            const buf = Asn1Serializer.serialize(obj);
+            const buf = AsnSerializer.serialize(obj);
             assert.equal(Buffer.from(buf).toString("hex"), der.toString("hex"));
           });
           it("parse", () => {
-            const obj = Asn1Parser.parse(new Uint8Array(der).buffer, Test);
+            const obj = AsnParser.parse(new Uint8Array(der).buffer, Test);
             assert.equal(!!obj.select4, true);
             assert.equal(obj.select4!.text, "test");
             assert.equal(obj.select4!.value, 2);
@@ -102,40 +102,40 @@ context("Test", () => {
     });
 
     context("PRIMITIVES", () => {
-      @Asn1Type({ type: Asn1TypeTypes.Choice })
+      @AsnType({ type: AsnTypeTypes.Choice })
       class Choice {
-        @Asn1Prop({ type: Asn1PropTypes.Integer })
+        @AsnProp({ type: AsnPropTypes.Integer })
         public numValue!: number;
-        @Asn1Prop({ type: Asn1PropTypes.Boolean })
+        @AsnProp({ type: AsnPropTypes.Boolean })
         public boolValue!: boolean;
-        @Asn1Prop({ type: Asn1PropTypes.ObjectIdentifier })
+        @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
         public oidValue!: string;
       }
       it("serialize", () => {
         const obj = new Choice();
         obj.oidValue = "1.2.3";
 
-        const res = Buffer.from(Asn1Serializer.serialize(obj));
+        const res = Buffer.from(AsnSerializer.serialize(obj));
         assertBuffer(res, Buffer.from("06022a03", "hex"));
       });
       it("parse", () => {
-        const obj = Asn1Parser.parse(new Uint8Array(Buffer.from("06022a03", "hex")).buffer, Choice);
+        const obj = AsnParser.parse(new Uint8Array(Buffer.from("06022a03", "hex")).buffer, Choice);
         assert.equal(obj.oidValue, "1.2.3");
       });
     });
 
     it("throw error if choice doesn't have as min one value", () => {
-      @Asn1Type({ type: Asn1TypeTypes.Choice })
+      @AsnType({ type: AsnTypeTypes.Choice })
       class Test {
-        @Asn1Prop({ type: Asn1PropTypes.Integer })
+        @AsnProp({ type: AsnPropTypes.Integer })
         public case1?: number;
-        @Asn1Prop({ type: Asn1PropTypes.Utf8String })
+        @AsnProp({ type: AsnPropTypes.Utf8String })
         public case2?: string;
       }
 
       const obj1 = new Test();
       assert.throws(() => {
-        Asn1Serializer.serialize(obj1);
+        AsnSerializer.serialize(obj1);
       });
     });
   });
@@ -145,11 +145,11 @@ context("Test", () => {
       it("serialize", () => {
         const obj = new cls();
         obj.value = expected;
-        const res = Buffer.from(Asn1Serializer.serialize(obj));
+        const res = Buffer.from(AsnSerializer.serialize(obj));
         assertBuffer(res, Buffer.from(hex, "hex"));
       });
       it("parse", () => {
-        const obj = Asn1Parser.parse(
+        const obj = AsnParser.parse(
           new Uint8Array(Buffer.from(hex, "hex")).buffer,
           cls,
         ) as any;
@@ -164,7 +164,7 @@ context("Test", () => {
     context("Default", () => {
       context("IntegerConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.Integer })
+          @AsnProp({ type: AsnPropTypes.Integer })
           public value!: string | number;
         }
         context("Short number", () => {
@@ -184,7 +184,7 @@ context("Test", () => {
       });
       context("BooleanConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.Boolean })
+          @AsnProp({ type: AsnPropTypes.Boolean })
           public value!: boolean;
         }
         /**
@@ -195,7 +195,7 @@ context("Test", () => {
       });
       context("ObjectIdentifierConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.ObjectIdentifier })
+          @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
           public value!: string;
         }
         /**
@@ -206,7 +206,7 @@ context("Test", () => {
       });
       context("OctetStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.OctetString })
+          @AsnProp({ type: AsnPropTypes.OctetString })
           public value!: ArrayBuffer;
         }
         /**
@@ -219,7 +219,7 @@ context("Test", () => {
       });
       context("AnyConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.Any })
+          @AsnProp({ type: AsnPropTypes.Any })
           public value!: ArrayBuffer;
         }
 
@@ -234,7 +234,7 @@ context("Test", () => {
       });
       context("EnumeratedConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.Enumerated })
+          @AsnProp({ type: AsnPropTypes.Enumerated })
           public value!: boolean;
         }
         /**
@@ -245,7 +245,7 @@ context("Test", () => {
       });
       context("Utf8StringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.Utf8String })
+          @AsnProp({ type: AsnPropTypes.Utf8String })
           public value!: string;
         }
         /**
@@ -256,7 +256,7 @@ context("Test", () => {
       });
       context("BmpStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.BmpString })
+          @AsnProp({ type: AsnPropTypes.BmpString })
           public value!: string;
         }
         /**
@@ -267,7 +267,7 @@ context("Test", () => {
       });
       context("UniversalStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.UniversalString })
+          @AsnProp({ type: AsnPropTypes.UniversalString })
           public value!: string;
         }
         /**
@@ -279,7 +279,7 @@ context("Test", () => {
       });
       context("NumericStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.NumericString })
+          @AsnProp({ type: AsnPropTypes.NumericString })
           public value!: string;
         }
         /**
@@ -290,7 +290,7 @@ context("Test", () => {
       });
       context("PrintableStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.PrintableString })
+          @AsnProp({ type: AsnPropTypes.PrintableString })
           public value!: string;
         }
         /**
@@ -301,7 +301,7 @@ context("Test", () => {
       });
       context("TeletexStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.TeletexString })
+          @AsnProp({ type: AsnPropTypes.TeletexString })
           public value!: string;
         }
         /**
@@ -312,7 +312,7 @@ context("Test", () => {
       });
       context("VideotexStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.VideotexString })
+          @AsnProp({ type: AsnPropTypes.VideotexString })
           public value!: string;
         }
         /**
@@ -323,7 +323,7 @@ context("Test", () => {
       });
       context("IA5StringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.IA5String })
+          @AsnProp({ type: AsnPropTypes.IA5String })
           public value!: string;
         }
         /**
@@ -334,7 +334,7 @@ context("Test", () => {
       });
       context("GraphicStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.GraphicString })
+          @AsnProp({ type: AsnPropTypes.GraphicString })
           public value!: string;
         }
         /**
@@ -345,7 +345,7 @@ context("Test", () => {
       });
       context("VisibleStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.VisibleString })
+          @AsnProp({ type: AsnPropTypes.VisibleString })
           public value!: string;
         }
         /**
@@ -356,7 +356,7 @@ context("Test", () => {
       });
       context("GeneralStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.GeneralString })
+          @AsnProp({ type: AsnPropTypes.GeneralString })
           public value!: string;
         }
         /**
@@ -367,7 +367,7 @@ context("Test", () => {
       });
       context("CharacterStringConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.CharacterString })
+          @AsnProp({ type: AsnPropTypes.CharacterString })
           public value!: string;
         }
         /**
@@ -380,7 +380,7 @@ context("Test", () => {
     context("Custom", () => {
       context("IntegerArrayBufferConverter", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.Integer, converter: Converters.AsnIntegerArrayBufferConverter })
+          @AsnProp({ type: AsnPropTypes.Integer, converter: Converters.AsnIntegerArrayBufferConverter })
           public value!: ArrayBuffer;
         }
         /**
@@ -402,37 +402,37 @@ context("Test", () => {
   context("Constructed type", () => {
     it("SEQUENCE ", () => {
       class Test {
-        @Asn1Prop({ type: Asn1PropTypes.Integer })
+        @AsnProp({ type: AsnPropTypes.Integer })
         public value = 1;
       }
 
       const obj1 = new Test();
-      const der = Asn1Serializer.serialize(obj1);
+      const der = AsnSerializer.serialize(obj1);
       assert.equal(Buffer.from(der).toString("hex"), "3003020101");
 
-      const obj2 = Asn1Parser.parse(der, Test);
+      const obj2 = AsnParser.parse(der, Test);
       assert.equal(obj2.value, 1);
     });
     it("SET", () => {
-      @Asn1Type({ type: Asn1TypeTypes.Set })
+      @AsnType({ type: AsnTypeTypes.Set })
       class Test {
-        @Asn1Prop({ type: Asn1PropTypes.Integer })
+        @AsnProp({ type: AsnPropTypes.Integer })
         public value = 1;
       }
 
       const obj1 = new Test();
-      const der = Asn1Serializer.serialize(obj1);
+      const der = AsnSerializer.serialize(obj1);
       assert.equal(Buffer.from(der).toString("hex"), "3103020101");
 
-      const obj2 = Asn1Parser.parse(der, Test);
+      const obj2 = AsnParser.parse(der, Test);
       assert.equal(obj2.value, 1);
     });
     it("child schema ", () => {
       class TbsCertificate {
         public static VERSION = 0;
 
-        @Asn1Prop({
-          type: Asn1PropTypes.Integer,
+        @AsnProp({
+          type: AsnPropTypes.Integer,
           defaultValue: TbsCertificate.VERSION,
           context: 0,
         })
@@ -440,12 +440,12 @@ context("Test", () => {
       }
 
       class Certificate {
-        @Asn1Prop({ type: TbsCertificate })
+        @AsnProp({ type: TbsCertificate })
         public tbs = new TbsCertificate();
       }
 
       const cert = new Certificate();
-      const buf = Asn1Serializer.serialize(cert);
+      const buf = AsnSerializer.serialize(cert);
       /**
        * SEQUENCE (1 elem)
        *   SEQUENCE (1 elem)
@@ -461,8 +461,8 @@ context("Test", () => {
     context("IMPLICIT", () => {
 
       class Test {
-        @Asn1Prop({
-          type: Asn1PropTypes.OctetString,
+        @AsnProp({
+          type: AsnPropTypes.OctetString,
           context: 0,
           implicit: true,
         })
@@ -472,12 +472,12 @@ context("Test", () => {
       it("serialize", () => {
         const obj = new Test();
         obj.value = new Uint8Array([1, 2, 3, 4, 5]).buffer;
-        const buf = Asn1Serializer.serialize(obj);
+        const buf = AsnSerializer.serialize(obj);
         assertBuffer(Buffer.from(buf), Buffer.from("300780050102030405", "hex"));
       });
 
       it("parse", () => {
-        const obj = Asn1Parser.parse(new Uint8Array(Buffer.from("300780050102030405", "hex")).buffer, Test);
+        const obj = AsnParser.parse(new Uint8Array(Buffer.from("300780050102030405", "hex")).buffer, Test);
         assert.equal(obj.value.byteLength, 5);
       });
 
@@ -486,8 +486,8 @@ context("Test", () => {
     context("EXPLICIT", () => {
 
       class Test {
-        @Asn1Prop({
-          type: Asn1PropTypes.OctetString,
+        @AsnProp({
+          type: AsnPropTypes.OctetString,
           context: 0,
         })
         public value!: ArrayBuffer;
@@ -496,12 +496,12 @@ context("Test", () => {
       it("serialize", () => {
         const obj = new Test();
         obj.value = new Uint8Array([1, 2, 3, 4, 5]).buffer;
-        const buf = Asn1Serializer.serialize(obj);
+        const buf = AsnSerializer.serialize(obj);
         assertBuffer(Buffer.from(buf), Buffer.from("3009a00704050102030405", "hex"));
       });
 
       it("parse", () => {
-        const obj = Asn1Parser.parse(new Uint8Array(Buffer.from("3009a00704050102030405", "hex")).buffer, Test);
+        const obj = AsnParser.parse(new Uint8Array(Buffer.from("3009a00704050102030405", "hex")).buffer, Test);
         assert.equal(obj.value.byteLength, 5);
       });
 
@@ -513,26 +513,26 @@ context("Test", () => {
     context("EXPLICIT", () => {
       it("unused bits 0", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.BitString })
+          @AsnProp({ type: AsnPropTypes.BitString })
           public value = new Uint8Array([255, 1]).buffer;
         }
-        const der = Asn1Serializer.serialize(new Test());
+        const der = AsnSerializer.serialize(new Test());
         assert.equal(Buffer.from(der).toString("hex"), "3005030300ff01");
 
-        const obj = Asn1Parser.parse(der, Test);
+        const obj = AsnParser.parse(der, Test);
         assert.equal(obj.value.byteLength, 2);
       });
     });
     context("IMPLICIT", () => {
       it("unused bits 0", () => {
         class Test {
-          @Asn1Prop({ type: Asn1PropTypes.BitString, context: 0, implicit: true })
+          @AsnProp({ type: AsnPropTypes.BitString, context: 0, implicit: true })
           public value = new Uint8Array([255, 1]).buffer;
         }
-        const der = Asn1Serializer.serialize(new Test());
+        const der = AsnSerializer.serialize(new Test());
         assert.equal(Buffer.from(der).toString("hex"), "3005800300ff01");
 
-        const obj = Asn1Parser.parse(der, Test);
+        const obj = AsnParser.parse(der, Test);
         assert.equal(obj.value.byteLength, 2);
       });
     });
@@ -542,21 +542,21 @@ context("Test", () => {
     it("IMPLICIT", () => {
       class Test {
 
-        @Asn1Prop({ type: Asn1PropTypes.IA5String, context: 2, implicit: true })
+        @AsnProp({ type: AsnPropTypes.IA5String, context: 2, implicit: true })
         public value = "test";
       }
 
-      const der = Asn1Serializer.serialize(new Test());
+      const der = AsnSerializer.serialize(new Test());
       assert.equal(Buffer.from(der).toString("hex"), "3006820474657374");
 
-      const obj = Asn1Parser.parse(der, Test);
+      const obj = AsnParser.parse(der, Test);
       assert.equal(obj.value, "test");
     });
   });
 
   context("Convertible", () => {
     it("correct", () => {
-      class Test implements IAsn1Convertible {
+      class Test implements IAsnConvertible {
         public value = "";
         public fromASN(asn: any): this {
           this.value = asn.valueBlock.value;
@@ -570,27 +570,27 @@ context("Test", () => {
       const obj1 = new Test();
       obj1.value = "test";
 
-      const der = Asn1Serializer.serialize(obj1);
+      const der = AsnSerializer.serialize(obj1);
       assert.equal(Buffer.from(der).toString("hex"), "0c0474657374");
 
-      const obj2 = Asn1Parser.parse(der, Test);
+      const obj2 = AsnParser.parse(der, Test);
       assert.equal(obj1.value, obj2.value);
     });
   });
 
   it("optional property", () => {
     class Test {
-      @Asn1Prop({ type: Asn1PropTypes.Utf8String, optional: true })
+      @AsnProp({ type: AsnPropTypes.Utf8String, optional: true })
       public opt?: string;
-      @Asn1Prop({ type: Asn1PropTypes.Integer })
+      @AsnProp({ type: AsnPropTypes.Integer })
       public value = 1;
     }
 
     const obj1 = new Test();
-    const der = Asn1Serializer.serialize(obj1);
+    const der = AsnSerializer.serialize(obj1);
     assert.equal(Buffer.from(der).toString("hex"), "3003020101");
 
-    const obj2 = Asn1Parser.parse(der, Test);
+    const obj2 = AsnParser.parse(der, Test);
     assert.equal(obj2.opt, undefined);
     assert.equal(obj2.value, 1);
   });
@@ -598,20 +598,20 @@ context("Test", () => {
   context("REPEATED", () => {
     it("PRIMITIVE", () => {
       class Test {
-        @Asn1Prop({ type: Asn1PropTypes.Integer, repeated: true })
+        @AsnProp({ type: AsnPropTypes.Integer, repeated: true })
         public values = [1, 2, 3, 4, 5];
       }
 
       const obj1 = new Test();
-      const der = Asn1Serializer.serialize(obj1);
+      const der = AsnSerializer.serialize(obj1);
       assert.equal(Buffer.from(der).toString("hex"), "300f020101020102020103020104020105");
 
-      const obj2 = Asn1Parser.parse(der, Test);
+      const obj2 = AsnParser.parse(der, Test);
       assert.equal(obj2.values.join(""), "12345");
     });
     it("CONSTRUCTED", () => {
       class Child {
-        @Asn1Prop({ type: Asn1PropTypes.Integer })
+        @AsnProp({ type: AsnPropTypes.Integer })
         public value = 0;
         constructor(value?: number) {
           if (value !== undefined) {
@@ -620,17 +620,17 @@ context("Test", () => {
         }
       }
       class Test {
-        @Asn1Prop({ type: Child, repeated: true })
+        @AsnProp({ type: Child, repeated: true })
         public values: Child[] = [];
       }
 
       const obj1 = new Test();
       obj1.values.push(new Child(1));
       obj1.values.push(new Child(2));
-      const der = Asn1Serializer.serialize(obj1);
+      const der = AsnSerializer.serialize(obj1);
       assert.equal(Buffer.from(der).toString("hex"), "300a30030201013003020102");
 
-      const obj2 = Asn1Parser.parse(der, Test);
+      const obj2 = AsnParser.parse(der, Test);
       assert.equal(obj2.values.length, 2);
       assert.equal(obj2.values[0].value, 1);
       assert.equal(obj2.values[1].value, 2);
@@ -638,15 +638,15 @@ context("Test", () => {
   });
 
   it("throw error on unsupported type of Asn1Type", () => {
-    @Asn1Type({ type: 5 })
+    @AsnType({ type: 5 })
     class Test {
-      @Asn1Prop({ type: Asn1PropTypes.Integer })
+      @AsnProp({ type: AsnPropTypes.Integer })
       public value = 1;
     }
 
     const obj1 = new Test();
     assert.throws(() => {
-      Asn1Serializer.serialize(obj1);
+      AsnSerializer.serialize(obj1);
     });
   });
 
@@ -654,46 +654,46 @@ context("Test", () => {
 
     context("incoming buffers", () => {
       class Test {
-        @Asn1Prop({ type: Asn1PropTypes.Integer })
+        @AsnProp({ type: AsnPropTypes.Integer })
         public value = 1;
       }
       const arrayBuffer = new Uint8Array([48, 3, 2, 1, 1]).buffer;
 
       it("Buffer", () => {
-        const obj = Asn1Parser.parse(Buffer.from(arrayBuffer), Test);
+        const obj = AsnParser.parse(Buffer.from(arrayBuffer), Test);
         assert.equal(obj.value, 1);
       });
       it("ArrayBuffer", () => {
-        const obj = Asn1Parser.parse(arrayBuffer, Test);
+        const obj = AsnParser.parse(arrayBuffer, Test);
         assert.equal(obj.value, 1);
       });
       it("ArrayBufferView", () => {
-        const obj = Asn1Parser.parse(new Uint8Array(arrayBuffer), Test);
+        const obj = AsnParser.parse(new Uint8Array(arrayBuffer), Test);
         assert.equal(obj.value, 1);
       });
       it("ArrayBufferView", () => {
         assert.throws(() => {
-          Asn1Parser.parse([48, 3, 2, 1, 1] as any, Test);
+          AsnParser.parse([48, 3, 2, 1, 1] as any, Test);
         });
       });
     });
 
     it("throw error on wrong ASN1 encoded data", () => {
       class Test {
-        @Asn1Prop({ type: Asn1PropTypes.Integer })
+        @AsnProp({ type: AsnPropTypes.Integer })
         public value = 1;
       }
       assert.throws(() => {
-        Asn1Parser.parse(Buffer.from("010506", "hex"), Test);
+        AsnParser.parse(Buffer.from("010506", "hex"), Test);
       });
     });
     it("throw error on if schema doesn't match to ASN1 structure", () => {
       class Test {
-        @Asn1Prop({ type: Asn1PropTypes.Integer })
+        @AsnProp({ type: AsnPropTypes.Integer })
         public value = 1;
       }
       assert.throws(() => {
-        Asn1Parser.parse(Buffer.from("010101", "hex"), Test);
+        AsnParser.parse(Buffer.from("010101", "hex"), Test);
       });
     });
   });

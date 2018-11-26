@@ -6,7 +6,7 @@ interface IEmptyConstructor<T> {
   new(): T;
 }
 
-interface IAsn1Converter<T = any, AsnType = any> {
+interface IAsnConverter<T = any, AsnType = any> {
   fromASN(value: AsnType): T;
   toASN(value: T): AsnType;
 }
@@ -14,7 +14,7 @@ interface IAsn1Converter<T = any, AsnType = any> {
 type IntergerConverterType = string | number;
 type AnyConverterType = ArrayBuffer | null;
 
-interface IAsn1Convertible<T = any> {
+interface IAsnConvertible<T = any> {
   fromASN(asn: T): this;
   toASN(): T;
 }

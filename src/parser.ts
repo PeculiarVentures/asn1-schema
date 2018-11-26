@@ -1,10 +1,10 @@
-import { Asn1PropTypes, Asn1TypeTypes } from "./enums";
+import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible } from "./helper";
 import { schemaStorage } from "./storage";
 
 const asn1 = require("asn1js");
 
-export class Asn1Parser {
+export class AsnParser {
   public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>, obj?: T): T {
     let buf: ArrayBuffer;
     if (data instanceof ArrayBuffer) {
@@ -37,7 +37,7 @@ export class Asn1Parser {
     let targetSchema = schema.schema;
 
     //#region Verify incoming ASN1 object with target schema
-    if (asn1Schema.constructor === asn1.Constructed && schema.type !== Asn1TypeTypes.Choice) {
+    if (asn1Schema.constructor === asn1.Constructed && schema.type !== AsnTypeTypes.Choice) {
       // fix tag value for IMPLICIT
       targetSchema = new asn1.Constructed({
         idBlock: {
@@ -84,7 +84,7 @@ export class Asn1Parser {
         } else {
           let value = asn1Schema[key];
           if (schemaItem.implicit) {
-            const Asn1TypeName = Asn1PropTypes[schemaItem.type];
+            const Asn1TypeName = AsnPropTypes[schemaItem.type];
             const Asn1Type = asn1[Asn1TypeName];
             if (!Asn1Type) {
               throw new Error(`Cannot get '${Asn1TypeName}' class from asn1js module`);
