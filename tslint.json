@@ -10,7 +10,8 @@
         "object-literal-sort-keys": false,
         "max-classes-per-file": false,
         "no-namespace": false,
-        "no-reference": false
+        "no-reference": false,
+        "callable-types": false
     },
     "rulesDirectory": []
 }
