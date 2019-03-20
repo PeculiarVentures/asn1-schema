@@ -2,6 +2,7 @@ import * as defaultConverters from "./converters";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { IAsnSchema, IAsnSchemaItem } from "./schema";
 import { schemaStorage } from "./storage";
+import { IAsnConverter, IEmptyConstructor } from "./types";
 
 interface IAsn1TypeOptions {
   type: AsnTypeTypes;

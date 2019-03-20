@@ -1,8 +1,10 @@
+/// <reference path="./@types/asn1js.d.ts" />
+
+import * as asn1 from "asn1js";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible } from "./helper";
 import { schemaStorage } from "./storage";
-
-const asn1 = require("asn1js");
+import { IEmptyConstructor } from "./types";
 
 export class AsnParser {
   public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>, obj?: T): T {

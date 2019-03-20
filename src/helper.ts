@@ -1,4 +1,4 @@
-/// <reference path="./types.d.ts" />
+import { IAsnConvertible } from "./types";
 
 export function isConvertible(target: any): target is IAsnConvertible<any> {
   if (target && target.prototype) {

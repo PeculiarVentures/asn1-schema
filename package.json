@@ -3,12 +3,14 @@
   "version": "1.0.2",
   "description": "This package uses ES2015 decorators to simplify working with ASN.1 creation and parsing",
   "main": "build/index.js",
+  "module": "build/index.es.js",
   "types": "index.d.ts",
   "scripts": {
     "test": "mocha",
     "prepare": "npm run build",
     "build": "rollup -c",
-    "lint": "tslint 'src/**/*.ts'",
+    "lint": "tslint -p .",
+    "lint:fix": "tslint --fix -p .",
     "tsc": "tsc --noEmit",
     "prepub": "npm run lint && npm run test && npm run tsc",
     "pub": "npm version patch && npm publish --access=public && git push",
@@ -46,19 +48,17 @@
     "node": ">=8.0.0"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.10",
-    "mocha": "^5.2.0",
-    "rollup": "^0.67.3",
-    "rollup-plugin-cleanup": "^3.0.0",
-    "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-typescript": "^1.0.0",
-    "ts-node": "^7.0.1",
-    "typescript": "^3.1.6"
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^10.14.1",
+    "mocha": "^6.0.2",
+    "rollup": "^1.7.0",
+    "rollup-plugin-dts": "^0.13.0",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.4000"
   },
   "dependencies": {
     "tslib": "^1.9.3",
-    "asn1js": "^2.0.21"
+    "asn1js": "^2.0.22"
   },
   "nyc": {
     "extension": [

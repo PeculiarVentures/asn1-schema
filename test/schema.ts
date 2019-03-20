@@ -1,6 +1,6 @@
 import * as assert from "assert";
-import { schemaStorage } from "../src/storage";
 import { AsnProp, AsnPropTypes } from "../src";
+import { schemaStorage } from "../src/storage";
 
 context("Schema", () => {
   it("extending", () => {

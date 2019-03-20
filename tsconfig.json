@@ -57,6 +57,6 @@
     "emitDecoratorMetadata": false,         /* Enables experimental support for emitting type metadata for decorators. */
   },
   "exclude": [
-    "index.d.ts"
+    "index.d.ts",
   ]
 }

@@ -1,22 +1,43 @@
-import typescript from "rollup-plugin-typescript";
-import builtins from "rollup-plugin-node-builtins";
-import cleanup from "rollup-plugin-cleanup";
+import { ts, dts } from "rollup-plugin-dts";
+// import builtins from "rollup-plugin-node-builtins";
 
-let pkg = require("./package.json");
-let external = [...Object.keys(pkg.dependencies)];
+const pkg = require("./package.json");
+const external = [...Object.keys(pkg.dependencies)];
+const input = "src/index.ts";
 
-export default {
-  input: "src/index.ts",
-  plugins: [
-    typescript({ typescript: require("typescript"), target: "esnext" }),
-    cleanup({ extensions: ["ts"] }),
-    builtins(),
-  ],
-  external,
-  output: [
-    {
-      file: pkg.main,
-      format: "cjs",
-    }
-  ]
-};
+export default [
+  { // CommonJS
+    input,
+    plugins: [
+      ts({
+        compilerOptions: {
+          removeComments: true,
+        },
+      }),
+    ],
+    external,
+    output: [
+      {
+        file: pkg.main,
+        format: "cjs",
+      },
+      {
+        file: pkg.module,
+        format: "es",
+      }
+    ]
+  },
+  { // Definitions
+    input,
+    plugins: [
+      dts(),
+    ],
+    external,
+    output: [
+      {
+        file: pkg.types,
+        format: "es",
+      }
+    ]
+  },
+];

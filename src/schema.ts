@@ -1,7 +1,8 @@
-/// <reference path="./types.d.ts" />
+/// <reference path="./@types/asn1js.d.ts" />
 
-const asn1 = require("asn1js");
+import * as asn1 from "asn1js";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
+import { IAsnConverter, IEmptyConstructor } from "./types";
 
 export interface IAsnSchemaItem {
   type: AsnPropTypes | IEmptyConstructor<any>;

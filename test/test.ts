@@ -1,9 +1,12 @@
-const asn1js = require("asn1js");
+/// <reference path="../src/@types/asn1js.d.ts" />
+
+import * as asn1 from "asn1js";
 import * as assert from "assert";
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "../src";
 import * as Converters from "../src/converters";
 import { AsnParser } from "../src/parser";
 import { AsnSerializer } from "../src/serializer";
+import { IAsnConvertible } from "../src/types";
 
 function assertBuffer(actual: Buffer, expected: Buffer) {
   assert.equal(Buffer.compare(actual, expected), 0,
@@ -563,7 +566,7 @@ context("Test", () => {
           return this;
         }
         public toASN(): any {
-          return new asn1js.Utf8String({ value: this.value });
+          return new asn1.Utf8String({ value: this.value });
         }
       }
 

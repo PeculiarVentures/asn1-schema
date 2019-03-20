@@ -1,8 +1,9 @@
+/// <reference path="./@types/asn1js.d.ts" />
+
+import * as asn1 from "asn1js";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible } from "./helper";
 import { schemaStorage } from "./storage";
-
-const asn1 = require("asn1js");
 
 export class AsnSerializer {
   public static serialize(obj: any): ArrayBuffer {

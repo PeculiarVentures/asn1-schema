@@ -1,7 +1,7 @@
-/// <reference path="./types.d.ts" />
+/// <reference path="./@types/asn1js.d.ts" />
 
-const asn1 = require("asn1js");
-
+import * as asn1 from "asn1js";
+import { AnyConverterType, IAsnConverter, IntegerConverterType } from "./types";
 /**
  * NOTE: Converter MUST have name Asn<Asn1PropType.name>Converter.
  * Asn1Prop decorator link custom converters by name of the Asn1PropType
@@ -21,11 +21,11 @@ export const AsnAnyConverter: IAsnConverter<AnyConverterType> = {
   },
 };
 
-export const AsnIntegerConverter: IAsnConverter<IntergerConverterType> = {
+export const AsnIntegerConverter: IAsnConverter<IntegerConverterType> = {
   fromASN: (value: any) => !value.valueBlock.valueDec && value.valueBlock.valueHex.byteLength > 0 ?
     value.valueBlock.toString() // Convert number to string
     : value.valueBlock.valueDec, // use number format
-  toASN: (value: IntergerConverterType) => new asn1.Integer({ value }),
+  toASN: (value: IntegerConverterType) => new asn1.Integer({ value }),
 };
 
 export const AsnEnumeratedConverter: IAsnConverter<number> = {
