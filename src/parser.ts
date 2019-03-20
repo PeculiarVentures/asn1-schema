@@ -6,8 +6,17 @@ import { isConvertible } from "./helper";
 import { schemaStorage } from "./storage";
 import { IEmptyConstructor } from "./types";
 
+/**
+ * Deserializes objects from ASN.1 encoded data
+ */
 export class AsnParser {
-  public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>, obj?: T): T {
+
+  /**
+   * Deserializes an object from the ASN.1 encoded buffer
+   * @param data ASN.1 encoded buffer
+   * @param target Target schema for object deserialization
+   */
+  public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>): T {
     let buf: ArrayBuffer;
     if (data instanceof ArrayBuffer) {
       buf = data;
@@ -24,13 +33,18 @@ export class AsnParser {
       throw new Error(asn1Parsed.result.error);
     }
 
-    const res = this.fromASN(asn1Parsed.result, target, obj);
+    const res = this.fromASN(asn1Parsed.result, target);
     return res;
   }
 
-  public static fromASN<T>(asn1Schema: any, target: IEmptyConstructor<T>, obj?: T) {
+  /**
+   * Deserializes an object from the asn1js object
+   * @param asn1Schema asn1js object
+   * @param target Target schema for object deserialization
+   */
+  public static fromASN<T>(asn1Schema: any, target: IEmptyConstructor<T>) {
     if (isConvertible(target)) {
-      const value = (obj || new target()) as any;
+      const value = new target() as any;
       return value.fromASN(asn1Schema);
     }
 
@@ -65,7 +79,7 @@ export class AsnParser {
     }
     //#endregion
 
-    const res = obj || new target() as any;
+    const res = new target() as any;
 
     for (const key in schema.items) {
       if (!asn1Schema[key]) {

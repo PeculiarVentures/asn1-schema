@@ -5,11 +5,22 @@ import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible } from "./helper";
 import { schemaStorage } from "./storage";
 
+/**
+ * Serializes objects into ASN.1 encoded data
+ */
 export class AsnSerializer {
+  /**
+   * Serializes an object to the ASN.1 encoded buffer
+   * @param obj The object to serialize
+   */
   public static serialize(obj: any): ArrayBuffer {
     return this.toASN(obj).toBER(false);
   }
 
+  /**
+   * Serialize an object to the asn1js object
+   * @param obj The object to serialize
+   */
   public static toASN(obj: any) {
     if (obj && isConvertible(obj.constructor)) {
       return obj.toASN();
