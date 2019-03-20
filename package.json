@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-schema",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This package uses ES2015 decorators to simplify working with ASN.1 creation and parsing",
   "main": "build/index.js",
   "module": "build/index.es.js",
