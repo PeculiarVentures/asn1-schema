@@ -30,7 +30,11 @@ export default [
   { // Definitions
     input,
     plugins: [
-      dts(),
+      dts({
+        compilerOptions: {
+          noResolve: true,
+        }
+      }),
     ],
     external,
     output: [
