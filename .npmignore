@@ -4,8 +4,7 @@ src/
 
 # config files
 rollup.config.js
-tsconfig.json
-tslint.json
+ts*.json
 
 # coverage
 .nyc_output/
