@@ -4,11 +4,15 @@
   "description": "This package uses ES2015 decorators to simplify working with ASN.1 creation and parsing",
   "main": "build/index.js",
   "module": "build/index.es.js",
-  "types": "index.d.ts",
+  "types": "build/types/index.d.ts",
   "scripts": {
     "test": "mocha",
     "prepare": "npm run build",
-    "build": "rollup -c",
+    "build": "npm run build:module && npm run build:types",
+    "build:module": "rollup -c",
+    "build:types": "tsc -p tsconfig.types.json",
+    "clear": "rimraf build/*",
+    "rebuild": "npm run clear && npm run build",
     "lint": "tslint -p .",
     "lint:fix": "tslint --fix -p .",
     "tsc": "tsc --noEmit",
@@ -48,17 +52,18 @@
     "node": ">=8.0.0"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.6",
-    "@types/node": "^10.14.1",
-    "mocha": "^6.0.2",
-    "rollup": "^1.7.0",
-    "rollup-plugin-dts": "^0.13.0",
-    "ts-node": "^8.0.3",
-    "typescript": "^3.3.4000"
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^10.14.9",
+    "mocha": "^7.1.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.0.6",
+    "rollup-plugin-typescript2": "^0.26.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
-    "tslib": "^1.9.3",
-    "asn1js": "^2.0.22"
+    "asn1js": "^2.0.26",
+    "tslib": "^1.11.1"
   },
   "nyc": {
     "extension": [
@@ -74,6 +79,15 @@
     "reporter": [
       "text-summary",
       "html"
+    ]
+  },
+  "mocha": {
+    "require": "ts-node/register",
+    "extension": [
+      "ts"
+    ],
+    "watch-files": [
+      "test/**/*.ts"
     ]
   }
 }
