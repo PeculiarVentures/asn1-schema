@@ -1,5 +1,4 @@
-/// <reference path="./@types/asn1js.d.ts" />
-
+// @ts-ignore
 import * as asn1 from "asn1js";
 import { AnyConverterType, IAsnConverter, IntegerConverterType } from "./types";
 /**

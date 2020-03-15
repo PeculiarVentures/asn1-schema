@@ -1,5 +1,4 @@
-/// <reference path="../src/@types/asn1js.d.ts" />
-
+// @ts-ignore
 import * as asn1 from "asn1js";
 import * as assert from "assert";
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "../src";
