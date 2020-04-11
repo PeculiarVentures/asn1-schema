@@ -123,7 +123,9 @@ export class AsnParser {
     }
 
     // Add cache
-    res._cache = { asn1: asn1Schema };
+    // TODO Implement cache usage. It can be useful for getting ASN.1 object from cache during serialization
+    //      instead of creating ASN.1 object each time
+    // res._cache = { asn1: asn1Schema };
 
     return res;
   }
