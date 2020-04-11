@@ -110,7 +110,10 @@ export class AsnSchemaStorage {
         if (item.implicit) {
           // IMPLICIT
           if (typeof item.type === "number") {
-            asn1Value.push(new asn1.Primitive({
+            const Container = item.repeated
+              ? asn1.Constructed
+              : asn1.Primitive;
+            asn1Value.push(new Container({
               name,
               optional,
               idBlock: {
@@ -120,9 +123,12 @@ export class AsnSchemaStorage {
             }));
           } else {
             this.cache(item.type);
-            const value = this.get(item.type).schema.valueBlock.value;
+            const isRepeatedString = typeof item.repeated === "string";
+            const value = !isRepeatedString
+              ? this.get(item.type).schema.valueBlock.value
+              : asn1Item.valueBlock.value;
             asn1Value.push(new asn1.Constructed({
-              name,
+              name: !isRepeatedString ? name : "",
               optional,
               idBlock: {
                 tagClass: 3,

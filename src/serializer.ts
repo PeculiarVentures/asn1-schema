@@ -53,10 +53,10 @@ export class AsnSerializer {
           if (typeof item.repeated === "boolean") {
             asn1Item = items;
           } else {
-            const container = item.repeated === "sequence"
+            const Container = item.repeated === "sequence"
               ? asn1.Sequence
               : asn1.Set;
-            asn1Item = new container({
+            asn1Item = new Container({
               value: items,
             });
           }
@@ -71,10 +71,10 @@ export class AsnSerializer {
           if (typeof item.repeated === "boolean") {
             asn1Item = items;
           } else {
-            const container = item.repeated === "sequence"
+            const Container = item.repeated === "sequence"
               ? asn1.Sequence
               : asn1.Set;
-            asn1Item = new container({
+            asn1Item = new Container({
               value: items,
             });
           }
@@ -86,7 +86,7 @@ export class AsnSerializer {
         // CONTEXT-SPECIFIC
         if (item.implicit) {
           // IMPLICIT
-          if (typeof item.type === "number") {
+          if (!item.repeated && typeof item.type === "number") {
             const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer } = {};
             value.valueHex = asn1Item.valueBlock.toBER();
             asn1Value.push(new asn1.Primitive({

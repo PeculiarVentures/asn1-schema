@@ -9,6 +9,7 @@
         "forin": false,
         "object-literal-sort-keys": false,
         "max-classes-per-file": false,
+        "no-bitwise": false,
         "no-namespace": false,
         "no-reference": false,
         "callable-types": false

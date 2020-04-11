@@ -151,3 +151,13 @@ export const AsnGeneralizedTimeConverter: IAsnConverter<Date> = {
   fromASN: (value: any) => value.toDate(),
   toASN: (value: Date) => new asn1.GeneralizedTime({ valueDate: value }),
 };
+
+/**
+ * ASN.1 ANY converter
+ */
+export const AsnNullConverter: IAsnConverter<null> = {
+  fromASN: (value: any) => null,
+  toASN: (value: null) => {
+    return new asn1.Null();
+  },
+};

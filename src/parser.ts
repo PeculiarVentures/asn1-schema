@@ -43,10 +43,7 @@ export class AsnParser {
    * @param target Target schema for object deserialization
    */
   public static fromASN<T>(asn1Schema: any, target: IEmptyConstructor<T>): any;
-  // @internal
-  // tslint:disable-next-line: unified-signatures
-  public static fromASN<T>(asn1Schema: any, target: IEmptyConstructor<T>, validateSchema?: boolean): any;
-  public static fromASN<T>(asn1Schema: any, target: IEmptyConstructor<T>, validateSchema: boolean = true) {
+  public static fromASN<T>(asn1Schema: any, target: IEmptyConstructor<T>) {
     try {
       if (isConvertible(target)) {
         const value = new target() as any;
@@ -74,15 +71,13 @@ export class AsnParser {
       }
 
       // Check the schema is valid
-      if (validateSchema) {
-        const asn1ComparedSchema = asn1.compareSchema(
-          asn1Schema,
-          asn1Schema,
-          targetSchema,
-        );
-        if (!asn1ComparedSchema.verified) {
-          throw new AsnSchemaValidationError(`Data does not match to ${target.name} ASN1 schema. ${asn1ComparedSchema.result.error}`);
-        }
+      const asn1ComparedSchema = asn1.compareSchema(
+        asn1Schema,
+        asn1Schema,
+        targetSchema,
+      );
+      if (!asn1ComparedSchema.verified) {
+        throw new AsnSchemaValidationError(`Data does not match to ${target.name} ASN1 schema. ${asn1ComparedSchema.result.error}`);
       }
       //#endregion
 
@@ -103,7 +98,17 @@ export class AsnParser {
             throw new Error("Converter is empty");
           }
           if (schemaItem.repeated) {
-            res[key] = Array.from(asn1Schema[key], (element) => converter.fromASN(element));
+            if (schemaItem.implicit && typeof schemaItem.repeated === "string") {
+              const Container = schemaItem.repeated === "sequence"
+                ? asn1.Sequence
+                : asn1.Set;
+              const newItem = new Container();
+              newItem.valueBlock = asn1Schema[key].valueBlock;
+              const value = asn1.fromBER(newItem.toBER(false)).result.valueBlock.value;
+              res[key] = Array.from(value, (element) => converter.fromASN(element));
+            } else {
+              res[key] = Array.from(asn1Schema[key], (element) => converter.fromASN(element));
+            }
           } else {
             let value = asn1Schema[key];
             if (schemaItem.implicit) {

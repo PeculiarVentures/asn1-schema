@@ -84,6 +84,67 @@ context("Test", () => {
             assert.equal(obj.select1!.byteLength, 5);
           });
         });
+        context("Repeated SET", () => {
+
+          class Test2 {
+            @AsnProp({ type: AsnPropTypes.Integer, repeated: "set", implicit: true, context: 1 })
+            public items: number[] = [];
+          }
+          const testHex = "3011a10f020101020102020103020104020105";
+
+          it("serialize", () => {
+            const obj = new Test2();
+            obj.items = [1, 2, 3, 4, 5];
+            const buf = AsnSerializer.serialize(obj);
+            assertBuffer(Buffer.from(buf), Buffer.from(testHex, "hex"));
+          });
+          it("parse", () => {
+            const obj = AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test2);
+            assert.equal(obj.items.join(""), "12345");
+          });
+        });
+        context("Repeated SEQUENCE", () => {
+
+          class Test2 {
+            @AsnProp({ type: AsnPropTypes.Integer, repeated: "sequence", implicit: true, context: 1 })
+            public items: number[] = [];
+          }
+          const testHex = "3011a10f020101020102020103020104020105";
+
+          it("serialize", () => {
+            const obj = new Test2();
+            obj.items = [1, 2, 3, 4, 5];
+            const buf = AsnSerializer.serialize(obj);
+            assertBuffer(Buffer.from(buf), Buffer.from(testHex, "hex"));
+          });
+          it("parse", () => {
+            const obj = AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test2);
+            assert.equal(obj.items.join(""), "12345");
+          });
+        });
+        context("Repeated object", () => {
+
+          class TestChild {
+            @AsnProp({ type: AsnPropTypes.Integer, repeated: true })
+            public items: number[] = [];
+          }
+          class Test2 {
+            @AsnProp({ type: TestChild, implicit: true, context: 1 })
+            public children = new TestChild();
+          }
+          const testHex = "3011a10f020101020102020103020104020105";
+
+          it("serialize", () => {
+            const obj = new Test2();
+            obj.children.items = [1, 2, 3, 4, 5];
+            const buf = AsnSerializer.serialize(obj);
+            assertBuffer(Buffer.from(buf), Buffer.from(testHex, "hex"));
+          });
+          it("parse", () => {
+            const obj = AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test2);
+            assert.equal(obj.children.items.join(""), "12345");
+          });
+        });
         context("Constructed", () => {
           const der = Buffer.from("a3090201020c0474657374", "hex");
           it("stringify", () => {
