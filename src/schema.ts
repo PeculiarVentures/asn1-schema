@@ -1,5 +1,6 @@
 // @ts-ignore
 import * as asn1 from "asn1js";
+import { AsnRepeatType } from "./decorators";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { IAsnConverter, IEmptyConstructor } from "./types";
 
@@ -10,7 +11,7 @@ export interface IAsnSchemaItem {
   context?: number;
   implicit?: boolean;
   converter?: IAsnConverter;
-  repeated?: boolean;
+  repeated?: AsnRepeatType;
 }
 
 export interface IAsnSchema {
@@ -82,11 +83,27 @@ export class AsnSchemaStorage {
       }
       const optional = !!item.optional || item.defaultValue !== undefined;
       if (item.repeated) {
-        asn1Item.name = "";
-        asn1Item = new asn1.Repeated({
-          name,
-          value: asn1Item,
-        });
+        if (typeof item.repeated === "boolean") {
+          asn1Item.name = "";
+          asn1Item = new asn1.Repeated({
+            name,
+            value: asn1Item,
+          });
+        } else {
+          asn1Item.name = "";
+          const Container = item.repeated === "set"
+            ? asn1.Set
+            : asn1.Sequence;
+          asn1Item = new Container({
+            name: "",
+            value: [
+              new asn1.Repeated({
+                name,
+                value: asn1Item,
+              }),
+            ],
+          });
+        }
       }
       if (item.context !== null && item.context !== undefined) {
         // CONTEXT-SPECIFIC

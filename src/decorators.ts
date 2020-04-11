@@ -7,6 +7,9 @@ import { IAsnConverter, IEmptyConstructor } from "./types";
 interface IAsn1TypeOptions {
   type: AsnTypeTypes;
 }
+export type AsnRepeatTypeString = "sequence" | "set";
+
+export type AsnRepeatType = boolean | AsnRepeatTypeString;
 
 interface IAsn1PropOptions {
   type: AsnPropTypes | IEmptyConstructor<any>;
@@ -15,7 +18,7 @@ interface IAsn1PropOptions {
   context?: number;
   implicit?: boolean;
   converter?: IAsnConverter;
-  repeated?: boolean;
+  repeated?: AsnRepeatType;
 }
 
 export const AsnType = (options: IAsn1TypeOptions) => (target: object) => {

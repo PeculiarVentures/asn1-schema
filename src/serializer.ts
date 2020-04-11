@@ -49,7 +49,17 @@ export class AsnSerializer {
           throw new Error(`Property '${key}' doesn't have converter for type ${AsnPropTypes[item.type]} in schema '${target.name}'`);
         }
         if (item.repeated) {
-          asn1Item = Array.from(objProp, (element) => converter.toASN(element));
+          const items = Array.from(objProp, (element) => converter.toASN(element));
+          if (typeof item.repeated === "boolean") {
+            asn1Item = items;
+          } else {
+            const container = item.repeated === "sequence"
+              ? asn1.Sequence
+              : asn1.Set;
+            asn1Item = new container({
+              value: items,
+            });
+          }
         } else {
           asn1Item = converter.toASN(objProp);
         }
@@ -57,7 +67,17 @@ export class AsnSerializer {
         // type is class with schema
         // use ASN1 schema
         if (item.repeated) {
-          asn1Item = Array.from(objProp, (element) => this.toASN(element));
+          const items = Array.from(objProp, (element) => this.toASN(element));
+          if (typeof item.repeated === "boolean") {
+            asn1Item = items;
+          } else {
+            const container = item.repeated === "sequence"
+              ? asn1.Sequence
+              : asn1.Set;
+            asn1Item = new container({
+              value: items,
+            });
+          }
         } else {
           asn1Item = this.toASN(objProp);
         }
