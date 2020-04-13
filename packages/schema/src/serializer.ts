@@ -58,7 +58,7 @@ export class AsnSerializer {
               : asn1.Set;
             asn1Item = new Container({
               value: items,
-            });
+            } as any);
           }
         } else {
           asn1Item = converter.toASN(objProp);
@@ -76,7 +76,7 @@ export class AsnSerializer {
               : asn1.Set;
             asn1Item = new Container({
               value: items,
-            });
+            } as any);
           }
         } else {
           asn1Item = this.toASN(objProp);
@@ -96,7 +96,7 @@ export class AsnSerializer {
                 tagNumber: item.context,
               },
               ...value,
-            }));
+            } as any));
           } else {
             asn1Value.push(new asn1.Constructed({
               optional: item.optional,
@@ -105,7 +105,7 @@ export class AsnSerializer {
                 tagNumber: item.context,
               },
               value: asn1Item.valueBlock.value,
-            }));
+            } as any));
           }
         } else {
           // EXPLICIT
@@ -116,7 +116,7 @@ export class AsnSerializer {
               tagNumber: item.context,
             },
             value: [asn1Item],
-          }));
+          } as any));
         }
       } else if (item.repeated) {
         asn1Value = asn1Value.concat(asn1Item);
@@ -129,10 +129,10 @@ export class AsnSerializer {
     let asnSchema: any;
     switch (schema.type) {
       case AsnTypeTypes.Sequence:
-        asnSchema = new asn1.Sequence({ value: asn1Value });
+        asnSchema = new asn1.Sequence({ value: asn1Value } as any);
         break;
       case AsnTypeTypes.Set:
-        asnSchema = new asn1.Set({ value: asn1Value });
+        asnSchema = new asn1.Set({ value: asn1Value } as any);
         break;
       case AsnTypeTypes.Choice:
         if (!asn1Value[0]) {

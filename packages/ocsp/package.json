@@ -1,0 +1,36 @@
+{
+  "name": "@peculiar/asn1-ocsp",
+  "version": "0.0.0",
+  "description": "RFC6960 schema",
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/ocsp#readme",
+  "keywords": [
+    "rfc",
+    "rfc6960",
+    "asn"
+  ],
+  "license": "MIT",
+  "author": "PeculiarVentures, Inc",
+  "main": "build/index.js",
+  "module": "build/index.es.js",
+  "types": "build/types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "mocha",
+    "clear": "rimraf build/*",
+    "build": "npm run build:module && npm run build:types",
+    "build:module": "rollup -c",
+    "build:types": "tsc -p tsconfig.types.json",
+    "rebuild": "npm run clear && npm run build"
+  },
+  "dependencies": {
+    "@peculiar/asn1-schema": "^0.0.0",
+    "@peculiar/asn1-x509": "^0.0.0",
+    "asn1js": "^2.0.26",
+    "tslib": "^1.11.1"
+  }
+}

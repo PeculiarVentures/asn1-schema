@@ -6,21 +6,6 @@ jobs:
       - image: circleci/node:10.12.0
     steps:
       - checkout
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
-      - run:
-          name: install-typescript
-          command: sudo npm install -g typescript@latest
-      - run:
-          name: install-tslint
-          command: sudo npm install -g tslint@latest
-      - run:
-          name: install-coveralls
-          command: sudo npm install -g coveralls@latest
-      - run:
-          name: install-nyc
-          command: sudo npm install -g nyc@latest
       - restore_cache: # special step to restore the dependency cache 
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -30,12 +15,6 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
-      - run: # run tslint
-          name: test-code-coverage
-          command: npm run lint
-      - run: # run tests with code coverage
-          name: test-code-coverage
-          command: npm run coverage
-      - run: # run coveralls report
-          name: test-report-coveralls
-          command: npm run coveralls
+      - run:
+          name: test
+          command: npm test

@@ -1,40 +1,32 @@
-import typescript from "rollup-plugin-typescript2";
-import pkg from "./package.json";
+import typescript from "@rollup/plugin-typescript";
+import fs from "fs";
 
-const external = [...Object.keys(pkg.dependencies)];
+const pkg = JSON.parse(fs.readFileSync("package.json", { encoding: "utf8" }));
+
+const banner = [].join("\n");
 const input = "src/index.ts";
+const external = Object.keys(pkg.dependencies);
 
-const banner = [
-  "/**",
-  " * Copyright (c) 2020, Peculiar Ventures, All rights reserved.",
-  " */",
-  "",
-].join("\n");
-
-export default {
-  input,
-  plugins: [
-    typescript({
-      check: true,
-      clean: true,
-      tsconfigOverride: {
-        compilerOptions: {
-          module: "ES2015",
-        }
-      }
-    }),
-  ],
-  external,
-  output: [
-    {
-      banner,
-      file: pkg.main,
-      format: "cjs",
-    },
-    {
-      banner,
-      file: pkg.module,
-      format: "es",
-    },
-  ],
-};
+export default [
+  {
+    input,
+    plugins: [
+      typescript({
+        module: "ES2015",
+      }),
+    ],
+    external,
+    output: [
+      {
+        banner,
+        file: pkg.main,
+        format: "cjs",
+      },
+      {
+        banner,
+        file: pkg.module,
+        format: "es",
+      },
+    ],
+  },
+];

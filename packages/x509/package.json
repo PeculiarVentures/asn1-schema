@@ -1,0 +1,37 @@
+{
+  "name": "@peculiar/asn1-x509",
+  "version": "0.0.0",
+  "description": "RFC5280 schema",
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509#readme",
+  "keywords": [
+    "asn",
+    "rfc",
+    "rfc5280",
+    "x509"
+  ],
+  "author": "PeculiarVentures, Inc",
+  "license": "MIT",
+  "main": "build/index.js",
+  "module": "build/index.es.js",
+  "types": "build/types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "mocha",
+    "clear": "rimraf build/*",
+    "build": "npm run build:module && npm run build:types",
+    "build:module": "rollup -c",
+    "build:types": "tsc -p tsconfig.types.json",
+    "rebuild": "npm run clear && npm run build"
+  },
+  "dependencies": {
+    "@peculiar/asn1-schema": "^0.0.0",
+    "asn1js": "^2.0.26",
+    "pvtsutils": "^1.0.10",
+    "tslib": "^1.11.1"
+  }
+}

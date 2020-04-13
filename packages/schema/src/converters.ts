@@ -30,7 +30,7 @@ export const AsnIntegerConverter: IAsnConverter<IntegerConverterType> = {
   fromASN: (value: any) => !value.valueBlock.valueDec && value.valueBlock.valueHex.byteLength > 0 ?
     value.valueBlock.toString() // Convert number to string
     : value.valueBlock.valueDec, // use number format
-  toASN: (value: IntegerConverterType) => new asn1.Integer({ value }),
+  toASN: (value: IntegerConverterType) => new asn1.Integer({ value: value as any }),
 };
 
 /**
@@ -46,7 +46,7 @@ export const AsnEnumeratedConverter: IAsnConverter<number> = {
  */
 export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer> = {
   fromASN: (value: any) => value.valueBlock.valueHex,
-  toASN: (value: ArrayBuffer) => new asn1.Integer({ valueHex: value }),
+  toASN: (value: ArrayBuffer) => new asn1.Integer({ valueHex: value } as any),
 };
 
 /**
@@ -70,7 +70,7 @@ export const AsnObjectIdentifierConverter: IAsnConverter<string> = {
  */
 export const AsnBooleanConverter: IAsnConverter<boolean> = {
   fromASN: (value: any) => value.valueBlock.value,
-  toASN: (value: boolean) => new asn1.Boolean({ value }),
+  toASN: (value: boolean) => new asn1.Boolean({ value } as any),
 };
 
 /**

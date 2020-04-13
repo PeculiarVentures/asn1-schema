@@ -70,7 +70,7 @@ export class AsnSchemaStorage {
       if (typeof (item.type) === "number") {
         // type is Asn1PropType Enum
         const Asn1TypeName = AsnPropTypes[item.type];
-        const Asn1Type = asn1[Asn1TypeName];
+        const Asn1Type = (asn1 as any)[Asn1TypeName];
         if (!Asn1Type) {
           throw new Error(`Cannot get ASN1 class by name '${Asn1TypeName}'`);
         }
@@ -102,7 +102,7 @@ export class AsnSchemaStorage {
                 value: asn1Item,
               }),
             ],
-          });
+          } as any);
         }
       }
       if (item.context !== null && item.context !== undefined) {
@@ -120,7 +120,7 @@ export class AsnSchemaStorage {
                 tagClass: 3,
                 tagNumber: item.context,
               },
-            }));
+            } as any));
           } else {
             this.cache(item.type);
             const isRepeatedString = typeof item.repeated === "string";
@@ -135,7 +135,7 @@ export class AsnSchemaStorage {
                 tagNumber: item.context,
               },
               value,
-            }));
+            } as any));
           }
         } else {
           // EXPLICIT
@@ -146,7 +146,7 @@ export class AsnSchemaStorage {
               tagNumber: item.context,
             },
             value: [asn1Item],
-          }));
+          } as any));
         }
       } else {
         // UNIVERSAL
@@ -157,11 +157,11 @@ export class AsnSchemaStorage {
 
     switch (schema.type) {
       case AsnTypeTypes.Sequence:
-        return new asn1.Sequence({ value: asn1Value, name: "" });
+        return new asn1.Sequence({ value: asn1Value, name: "" } as any);
       case AsnTypeTypes.Set:
-        return new asn1.Set({ value: asn1Value, name: "" });
+        return new asn1.Set({ value: asn1Value, name: "" } as any);
       case AsnTypeTypes.Choice:
-        return new asn1.Choice({ value: asn1Value, name: "" });
+        return new asn1.Choice({ value: asn1Value, name: "" } as any);
       default:
         throw new Error(`Unsupported ASN1 type in use`);
     }

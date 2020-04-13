@@ -63,7 +63,7 @@ export class AsnParser {
             tagNumber: asn1Schema.idBlock.tagNumber,
           },
           value: schema.schema.valueBlock.value,
-        });
+        } as any);
         // delete all parsed values, because asn1js adds duplicated values to arrays
         for (const key in schema.items) {
           delete asn1Schema[key];
@@ -104,7 +104,7 @@ export class AsnParser {
                 : asn1.Set;
               const newItem = new Container();
               newItem.valueBlock = asn1Schema[key].valueBlock;
-              const value = asn1.fromBER(newItem.toBER(false)).result.valueBlock.value;
+              const value = (asn1 as any).fromBER(newItem.toBER(false)).result.valueBlock.value;
               res[key] = Array.from(value, (element) => converter.fromASN(element));
             } else {
               res[key] = Array.from(asn1Schema[key], (element) => converter.fromASN(element));
@@ -113,7 +113,7 @@ export class AsnParser {
             let value = asn1Schema[key];
             if (schemaItem.implicit) {
               const Asn1TypeName = AsnPropTypes[schemaItem.type];
-              const Asn1Type = asn1[Asn1TypeName];
+              const Asn1Type = (asn1 as any)[Asn1TypeName];
               if (!Asn1Type) {
                 throw new Error(`Cannot get '${Asn1TypeName}' class from asn1js module`);
               }
