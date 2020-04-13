@@ -9,8 +9,11 @@ jobs:
       - restore_cache: # special step to restore the dependency cache 
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          name: install-deps
-          command: npm install
+          name: install-lerna
+          command: npm i lerna -g
+      - run:
+          name: lerna-bootstrap
+          command: lerna bootstrap
       - save_cache: # special step to save the dependency cache
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
