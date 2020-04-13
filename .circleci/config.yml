@@ -10,7 +10,7 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: install-lerna
-          command: sudo npm i lerna
+          command: sudo npm i lerna -g
       - run:
           name: lerna-bootstrap
           command: lerna bootstrap
