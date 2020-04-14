@@ -3,6 +3,7 @@ import * as asn1 from "asn1js";
 import { AsnRepeatType } from "./decorators";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { IAsnConverter, IEmptyConstructor } from "./types";
+import { isTypeOfArray } from "./helper";
 
 export interface IAsnSchemaItem {
   type: AsnPropTypes | IEmptyConstructor<any>;
@@ -16,6 +17,7 @@ export interface IAsnSchemaItem {
 
 export interface IAsnSchema {
   type: AsnTypeTypes;
+  itemType: AsnPropTypes | IEmptyConstructor<any>;
   items: { [key: string]: IAsnSchemaItem };
   schema?: any;
 }
@@ -30,7 +32,7 @@ export class AsnSchemaStorage {
   public get(target: object) {
     const schema = this.items.get(target);
     if (!schema) {
-      throw new Error("Cannot get schema for current target");
+      throw new Error(`Cannot get schema for '${(target as any)?.prototype?.constructor?.name ?? target}' target`);
     }
     return schema;
   }
@@ -83,27 +85,19 @@ export class AsnSchemaStorage {
       }
       const optional = !!item.optional || item.defaultValue !== undefined;
       if (item.repeated) {
-        if (typeof item.repeated === "boolean") {
-          asn1Item.name = "";
-          asn1Item = new asn1.Repeated({
-            name,
-            value: asn1Item,
-          });
-        } else {
-          asn1Item.name = "";
-          const Container = item.repeated === "set"
-            ? asn1.Set
-            : asn1.Sequence;
-          asn1Item = new Container({
-            name: "",
-            value: [
-              new asn1.Repeated({
-                name,
-                value: asn1Item,
-              }),
-            ],
-          } as any);
-        }
+        asn1Item.name = "";
+        const Container = item.repeated === "set"
+          ? asn1.Set
+          : asn1.Sequence;
+        asn1Item = new Container({
+          name: "",
+          value: [
+            new asn1.Repeated({
+              name,
+              value: asn1Item,
+            }),
+          ],
+        } as any);
       }
       if (item.context !== null && item.context !== undefined) {
         // CONTEXT-SPECIFIC
@@ -123,12 +117,12 @@ export class AsnSchemaStorage {
             } as any));
           } else {
             this.cache(item.type);
-            const isRepeatedString = typeof item.repeated === "string";
-            const value = !isRepeatedString
+            const isRepeated = !!item.repeated;
+            const value = !isRepeated
               ? this.get(item.type).schema.valueBlock.value
               : asn1Item.valueBlock.value;
             asn1Value.push(new asn1.Constructed({
-              name: !isRepeatedString ? name : "",
+              name: !isRepeated ? name : "",
               optional,
               idBlock: {
                 tagClass: 3,

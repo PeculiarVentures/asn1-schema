@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 import { id_pkix, id_ce, id_qt } from "../object_identifiers";
 
 /**
@@ -97,7 +97,7 @@ export type CPSuri = string;
  *      cPSuri           CPSuri,
  *      userNotice       UserNotice }
  * ```
- */   
+ */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class Qualifier {
 
@@ -171,14 +171,5 @@ export class PolicyInformation {
  * CertificatePolicies ::= SEQUENCE SIZE (1..MAX) OF PolicyInformation
  * ```
  */
-export class CertificatePolicies {
-  
-  @AsnProp({ type: PolicyInformation, repeated: true })
-  public items: PolicyInformation[] = [];
-  
-  constructor(items?: PolicyInformation[]) {
-    if (items) {
-      this.items = items;
-    }
-  }
-}
+@AsnType({ type: AsnTypeTypes.Sequence, itemType: PolicyInformation })
+export class CertificatePolicies extends AsnArray<PolicyInformation> { }

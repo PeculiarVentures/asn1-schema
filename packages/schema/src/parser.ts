@@ -2,7 +2,7 @@
 import * as asn1 from "asn1js";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { AsnSchemaValidationError } from "./errors";
-import { isConvertible } from "./helper";
+import { isConvertible, isTypeOfArray } from "./helper";
 import { schemaStorage } from "./storage";
 import { IEmptyConstructor } from "./types";
 
@@ -83,6 +83,11 @@ export class AsnParser {
 
       const res = new target() as any;
 
+      if (isTypeOfArray(target)) {
+        // TODO convert
+        return target.from(asn1Schema.valueBlock.value, (element) => this.fromASN(element, schema.itemType as any));
+      }
+
       for (const key in schema.items) {
         if (!asn1Schema[key]) {
           // TODO: we need to skip empty values for Choice and Optional params
@@ -98,7 +103,7 @@ export class AsnParser {
             throw new Error("Converter is empty");
           }
           if (schemaItem.repeated) {
-            if (schemaItem.implicit && typeof schemaItem.repeated === "string") {
+            if (schemaItem.implicit) {
               const Container = schemaItem.repeated === "sequence"
                 ? asn1.Sequence
                 : asn1.Set;

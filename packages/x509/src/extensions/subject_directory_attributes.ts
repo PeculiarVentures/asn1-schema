@@ -1,4 +1,4 @@
-import { AsnProp } from "@peculiar/asn1-schema";
+import { AsnProp, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { Attribute } from "../attribute";
 import { id_ce } from "../object_identifiers";
 
@@ -14,12 +14,5 @@ export const id_ce_subjectDirectoryAttributes = `${id_ce}.9`;
  * SubjectDirectoryAttributes ::= SEQUENCE SIZE (1..MAX) OF Attribute
  * ```
  */
-export class SubjectDirectoryAttributes {
-
-  @AsnProp({ type: Attribute, repeated: true })
-  public items: Attribute[];
-
-  constructor(items: Attribute[] = []) {
-    this.items = items;
-  }
-}
+@AsnType({ type: AsnTypeTypes.Sequence, itemType: Attribute })
+export class SubjectDirectoryAttributes extends AsnArray<Attribute> { }

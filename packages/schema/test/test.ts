@@ -122,29 +122,6 @@ context("Test", () => {
             assert.equal(obj.items.join(""), "12345");
           });
         });
-        context("Repeated object", () => {
-
-          class TestChild {
-            @AsnProp({ type: AsnPropTypes.Integer, repeated: true })
-            public items: number[] = [];
-          }
-          class Test2 {
-            @AsnProp({ type: TestChild, implicit: true, context: 1 })
-            public children = new TestChild();
-          }
-          const testHex = "3011a10f020101020102020103020104020105";
-
-          it("serialize", () => {
-            const obj = new Test2();
-            obj.children.items = [1, 2, 3, 4, 5];
-            const buf = AsnSerializer.serialize(obj);
-            assertBuffer(Buffer.from(buf), Buffer.from(testHex, "hex"));
-          });
-          it("parse", () => {
-            const obj = AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test2);
-            assert.equal(obj.children.items.join(""), "12345");
-          });
-        });
         context("Constructed", () => {
           const der = Buffer.from("a3090201020c0474657374", "hex");
           it("stringify", () => {
@@ -660,19 +637,6 @@ context("Test", () => {
 
   context("REPEATED", () => {
     context("PRIMITIVE", () => {
-      it("without container", () => {
-        class Test {
-          @AsnProp({ type: AsnPropTypes.Integer, repeated: true })
-          public values = [1, 2, 3, 4, 5];
-        }
-
-        const obj1 = new Test();
-        const der = AsnSerializer.serialize(obj1);
-        assert.equal(Buffer.from(der).toString("hex"), "300f020101020102020103020104020105");
-
-        const obj2 = AsnParser.parse(der, Test);
-        assert.equal(obj2.values.join(""), "12345");
-      });
       it("SET", () => {
         class Test {
           @AsnProp({ type: AsnPropTypes.Integer, repeated: "set" })
@@ -701,32 +665,6 @@ context("Test", () => {
       });
     });
     context("CONSTRUCTED", () => {
-      it("without container", () => {
-        class Child {
-          @AsnProp({ type: AsnPropTypes.Integer })
-          public value = 0;
-          constructor(value?: number) {
-            if (value !== undefined) {
-              this.value = value;
-            }
-          }
-        }
-        class Test {
-          @AsnProp({ type: Child, repeated: true })
-          public values: Child[] = [];
-        }
-
-        const obj1 = new Test();
-        obj1.values.push(new Child(1));
-        obj1.values.push(new Child(2));
-        const der = AsnSerializer.serialize(obj1);
-        assert.equal(Buffer.from(der).toString("hex"), "300a30030201013003020102");
-
-        const obj2 = AsnParser.parse(der, Test);
-        assert.equal(obj2.values.length, 2);
-        assert.equal(obj2.values[0].value, 1);
-        assert.equal(obj2.values[1].value, 2);
-      });
       it("SET", () => {
         class Child {
           @AsnProp({ type: AsnPropTypes.Integer })

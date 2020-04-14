@@ -6,10 +6,11 @@ import { IAsnConverter, IEmptyConstructor } from "./types";
 
 interface IAsn1TypeOptions {
   type: AsnTypeTypes;
+  itemType?: AsnPropTypes | IEmptyConstructor<any>;
 }
 export type AsnRepeatTypeString = "sequence" | "set";
 
-export type AsnRepeatType = boolean | AsnRepeatTypeString;
+export type AsnRepeatType = AsnRepeatTypeString;
 
 interface IAsn1PropOptions {
   type: AsnPropTypes | IEmptyConstructor<any>;
@@ -22,7 +23,13 @@ interface IAsn1PropOptions {
 }
 
 export const AsnType = (options: IAsn1TypeOptions) => (target: object) => {
-  const schema = schemaStorage.get(target);
+  let schema: IAsnSchema;
+  if (!schemaStorage.has(target)) {
+    schema = schemaStorage.createDefault(target);
+    schemaStorage.set(target, schema);
+  } else {
+    schema = schemaStorage.get(target);
+  }
   Object.assign(schema, options);
 };
 

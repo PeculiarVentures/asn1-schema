@@ -18,7 +18,7 @@ context("x509", () => {
       if (extension.extnID === id_ce_cRLDistributionPoints) {
         const crlDistributionPoints = AsnParser.parse(extension.extnValue, CRLDistributionPoints);
         assert.equal(
-          crlDistributionPoints.items[0].distributionPoint?.fullName?.[0].uniformResourceIdentifier,
+          crlDistributionPoints[0].distributionPoint?.fullName?.[0].uniformResourceIdentifier,
           "http://crl.globalsign.com/gsdemosha2g3.crl");
       }
     });

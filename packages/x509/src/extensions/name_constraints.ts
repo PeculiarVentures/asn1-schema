@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { GeneralName } from "../general_name";
 import { id_ce } from "../object_identifiers";
 
@@ -45,15 +45,8 @@ export class GeneralSubtree {
  * GeneralSubtrees ::= SEQUENCE SIZE (1..MAX) OF GeneralSubtree
  * ```
  */
-export class GeneralSubtrees {
-
-  @AsnProp({ type: GeneralSubtree, repeated: true })
-  public items: GeneralSubtree[];
-
-  constructor(items: GeneralSubtree[] = []) {
-    this.items = items;
-  }
-}
+@AsnType({ type: AsnTypeTypes.Sequence, itemType: GeneralSubtree })
+export class GeneralSubtrees extends AsnArray<GeneralSubtree> { }
 
 /**
  * ```

@@ -1,9 +1,9 @@
+export * from "./extensions";
 export * from "./algorithm_identifier";
 export * from "./attribute";
 export * from "./certificate";
 export * from "./certificate_list";
 export * from "./extension";
-export * from "./extensions";
 export * from "./general_name";
 export * from "./general_names";
 export * from "./name";
@@ -14,4 +14,3 @@ export * from "./tbs_certificate";
 export * from "./time";
 export * from "./types";
 export * from "./validity";
-export * from "./extensions/index";

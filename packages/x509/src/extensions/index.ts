@@ -3,7 +3,6 @@ export * from "./authority_key_identifier";
 export * from "./basic_constraints";
 export * from "./certificate_issuer";
 export * from "./certificate_policies";
-export * from "../object_identifiers";
 export * from "./crl_distribution_points";
 export * from "./crl_reason";
 export * from "./extended_key_usage";

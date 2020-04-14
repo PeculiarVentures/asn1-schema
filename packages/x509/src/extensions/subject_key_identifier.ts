@@ -1,5 +1,4 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
-import { Convert } from "pvtsutils";
 import { id_ce } from "../object_identifiers";
 
 /**

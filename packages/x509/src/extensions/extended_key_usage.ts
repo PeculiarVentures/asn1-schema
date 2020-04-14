@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { id_ce, id_pkix, id_kp } from "../object_identifiers";
 
 /**
@@ -16,15 +16,8 @@ export type KeyPurposeId = string;
  * ExtKeyUsageSyntax ::= SEQUENCE SIZE (1..MAX) OF KeyPurposeId
  * ```
  */
-export class ExtendedKeyUsage {
-
-  @AsnProp({ type: AsnPropTypes.ObjectIdentifier, repeated: true })
-  public usages: string[];
-
-  constructor(usages: KeyPurposeId[] = []) {
-    this.usages = usages;
-  }
-}
+@AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.ObjectIdentifier })
+export class ExtendedKeyUsage extends AsnArray<string> { }
 
 /**
  * ```

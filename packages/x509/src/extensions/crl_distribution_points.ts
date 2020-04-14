@@ -1,5 +1,5 @@
 import * as asn1 from "asn1js";
-import { AsnProp, AsnPropTypes, AsnType, IAsnConverter, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, IAsnConverter, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 import { RelativeDistinguishedName } from "../name";
 import { GeneralName } from "../general_name";
 import { id_ce } from "../object_identifiers";
@@ -149,9 +149,10 @@ export class DistributionPoint {
   @AsnProp({ type: DistributionPointName, context: 0, optional: true })
   public distributionPoint?: DistributionPointName;
 
-  @AsnProp({ type: AsnPropTypes.BitString, context: 1, optional: true, implicit: true,
+  @AsnProp({
+    type: AsnPropTypes.BitString, context: 1, optional: true, implicit: true,
     converter: ReasonFlagConverter,
-   })
+  })
   public reasons?: ReasonFlags[];
 
   @AsnProp({ type: GeneralName, context: 2, optional: true, repeated: "sequence", implicit: true })
@@ -167,12 +168,5 @@ export class DistributionPoint {
  * CRLDistributionPoints ::= SEQUENCE SIZE (1..MAX) OF DistributionPoint
  * ```
  */
-export class CRLDistributionPoints {
-
-  @AsnProp({ type: DistributionPoint, repeated: true })
-  public items: DistributionPoint[];
-
-  constructor(items: DistributionPoint[] = []) {
-    this.items = items;
-  }
-}
+@AsnType({ type: AsnTypeTypes.Sequence, itemType: DistributionPoint })
+export class CRLDistributionPoints extends AsnArray<DistributionPoint> { }

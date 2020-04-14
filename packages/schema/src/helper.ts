@@ -11,3 +11,14 @@ export function isConvertible(target: any): target is IAsnConvertible<any> {
     return !!(target && target.toASN && target.fromASN);
   }
 }
+
+export function isTypeOfArray(target: any): target is typeof Array {
+  if (target) {
+    const proto = Object.getPrototypeOf(target);
+    if (proto?.prototype?.constructor === Array) {
+      return true;
+    }
+    return isTypeOfArray(proto);
+  }
+  return false;
+}

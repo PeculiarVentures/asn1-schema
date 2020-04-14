@@ -50,16 +50,12 @@ export class AsnSerializer {
         }
         if (item.repeated) {
           const items = Array.from(objProp, (element) => converter.toASN(element));
-          if (typeof item.repeated === "boolean") {
-            asn1Item = items;
-          } else {
-            const Container = item.repeated === "sequence"
-              ? asn1.Sequence
-              : asn1.Set;
-            asn1Item = new Container({
-              value: items,
-            } as any);
-          }
+          const Container = item.repeated === "sequence"
+            ? asn1.Sequence
+            : asn1.Set;
+          asn1Item = new Container({
+            value: items,
+          } as any);
         } else {
           asn1Item = converter.toASN(objProp);
         }
@@ -68,16 +64,12 @@ export class AsnSerializer {
         // use ASN1 schema
         if (item.repeated) {
           const items = Array.from(objProp, (element) => this.toASN(element));
-          if (typeof item.repeated === "boolean") {
-            asn1Item = items;
-          } else {
-            const Container = item.repeated === "sequence"
-              ? asn1.Sequence
-              : asn1.Set;
-            asn1Item = new Container({
-              value: items,
-            } as any);
-          }
+          const Container = item.repeated === "sequence"
+            ? asn1.Sequence
+            : asn1.Set;
+          asn1Item = new Container({
+            value: items,
+          } as any);
         } else {
           asn1Item = this.toASN(objProp);
         }
