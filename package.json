@@ -15,6 +15,7 @@
   "dependencies": {
     "@peculiar/asn1-cms": "file:packages/cms",
     "@peculiar/asn1-ocsp": "file:packages/ocsp",
+    "@peculiar/asn1-rsa": "file:packages/rsa",
     "@peculiar/asn1-schema": "file:packages/schema",
     "@peculiar/asn1-x509": "file:packages/x509",
     "@types/asn1js": "0.0.1",
