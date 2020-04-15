@@ -4,3 +4,5 @@
 [![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-rsa.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-rsa)
   
 [![NPM](https://nodei.co/npm/@peculiar/asn1-rsa.png)](https://nodei.co/npm/@peculiar/asn1-rsa/)
+
+[RFC 8017](https://tools.ietf.org/html/rfc8017)
