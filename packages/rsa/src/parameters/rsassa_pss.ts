@@ -1,6 +1,7 @@
 import { AsnProp, AsnConvert, AsnPropTypes } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import { id_sha1, id_mgf1 } from "../object_identifiers";
+import { id_mgf1, id_RSASSA_PSS } from "../object_identifiers";
+import { sha1, mgf1SHA1 } from "../algorithms";
 
 /**
  * ```
@@ -19,24 +20,13 @@ export type TrailerField = number;
  */
 export class RsaSaPssParams {
 
-  @AsnProp({ type: AlgorithmIdentifier, context: 0, defaultValue: new AlgorithmIdentifier({ algorithm: id_sha1, parameters: null }) })
-  public hashAlgorithm = new AlgorithmIdentifier({ algorithm: id_sha1, parameters: null })
+  @AsnProp({ type: AlgorithmIdentifier, context: 0, defaultValue: sha1 })
+  public hashAlgorithm = new AlgorithmIdentifier(sha1);
 
-  @AsnProp({
-    type: AlgorithmIdentifier, context: 1, defaultValue: new AlgorithmIdentifier({
-      algorithm: id_mgf1,
-      parameters: AsnConvert.serialize(new AlgorithmIdentifier({
-        algorithm: id_sha1,
-        parameters: null,
-      })),
-    })
-  })
+  @AsnProp({type: AlgorithmIdentifier, context: 1, defaultValue: mgf1SHA1})
   public maskGenAlgorithm = new AlgorithmIdentifier({
     algorithm: id_mgf1,
-    parameters: AsnConvert.serialize(new AlgorithmIdentifier({
-      algorithm: id_sha1,
-      parameters: null,
-    })),
+    parameters: AsnConvert.serialize(sha1),
   });
 
   @AsnProp({ type: AsnPropTypes.Integer, context: 2, defaultValue: 20 })
@@ -49,3 +39,13 @@ export class RsaSaPssParams {
     Object.assign(this, params);
   }
 }
+
+/**
+ * ```
+ * { OID id-RSASSA-PSS   PARAMETERS RSASSA-PSS-params }
+ * ```
+ */
+export const RSASSA_PSS = new AlgorithmIdentifier({
+  algorithm: id_RSASSA_PSS,
+  parameters: AsnConvert.serialize(new RsaSaPssParams()),
+});
