@@ -1,5 +1,5 @@
-export class AsnArray<T> extends Array {
-  constructor(items = []) {
+export class AsnArray<T> extends Array<T> {
+  constructor(items: T[] = []) {
     if (typeof items === "number") {
       super(items);
     } else {
