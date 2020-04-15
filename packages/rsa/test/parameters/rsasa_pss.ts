@@ -3,7 +3,7 @@ import { RsaSaPssParams, id_md5, id_sha1 } from "../../src";
 import { AsnConvert, AsnOctetStringConverter } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
-context.only("RSASSA-PSS params", () => {
+context("RSASSA-PSS params", () => {
 
   it("serialize default", () => {
     const params = new RsaSaPssParams();

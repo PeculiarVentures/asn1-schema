@@ -3,7 +3,7 @@ import { RsaEsOaepParams, id_md5, id_sha1 } from "../../src";
 import { AsnConvert, AsnOctetStringConverter } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
-context.only("RSAES-OAEP params", () => {
+context("RSAES-OAEP params", () => {
 
   it("serialize default", () => {
     const params = new RsaEsOaepParams();
