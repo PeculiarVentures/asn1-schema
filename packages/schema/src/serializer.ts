@@ -1,7 +1,7 @@
 // @ts-ignore
 import * as asn1 from "asn1js";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
-import { isConvertible } from "./helper";
+import { isConvertible, isArrayEqual } from "./helper";
 import { schemaStorage } from "./storage";
 
 /**
@@ -13,6 +13,9 @@ export class AsnSerializer {
    * @param obj The object to serialize
    */
   public static serialize(obj: any): ArrayBuffer {
+    if (obj instanceof asn1.BaseBlock) {
+      return (obj as any).toBER(false)
+    }
     return this.toASN(obj).toBER(false);
   }
 
@@ -35,7 +38,10 @@ export class AsnSerializer {
       const objProp = obj[key];
 
       // Default value
-      if (objProp === undefined || item.defaultValue === objProp) {
+      if (objProp === undefined
+        || item.defaultValue === objProp
+        || (typeof item.defaultValue === "object" && typeof objProp === "object"
+          && isArrayEqual(this.serialize(item.defaultValue), this.serialize(objProp)))) {
         continue; // skip item
       }
 
