@@ -15,7 +15,7 @@ export enum AsnTypeTypes {
  * ASN.1 types for properties
  */
 export enum AsnPropTypes {
-  Any,
+  Any = 1,
   Boolean,
   OctetString,
   BitString,

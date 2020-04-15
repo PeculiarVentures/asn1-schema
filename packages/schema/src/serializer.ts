@@ -3,6 +3,7 @@ import * as asn1 from "asn1js";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible, isArrayEqual } from "./helper";
 import { schemaStorage } from "./storage";
+import { IAsnSchemaItem } from "./schema";
 
 /**
  * Serializes objects into ASN.1 encoded data
@@ -33,94 +34,65 @@ export class AsnSerializer {
     schemaStorage.cache(target);
 
     let asn1Value: any[] = [];
-    for (const key in schema.items) {
-      const item = schema.items[key];
-      const objProp = obj[key];
 
-      // Default value
-      if (objProp === undefined
-        || item.defaultValue === objProp
-        || (typeof item.defaultValue === "object" && typeof objProp === "object"
-          && isArrayEqual(this.serialize(item.defaultValue), this.serialize(objProp)))) {
-        continue; // skip item
-      }
+    if (schema.itemType) {// repeated
+      asn1Value = obj.map((o: any) => this.toAsnItem({ type: schema.itemType }, "[]", target, o));
+    } else {
+      for (const key in schema.items) {
+        const schemaItem = schema.items[key];
+        const objProp = obj[key];
 
-      let asn1Item: any;
-      if (typeof (item.type) === "number") {
-        // type is Asn1PropType Enum
-        // we MUST to use Converters
-        const converter = item.converter;
-        if (!converter) {
-          // tslint:disable-next-line:max-line-length
-          throw new Error(`Property '${key}' doesn't have converter for type ${AsnPropTypes[item.type]} in schema '${target.name}'`);
+        // Default value
+        if (objProp === undefined
+          || schemaItem.defaultValue === objProp
+          || (typeof schemaItem.defaultValue === "object" && typeof objProp === "object"
+            && isArrayEqual(this.serialize(schemaItem.defaultValue), this.serialize(objProp)))) {
+          continue; // skip item
         }
-        if (item.repeated) {
-          const items = Array.from(objProp, (element) => converter.toASN(element));
-          const Container = item.repeated === "sequence"
-            ? asn1.Sequence
-            : asn1.Set;
-          asn1Item = new Container({
-            value: items,
-          } as any);
-        } else {
-          asn1Item = converter.toASN(objProp);
-        }
-      } else {
-        // type is class with schema
-        // use ASN1 schema
-        if (item.repeated) {
-          const items = Array.from(objProp, (element) => this.toASN(element));
-          const Container = item.repeated === "sequence"
-            ? asn1.Sequence
-            : asn1.Set;
-          asn1Item = new Container({
-            value: items,
-          } as any);
-        } else {
-          asn1Item = this.toASN(objProp);
-        }
-      }
-      if (item.context !== null && item.context !== undefined) {
-        // CONTEXT-SPECIFIC
-        if (item.implicit) {
-          // IMPLICIT
-          if (!item.repeated && typeof item.type === "number") {
-            const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer } = {};
-            value.valueHex = asn1Item.valueBlock.toBER();
-            asn1Value.push(new asn1.Primitive({
-              optional: item.optional,
-              idBlock: {
-                tagClass: 3,
-                tagNumber: item.context,
-              },
-              ...value,
-            } as any));
+
+        let asn1Item: any = AsnSerializer.toAsnItem(schemaItem, key, target, objProp);
+        if (typeof schemaItem.context === "number") {
+          // CONTEXT-SPECIFIC
+          if (schemaItem.implicit) {
+            // IMPLICIT
+            if (!schemaItem.repeated && typeof schemaItem.type === "number") {
+              const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer } = {};
+              value.valueHex = asn1Item.valueBlock.toBER();
+              asn1Value.push(new asn1.Primitive({
+                optional: schemaItem.optional,
+                idBlock: {
+                  tagClass: 3,
+                  tagNumber: schemaItem.context,
+                },
+                ...value,
+              } as any));
+            } else {
+              asn1Value.push(new asn1.Constructed({
+                optional: schemaItem.optional,
+                idBlock: {
+                  tagClass: 3,
+                  tagNumber: schemaItem.context,
+                },
+                value: asn1Item.valueBlock.value,
+              } as any));
+            }
           } else {
+            // EXPLICIT
             asn1Value.push(new asn1.Constructed({
-              optional: item.optional,
+              optional: schemaItem.optional,
               idBlock: {
                 tagClass: 3,
-                tagNumber: item.context,
+                tagNumber: schemaItem.context,
               },
-              value: asn1Item.valueBlock.value,
+              value: [asn1Item],
             } as any));
           }
+        } else if (schemaItem.repeated) {
+          asn1Value = asn1Value.concat(asn1Item);
         } else {
-          // EXPLICIT
-          asn1Value.push(new asn1.Constructed({
-            optional: item.optional,
-            idBlock: {
-              tagClass: 3,
-              tagNumber: item.context,
-            },
-            value: [asn1Item],
-          } as any));
+          // UNIVERSAL
+          asn1Value.push(asn1Item);
         }
-      } else if (item.repeated) {
-        asn1Value = asn1Value.concat(asn1Item);
-      } else {
-        // UNIVERSAL
-        asn1Value.push(asn1Item);
       }
     }
 
@@ -141,5 +113,48 @@ export class AsnSerializer {
     }
 
     return asnSchema;
+  }
+
+  // @internal
+  private static toAsnItem(schemaItem: IAsnSchemaItem, key: string, target: any, objProp: any) {
+    let asn1Item: any;
+    if (typeof (schemaItem.type) === "number") {
+      // type is AsnPropType Enum
+      // we MUST to use Converters
+      const converter = schemaItem.converter;
+      if (!converter) {
+        // tslint:disable-next-line:max-line-length
+        throw new Error(`Property '${key}' doesn't have converter for type ${AsnPropTypes[schemaItem.type]} in schema '${target.name}'`);
+      }
+      if (schemaItem.repeated) {
+        const items = Array.from(objProp, (element) => converter.toASN(element));
+        const Container = schemaItem.repeated === "sequence"
+          ? asn1.Sequence
+          : asn1.Set;
+        asn1Item = new Container({
+          value: items,
+        } as any);
+      }
+      else {
+        asn1Item = converter.toASN(objProp);
+      }
+    }
+    else {
+      // type is class with schema
+      // use ASN1 schema
+      if (schemaItem.repeated) {
+        const items = Array.from(objProp, (element) => this.toASN(element));
+        const Container = schemaItem.repeated === "sequence"
+          ? asn1.Sequence
+          : asn1.Set;
+        asn1Item = new Container({
+          value: items,
+        } as any);
+      }
+      else {
+        asn1Item = this.toASN(objProp);
+      }
+    }
+    return asn1Item;
   }
 }
