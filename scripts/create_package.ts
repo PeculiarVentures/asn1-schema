@@ -43,7 +43,7 @@ async function main(name: string) {
       rebuild: "npm run clear && npm run build"
     },
     dependencies: {
-      "@peculiar/asn1-schema": pkg.dependencies["@peculiar/asn1-schema"],
+      "@peculiar/asn1-schema": "^0.0.0",
       "asn1js": pkg.dependencies["asn1js"],
       "tslib": pkg.dependencies["tslib"],
     }
