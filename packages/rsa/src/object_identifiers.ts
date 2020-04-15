@@ -108,6 +108,66 @@ export const id_sha1 = "1.3.14.3.2.26";
 
 /**
  * ```
+ * id-sha224    OBJECT IDENTIFIER ::= {
+ *   joint-iso-itu-t (2) country (16) us (840) organization (1)
+ *   gov (101) csor (3) nistalgorithm (4) hashalgs (2) 4
+ * }
+ * ```
+ */
+export const id_sha224 = "2.16.840.1.101.3.4.2.4";
+
+/**
+ * ```
+ * id-sha256    OBJECT IDENTIFIER ::= {
+ *   joint-iso-itu-t (2) country (16) us (840) organization (1)
+ *   gov (101) csor (3) nistalgorithm (4) hashalgs (2) 1
+ * }
+ * ```
+ */
+export const id_sha256 = "2.16.840.1.101.3.4.2.1";
+
+/**
+ * ```
+ * id-sha384    OBJECT IDENTIFIER ::= {
+ *   joint-iso-itu-t (2) country (16) us (840) organization (1)
+ *   gov (101) csor (3) nistalgorithm (4) hashalgs (2) 2
+ * }
+ * ```
+ */
+export const id_sha384 = "2.16.840.1.101.3.4.2.2";
+
+/**
+ * ```
+ * id-sha512    OBJECT IDENTIFIER ::= {
+ *   joint-iso-itu-t (2) country (16) us (840) organization (1)
+ *   gov (101) csor (3) nistalgorithm (4) hashalgs (2) 3
+ * }
+ * ```
+ */
+export const id_sha512 = "2.16.840.1.101.3.4.2.3";
+
+/**
+ * ```
+ * id-sha512-224    OBJECT IDENTIFIER ::= {
+ *   joint-iso-itu-t (2) country (16) us (840) organization (1)
+ *   gov (101) csor (3) nistalgorithm (4) hashalgs (2) 5
+ * }
+ * ```
+ */
+export const id_sha512_224 = "2.16.840.1.101.3.4.2.5";
+
+/**
+ * ```
+ * id-sha512-256    OBJECT IDENTIFIER ::= {
+ *   joint-iso-itu-t (2) country (16) us (840) organization (1)
+ *   gov (101) csor (3) nistalgorithm (4) hashalgs (2) 6
+ * }
+ * ```
+ */
+export const id_sha512_256 = "2.16.840.1.101.3.4.2.6";
+
+/**
+ * ```
  * id-md2 OBJECT IDENTIFIER ::= {
  *     iso(1) member-body(2) us(840) rsadsi(113549) digestAlgorithm(2) 2
  * }
