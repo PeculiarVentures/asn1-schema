@@ -2,7 +2,7 @@ import * as assert from "assert";
 import { ECParameters, id_secp256r1, ECPrivateKey } from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
 
-context.only("EC Private Key", () => {
+context("EC Private Key", () => {
 
   const privateKeyHex = "301f020101040400800001a00a06082a8648ce3d030107a1080306000080000002";
 

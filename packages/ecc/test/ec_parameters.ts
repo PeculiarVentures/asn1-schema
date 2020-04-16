@@ -2,7 +2,7 @@ import * as assert from "assert";
 import { ECParameters, id_secp256r1 } from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
 
-context.only("EC parameters", () => {
+context("EC parameters", () => {
 
   const ecParamsHex = "06082a8648ce3d030107";
 
