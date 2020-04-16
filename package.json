@@ -16,6 +16,7 @@
     "@peculiar/asn1-cms": "file:packages/cms",
     "@peculiar/asn1-ecc": "file:packages/ecc",
     "@peculiar/asn1-ocsp": "file:packages/ocsp",
+    "@peculiar/asn1-pkcs8": "file:packages/pkcs8",
     "@peculiar/asn1-rsa": "file:packages/rsa",
     "@peculiar/asn1-schema": "file:packages/schema",
     "@peculiar/asn1-x509": "file:packages/x509",
@@ -28,7 +29,8 @@
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "clear": "lerna run clear",
-    "create": "ts-node scripts/create_package.ts"
+    "create": "ts-node scripts/create_package.ts",
+    "postcreate": "lerna bootstrap"
   },
   "nyc": {
     "extension": [
