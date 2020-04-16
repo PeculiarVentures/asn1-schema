@@ -19,8 +19,8 @@ export class Attribute {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public attrType: string = "";
 
-  @AsnProp({ type: Attribute, repeated: "set" })
-  public attrValues: Attribute[] = [];
+  @AsnProp({ type: AsnPropTypes.Any, repeated: "set" })
+  public attrValues: AttributeValue[] = [];
 
   constructor(params: Partial<Attribute> = {}) {
     Object.assign(this, params);
