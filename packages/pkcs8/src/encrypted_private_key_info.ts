@@ -9,10 +9,12 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 export type EncryptedData = ArrayBuffer;
 
 /**
+ * ```
  * EncryptedPrivateKeyInfo ::= SEQUENCE {
  *   encryptionAlgorithm AlgorithmIdentifier {{KeyEncryptionAlgorithms}},
  *   encryptedData EncryptedData
  * }
+ * ```
  */
 export class EncryptedPrivateKeyInfo {
 
@@ -21,4 +23,8 @@ export class EncryptedPrivateKeyInfo {
 
   @AsnProp({ type: AsnPropTypes.OctetString })
   public encryptedData: EncryptedData = new ArrayBuffer(0);
+
+  constructor(params: Partial<EncryptedPrivateKeyInfo> = {}) {
+    Object.assign(this, params);
+  }
 }

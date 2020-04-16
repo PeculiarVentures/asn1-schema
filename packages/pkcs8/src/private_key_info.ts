@@ -44,5 +44,9 @@ export class PrivateKeyInfo {
   public privateKey: PrivateKey = new ArrayBuffer(0);
 
   @AsnProp({ type: Attributes, implicit: true, context: 0, optional: true })
-  public attributes = new Attributes();
+  public attributes?: Attributes;
+
+  constructor(params: Partial<PrivateKeyInfo> = {}) {
+    Object.assign(this, params);
+  }
 }
