@@ -16,6 +16,7 @@
     "@peculiar/asn1-cms": "file:packages/cms",
     "@peculiar/asn1-ecc": "file:packages/ecc",
     "@peculiar/asn1-ocsp": "file:packages/ocsp",
+    "@peculiar/asn1-pfx": "file:packages/pfx",
     "@peculiar/asn1-pkcs8": "file:packages/pkcs8",
     "@peculiar/asn1-rsa": "file:packages/rsa",
     "@peculiar/asn1-schema": "file:packages/schema",
