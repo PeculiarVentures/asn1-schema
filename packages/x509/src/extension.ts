@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -39,4 +39,5 @@ export class Extension {
  * Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
  * ```
  */
-export type Extensions = Extension[];
+@AsnType({ type: AsnTypeTypes.Sequence, itemType: Extension })
+export class Extensions extends AsnArray<Extension>{ };
