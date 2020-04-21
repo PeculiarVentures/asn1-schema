@@ -40,7 +40,7 @@ export type SignatureValue = ArrayBuffer;
 export class SignerInfo {
 
   @AsnProp({ type: AsnPropTypes.Integer })
-  public version: CMSVersion = 0;
+  public version: CMSVersion = CMSVersion.v0;
 
   @AsnProp({ type: SignerIdentifier })
   public sid = new SignerIdentifier();

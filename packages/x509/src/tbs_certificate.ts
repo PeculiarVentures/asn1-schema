@@ -29,9 +29,9 @@ export class TBSCertificate {
   @AsnProp({
     type: AsnPropTypes.Integer,
     context: 0,
-    defaultValue: 0,
+    defaultValue: Version.v1,
   })
-  public version: Version = 0;
+  public version = Version.v1;
 
   @AsnProp({
     type: AsnPropTypes.Integer,

@@ -14,3 +14,4 @@ export * from "./revoked_info";
 export * from "./signature";
 export * from "./single_response";
 export * from "./tbs_request";
+export * from "./types";

@@ -2,6 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { Extension } from "@peculiar/asn1-x509";
 import { ResponderID } from "./responder_id";
 import { SingleResponse } from "./single_response";
+import { Version } from "./types";
 
 /**
  * ```
@@ -15,8 +16,8 @@ import { SingleResponse } from "./single_response";
  */
 export class ResponseData {
 
-  @AsnProp({ type: AsnPropTypes.Integer, context: 0, defaultValue: 0 })
-  public version = 0;
+  @AsnProp({ type: AsnPropTypes.Integer, context: 0, defaultValue: Version.v1 })
+  public version = Version.v1;
 
   @AsnProp({ type: ResponderID })
   public responderID = new ResponderID();

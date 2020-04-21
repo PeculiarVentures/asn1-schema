@@ -27,7 +27,7 @@ export class DigestAlgorithmIdentifiers extends AsnArray<DigestAlgorithmIdentifi
 export class SignedData {
 
   @AsnProp({ type: AsnPropTypes.Integer })
-  public version: CMSVersion = 0;
+  public version: CMSVersion = CMSVersion.v0;
 
   @AsnProp({ type: DigestAlgorithmIdentifiers })
   public digestAlgorithms = new DigestAlgorithmIdentifiers();

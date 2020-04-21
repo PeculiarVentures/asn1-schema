@@ -1,6 +1,7 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { GeneralName, Extensions, Extension } from "@peculiar/asn1-x509";
 import { Request } from "./request";
+import { Version } from "./types";
 
 /**
  * ```
@@ -13,8 +14,8 @@ import { Request } from "./request";
  */
 export class TBSRequest {
 
-  @AsnProp({type: AsnPropTypes.Integer, context: 0, defaultValue: 0})
-  public version = 0;
+  @AsnProp({type: AsnPropTypes.Integer, context: 0, defaultValue: Version.v1})
+  public version = Version.v1;
   
   @AsnProp({type: GeneralName, context: 1, optional: true})
   public requestorName?: GeneralName;

@@ -6,7 +6,9 @@ import { AlgorithmIdentifier, Attribute } from "@peculiar/asn1-x509";
  * Version ::= INTEGER {v1(0)} (v1,...)
  * ```
  */
-export type Version = number;
+export enum Version {
+  v1 = 0,
+}
 
 /**
  * ```
@@ -35,7 +37,7 @@ export class Attributes extends AsnArray<Attribute> { }
 export class PrivateKeyInfo {
 
   @AsnProp({ type: AsnPropTypes.Integer })
-  public version: Version = 0;
+  public version = Version.v1;
 
   @AsnProp({ type: AlgorithmIdentifier })
   public privateKeyAlgorithm = new AlgorithmIdentifier();
