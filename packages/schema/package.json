@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "asn1js": "^2.0.26",
+    "pvtsutils": "^1.0.10",
     "tslib": "^1.11.1"
   },
   "contributors": [

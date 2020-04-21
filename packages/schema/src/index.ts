@@ -1,4 +1,5 @@
 export * from "./converters";
+export * from "./types/index";
 export { AsnProp, AsnType } from "./decorators";
 export { AsnTypeTypes, AsnPropTypes } from "./enums";
 export { AsnParser } from "./parser";
