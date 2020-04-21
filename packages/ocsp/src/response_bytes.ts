@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -12,8 +12,8 @@ export class ResponseBytes {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public responseType = "";
 
-  @AsnProp({ type: AsnPropTypes.OctetString })
-  public response = new ArrayBuffer(0);
+  @AsnProp({ type: OctetString })
+  public response = new OctetString();
 
   constructor(params: Partial<ResponseBytes> = {}) {
     Object.assign(this, params);

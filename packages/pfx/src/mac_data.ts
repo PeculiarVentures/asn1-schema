@@ -1,5 +1,5 @@
 import { DigestInfo } from "@peculiar/asn1-rsa";
-import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -17,8 +17,8 @@ export class MacData {
   @AsnProp({ type: DigestInfo })
   public mac = new DigestInfo();
 
-  @AsnProp({ type: AsnPropTypes.OctetString })
-  public macSalt = new ArrayBuffer(0);
+  @AsnProp({ type: OctetString })
+  public macSalt = new OctetString();
 
   @AsnProp({ type: AsnPropTypes.Integer, defaultValue: 1 })
   public iterations = 1;

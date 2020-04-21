@@ -55,7 +55,8 @@ export class AsnSerializer {
           // CONTEXT-SPECIFIC
           if (schemaItem.implicit) {
             // IMPLICIT
-            if (!schemaItem.repeated && typeof schemaItem.type === "number") {
+            if (!schemaItem.repeated 
+              && (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))) {
               const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer } = {};
               value.valueHex = asn1Item.valueBlock.toBER();
               asn1Value.push(new asn1.Primitive({

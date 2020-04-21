@@ -5,4 +5,4 @@
 
 [![NPM](https://nodei.co/npm/@peculiar/asn1-cms.png)](https://nodei.co/npm/@peculiar/asn1-cms/)
 
-[RFC 5652](https://tools.ietf.org/html/rfc5652)
+[RFC 5652](https://tools.ietf.org/html/rfc5652) Cryptographic Message Syntax (CMS)

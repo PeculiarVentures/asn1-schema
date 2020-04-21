@@ -15,7 +15,7 @@ export class SignerIdentifier {
   @AsnProp({ type: IssuerAndSerialNumber })
   public issuerAndSerialNumber = new IssuerAndSerialNumber();
 
-  @AsnProp({ type: SubjectKeyIdentifier, context: 0 })
+  @AsnProp({ type: SubjectKeyIdentifier, context: 0, implicit: true })
   public subjectKeyIdentifier = new SubjectKeyIdentifier();
 
   constructor(params: Partial<SignerIdentifier> = {}) {

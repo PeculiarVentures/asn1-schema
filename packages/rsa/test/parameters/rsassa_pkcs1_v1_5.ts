@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { AsnConvert } from "@peculiar/asn1-schema";
+import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import { DigestInfo, sha1, id_sha1 } from "../../src";
 
 context("RSASSA PKCS v1.5", () => {
@@ -11,7 +11,7 @@ context("RSASSA PKCS v1.5", () => {
     it("serialize", () => {
       const publicKey = new DigestInfo({
         digestAlgorithm: sha1,
-        digest: new Uint8Array([0xda, 0x39, 0xa3, 0xee, 0x5e, 0x6b, 0x4b, 0x0d, 0x32, 0x55, 0xbf, 0xef, 0x95, 0x60, 0x18, 0x90, 0xaf, 0xd8, 0x07, 0x09]).buffer,
+        digest: new OctetString([0xda, 0x39, 0xa3, 0xee, 0x5e, 0x6b, 0x4b, 0x0d, 0x32, 0x55, 0xbf, 0xef, 0x95, 0x60, 0x18, 0x90, 0xaf, 0xd8, 0x07, 0x09]),
       })
 
       const der = AsnConvert.serialize(publicKey);

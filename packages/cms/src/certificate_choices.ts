@@ -1,4 +1,4 @@
-import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, AsnArray } from "@peculiar/asn1-schema";
 import { Certificate } from "@peculiar/asn1-x509";
 /**
  * ```
@@ -57,4 +57,5 @@ export class CertificateChoices {
  * CertificateSet ::= SET OF CertificateChoices
  * ```
  */
-export type CertificateSet = CertificateChoices[];
+@AsnType({type: AsnTypeTypes.Set, itemType: CertificateChoices})
+export class CertificateSet extends AsnArray<CertificateChoices> { }

@@ -2,8 +2,8 @@
 import * as asn1 from "asn1js";
 import { AsnRepeatType } from "./decorators";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
-import { IAsnConverter, IEmptyConstructor } from "./types";
-import { isTypeOfArray } from "./helper";
+import { IAsnConverter, IEmptyConstructor, IAsnConvertible } from "./types";
+import { isConvertible } from "./helper";
 
 export interface IAsnSchemaItem {
   type: AsnPropTypes | IEmptyConstructor<any>;
@@ -23,7 +23,7 @@ export interface IAsnSchema {
 }
 
 export class AsnSchemaStorage {
-  protected items = new Map<object, IAsnSchema>();
+  protected items = new WeakMap<object, IAsnSchema>();
 
   public has(target: object) {
     return this.items.has(target);
@@ -70,13 +70,16 @@ export class AsnSchemaStorage {
       const name = useNames ? key : "";
       let asn1Item: any;
       if (typeof (item.type) === "number") {
-        // type is Asn1PropType Enum
+        // type is AsnPropType Enum
         const Asn1TypeName = AsnPropTypes[item.type];
         const Asn1Type = (asn1 as any)[Asn1TypeName];
         if (!Asn1Type) {
           throw new Error(`Cannot get ASN1 class by name '${Asn1TypeName}'`);
         }
         asn1Item = new Asn1Type({ name });
+      } else if (isConvertible(item.type)) {
+        const instance: IAsnConvertible = new item.type();
+        asn1Item = instance.toSchema(name);
       } else {
         // type is class with schema
         // asn1Item = createAsn1Schema(item.type, schema.type === Asn1TypeType.Choice ? true : false);
@@ -103,7 +106,7 @@ export class AsnSchemaStorage {
         // CONTEXT-SPECIFIC
         if (item.implicit) {
           // IMPLICIT
-          if (typeof item.type === "number") {
+          if (typeof item.type === "number" || isConvertible(item.type)) {
             const Container = item.repeated
               ? asn1.Constructed
               : asn1.Primitive;
@@ -118,9 +121,10 @@ export class AsnSchemaStorage {
           } else {
             this.cache(item.type);
             const isRepeated = !!item.repeated;
-            const value = !isRepeated
-              ? this.get(item.type).schema.valueBlock.value
-              : asn1Item.valueBlock.value;
+            let value = !isRepeated
+              ? this.get(item.type).schema
+              : asn1Item;
+            value = value.valueBlock ? value.valueBlock.value : value.value;
             asn1Value.push(new asn1.Constructed({
               name: !isRepeated ? name : "",
               optional,

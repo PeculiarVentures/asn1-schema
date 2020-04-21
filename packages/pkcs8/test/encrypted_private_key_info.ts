@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { EncryptedPrivateKeyInfo } from "../src";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import { AsnConvert } from "@peculiar/asn1-schema";
+import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 
 context("PrivateKeyInfo", () => {
 
@@ -13,7 +13,7 @@ context("PrivateKeyInfo", () => {
         algorithm: "1.2.3.4.5",
         parameters: null,
       }),
-      encryptedData: new Uint8Array([128, 0, 1]),
+      encryptedData: new OctetString([128, 0, 1]),
     });
 
     const der = AsnConvert.serialize(obj);

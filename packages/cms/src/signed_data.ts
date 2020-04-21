@@ -1,16 +1,17 @@
-import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
-import { CertificateSet, CertificateChoices } from "./certificate_choices";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { CertificateSet } from "./certificate_choices";
 import { CMSVersion, DigestAlgorithmIdentifier } from "./types";
 import { EncapsulatedContentInfo } from "./encapsulated_content_info";
 import { RevocationInfoChoice, RevocationInfoChoices } from "./revocation_info_choice";
-import { SignerInfos, SignerInfo } from "./signer_info";
+import { SignerInfos } from "./signer_info";
 
 /**
  * ```
  * DigestAlgorithmIdentifiers ::= SET OF DigestAlgorithmIdentifier
  * ```
  */
-export type DigestAlgorithmIdentifiers = DigestAlgorithmIdentifier[];
+@AsnType({ type: AsnTypeTypes.Set, itemType: DigestAlgorithmIdentifier })
+export class DigestAlgorithmIdentifiers extends AsnArray<DigestAlgorithmIdentifier> { }
 
 /**
  * ```
@@ -28,20 +29,20 @@ export class SignedData {
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: CMSVersion = 0;
 
-  @AsnProp({ type: DigestAlgorithmIdentifier, repeated: "set" })
-  public digestAlgorithms: DigestAlgorithmIdentifiers = [];
+  @AsnProp({ type: DigestAlgorithmIdentifiers })
+  public digestAlgorithms = new DigestAlgorithmIdentifiers();
 
   @AsnProp({ type: EncapsulatedContentInfo })
   public encapContentInfo = new EncapsulatedContentInfo();
 
-  @AsnProp({ type: CertificateChoices, context: 0, repeated: "set", implicit: true, optional: true })
+  @AsnProp({ type: CertificateSet, context: 0, implicit: true, optional: true })
   public certificates?: CertificateSet;
 
-  @AsnProp({ type: RevocationInfoChoice, context: 1, implicit: true, optional: true, repeated: "set"})
+  @AsnProp({ type: RevocationInfoChoice, context: 1, implicit: true, optional: true })
   public crls?: RevocationInfoChoices;
 
-  @AsnProp({ type: SignerInfo, repeated: "set" })
-  public signerInfos: SignerInfos = [];
+  @AsnProp({ type: SignerInfos })
+  public signerInfos = new SignerInfos();
 
   constructor(params: Partial<SignedData> = {}) {
     Object.assign(this, params);

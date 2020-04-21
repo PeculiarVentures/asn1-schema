@@ -1,7 +1,7 @@
 // @ts-ignore
 import * as asn1 from "asn1js";
 import * as assert from "assert";
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "../src";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "../src";
 import * as Converters from "../src/converters";
 import { AsnParser } from "../src/parser";
 import { AsnSerializer } from "../src/serializer";
@@ -502,16 +502,16 @@ context("Test", () => {
 
       class Test {
         @AsnProp({
-          type: AsnPropTypes.OctetString,
+          type: OctetString,
           context: 0,
           implicit: true,
         })
-        public value!: ArrayBuffer;
+        public value = new OctetString();
       }
 
       it("serialize", () => {
         const obj = new Test();
-        obj.value = new Uint8Array([1, 2, 3, 4, 5]).buffer;
+        obj.value = new OctetString([1, 2, 3, 4, 5]);
         const buf = AsnSerializer.serialize(obj);
         assertBuffer(Buffer.from(buf), Buffer.from("300780050102030405", "hex"));
       });
@@ -604,6 +604,10 @@ context("Test", () => {
         }
         public toASN(): any {
           return new asn1.Utf8String({ value: this.value });
+        }
+
+        public toSchema(name: string) {
+          return new asn1.Utf8String({ name } as any);
         }
       }
 

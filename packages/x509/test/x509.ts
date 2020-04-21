@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { AsnParser } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
-import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, TBSCertificate, AlgorithmIdentifier } from "../src";
+import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, TBSCertificate, AlgorithmIdentifier, id_ce_keyUsage, KeyUsage } from "../src";
 
 context("x509", () => {
 
@@ -20,6 +20,10 @@ context("x509", () => {
         assert.equal(
           crlDistributionPoints[0].distributionPoint?.fullName?.[0].uniformResourceIdentifier,
           "http://crl.globalsign.com/gsdemosha2g3.crl");
+      }
+      if (extension.extnID === id_ce_keyUsage) {
+        const keyUsage = AsnParser.parse(extension.extnValue, KeyUsage);
+        assert.equal(keyUsage.toString(),"[digitalSignature, keyEncipherment]");
       }
     });
     assert.equal(!!cert, true);

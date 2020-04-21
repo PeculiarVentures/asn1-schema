@@ -4,7 +4,7 @@ import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { AsnSchemaValidationError } from "./errors";
 import { isConvertible, isTypeOfArray } from "./helper";
 import { schemaStorage } from "./storage";
-import { IEmptyConstructor } from "./types";
+import { IEmptyConstructor, IAsnConverter, IAsnConvertible } from "./types";
 
 /**
  * Deserializes objects from ASN.1 encoded data
@@ -95,10 +95,13 @@ export class AsnParser {
         }
         const schemaItem = schema.items[key];
 
-        if (typeof (schemaItem.type) === "number") {
+        if (typeof (schemaItem.type) === "number" || isConvertible(schemaItem.type)) {
           // PRIMITIVE
           // we MUST to use Converters
-          const converter = schemaItem.converter;
+          const converter: IAsnConverter = schemaItem.converter
+            ?? (isConvertible(schemaItem.type)
+              ? new schemaItem.type()
+              : null);
           if (!converter) {
             throw new Error("Converter is empty");
           }
@@ -117,12 +120,17 @@ export class AsnParser {
           } else {
             let value = asn1Schema[key];
             if (schemaItem.implicit) {
-              const Asn1TypeName = AsnPropTypes[schemaItem.type];
-              const Asn1Type = (asn1 as any)[Asn1TypeName];
-              if (!Asn1Type) {
-                throw new Error(`Cannot get '${Asn1TypeName}' class from asn1js module`);
+              let newItem: any;
+              if (isConvertible(schemaItem.type)) {
+                newItem = new schemaItem.type().toSchema("");
+              } else {
+                const Asn1TypeName = AsnPropTypes[schemaItem.type];
+                const Asn1Type = (asn1 as any)[Asn1TypeName];
+                if (!Asn1Type) {
+                  throw new Error(`Cannot get '${Asn1TypeName}' class from asn1js module`);
+                }
+                newItem = new Asn1Type();
               }
-              const newItem = new Asn1Type();
               newItem.valueBlock = value.valueBlock;
               value = asn1.fromBER(newItem.toBER(false)).result;
             }

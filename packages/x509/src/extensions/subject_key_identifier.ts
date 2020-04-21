@@ -1,5 +1,6 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
+import { KeyIdentifier } from "./authority_key_identifier";
 
 /**
  * ```
@@ -13,16 +14,4 @@ export const id_ce_subjectKeyIdentifier = `${id_ce}.14`;
  * SubjectKeyIdentifier ::= KeyIdentifier
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Choice })
-export class SubjectKeyIdentifier {
-
-  @AsnProp({ type: AsnPropTypes.OctetString })
-  public keyIdentifier: ArrayBuffer = new ArrayBuffer(0);
-
-  constructor(keyIdentifier?: ArrayBuffer) {
-    if (keyIdentifier) {
-      this.keyIdentifier = keyIdentifier;
-    }
-  }
-
-}
+export class SubjectKeyIdentifier extends KeyIdentifier { }

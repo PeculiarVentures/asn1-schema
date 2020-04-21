@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -42,4 +42,5 @@ export class RevocationInfoChoice {
  * RevocationInfoChoices ::= SET OF RevocationInfoChoice
  * ```
  */
-export type RevocationInfoChoices = RevocationInfoChoice[];
+@AsnType({ type: AsnTypeTypes.Set, itemType: RevocationInfoChoice })
+export class RevocationInfoChoices extends AsnArray<RevocationInfoChoice> { }

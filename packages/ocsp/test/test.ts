@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
+import { AsnParser, AsnSerializer, OctetString } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 import { OCSPRequest, TBSRequest, CertID, Request } from "../src";
 import { GeneralName, AlgorithmIdentifier } from "@peculiar/asn1-x509";
@@ -24,8 +24,8 @@ context("ocsp", () => {
               hashAlgorithm: new AlgorithmIdentifier({
                 algorithm: "1.3.14.3.2.26",
               }),
-              issuerNameHash: Convert.FromHex("7F010203"),
-              issuerKeyHash: Convert.FromHex("7F010203"),
+              issuerNameHash: new OctetString(Convert.FromHex("7F010203")),
+              issuerKeyHash: new OctetString(Convert.FromHex("7F010203")),
               serialNumber: Convert.FromHex("7F010203"),
             })
           }),

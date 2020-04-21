@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -25,8 +25,8 @@ export class Extension {
   })
   public critical = Extension.CRITICAL;
 
-  @AsnProp({ type: AsnPropTypes.OctetString })
-  public extnValue: ArrayBuffer = new ArrayBuffer(0);
+  @AsnProp({ type: OctetString })
+  public extnValue = new OctetString();
 
   constructor(params: Partial<Extension> = {}) {
     Object.assign(this, params);

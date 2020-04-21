@@ -1,5 +1,5 @@
 import { BitString as AsnBitString } from "asn1js";
-import { Convert, BufferSourceConverter } from "pvtsutils";
+import { BufferSourceConverter } from "pvtsutils";
 import { IAsnConvertible } from "../types";
 
 export class BitString implements IAsnConvertible {
@@ -37,6 +37,10 @@ export class BitString implements IAsnConvertible {
 
   public toASN() {
     return new AsnBitString({ unusedBits: this.unusedBits, valueHex: this.value });
+  }
+
+  public toSchema(name: string) {
+    return new AsnBitString({ name } as any);
   }
 
   public toNumber() {

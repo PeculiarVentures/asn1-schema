@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { PrivateKeyInfo, Attributes } from "../src";
 import { AlgorithmIdentifier, Attribute } from "@peculiar/asn1-x509";
-import { AsnConvert, AsnOctetStringConverter } from "@peculiar/asn1-schema";
+import { AsnConvert, AsnOctetStringConverter, OctetString } from "@peculiar/asn1-schema";
 
 context("PrivateKeyInfo", () => {
 
@@ -13,7 +13,7 @@ context("PrivateKeyInfo", () => {
         algorithm: "1.2.3.4.5",
         parameters: null,
       }),
-      privateKey: new Uint8Array([128, 0, 1]),
+      privateKey: new OctetString([128, 0, 1]),
       attributes: new Attributes([
         new Attribute({
           type: "2.3.4.5",

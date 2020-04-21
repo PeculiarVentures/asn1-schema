@@ -1,5 +1,5 @@
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter, OctetString } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -15,11 +15,11 @@ export class CertID {
   @AsnProp({ type: AlgorithmIdentifier })
   public hashAlgorithm = new AlgorithmIdentifier();
 
-  @AsnProp({ type: AsnPropTypes.OctetString })
-  public issuerNameHash = new ArrayBuffer(0);
+  @AsnProp({ type: OctetString })
+  public issuerNameHash = new OctetString();
 
-  @AsnProp({ type: AsnPropTypes.OctetString })
-  public issuerKeyHash = new ArrayBuffer(0);
+  @AsnProp({ type: OctetString })
+  public issuerKeyHash = new OctetString();
 
   @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
   public serialNumber = new ArrayBuffer(0);

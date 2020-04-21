@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 /**
@@ -6,7 +6,7 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
  * EncryptedData ::= OCTET STRING
  * ```
  */
-export type EncryptedData = ArrayBuffer;
+export class EncryptedData extends OctetString { }
 
 /**
  * ```
@@ -21,8 +21,8 @@ export class EncryptedPrivateKeyInfo {
   @AsnProp({ type: AlgorithmIdentifier })
   public encryptionAlgorithm = new AlgorithmIdentifier();
 
-  @AsnProp({ type: AsnPropTypes.OctetString })
-  public encryptedData: EncryptedData = new ArrayBuffer(0);
+  @AsnProp({ type: EncryptedData })
+  public encryptedData = new EncryptedData();
 
   constructor(params: Partial<EncryptedPrivateKeyInfo> = {}) {
     Object.assign(this, params);

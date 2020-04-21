@@ -38,8 +38,8 @@ export class TrustAnchorInfo {
   @AsnProp({ type: SubjectPublicKeyInfo })
   public pubKey = new SubjectPublicKeyInfo();
 
-  @AsnProp({ type: AsnPropTypes.OctetString })
-  public keyId: KeyIdentifier = new ArrayBuffer(0);
+  @AsnProp({ type: KeyIdentifier })
+  public keyId = new KeyIdentifier();
 
   @AsnProp({ type: AsnPropTypes.Utf8String, optional: true })
   public taTitle?: TrustAnchorTitle;

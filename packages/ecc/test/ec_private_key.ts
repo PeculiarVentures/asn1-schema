@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import { ECParameters, id_secp256r1, ECPrivateKey } from "../src";
-import { AsnConvert } from "@peculiar/asn1-schema";
+import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 
 context("EC Private Key", () => {
 
@@ -8,7 +8,7 @@ context("EC Private Key", () => {
 
   it("serialize", () => {
     const privateKey = new ECPrivateKey({
-      privateKey: new Uint8Array([0, 128, 0, 1]).buffer,
+      privateKey: new OctetString([0, 128, 0, 1]),
       parameters: new ECParameters({ namedCurve: id_secp256r1 }),
       publicKey: new Uint8Array([0, 128, 0, 0, 2]).buffer,
     })

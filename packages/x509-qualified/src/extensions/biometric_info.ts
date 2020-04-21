@@ -1,7 +1,7 @@
 // -- Biometric info extension
 
 import { id_pe, AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray, OctetString } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -60,8 +60,8 @@ export class BiometricData {
   @AsnProp({ type: AlgorithmIdentifier })
   public hashAlgorithm = new AlgorithmIdentifier();
 
-  @AsnProp({ type: AsnPropTypes.OctetString })
-  public biometricDataHash = new ArrayBuffer(0);
+  @AsnProp({ type: OctetString })
+  public biometricDataHash = new OctetString();
 
   @AsnProp({ type: AsnPropTypes.IA5String, optional: true })
   public sourceDataUri?: string;
