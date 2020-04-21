@@ -22,6 +22,7 @@
     "@peculiar/asn1-rsa": "file:packages/rsa",
     "@peculiar/asn1-schema": "file:packages/schema",
     "@peculiar/asn1-x509": "file:packages/x509",
+    "@peculiar/asn1-x509-logotype": "file:packages/x509-logotype",
     "@peculiar/asn1-x509-microsoft": "file:packages/x509-microsoft",
     "@types/asn1js": "0.0.1",
     "asn1js": "^2.0.26",
