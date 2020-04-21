@@ -1,5 +1,4 @@
-import * as asn1 from "asn1js";
-import { AsnProp, AsnPropTypes, AsnType, IAsnConverter, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
+import { AsnProp, AsnType, AsnTypeTypes, AsnArray, BitString } from "@peculiar/asn1-schema";
 import { RelativeDistinguishedName } from "../name";
 import { GeneralName } from "../general_name";
 import { id_ce } from "../object_identifiers";
@@ -11,8 +10,20 @@ import { id_ce } from "../object_identifiers";
  */
 export const id_ce_cRLDistributionPoints = `${id_ce}.31`;
 
-export type ReasonFlags = "unused" | "keyCompromise" | "cACompromise" | "affiliationChanged" | "superseded"
+export type ReasonType = "unused" | "keyCompromise" | "cACompromise" | "affiliationChanged" | "superseded"
   | "cessationOfOperation" | "certificateHold" | "privilegeWithdrawn" | "aACompromise";
+
+export enum ReasonFlags {
+  unused = 0x0001,
+  keyCompromise = 0x0002,
+  cACompromise = 0x0004,
+  affiliationChanged = 0x0008,
+  superseded = 0x0010,
+  cessationOfOperation = 0x0020,
+  certificateHold = 0x0040,
+  privilegeWithdrawn = 0x0080,
+  aACompromise = 0x0100,
+}
 
 /**
  * ```
@@ -28,92 +39,45 @@ export type ReasonFlags = "unused" | "keyCompromise" | "cACompromise" | "affilia
  *   aACompromise            (8) }
  * ```
  */
-const ReasonFlagConverter: IAsnConverter<ReasonFlags[]> = {
-  fromASN: (value: any) => {
-    const reasonFlags: ReasonFlags[] = [];
-    const valueHex = new Uint8Array(value.valueBlock.valueHex);
-    const unusedBits = value.valueBlock.unusedBits;
-    let reasonFlagsByte1 = valueHex[0];
-    let reasonFlagsByte2 = valueHex.byteLength > 1 ? valueHex[1] : 0;
-    if (valueHex.byteLength === 1) {
-      reasonFlagsByte1 >>= unusedBits;
-      reasonFlagsByte1 <<= unusedBits;
+export class Reason extends BitString {
+  
+  public toJSON() {
+    const res: ReasonType[] = [];
+    const flags = this.toNumber();
+    if (flags & ReasonFlags.aACompromise) {
+      res.push("aACompromise");
     }
-    if (valueHex.byteLength === 2) {
-      reasonFlagsByte2 >>= unusedBits;
-      reasonFlagsByte2 <<= unusedBits;
+    if (flags & ReasonFlags.affiliationChanged) {
+      res.push("affiliationChanged");
     }
-    if (reasonFlagsByte1 & 0x80) {
-      reasonFlags.push("unused");
+    if (flags & ReasonFlags.cACompromise) {
+      res.push("cACompromise");
     }
-    if (reasonFlagsByte1 & 0x40) {
-      reasonFlags.push("keyCompromise");
+    if (flags & ReasonFlags.certificateHold) {
+      res.push("certificateHold");
     }
-    if (reasonFlagsByte1 & 0x20) {
-      reasonFlags.push("cACompromise");
+    if (flags & ReasonFlags.cessationOfOperation) {
+      res.push("cessationOfOperation");
     }
-    if (reasonFlagsByte1 & 0x10) {
-      reasonFlags.push("affiliationChanged");
+    if (flags & ReasonFlags.keyCompromise) {
+      res.push("keyCompromise");
     }
-    if (reasonFlagsByte1 & 0x08) {
-      reasonFlags.push("superseded");
+    if (flags & ReasonFlags.privilegeWithdrawn) {
+      res.push("privilegeWithdrawn");
     }
-    if (reasonFlagsByte1 & 0x04) {
-      reasonFlags.push("cessationOfOperation");
+    if (flags & ReasonFlags.superseded) {
+      res.push("superseded");
     }
-    if (reasonFlagsByte1 & 0x02) {
-      reasonFlags.push("certificateHold");
+    if (flags & ReasonFlags.unused) {
+      res.push("unused");
     }
-    if (reasonFlagsByte1 & 0x01) {
-      reasonFlags.push("privilegeWithdrawn");
-    }
-    if (reasonFlagsByte2 & 0x80) {
-      reasonFlags.push("aACompromise");
-    }
-    return reasonFlags;
-  },
-  toASN: (value: ReasonFlags[]) => {
-    const valueHex = new Uint8Array(value.indexOf("aACompromise") !== -1 ? 2 : 1);
-    let unusedBits = 0;
-    if (value.indexOf("unused") !== -1) {
-      valueHex[0] |= 0x80;
-      unusedBits = 7;
-    }
-    if (value.indexOf("keyCompromise") !== -1) {
-      valueHex[0] |= 0x40;
-      unusedBits = 6;
-    }
-    if (value.indexOf("cACompromise") !== -1) {
-      valueHex[0] |= 0x20;
-      unusedBits = 5;
-    }
-    if (value.indexOf("affiliationChanged") !== -1) {
-      valueHex[0] |= 0x10;
-      unusedBits = 4;
-    }
-    if (value.indexOf("superseded") !== -1) {
-      valueHex[0] |= 0x08;
-      unusedBits = 3;
-    }
-    if (value.indexOf("cessationOfOperation") !== -1) {
-      valueHex[0] |= 0x04;
-      unusedBits = 2;
-    }
-    if (value.indexOf("certificateHold") !== -1) {
-      valueHex[0] |= 0x02;
-      unusedBits = 1;
-    }
-    if (value.indexOf("privilegeWithdrawn") !== -1) {
-      valueHex[0] |= 0x01;
-      unusedBits = 0;
-    }
-    if (value.indexOf("aACompromise") !== -1) {
-      valueHex[1] |= 0x80;
-      unusedBits = 7;
-    }
-    return new asn1.BitString({ unusedBits, valueHex: valueHex.buffer });
-  },
-};
+    return res;
+  }
+
+  public toString() {
+    return `[${this.toJSON().join(", ")}]`;
+  }
+}
 
 /**
  * ```
@@ -149,11 +113,8 @@ export class DistributionPoint {
   @AsnProp({ type: DistributionPointName, context: 0, optional: true })
   public distributionPoint?: DistributionPointName;
 
-  @AsnProp({
-    type: AsnPropTypes.BitString, context: 1, optional: true, implicit: true,
-    converter: ReasonFlagConverter,
-  })
-  public reasons?: ReasonFlags[];
+  @AsnProp({ type: Reason, context: 1, optional: true, implicit: true })
+  public reasons?: Reason;
 
   @AsnProp({ type: GeneralName, context: 2, optional: true, repeated: "sequence", implicit: true })
   public cRLIssuer?: GeneralName[];

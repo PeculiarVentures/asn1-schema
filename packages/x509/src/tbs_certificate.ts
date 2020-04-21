@@ -62,20 +62,10 @@ export class TBSCertificate {
   })
   public issuerUniqueID?: UniqueIdentifier;
 
-  @AsnProp({
-    type: AsnPropTypes.BitString,
-    context: 2,
-    implicit: true,
-    optional: true,
-  })
+  @AsnProp({ type: AsnPropTypes.BitString, context: 2, implicit: true, optional: true })
   public subjectUniqueID?: UniqueIdentifier;
 
-  @AsnProp({
-    type: Extension,
-    context: 3,
-    optional: true,
-    repeated: "sequence"
-  })
+  @AsnProp({ type: Extension, context: 3, optional: true, repeated: "sequence" })
   public extensions?: Extensions;
 
   constructor(params: Partial<TBSCertificate> = {}) {

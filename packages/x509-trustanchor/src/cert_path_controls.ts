@@ -1,6 +1,7 @@
 import { Name, Certificate, CertificatePolicies, NameConstraints } from "@peculiar/asn1-x509";
-import { AsnProp, AsnPropTypes, IAsnConverter } from "@peculiar/asn1-schema";
-import { BitString } from "asn1js";
+import { AsnProp, AsnPropTypes, IAsnConverter, BitString } from "@peculiar/asn1-schema";
+
+export type CertPolicyType = "inhibitPolicyMapping" | "requireExplicitPolicy" | "inhibitAnyPolicy";
 
 /**
  * ```
@@ -11,26 +12,32 @@ import { BitString } from "asn1js";
  * ```
  */
 export enum CertPolicyFlags {
-  inhibitPolicyMapping = 0x80,
-  requireExplicitPolicy = 0x40,
-  inhibitAnyPolicy = 0x20,
+  inhibitPolicyMapping = 0x01,
+  requireExplicitPolicy = 0x02,
+  inhibitAnyPolicy = 0x04,
 }
 
-export const AsnCertPolicyFlagsConverter: IAsnConverter<CertPolicyFlags> = {
-  fromASN: (value: any) => {
-    const valueHex = new Uint8Array(value.valueBlock.valueHex);
-    const unusedBits = value.valueBlock.unusedBits;
-    let flag = valueHex[0];
-    flag >>= unusedBits;
-    flag <<= unusedBits;
-    return flag;
-  },
-  toASN: (value: CertPolicyFlags) => {
-    const valueHex = new Uint8Array([value]);
-    let unusedBits = 0;
-    return new BitString({ unusedBits, valueHex: valueHex.buffer });
-  },
-};
+export class CertPolicy extends BitString {
+
+  public toJSON() {
+    const res: CertPolicyType[] = [];
+    const flags = this.toNumber();
+    if (flags & CertPolicyFlags.inhibitAnyPolicy) {
+      res.push("inhibitAnyPolicy");
+    }
+    if (flags & CertPolicyFlags.inhibitPolicyMapping) {
+      res.push("inhibitPolicyMapping");
+    }
+    if (flags & CertPolicyFlags.requireExplicitPolicy) {
+      res.push("requireExplicitPolicy");
+    }
+    return res;
+  }
+
+  public toString() {
+    return `[${this.toJSON().join(", ")}]`;
+  }
+}
 
 /**
  * ```
@@ -53,16 +60,13 @@ export class CertPathControls {
 
   @AsnProp({ type: CertificatePolicies, implicit: true, context: 1, optional: true })
   public policySet?: CertificatePolicies;
-  
-  @AsnProp({
-    type: AsnPropTypes.BitString, implicit: true, context: 2, optional: true,
-    converter: AsnCertPolicyFlagsConverter,
-  })
-  public policyFlags?: CertPolicyFlags;
-  
+
+  @AsnProp({ type: CertPolicy, implicit: true, context: 2, optional: true })
+  public policyFlags?: CertPolicy;
+
   @AsnProp({ type: NameConstraints, implicit: true, context: 3, optional: true })
   public nameConstr?: NameConstraints;
-  
+
   @AsnProp({ type: AsnPropTypes.Integer, implicit: true, context: 4, optional: true })
   public pathLenConstraint?: number;
 
