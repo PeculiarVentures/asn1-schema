@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { AsnParser } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
-import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, TBSCertificate, AlgorithmIdentifier, id_ce_keyUsage, KeyUsage } from "../src";
+import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage } from "../src";
 
 context("x509", () => {
 

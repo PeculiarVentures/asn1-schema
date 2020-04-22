@@ -2,19 +2,19 @@ import { BitString as AsnBitString } from "asn1js";
 import { BufferSourceConverter } from "pvtsutils";
 import { IAsnConvertible } from "../types";
 
-export class BitString implements IAsnConvertible {
+export class BitString<T extends number = number> implements IAsnConvertible {
 
   public unusedBits = 0;
 
   public value = new ArrayBuffer(0);
 
   constructor();
-  constructor(value: number);
+  constructor(value: T);
   constructor(value: BufferSource, unusedBits?: number);
   constructor(params?: any, unusedBits = 0) {
     if (params) {
       if (typeof params === "number") {
-        this.fromNumber(params);
+        this.fromNumber(params as T);
       } else if (BufferSourceConverter.isBufferSource(params)) {
         this.unusedBits = unusedBits;
         this.value = BufferSourceConverter.toArrayBuffer(params);
@@ -54,10 +54,10 @@ export class BitString implements IAsnConvertible {
       // disable unused bits
       res = res.slice(this.unusedBits).padStart(this.unusedBits, "0");
     }
-    return parseInt(res, 2);
+    return parseInt(res, 2) as T;
   }
 
-  public fromNumber(value: number) {
+  public fromNumber(value: T) {
     let bits = value.toString(2);
     const octetSize = (bits.length + 7) >> 3;
     this.unusedBits = (octetSize << 3) - bits.length;
