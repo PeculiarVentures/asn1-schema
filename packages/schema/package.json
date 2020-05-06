@@ -2,6 +2,11 @@
   "name": "@peculiar/asn1-schema",
   "version": "0.0.0",
   "description": "This package uses ES2015 decorators to simplify working with ASN.1 creation and parsing",
+  "files": [
+    "build",
+    "LICENSE",
+    "README.md"
+  ],
   "bugs": {
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
   },

@@ -2,6 +2,11 @@
   "name": "@peculiar/asn1-x509-qualified",
   "version": "0.0.0",
   "description": "",
+  "files": [
+    "build",
+    "LICENSE",
+    "README.md"
+  ],
   "bugs": {
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
   },
