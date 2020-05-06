@@ -1,112 +1,72 @@
-# `@peculiar/asn1-schema`
+# `asn1-schema`
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/asn1-schema/master/LICENSE.md)
 [![CircleCI](https://circleci.com/gh/PeculiarVentures/asn1-schema.svg?style=svg)](https://circleci.com/gh/PeculiarVentures/asn1-schema)
 [![Coverage Status](https://coveralls.io/repos/github/PeculiarVentures/asn1-schema/badge.svg?branch=master&t=ddJivl)](https://coveralls.io/github/PeculiarVentures/asn1-schema?branch=master)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-schema.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-schema)
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-schema.png)](https://nodei.co/npm/@peculiar/asn1-schema/)
+`asn1-schema` is a collection of TypeScript schemas that make working with common ASN.1 objects easy. 
 
-This package uses ES2015 [decorators](https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841) to simplify working with ASN.1 creation and parsing. 
+## List of schemas
 
+- [cms](packages/cms/README.md) (RFC 5652)
+- [ocsp](packages/ocsp/README.md) (RFC 6960)
+- [x509](packages/x509/README.md) (RFC 5280)
 
-## Introduction
+## Usage
 
-Abstract Syntax Notation One (ASN.1) is a standard interface description language for defining data structures that can be serialized and deserialized in a cross-platform way. Working with ASN.1 can be complicated as there are many ways to represent the same data and many solutions handcraft, incorrectly, the ASN.1 representation of the data.
-
-`asn1-schema` addresses this by using decorators to make both serialization and parsing of ASN.1 possible via a simple class that handles these problems for you. 
-
-This is important because validating input data before its use is important to do because all input data is evil. 
-
-
-## Installation
-
-Installation is handled via  `npm`:
-
-```
-$ npm install @peculiar/asn1-schema
-```
-
-## TypeScript examples
-Node.js:
-
-ASN.1 schema
-```
-Extension  ::=  SEQUENCE  {
-  extnID      OBJECT IDENTIFIER,
-  critical    BOOLEAN DEFAULT FALSE,
-  extnValue   OCTET STRING
-              -- contains the DER encoding of an ASN.1 value
-              -- corresponding to the extension type identified
-              -- by extnID
-}
-
-id-ce-basicConstraints OBJECT IDENTIFIER ::=  { id-ce 19 }
-
-BasicConstraints ::= SEQUENCE {
-  cA                      BOOLEAN DEFAULT FALSE,
-  pathLenConstraint       INTEGER (0..MAX) OPTIONAL 
-}
-```
-
-ASN.1 schema declaration in TypeScript project
 ```ts
-import { Asn1Prop, Asn1PropTypes, Asn1Serializer } from "@peculiar/asn1-schema";
+import { AsnParser } from "@peculiar/asn1-schema";
+import { Certificate } from "@peculiar/asn1-x509";
 
-class Extension {
+const pem = "MIIFjjCCBHagAwIBAgIMVcQBzZcO9v+nopB ... HCiLvXBWEiC6qLVM2dKZ/Ab8Xv+/3Q==";
+const cert = AsnParser.parse(Buffer.from(pem, "base64"), Certificate);
 
-  public static CRITICAL = false;
+console.log(cert);
+```
 
-  @AsnProp({ type: Asn1PropTypes.ObjectIdentifier })
-  public extnID: string = "";
-
-  @AsnProp({
-    type: Asn1PropTypes.Boolean,
-    defaultValue: Extension.CRITICAL,
-  })
-  public critical = Extension.CRITICAL;
-
-  @AsnProp({ type: Asn1PropTypes.OctetString })
-  public extnValue: ArrayBuffer = new ArrayBuffer(0);
-
+__Output__
+```
+Certificate {
+  tbsCertificate: TBSCertificate {
+    version: 2,
+    serialNumber: ArrayBuffer {
+      [Uint8Contents]: <55 c4 01 cd 97 0e f6 ff a7 a2 90 7e>,
+      byteLength: 12
+    },
+    signature: AlgorithmIdentifier {
+      algorithm: '1.2.840.113549.1.1.11',
+      parameters: null
+    },
+    issuer: Name { rdnSequence: [RDNSequence] },
+    validity: Validity { notBefore: [Time], notAfter: [Time] },
+    subject: Name { rdnSequence: [RDNSequence] },
+    subjectPublicKeyInfo: SubjectPublicKeyInfo {
+      algorithm: [AlgorithmIdentifier],
+      subjectPublicKey: [ArrayBuffer]
+    },
+    extensions: [
+      [Extension], [Extension],
+      [Extension], [Extension],
+      [Extension], [Extension],
+      [Extension], [Extension],
+      [Extension], [Extension]
+    ]
+  },
+  signatureAlgorithm: AlgorithmIdentifier {
+    algorithm: '1.2.840.113549.1.1.11',
+    parameters: null
+  },
+  signatureValue: ArrayBuffer {
+    [Uint8Contents]: <ab 39 6f 0d a3 67 ac bf 9d 9d 20 75 da 14 ba fd 91 c5 f5 34 db d4 17 a0 88 ec 6f d5 bd 1d d3 31 df b9 f8 85 5a b0 42 02 f6 74 3f d1 35 fa 38 cb 7e 22 09 73 6d f1 b1 b6 95 c9 49 95 a1 b1 0f 80 21 d5 e6 52 02 ee ef bd 41 31 85 d1 1e 21 58 58 74 ab a6 67 ca d6 28 39 ad ca 3e 43 be ad 0e 71 85 63 1e 67 ... 156 more bytes>,
+    byteLength: 256
+  }
 }
-
-class BasicConstraints {
-  @AsnProp({ type: Asn1PropTypes.Boolean, defaultValue: false })
-  public ca = false;
-
-  @AsnProp({ type: Asn1PropTypes.Integer, optional: true })
-  public pathLenConstraint?: number;
-}
 ```
 
-Encoding ASN.1 data
-```ts
-const basicConstraints = new BasicConstraints();
-basicConstraints.ca = true;
-basicConstraints.pathLenConstraint = 1;
+## Development
 
-const extension = new Extension();
-extension.critical = true;
-extension.extnID = "2.5.29.19";
-extension.extnValue = AsnSerializer.serialize(basicConstraints);
+### Create schema
 
-console.log(Buffer.from(AsnSerializer.serialize(extension)).toString("hex")); // 30120603551d130101ff040830060101ff020101
 ```
-
-[ASN.1 encoded  data](http://lapo.it/asn1js/#MBIGA1UdEwEB_wQIMAYBAf8CAQE)
-
-Decoding ASN.1 data
-```ts
-const extension = AsnParser.parse(Buffer.from("30120603551d130101ff040830060101ff020101", "hex"), Extension);
-console.log("Extension ID:", extension.extnID); // Extension ID: 2.5.29.19
-console.log("Critical:", extension.critical); // Critical: true
-
-const basicConstraints = AsnParser.parse(extension.extnValue, BasicConstraints);
-console.log("CA:", basicConstraints.ca); // CA: true
-console.log("Path length:", basicConstraints.pathLenConstraint); // Path length: 1
+npm run create <name>
 ```
-
-## API
-
-Use [index.d.ts](index.d.ts) file

@@ -1,7 +1,7 @@
 .vscode/
-build/
 node_modules/
-index.d.ts
+
+/packages/*/build/
 
 # coverage
 .nyc_output/
