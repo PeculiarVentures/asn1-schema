@@ -52,6 +52,7 @@ export class DirectoryString {
  * in general it will be a DirectoryString
  * ```
  */
+@AsnType({ type: AsnTypeTypes.Choice })
 export class AttributeValue extends DirectoryString {
 
   @AsnProp({ type: AsnPropTypes.IA5String })
