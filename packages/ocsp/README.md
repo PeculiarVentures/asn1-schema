@@ -5,4 +5,4 @@
 
 [![NPM](https://nodei.co/npm/@peculiar/asn1-ocsp.png)](https://nodei.co/npm/@peculiar/asn1-ocsp/)
 
-[RFC 6990](https://tools.ietf.org/html/rfc6960)
+[RFC 6990](https://tools.ietf.org/html/rfc6960) X.509 Internet Public Key Infrastructure Online Certificate Status Protocol - OCSP

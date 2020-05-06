@@ -1,7 +1,7 @@
 {
   "name": "@peculiar/asn1-x509-microsoft",
   "version": "0.0.0",
-  "description": "",
+  "description": "ASN.1 schema of `Microsoft X509 extensions`",
   "files": [
     "build",
     "LICENSE",

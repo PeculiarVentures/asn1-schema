@@ -1,7 +1,7 @@
 {
   "name": "@peculiar/asn1-x509-qualified",
   "version": "0.0.0",
-  "description": "",
+  "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure: Qualified Certificates Profile` (RFC3739)",
   "files": [
     "build",
     "LICENSE",

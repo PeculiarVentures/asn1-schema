@@ -1,7 +1,7 @@
 {
   "name": "@peculiar/asn1-cms",
   "version": "0.0.0",
-  "description": "",
+  "description": "ASN.1 schema of `Cryptographic Message Syntax (CMS)` (RFC5652)",
   "files": [
     "build",
     "LICENSE",

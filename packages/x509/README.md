@@ -5,12 +5,4 @@
 
 [![NPM](https://nodei.co/npm/@peculiar/asn1-x509.png)](https://nodei.co/npm/@peculiar/asn1-x509/)
 
-[RFC 5280](https://tools.ietf.org/html/rfc5280)
-
-## Usage
-
-```
-const x509 = require('@peculiar/asn1-x509');
-
-// TODO: DEMONSTRATE API
-```
+[RFC 5280](https://tools.ietf.org/html/rfc5280) Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile
