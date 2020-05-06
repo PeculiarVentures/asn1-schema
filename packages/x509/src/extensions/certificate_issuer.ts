@@ -1,5 +1,4 @@
-import { AsnProp, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
-import { GeneralName } from "../general_name";
+import { AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { GeneralNames } from "../general_names";
 import { id_ce } from "../object_identifiers";
 
@@ -15,4 +14,5 @@ export const id_ce_certificateIssuer = `${id_ce}.29`;
  * CertificateIssuer ::=     GeneralNames
  * ```
  */
+@AsnType({ type: AsnTypeTypes.Sequence })
 export class CertificateIssuer extends GeneralNames { }

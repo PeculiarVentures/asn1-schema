@@ -1,4 +1,4 @@
-import { AsnType, AsnTypeTypes, AsnProp } from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { GeneralNames } from "../general_names";
 import { id_ce } from "../object_identifiers";
 
@@ -14,4 +14,5 @@ export const id_ce_issuerAltName = `${id_ce}.18`;
  * IssuerAltName ::= GeneralNames
  * ```
  */
+@AsnType({ type: AsnTypeTypes.Sequence })
 export class IssueAlternativeName extends GeneralNames { }

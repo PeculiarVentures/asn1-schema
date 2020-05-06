@@ -1,4 +1,5 @@
 import { Time } from "@peculiar/asn1-x509";
+import { AsnTypeTypes, AsnType } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -13,4 +14,5 @@ export const id_signingTime = "1.2.840.113549.1.9.5";
  * SigningTime  ::= Time
  * ```
  */
+@AsnType({ type: AsnTypeTypes.Choice })
 export class SigningTime extends Time { }

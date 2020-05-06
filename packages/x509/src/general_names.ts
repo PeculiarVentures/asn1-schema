@@ -1,17 +1,11 @@
-import { AsnProp } from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { GeneralName } from "./general_name";
+import { AsnArray } from "@peculiar/asn1-schema";
 
 /**
  * ```
  * GeneralNames ::= SEQUENCE SIZE (1..MAX) OF GeneralName
  * ```
  */
-export class GeneralNames {
-
-  @AsnProp({ type: GeneralName, repeated: "sequence" })
-  public items: GeneralName[];
-
-  constructor(items: GeneralName[] = []) {
-    this.items = items;
-  }
-}
+@AsnType({type: AsnTypeTypes.Sequence, itemType: GeneralName})
+export class GeneralNames extends AsnArray<GeneralName> { }

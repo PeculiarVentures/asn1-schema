@@ -17,7 +17,7 @@ export enum CertPolicyFlags {
   inhibitAnyPolicy = 0x04,
 }
 
-export class CertPolicy extends BitString {
+export class CertPolicy extends BitString<CertPolicyFlags> {
 
   public toJSON() {
     const res: CertPolicyType[] = [];

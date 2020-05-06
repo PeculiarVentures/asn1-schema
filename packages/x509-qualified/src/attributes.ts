@@ -1,5 +1,6 @@
 // -- Personal data attributes
 
+import { AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { DirectoryString } from "@peculiar/asn1-x509";
 import { id_pda } from "./object_identifiers";
 
@@ -29,6 +30,7 @@ export const id_pds_placeOfBirth = `${id_pda}.2`;
  * PlaceOfBirth ::=            DirectoryString
  * ```
  */
+@AsnType({ type: AsnTypeTypes.Choice })
 export class PlaceOfBirth extends DirectoryString {};
 
 /**

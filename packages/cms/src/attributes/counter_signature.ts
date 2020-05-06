@@ -1,3 +1,4 @@
+import { AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { SignerInfo } from "../signer_info";
 
 /**
@@ -13,4 +14,5 @@ export const id_counterSignature = "1.2.840.113549.1.9.6";
  * SigningTime  ::= Time
  * ```
  */
+@AsnType({ type: AsnTypeTypes.Sequence })
 export class CounterSignature extends SignerInfo { }

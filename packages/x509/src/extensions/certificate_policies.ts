@@ -1,5 +1,5 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
-import { id_pkix, id_ce, id_qt } from "../object_identifiers";
+import { id_ce } from "../object_identifiers";
 
 /**
  * ```

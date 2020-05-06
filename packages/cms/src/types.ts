@@ -1,4 +1,5 @@
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
+import { AsnTypeTypes, AsnType } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -26,6 +27,7 @@ export enum CMSVersion {
  * DigestAlgorithmIdentifier ::= AlgorithmIdentifier
  * ```
  */
+@AsnType({ type: AsnTypeTypes.Sequence })
 export class DigestAlgorithmIdentifier extends AlgorithmIdentifier { }
 
 /**
@@ -33,4 +35,5 @@ export class DigestAlgorithmIdentifier extends AlgorithmIdentifier { }
  * SignatureAlgorithmIdentifier ::= AlgorithmIdentifier
  * ```
  */
+@AsnType({ type: AsnTypeTypes.Sequence })
 export class SignatureAlgorithmIdentifier extends AlgorithmIdentifier { }

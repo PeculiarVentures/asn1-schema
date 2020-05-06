@@ -112,13 +112,17 @@ export class RDNSequence extends AsnArray<RelativeDistinguishedName> { }
  *   rdnSequence  RDNSequence }
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Choice })
-export class Name {
+@AsnType({ type: AsnTypeTypes.Sequence })
+export class Name extends RDNSequence { }
 
-  @AsnProp({ type: RDNSequence })
-  public rdnSequence = new RDNSequence();
+// NOTE: Using CHOICE with only one item looks odd
+// @AsnType({ type: AsnTypeTypes.Choice })
+// export class Name {
 
-  constructor(params: Partial<Name> = {}) {
-    Object.assign(this, params);
-  }
-}
+//   @AsnProp({ type: RDNSequence })
+//   public rdnSequence = new RDNSequence();
+
+//   constructor(params: Partial<Name> = {}) {
+//     Object.assign(this, params);
+//   }
+// }
