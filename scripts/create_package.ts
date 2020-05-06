@@ -21,6 +21,11 @@ async function main(name: string) {
     name: moduleName,
     version: "0.0.0",
     description: "",
+    files: [
+      "build",
+      "LICENSE",
+      "README.md"
+    ],
     bugs: {
       url: "https://github.com/PeculiarVentures/asn1-schema/issues"
     },
@@ -28,19 +33,22 @@ async function main(name: string) {
     keywords: ["asn"],
     author: "PeculiarVentures, Inc",
     license: "MIT",
-    main: "build/index.js",
-    module: "build/index.es.js",
+    main: "build/cjs/index.js",
+    module: "build/es2015/index.js",
     types: "build/types/index.d.ts",
     publishConfig: {
       access: "public"
     },
     scripts: {
-      test: "mocha",
-      clear: "rimraf build/*",
-      build: "npm run build:module && npm run build:types",
-      "build:module": "rollup -c",
-      "build:types": "tsc -p tsconfig.types.json",
-      rebuild: "npm run clear && npm run build"
+      "test": "mocha",
+      "clear": "rimraf build",
+      "build": "npm run build:module && npm run build:types",
+      "build:module": "npm run build:cjs && npm run build:es2015",
+      "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
+      "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+      "prebuild:types": "rimraf build/types",
+      "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
+      "rebuild": "npm run clear && npm run build"
     },
     dependencies: {
       "@peculiar/asn1-schema": "^0.0.0",
@@ -53,24 +61,18 @@ async function main(name: string) {
   fs.mkdirSync(path.join(moduleDir, "test"));
   fs.mkdirSync(path.join(moduleDir, "src"));
 
-  const npmignore = `src
-test
-rollup.config.js
-ts*.json`;
-  fs.writeFileSync(path.join(moduleDir, ".npmignore"), npmignore);
-
   const readme = `# \`${moduleName}\`
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/asn1-schema/master/packages/${name}/LICENSE.md)
 [![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-${name}.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-${name})
-  
+
 [![NPM](https://nodei.co/npm/@peculiar/asn1-${name}.png)](https://nodei.co/npm/@peculiar/asn1-${name}/)
 `;
   fs.writeFileSync(path.join(moduleDir, "README.md"), readme);
 
   const license = `MIT License
 
-Copyright (c) ${new Date().getFullYear()} 
+Copyright (c) ${new Date().getFullYear()}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -88,35 +90,29 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.  
+SOFTWARE.
 `;
   fs.writeFileSync(path.join(moduleDir, "LICENSE"), license);
 
-  const rollup = `import config from "../../rollup.config";\nexport default config;`;
-  fs.writeFileSync(path.join(moduleDir, "rollup.config.js"), rollup);
-
   const tsconfig = {
-    extends: "../../tsconfig.json",
+    extends: "../../tsconfig.compile.json",
+    include: ["src"],
   };
-  fs.writeFileSync(path.join(moduleDir, "tsconfig.json"), JSON.stringify(tsconfig, null, "  "));
-
-  const tsconfigTypes = {
-    extends: "../../tsconfig.types.json",
-    compilerOptions: {
-      declarationDir: "build/types"
-    },
-    exclude: ["build", "test"]
-  };
-  fs.writeFileSync(path.join(moduleDir, "tsconfig.types.json"), JSON.stringify(tsconfigTypes, null, "  "));
+  fs.writeFileSync(path.join(moduleDir, "tsconfig.compile.json"), JSON.stringify(tsconfig, null, "  "));
 
   // Add to main package
   pkg.dependencies[moduleName] = `file:packages/${name}`;
-  const orderedDeps: { [key: string]: string } = {};
+  const orderedDeps: { [key: string]: string; } = {};
   Object.keys(pkg.dependencies).sort().forEach((key) => {
     orderedDeps[key] = pkg.dependencies[key];
   });
   pkg.dependencies = orderedDeps;
   fs.writeFileSync(path.join(projectDir, "package.json"), `${JSON.stringify(pkg, null, "  ")}\n`);
+
+  // Add TS alias
+  const globalTsConfig = require("../tsconfig.json");
+  globalTsConfig.compilerOptions.paths[moduleName] = [`./packages/${name}`];
+  fs.writeFileSync(path.join(projectDir, "tsconfig.json"), `${JSON.stringify(globalTsConfig, null, "  ")}\n`);
 
   console.log(`Package '${moduleName}' created`);
 }
