@@ -18,5 +18,8 @@
       "@peculiar/asn1-x509-qualified": ["./packages/x509-qualified/src"],
       "@peculiar/asn1-x509-trustanchor": ["./packages/x509-trustanchor/src"]
     }
-  }
+  },
+  "exclude": [
+    "packages/*/build"
+  ]
 }
