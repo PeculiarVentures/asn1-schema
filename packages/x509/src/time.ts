@@ -31,4 +31,12 @@ export class Time {
     }
   }
 
+  public getTime() {
+    const time = this.utcTime || this.generalTime;
+    if (!time) {
+      throw new Error("Cannot get time from CHOICE object")
+    }
+    return time;
+  }
+
 }
