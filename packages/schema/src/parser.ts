@@ -1,10 +1,11 @@
 // @ts-ignore
 import * as asn1 from "asn1js";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
+import * as converters from "./converters";
 import { AsnSchemaValidationError } from "./errors";
 import { isConvertible, isTypeOfArray } from "./helper";
 import { schemaStorage } from "./storage";
-import { IEmptyConstructor, IAsnConverter, IAsnConvertible } from "./types";
+import { IEmptyConstructor, IAsnConverter } from "./types";
 
 /**
  * Deserializes objects from ASN.1 encoded data
@@ -85,7 +86,15 @@ export class AsnParser {
 
       if (isTypeOfArray(target)) {
         // TODO convert
-        return target.from(asn1Schema.valueBlock.value, (element) => this.fromASN(element, schema.itemType as any));
+        if (typeof schema.itemType === "number") {
+          const converter = converters.defaultConverter(schema.itemType);
+          if (!converter) {
+            throw new Error(`Cannot get default converter for array item of ${target.name} ASN1 schema`);
+          }
+          return target.from(asn1Schema.valueBlock.value, (element) => converter.fromASN(element));
+        } else {
+          return target.from(asn1Schema.valueBlock.value, (element) => this.fromASN(element, schema.itemType as any));
+        }
       }
 
       for (const key in schema.items) {

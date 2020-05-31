@@ -1,7 +1,7 @@
 // @ts-ignore
 import * as asn1 from "asn1js";
 import * as assert from "assert";
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "../src";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString, AsnArray } from "../src";
 import * as Converters from "../src/converters";
 import { AsnParser } from "../src/parser";
 import { AsnSerializer } from "../src/serializer";
@@ -782,6 +782,24 @@ context("Test", () => {
       assert.throws(() => {
         AsnParser.parse(Buffer.from("010101", "hex"), Test);
       });
+    });
+  });
+
+  context("Repeated SET using AsnType decorator", () => {
+
+    @AsnType({ type: AsnTypeTypes.Set, itemType: AsnPropTypes.ObjectIdentifier })
+    class Test extends AsnArray<string> {
+    }
+    const testHex = "310c06042a030405060453040506";
+
+    it("serialize", () => {
+      const obj = new Test(["1.2.3.4.5", "2.3.4.5.6"]);
+      const buf = AsnSerializer.serialize(obj);
+      assertBuffer(Buffer.from(buf), Buffer.from(testHex, "hex"));
+    });
+    it("parse", () => {
+      const obj = AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test);
+      assert.equal(obj.join(", "), "1.2.3.4.5, 2.3.4.5.6");
     });
   });
 

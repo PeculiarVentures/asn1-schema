@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { AsnParser } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
-import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage } from "../src";
+import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage } from "../src";
 
 context("x509", () => {
 
@@ -23,10 +23,16 @@ context("x509", () => {
       }
       if (extension.extnID === id_ce_keyUsage) {
         const keyUsage = AsnParser.parse(extension.extnValue, KeyUsage);
-        assert.equal(keyUsage.toString(),"[digitalSignature, keyEncipherment]");
+        assert.equal(keyUsage.toString(), "[digitalSignature, keyEncipherment]");
       }
     });
     assert.equal(!!cert, true);
+  });
+
+  it("Extended key usages", () => {
+    const hex = `300c06042a030405060453040506`;
+    const eku = AsnParser.parse(Convert.FromHex(hex), ExtendedKeyUsage);
+    assert.equal(eku.join(", "), "1.2.3.4.5, 2.3.4.5.6");
   });
 
 });

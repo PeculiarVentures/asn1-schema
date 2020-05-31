@@ -1,6 +1,7 @@
 // @ts-ignore
 import * as asn1 from "asn1js";
 import { AnyConverterType, IAsnConverter, IntegerConverterType } from "./types";
+import { AsnPropTypes } from "./enums";
 /**
  * NOTE: Converter MUST have name Asn<Asn1PropType.name>Converter.
  * Asn1Prop decorator link custom converters by name of the Asn1PropType
@@ -161,3 +162,58 @@ export const AsnNullConverter: IAsnConverter<null> = {
     return new asn1.Null();
   },
 };
+
+/**
+ * Returns default converter for specified type
+ * @param type
+ */
+export function defaultConverter(type: AsnPropTypes): IAsnConverter | null {
+  switch (type) {
+    case AsnPropTypes.Any:
+      return AsnAnyConverter;
+    case AsnPropTypes.BitString:
+      return AsnBitStringConverter;
+    case AsnPropTypes.BmpString:
+      return AsnBmpStringConverter;
+    case AsnPropTypes.Boolean:
+      return AsnBooleanConverter;
+    case AsnPropTypes.CharacterString:
+      return AsnCharacterStringConverter;
+    case AsnPropTypes.Enumerated:
+      return AsnEnumeratedConverter;
+    case AsnPropTypes.GeneralString:
+      return AsnGeneralStringConverter;
+    case AsnPropTypes.GeneralizedTime:
+      return AsnGeneralizedTimeConverter;
+    case AsnPropTypes.GraphicString:
+      return AsnGraphicStringConverter;
+    case AsnPropTypes.IA5String:
+      return AsnIA5StringConverter;
+    case AsnPropTypes.Integer:
+      return AsnIntegerConverter;
+    case AsnPropTypes.Null:
+      return AsnNullConverter;
+    case AsnPropTypes.NumericString:
+      return AsnNumericStringConverter;
+    case AsnPropTypes.ObjectIdentifier:
+      return AsnObjectIdentifierConverter;
+    case AsnPropTypes.OctetString:
+      return AsnOctetStringConverter;
+    case AsnPropTypes.PrintableString:
+      return AsnPrintableStringConverter;
+    case AsnPropTypes.TeletexString:
+      return AsnTeletexStringConverter;
+    case AsnPropTypes.UTCTime:
+      return AsnUTCTimeConverter;
+    case AsnPropTypes.UniversalString:
+      return AsnUniversalStringConverter;
+    case AsnPropTypes.Utf8String:
+      return AsnUtf8StringConverter;
+    case AsnPropTypes.VideotexString:
+      return AsnVideotexStringConverter;
+    case AsnPropTypes.VisibleString:
+      return AsnVisibleStringConverter;
+    default:
+      return null;
+  }
+}
