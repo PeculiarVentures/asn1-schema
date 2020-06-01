@@ -38,7 +38,8 @@
     "rebuild": "lerna run rebuild",
     "clear": "lerna run clear",
     "create": "ts-node scripts/create_package.ts",
-    "postcreate": "lerna bootstrap"
+    "postcreate": "lerna bootstrap",
+    "pub": "lerna publish"
   },
   "nyc": {
     "extension": [
