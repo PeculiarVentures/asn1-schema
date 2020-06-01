@@ -39,6 +39,7 @@
     "clear": "lerna run clear",
     "create": "ts-node scripts/create_package.ts",
     "postcreate": "lerna bootstrap",
+    "prepub": "npm run build",
     "pub": "lerna publish"
   },
   "nyc": {
