@@ -3,20 +3,51 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@peculiar/asn1-cms": ["./packages/cms/src"],
-      "@peculiar/asn1-csr": ["./packages/csr/src"],
-      "@peculiar/asn1-ecc": ["./packages/ecc/src"],
-      "@peculiar/asn1-ocsp": ["./packages/ocsp/src"],
-      "@peculiar/asn1-pfx": ["./packages/pfx/src"],
-      "@peculiar/asn1-pkcs8": ["./packages/pkcs8/src"],
-      "@peculiar/asn1-rsa": ["./packages/rsa/src"],
-      "@peculiar/asn1-schema": ["./packages/schema/src"],
-      "@peculiar/asn1-x509": ["./packages/x509/src"],
-      "@peculiar/asn1-x509-attr": ["./packages/x509-attr/src"],
-      "@peculiar/asn1-x509-logotype": ["./packages/x509-logotype/src"],
-      "@peculiar/asn1-x509-microsoft": ["./packages/x509-microsoft/src"],
-      "@peculiar/asn1-x509-qualified": ["./packages/x509-qualified/src"],
-      "@peculiar/asn1-x509-trustanchor": ["./packages/x509-trustanchor/src"]
+      "@peculiar/asn1-cms": [
+        "./packages/cms/src"
+      ],
+      "@peculiar/asn1-csr": [
+        "./packages/csr/src"
+      ],
+      "@peculiar/asn1-ecc": [
+        "./packages/ecc/src"
+      ],
+      "@peculiar/asn1-ocsp": [
+        "./packages/ocsp/src"
+      ],
+      "@peculiar/asn1-pfx": [
+        "./packages/pfx/src"
+      ],
+      "@peculiar/asn1-pkcs8": [
+        "./packages/pkcs8/src"
+      ],
+      "@peculiar/asn1-rsa": [
+        "./packages/rsa/src"
+      ],
+      "@peculiar/asn1-schema": [
+        "./packages/schema/src"
+      ],
+      "@peculiar/asn1-x509": [
+        "./packages/x509/src"
+      ],
+      "@peculiar/asn1-x509-attr": [
+        "./packages/x509-attr/src"
+      ],
+      "@peculiar/asn1-x509-logotype": [
+        "./packages/x509-logotype/src"
+      ],
+      "@peculiar/asn1-x509-microsoft": [
+        "./packages/x509-microsoft/src"
+      ],
+      "@peculiar/asn1-x509-qualified": [
+        "./packages/x509-qualified/src"
+      ],
+      "@peculiar/asn1-x509-trustanchor": [
+        "./packages/x509-trustanchor/src"
+      ],
+      "@peculiar/asn1-x509-netscape": [
+        "./packages/x509-netscape"
+      ]
     }
   },
   "exclude": [
