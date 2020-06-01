@@ -1,7 +1,7 @@
 import * as assert from "assert";
-import { AsnParser } from "@peculiar/asn1-schema";
+import { AsnParser, AsnSerializer, AsnConvert } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
-import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage } from "../src";
+import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName } from "../src";
 
 context("x509", () => {
 
@@ -33,6 +33,36 @@ context("x509", () => {
     const hex = `300c06042a030405060453040506`;
     const eku = AsnParser.parse(Convert.FromHex(hex), ExtendedKeyUsage);
     assert.equal(eku.join(", "), "1.2.3.4.5, 2.3.4.5.6");
+  });
+
+  it.only("Name constrains", () => {
+    var nameConstrains = new NameConstraints({
+      permittedSubtrees: new GeneralSubtrees([
+        new GeneralSubtree({
+          base: new GeneralName({
+            dNSName: "some.dns.com",
+          })
+        }),
+        new GeneralSubtree({
+          base: new GeneralName({
+            iPAddress: "192.168.1.1",
+          })
+        }),
+        new GeneralSubtree({
+          base: new GeneralName({
+            iPAddress: "2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d",
+          })
+        }),
+      ])
+    })
+
+    const der = AsnConvert.serialize(nameConstrains);
+
+    const test = AsnParser.parse(der, NameConstraints);
+
+    assert.equal(test.permittedSubtrees![0].base.dNSName, "some.dns.com");
+    assert.equal(test.permittedSubtrees![1].base.iPAddress, "192.168.1.1");
+    assert.equal(test.permittedSubtrees![2].base.iPAddress, "2001:db8:11a3:9d7:1f34:8a2e:7a0:765d");
   });
 
 });
