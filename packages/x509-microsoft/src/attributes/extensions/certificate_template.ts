@@ -1,5 +1,7 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 
+export const id_certificateTemplate = "1.3.6.1.4.1.311.21.7";
+
 /**
  * ```
  * CertificateTemplateOID ::= SEQUENCE {

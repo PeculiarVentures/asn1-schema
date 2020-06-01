@@ -1,5 +1,6 @@
 // @ts-ignore
 import * as asn1 from "asn1js";
+import * as converters from "./converters";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible, isArrayEqual } from "./helper";
 import { schemaStorage } from "./storage";
@@ -36,7 +37,17 @@ export class AsnSerializer {
     let asn1Value: any[] = [];
 
     if (schema.itemType) {// repeated
-      asn1Value = obj.map((o: any) => this.toAsnItem({ type: schema.itemType }, "[]", target, o));
+      if (typeof schema.itemType === "number" ) {
+        // primitive
+        const converter = converters.defaultConverter(schema.itemType);
+        if (!converter) {
+          throw new Error(`Cannot get default converter for array item of ${target.name} ASN1 schema`);
+        }
+        asn1Value = obj.map((o: any) => converter.toASN(o));
+      } else {
+        // constructed
+        asn1Value = obj.map((o: any) => this.toAsnItem({ type: schema.itemType }, "[]", target, o));
+      }
     } else {
       for (const key in schema.items) {
         const schemaItem = schema.items[key];
@@ -55,7 +66,7 @@ export class AsnSerializer {
           // CONTEXT-SPECIFIC
           if (schemaItem.implicit) {
             // IMPLICIT
-            if (!schemaItem.repeated 
+            if (!schemaItem.repeated
               && (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))) {
               const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer } = {};
               value.valueHex = asn1Item.valueBlock.toBER();

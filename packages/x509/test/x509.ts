@@ -1,7 +1,8 @@
 import * as assert from "assert";
-import { AsnParser } from "@peculiar/asn1-schema";
+import { AsnParser, AsnConvert } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
-import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage } from "../src";
+import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName } from "../src";
+import { CertificateTemplate } from "@peculiar/asn1-x509-microsoft";
 
 context("x509", () => {
 
@@ -23,10 +24,61 @@ context("x509", () => {
       }
       if (extension.extnID === id_ce_keyUsage) {
         const keyUsage = AsnParser.parse(extension.extnValue, KeyUsage);
-        assert.equal(keyUsage.toString(),"[digitalSignature, keyEncipherment]");
+        assert.equal(keyUsage.toString(), "[digitalSignature, keyEncipherment]");
       }
     });
     assert.equal(!!cert, true);
+  });
+
+  it("Extended key usages", () => {
+    const hex = `300c06042a030405060453040506`;
+    const eku = AsnParser.parse(Convert.FromHex(hex), ExtendedKeyUsage);
+    assert.equal(eku.join(", "), "1.2.3.4.5, 2.3.4.5.6");
+  });
+
+  it("Name constrains", () => {
+    var nameConstrains = new NameConstraints({
+      permittedSubtrees: new GeneralSubtrees([
+        new GeneralSubtree({
+          base: new GeneralName({
+            dNSName: "some.dns.com",
+          })
+        }),
+        new GeneralSubtree({
+          base: new GeneralName({
+            iPAddress: "192.168.1.1",
+          })
+        }),
+        new GeneralSubtree({
+          base: new GeneralName({
+            iPAddress: "2001:0db8:11a3:09d7:1f34:8a2e:07a0:765d",
+          })
+        }),
+      ])
+    });
+
+    const der = AsnConvert.serialize(nameConstrains);
+
+    const test = AsnParser.parse(der, NameConstraints);
+
+    assert.equal(test.permittedSubtrees![0].base.dNSName, "some.dns.com");
+    assert.equal(test.permittedSubtrees![1].base.iPAddress, "192.168.1.1");
+    assert.equal(test.permittedSubtrees![2].base.iPAddress, "2001:db8:11a3:9d7:1f34:8a2e:7a0:765d");
+  });
+
+  it("Certificate template", () => {
+    const certTemplate = new CertificateTemplate({
+      templateID: "1.2.3.4.5.6.7.8.9",
+      templateMajorVersion: 101,
+      templateMinorVersion: 0,
+    });
+
+    const der = AsnConvert.serialize(certTemplate);
+
+    const test = AsnConvert.parse(der, CertificateTemplate);
+    assert.equal(test.templateID, "1.2.3.4.5.6.7.8.9");
+    assert.equal(test.templateMajorVersion, 101);
+    assert.equal(test.templateMinorVersion, 0);
   });
 
 });

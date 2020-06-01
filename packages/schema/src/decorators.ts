@@ -1,4 +1,4 @@
-import * as defaultConverters from "./converters";
+import * as converters from "./converters";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { IAsnSchema, IAsnSchemaItem } from "./schema";
 import { schemaStorage } from "./storage";
@@ -46,10 +46,9 @@ export const AsnProp = (options: IAsn1PropOptions) => (target: object, propertyK
 
   if (typeof copyOptions.type === "number" && !copyOptions.converter) {
     // Set default converters
-    const converterName = `Asn${AsnPropTypes[options.type as number]}Converter`;
-    const defaultConverter = (defaultConverters as any)[converterName] as IAsnConverter;
+    const defaultConverter = converters.defaultConverter(options.type as AsnPropTypes);
     if (!defaultConverter) {
-      throw new Error(`Cannot get '${converterName}' for property '${propertyKey}' of ${target.constructor.name}`);
+      throw new Error(`Cannot get default converter for property '${propertyKey}' of ${target.constructor.name}`);
     }
     copyOptions.converter = defaultConverter;
   }
