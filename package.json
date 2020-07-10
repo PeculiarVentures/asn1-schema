@@ -12,6 +12,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@peculiar/asn1-android": "file:packages/android",
     "@peculiar/asn1-cms": "file:packages/cms",
     "@peculiar/asn1-csr": "file:packages/csr",
     "@peculiar/asn1-ecc": "file:packages/ecc",

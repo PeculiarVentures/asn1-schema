@@ -47,6 +47,9 @@
       ],
       "@peculiar/asn1-x509-netscape": [
         "./packages/x509-netscape"
+      ],
+      "@peculiar/asn1-android": [
+        "./packages/android"
       ]
     }
   },
