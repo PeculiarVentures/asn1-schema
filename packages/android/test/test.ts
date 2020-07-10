@@ -2,7 +2,7 @@ import * as assert from "assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { KeyDescription, Version, SecurityLevel } from "../src/key_description";
 
-context.only("Android", () => {
+context("Android", () => {
 
   context("KeyDescription", () => {
 
