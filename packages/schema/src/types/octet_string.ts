@@ -31,9 +31,9 @@ export class OctetString extends ArrayBuffer implements IAsnConvertible {
     if (!(asn instanceof AsnOctetString)) {
       throw new TypeError("Argument 'asn' is not instance of ASN.1 OctetString");
     }
-    return new OctetString(asn.valueBlock.valueHex) as any;
+    return new (this.constructor as any)(asn.valueBlock.valueHex) as any;
   }
-  
+
   public toASN() {
     return new AsnOctetString({ valueHex: this });
   }
