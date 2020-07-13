@@ -50,6 +50,9 @@
       ],
       "@peculiar/asn1-android": [
         "./packages/android"
+      ],
+      "@peculiar/asn1-cert-transparency": [
+        "./packages/cert-transparency"
       ]
     }
   },
