@@ -53,6 +53,9 @@
       ],
       "@peculiar/asn1-cert-transparency": [
         "./packages/cert-transparency"
+      ],
+      "@peculiar/asn1-lei": [
+        "./packages/lei"
       ]
     }
   },

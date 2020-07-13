@@ -17,6 +17,7 @@
     "@peculiar/asn1-cms": "file:packages/cms",
     "@peculiar/asn1-csr": "file:packages/csr",
     "@peculiar/asn1-ecc": "file:packages/ecc",
+    "@peculiar/asn1-lei": "file:packages/lei",
     "@peculiar/asn1-ocsp": "file:packages/ocsp",
     "@peculiar/asn1-pfx": "file:packages/pfx",
     "@peculiar/asn1-pkcs8": "file:packages/pkcs8",
