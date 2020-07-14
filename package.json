@@ -12,6 +12,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "@peculiar/asn1-adobe-acrobat": "file:packages/adobe-acrobat",
     "@peculiar/asn1-android": "file:packages/android",
     "@peculiar/asn1-cert-transparency": "file:packages/cert-transparency",
     "@peculiar/asn1-cms": "file:packages/cms",
