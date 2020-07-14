@@ -3,10 +3,10 @@ import { PrintableString } from "asn1js";
 
 /**
  * ```
- * lei     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 5222266 1}
+ * lei     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 52266 1}
  * ```
  */
-export const id_lei = "1.3.6.1.4.1.5222266.1";
+export const id_lei = "1.3.6.1.4.1.52266.1";
 
 /**
  * ```
@@ -50,7 +50,7 @@ export class LeiChoice {
 
 /**
  * ```
- * lei-roles     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 5222266 1}
+ * lei-roles     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 52266 1}
  * ```
  */
 export const id_lei_roles = "1.3.6.1.4.1.52266.2";
