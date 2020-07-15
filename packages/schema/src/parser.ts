@@ -67,7 +67,7 @@ export class AsnParser {
         } as any);
         // delete all parsed values, because asn1js adds duplicated values to arrays
         for (const key in schema.items) {
-          delete asn1Schema[key];
+          delete (asn1Schema as any)[key];
         }
       }
 

@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { AsnParser, AsnConvert } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
-import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName } from "../src";
+import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName, UserNotice } from "../src";
 import { CertificateTemplate } from "@peculiar/asn1-x509-microsoft";
 
 context("x509", () => {
@@ -79,6 +79,15 @@ context("x509", () => {
     assert.equal(test.templateID, "1.2.3.4.5.6.7.8.9");
     assert.equal(test.templateMajorVersion, 101);
     assert.equal(test.templateMinorVersion, 0);
+  });
+
+  it("UserNotice", () => {
+    const hex = "3081991e81960049006d0070006c0065006d0065006e007400610020006c006100200050006f006c006900740069006300610020006400650020006c00610020005200610069007a00200043006f00730074006100720072006900630065006e00730065002000640065002000430065007200740069006600690063006100630069006f006e0020004400690067006900740061006c002000760032";
+    const raw = Buffer.from(hex, "hex");
+
+    const userNotice = AsnConvert.parse(raw, UserNotice);
+
+    assert.equal(userNotice.explicitText!.bmpString, "Implementa la Politica de la Raiz Costarricense de Certificacion Digital v2");
   });
 
 });

@@ -80,6 +80,20 @@ export class AsnSchemaStorage {
       } else if (isConvertible(item.type)) {
         const instance: IAsnConvertible = new item.type();
         asn1Item = instance.toSchema(name);
+      } else if (item.optional) {
+        // For OPTIONAL and CONSTRUCTED properties we need to validate schema
+        //
+        // `UserNotice` has two OPTIONAL properties, without correct schema validation it
+        // assigns `explicitText` to `noticeRef`
+        const itemSchema = this.get(item.type);
+        if (itemSchema.type === AsnTypeTypes.Choice) {
+          // ASN1.js doesn't assign CHOICE to named property
+          // Use ANY block to fix it
+          asn1Item = new asn1.Any({ name });
+        } else {
+          asn1Item = this.create(item.type, false);
+          asn1Item.name = name;
+        }
       } else {
         // type is class with schema
         // asn1Item = createAsn1Schema(item.type, schema.type === Asn1TypeType.Choice ? true : false);
