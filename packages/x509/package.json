@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile` (RFC5280)",
   "bugs": {
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
@@ -32,7 +32,7 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.0.7",
+    "@peculiar/asn1-schema": "^2.0.8",
     "asn1js": "^2.0.26",
     "ipaddr.js": "^1.9.1",
     "pvtsutils": "^1.0.10",
