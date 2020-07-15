@@ -42,6 +42,11 @@ export class DisplayText {
   constructor(params: Partial<DisplayText> = {}) {
     Object.assign(this, params);
   }
+
+  public toString() {
+    return this.ia5String || this.visibleString || this.bmpString || this.utf8String
+      "";
+  }
 }
 
 /**
