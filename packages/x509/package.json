@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile` (RFC5280)",
   "bugs": {
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
