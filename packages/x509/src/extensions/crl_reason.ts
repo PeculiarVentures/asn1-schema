@@ -46,4 +46,12 @@ export class CRLReason {
   constructor(reason: CRLReasons = CRLReasons.unspecified) {
     this.reason = reason;
   }
+
+  public toJSON() {
+    return CRLReasons[this.reason];
+  }
+
+  public toString() {
+    return this.toJSON();
+  }
 }
