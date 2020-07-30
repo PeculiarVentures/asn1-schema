@@ -90,6 +90,10 @@ export class GeneralName {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier, context: 8, implicit: true })
   public registeredID?: string;
 
+  /**
+   *
+   * @param params
+   */
   constructor(params: Partial<GeneralName> = {}) {
     Object.assign(this, params);
   }

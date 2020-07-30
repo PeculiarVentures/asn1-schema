@@ -22,7 +22,7 @@ export type UnsignedAttributes = Attribute[]
  * SignatureValue ::= OCTET STRING
  * ```
  */
-export type SignatureValue = ArrayBuffer;
+export type SignatureValue = OctetString;
 
 
 /**

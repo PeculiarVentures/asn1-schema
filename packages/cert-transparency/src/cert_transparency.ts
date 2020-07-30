@@ -13,17 +13,17 @@ export class CertificateTransparency extends OctetString {
   public items: SignedCertificateTimestamp[] = [];
 
   public fromASN(asn: any) {
-    const res = super.fromASN(asn);
+    super.fromASN(asn);
 
     // parse value
-    const stream = new ByteStream(res);
+    const stream = new ByteStream(this.buffer);
     const len = stream.readNumber(2);
-    res.items = [];
+    this.items = [];
     while (stream.position < len) {
-      res.items.push(new SignedCertificateTimestamp(stream));
+      this.items.push(new SignedCertificateTimestamp(stream));
     }
 
-    return res;
+    return this;
   }
   public toJSON() {
     return this.items.map(o => o.toJSON());

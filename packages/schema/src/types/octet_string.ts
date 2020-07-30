@@ -2,7 +2,15 @@ import { OctetString as AsnOctetString } from "asn1js";
 import { BufferSourceConverter } from "pvtsutils";
 import { IAsnConvertible } from "../types";
 
-export class OctetString extends ArrayBuffer implements IAsnConvertible {
+export class OctetString implements IAsnConvertible, ArrayBufferView {
+
+  public buffer: ArrayBuffer;
+  public get byteLength() {
+    return this.buffer.byteLength;
+  }
+  public get byteOffset() {
+    return 0;
+  }
 
   constructor();
   constructor(byteLength: number);
@@ -10,19 +18,14 @@ export class OctetString extends ArrayBuffer implements IAsnConvertible {
   constructor(bytes: BufferSource);
   constructor(param?: BufferSource | number | number[]) {
     if (typeof param === "number") {
-      super(param);
+      this.buffer = new ArrayBuffer(param);
     } else {
       if (BufferSourceConverter.isBufferSource(param)) {
-        super(param.byteLength);
-        const view = new Uint8Array(this);
-        view.set(BufferSourceConverter.toUint8Array(param));
+        this.buffer = BufferSourceConverter.toArrayBuffer(param);
       } else if (Array.isArray(param)) {
-        var array = new Uint8Array(param);
-        super(array.length);
-        var view = new Uint8Array(this);
-        view.set(array);
+        this.buffer = new Uint8Array(param);
       } else {
-        super(0);
+        this.buffer = new ArrayBuffer(0);
       }
     }
   }
@@ -31,11 +34,12 @@ export class OctetString extends ArrayBuffer implements IAsnConvertible {
     if (!(asn instanceof AsnOctetString)) {
       throw new TypeError("Argument 'asn' is not instance of ASN.1 OctetString");
     }
-    return new (this.constructor as any)(asn.valueBlock.valueHex) as any;
+    this.buffer = asn.valueBlock.valueHex;
+    return this;
   }
 
   public toASN() {
-    return new AsnOctetString({ valueHex: this });
+    return new AsnOctetString({ valueHex: this.buffer });
   }
 
   public toSchema(name: string) {
