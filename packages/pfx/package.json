@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-pfx",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "ASN.1 schema of `PKCS #12: Personal Information Exchange Syntax v1.1` (RFC7292)",
   "files": [
     "build",
@@ -34,10 +34,10 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-cms": "^2.0.10",
-    "@peculiar/asn1-pkcs8": "^2.0.10",
-    "@peculiar/asn1-rsa": "^2.0.10",
-    "@peculiar/asn1-schema": "^2.0.8",
+    "@peculiar/asn1-cms": "^2.0.11",
+    "@peculiar/asn1-pkcs8": "^2.0.11",
+    "@peculiar/asn1-rsa": "^2.0.11",
+    "@peculiar/asn1-schema": "^2.0.11",
     "asn1js": "^2.0.26",
     "tslib": "^1.11.1"
   }
