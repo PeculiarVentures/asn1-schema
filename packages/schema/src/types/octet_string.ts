@@ -2,6 +2,8 @@ import { OctetString as AsnOctetString } from "asn1js";
 import { BufferSourceConverter } from "pvtsutils";
 import { IAsnConvertible } from "../types";
 
+// Implement ArrayBufferView, cause ES5 doesn't allow to extend ArrayBuffer class
+
 export class OctetString implements IAsnConvertible, ArrayBufferView {
 
   public buffer: ArrayBuffer;
