@@ -35,7 +35,7 @@
     "asn1js": "^2.0.26",
     "ipaddr.js": "^1.9.1",
     "pvtsutils": "^1.0.11",
-    "tslib": "^1.11.1"
+    "tslib": "^2.0.1"
   },
   "scripts": {
     "test": "mocha",

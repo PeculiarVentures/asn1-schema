@@ -58,4 +58,13 @@ export class CertificateChoices {
  * ```
  */
 @AsnType({type: AsnTypeTypes.Set, itemType: CertificateChoices})
-export class CertificateSet extends AsnArray<CertificateChoices> { }
+export class CertificateSet extends AsnArray<CertificateChoices> { 
+
+  constructor(items?: CertificateChoices[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, CertificateSet.prototype);
+  }
+
+}

@@ -130,4 +130,13 @@ export class DistributionPoint {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: DistributionPoint })
-export class CRLDistributionPoints extends AsnArray<DistributionPoint> { }
+export class CRLDistributionPoints extends AsnArray<DistributionPoint> {
+
+  constructor(items?: DistributionPoint[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, CRLDistributionPoints.prototype);
+  }
+
+}

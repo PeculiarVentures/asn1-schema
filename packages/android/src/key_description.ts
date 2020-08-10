@@ -52,7 +52,16 @@ export class RootOfTrust {
 }
 
 @AsnType({ type: AsnTypeTypes.Set, itemType: AsnPropTypes.Integer })
-export class IntegerSet extends AsnArray<number> { }
+export class IntegerSet extends AsnArray<number> { 
+
+  constructor(items?: number[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, IntegerSet.prototype);
+  }
+
+}
 
 /**
  * ```

@@ -31,4 +31,13 @@ export class OtherPrimeInfo {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: OtherPrimeInfo })
-export class OtherPrimeInfos extends AsnArray<OtherPrimeInfo> { }
+export class OtherPrimeInfos extends AsnArray<OtherPrimeInfo> {
+
+  constructor(items?: OtherPrimeInfo[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, OtherPrimeInfos.prototype);
+  }
+
+}

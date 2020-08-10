@@ -7,4 +7,13 @@ import { Attribute } from "@peculiar/asn1-x509";
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: Attribute })
-export class Attributes extends AsnArray<Attribute> { }
+export class Attributes extends AsnArray<Attribute> {
+
+  constructor(items?: Attribute[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, Attributes.prototype);
+  }
+
+}

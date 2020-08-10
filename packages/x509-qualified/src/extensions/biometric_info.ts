@@ -77,4 +77,13 @@ export class BiometricData {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: BiometricData })
-export class BiometricSyntax extends AsnArray<BiometricData> { }
+export class BiometricSyntax extends AsnArray<BiometricData> {
+
+  constructor(items?: BiometricData[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, BiometricSyntax.prototype);
+  }
+
+}

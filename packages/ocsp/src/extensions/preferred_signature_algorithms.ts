@@ -31,4 +31,13 @@ export class PreferredSignatureAlgorithm {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: AlgorithmIdentifier })
-export class PreferredSignatureAlgorithms extends AsnArray<AlgorithmIdentifier> { }
+export class PreferredSignatureAlgorithms extends AsnArray<AlgorithmIdentifier> {
+
+  constructor(items?: AlgorithmIdentifier[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, PreferredSignatureAlgorithms.prototype);
+  }
+
+}

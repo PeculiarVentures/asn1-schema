@@ -16,4 +16,13 @@ export const id_ct_trustAnchorList = "1.2.840.113549.1.9.16.1.34";
  * ```
  */
 @AsnType({type: AsnTypeTypes.Sequence, itemType: TrustAnchorChoice})
-export class TrustAnchorList extends AsnArray<TrustAnchorChoice> { }
+export class TrustAnchorList extends AsnArray<TrustAnchorChoice> {
+
+  constructor(items?: TrustAnchorChoice[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, TrustAnchorList.prototype);
+  }
+
+}

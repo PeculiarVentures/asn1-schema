@@ -60,7 +60,16 @@ export const id_qcs_pkixQCSyntax_v2 = `${id_qcs}.2`;
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: GeneralName })
-export class NameRegistrationAuthorities extends AsnArray<GeneralName> { }
+export class NameRegistrationAuthorities extends AsnArray<GeneralName> {
+
+  constructor(items?: GeneralName[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, NameRegistrationAuthorities.prototype);
+  }
+
+}
 
 /**
  * ```
@@ -89,4 +98,13 @@ export class SemanticsInformation {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: QCStatement })
-export class QCStatements extends AsnArray<QCStatement> { }
+export class QCStatements extends AsnArray<QCStatement> {
+
+  constructor(items?: QCStatement[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, QCStatements.prototype);
+  }
+
+}

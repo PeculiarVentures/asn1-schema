@@ -71,4 +71,13 @@ export class SignerInfo {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: SignerInfo })
-export class SignerInfos extends AsnArray<SignerInfo> { }
+export class SignerInfos extends AsnArray<SignerInfo> { 
+
+  constructor(items?: SignerInfo[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, SignerInfos.prototype);
+  }
+
+}

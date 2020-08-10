@@ -97,7 +97,16 @@ export class AttributeTypeAndValue {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: AttributeTypeAndValue })
-export class RelativeDistinguishedName extends AsnArray<AttributeTypeAndValue> { }
+export class RelativeDistinguishedName extends AsnArray<AttributeTypeAndValue> {
+
+  constructor(items?: AttributeTypeAndValue[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, RelativeDistinguishedName.prototype);
+  }
+
+}
 
 /**
  * ```
@@ -105,7 +114,16 @@ export class RelativeDistinguishedName extends AsnArray<AttributeTypeAndValue> {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: RelativeDistinguishedName })
-export class RDNSequence extends AsnArray<RelativeDistinguishedName> { }
+export class RDNSequence extends AsnArray<RelativeDistinguishedName> {
+
+  constructor(items?: RelativeDistinguishedName[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, RDNSequence.prototype);
+  }
+
+}
 
 /**
  * ```

@@ -36,4 +36,13 @@ export class AccessDescription {
  * ```
  */
 @AsnType({type: AsnTypeTypes.Sequence, itemType: AccessDescription})
-export class AuthorityInfoAccessSyntax extends AsnArray<AccessDescription> {}
+export class AuthorityInfoAccessSyntax extends AsnArray<AccessDescription> {
+
+  constructor(items?: AccessDescription[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, AuthorityInfoAccessSyntax.prototype);
+  }
+
+}

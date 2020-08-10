@@ -60,4 +60,13 @@ export class Target {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: Target })
-export class Targets extends AsnArray<Target> { }
+export class Targets extends AsnArray<Target> {
+
+  constructor(items?: Target[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, Targets.prototype);
+  }
+
+}

@@ -10,4 +10,13 @@ import { ContentInfo } from "@peculiar/asn1-cms";
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: ContentInfo })
-export class AuthenticatedSafe extends AsnArray<ContentInfo> { }
+export class AuthenticatedSafe extends AsnArray<ContentInfo> {
+
+  constructor(items?: ContentInfo[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, AuthenticatedSafe.prototype);
+  }
+
+}

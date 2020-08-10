@@ -9,4 +9,13 @@ import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculia
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.ObjectIdentifier })
-export class AcceptableResponses extends AsnArray<AsnPropTypes.ObjectIdentifier> { }
+export class AcceptableResponses extends AsnArray<string> {
+
+  constructor(items?: string[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, AcceptableResponses.prototype);
+  }
+
+}

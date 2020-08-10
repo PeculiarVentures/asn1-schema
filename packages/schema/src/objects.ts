@@ -1,4 +1,4 @@
-export class AsnArray<T> extends Array<T> {
+export abstract class AsnArray<T> extends Array<T> {
   constructor(items: T[] = []) {
     if (typeof items === "number") {
       super(items);
@@ -8,5 +8,8 @@ export class AsnArray<T> extends Array<T> {
         this.push(item);
       }
     }
+    
+    // Set the prototype explicitly.
+    // Object.setPrototypeOf(this, AsnArray.prototype);
   }
 }

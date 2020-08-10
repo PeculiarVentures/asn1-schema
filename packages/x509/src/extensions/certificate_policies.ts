@@ -177,4 +177,13 @@ export class PolicyInformation {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: PolicyInformation })
-export class CertificatePolicies extends AsnArray<PolicyInformation> { }
+export class CertificatePolicies extends AsnArray<PolicyInformation> {
+
+  constructor(items?: PolicyInformation[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, CertificatePolicies.prototype);
+  }
+
+}

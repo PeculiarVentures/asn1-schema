@@ -43,4 +43,13 @@ export class RevocationInfoChoice {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: RevocationInfoChoice })
-export class RevocationInfoChoices extends AsnArray<RevocationInfoChoice> { }
+export class RevocationInfoChoices extends AsnArray<RevocationInfoChoice> { 
+
+  constructor(items?: RevocationInfoChoice[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, RevocationInfoChoices.prototype);
+  }
+
+}

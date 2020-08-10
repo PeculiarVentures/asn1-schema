@@ -30,4 +30,13 @@ export class EnrollmentNameValuePair {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: EnrollmentNameValuePair })
-export class EnrollmentNameValuePairs extends AsnArray<EnrollmentNameValuePair> { }
+export class EnrollmentNameValuePairs extends AsnArray<EnrollmentNameValuePair> {
+
+  constructor(items?: EnrollmentNameValuePair[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, EnrollmentNameValuePairs.prototype);
+  }
+
+}

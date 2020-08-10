@@ -15,4 +15,13 @@ export const id_ce_subjectDirectoryAttributes = `${id_ce}.9`;
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: Attribute })
-export class SubjectDirectoryAttributes extends AsnArray<Attribute> { }
+export class SubjectDirectoryAttributes extends AsnArray<Attribute> {
+
+  constructor(items?: Attribute[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, SubjectDirectoryAttributes.prototype);
+  }
+
+}

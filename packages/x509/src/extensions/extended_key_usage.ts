@@ -17,7 +17,16 @@ export type KeyPurposeId = string;
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.ObjectIdentifier })
-export class ExtendedKeyUsage extends AsnArray<string> { }
+export class ExtendedKeyUsage extends AsnArray<string> {
+
+  constructor(items?: string[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, ExtendedKeyUsage.prototype);
+  }
+
+}
 
 /**
  * ```

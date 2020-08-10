@@ -788,8 +788,8 @@ context("Test", () => {
   context("Repeated SET using AsnType decorator", () => {
 
     @AsnType({ type: AsnTypeTypes.Set, itemType: AsnPropTypes.ObjectIdentifier })
-    class Test extends AsnArray<string> {
-    }
+    class Test extends AsnArray<string> { }
+
     const testHex = "310c06042a030405060453040506";
 
     it("serialize", () => {
@@ -800,6 +800,8 @@ context("Test", () => {
     it("parse", () => {
       const obj = AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test);
       assert.equal(obj.join(", "), "1.2.3.4.5, 2.3.4.5.6");
+      assert.equal(obj instanceof Test, true);
+      const type = typeof (obj);
     });
   });
 

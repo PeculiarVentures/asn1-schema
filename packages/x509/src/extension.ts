@@ -40,4 +40,13 @@ export class Extension {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: Extension })
-export class Extensions extends AsnArray<Extension>{ };
+export class Extensions extends AsnArray<Extension>{
+
+  constructor(items?: Extension[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, Extensions.prototype);
+  }
+
+}

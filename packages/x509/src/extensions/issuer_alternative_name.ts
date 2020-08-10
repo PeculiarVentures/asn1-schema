@@ -1,6 +1,7 @@
 import { AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { GeneralNames } from "../general_names";
 import { id_ce } from "../object_identifiers";
+import { GeneralName } from '../general_name';
 
 /**
  * ```
@@ -15,4 +16,13 @@ export const id_ce_issuerAltName = `${id_ce}.18`;
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class IssueAlternativeName extends GeneralNames { }
+export class IssueAlternativeName extends GeneralNames {
+
+  constructor(items?: GeneralName[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, IssueAlternativeName.prototype);
+  }
+
+}

@@ -46,7 +46,16 @@ export class GeneralSubtree {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: GeneralSubtree })
-export class GeneralSubtrees extends AsnArray<GeneralSubtree> { }
+export class GeneralSubtrees extends AsnArray<GeneralSubtree> {
+
+  constructor(items?: GeneralSubtree[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, GeneralSubtrees.prototype);
+  }
+
+}
 
 /**
  * ```

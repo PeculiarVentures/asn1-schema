@@ -36,6 +36,6 @@
   "dependencies": {
     "@peculiar/asn1-schema": "^2.0.12",
     "asn1js": "^2.0.26",
-    "tslib": "^1.11.1"
+    "tslib": "^2.0.1"
   }
 }
