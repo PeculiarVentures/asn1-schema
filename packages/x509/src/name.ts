@@ -132,7 +132,16 @@ export class RDNSequence extends AsnArray<RelativeDistinguishedName> {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class Name extends RDNSequence { }
+export class Name extends RDNSequence {
+
+  constructor(items?: RelativeDistinguishedName[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, Name.prototype);
+  }
+
+}
 
 // NOTE: Using CHOICE with only one item looks odd
 // @AsnType({ type: AsnTypeTypes.Choice })
