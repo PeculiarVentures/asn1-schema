@@ -1,26 +1,74 @@
-version: 2
+version: 2.1
+
+aliases:
+  - &docker-node-lts
+    - image: circleci/node:10.12.0
+
+  - &restore-node-modules-cache
+    name: Restore node_modules cache
+    key: yarn-deps-{{ checksum "yarn.lock" }}
+
+  - &restore-yarn-cache
+    name: Restore yarnpkg cache
+    key: yarn-cache
+
+  - &save-node-modules-cache
+    name: Save node_modules cache
+    paths:
+      - node_modules
+    key: yarn-deps-{{ checksum "yarn.lock" }}
+
+  - &save-yarn-cache
+    name: Save yarnpkg cache
+    paths:
+      - ~/.cache/yarn
+    key: yarn-cache
+
 jobs:
-  build:
-    working_directory: ~/mern-starter # directory where steps will run
-    docker: # run the steps with Docker
-      - image: circleci/node:10.12.0
+  checkout-code:
+    docker: *docker-node-lts
     steps:
       - checkout
-      - restore_cache: # special step to restore the dependency cache 
-          key: dependency-cache-{{ checksum "package.json" }}
+      - restore_cache: *restore-yarn-cache
+      - restore_cache: *restore-node-modules-cache
+      - run: yarn install --non-interactive --cache-folder ~/.cache/yarn
       - run:
-          name: install-lerna
-          command: sudo npm i lerna -g
-      - run:
-          name: lerna-bootstrap
-          command: lerna bootstrap
-      - run:
-          name: npm-build
-          command: npm run build
-      - save_cache: # special step to save the dependency cache
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
-      - run:
-          name: test
-          command: npm test
+          name: Check if yarn.lock changed during install
+          command: git diff --exit-code
+      - save_cache: *save-node-modules-cache
+      - save_cache: *save-yarn-cache
+      - persist_to_workspace:
+          root: "."
+          paths: [
+            packages/*/node_modules
+          ]
+
+  test:
+    docker: *docker-node-lts
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
+      - run: yarn test
+
+  build:
+    docker: *docker-node-lts
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
+      - run: yarn build
+
+workflows:
+  version: 2
+  compile_test_build:
+    jobs:
+      - checkout-code
+      - test:
+          requires: [
+            checkout-code
+          ]
+      - build:
+          requires: [
+            test
+          ]
