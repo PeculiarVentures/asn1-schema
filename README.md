@@ -68,5 +68,5 @@ Certificate {
 ### Create schema
 
 ```
-npm run create <name>
+yarn run create <name>
 ```

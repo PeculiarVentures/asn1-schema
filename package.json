@@ -1,51 +1,28 @@
 {
-  "name": "root",
+  "name": "asn1-schema-monorepo",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
     "@types/mocha": "^8.0.0",
     "@types/node": "^13.11.1",
     "lerna": "^3.22.1",
     "mocha": "^8.0.1",
-    "rimraf": "^3.0.2",
     "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.9.7"
-  },
-  "dependencies": {
-    "@peculiar/asn1-adobe-acrobat": "file:packages/adobe-acrobat",
-    "@peculiar/asn1-android": "file:packages/android",
-    "@peculiar/asn1-cert-transparency": "file:packages/cert-transparency",
-    "@peculiar/asn1-cms": "file:packages/cms",
-    "@peculiar/asn1-csr": "file:packages/csr",
-    "@peculiar/asn1-ecc": "file:packages/ecc",
-    "@peculiar/asn1-lei": "file:packages/lei",
-    "@peculiar/asn1-ocsp": "file:packages/ocsp",
-    "@peculiar/asn1-pfx": "file:packages/pfx",
-    "@peculiar/asn1-pkcs8": "file:packages/pkcs8",
-    "@peculiar/asn1-rsa": "file:packages/rsa",
-    "@peculiar/asn1-schema": "file:packages/schema",
-    "@peculiar/asn1-x509": "file:packages/x509",
-    "@peculiar/asn1-x509-attr": "file:packages/x509-attr",
-    "@peculiar/asn1-x509-logotype": "file:packages/x509-logotype",
-    "@peculiar/asn1-x509-microsoft": "file:packages/x509-microsoft",
-    "@peculiar/asn1-x509-netscape": "file:packages/x509-netscape",
-    "@peculiar/asn1-x509-qualified": "file:packages/x509-qualified",
-    "@peculiar/asn1-x509-trustanchor": "file:packages/x509-trustanchor",
-    "@types/asn1js": "0.0.1",
-    "asn1js": "^2.0.26",
-    "ipaddr.js": "^1.9.1",
-    "pvtsutils": "^1.0.11",
-    "tslib": "^2.0.1"
   },
   "scripts": {
     "test": "mocha",
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
-    "clear": "lerna run clear",
+    "clear": "lerna run --parallel clear",
     "create": "ts-node scripts/create_package.ts",
-    "postcreate": "lerna bootstrap",
-    "prepub": "npm run build",
-    "pub": "lerna publish"
+    "prepub": "yarn run build",
+    "pub": "lerna publish",
+    "bootstrap": "yarn",
+    "bootstrap:upgrade": "yarn upgrade-interactive --latest"
   },
   "nyc": {
     "extension": [
