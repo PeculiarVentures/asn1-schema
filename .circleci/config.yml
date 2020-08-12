@@ -37,11 +37,6 @@ jobs:
           command: git diff --exit-code
       - save_cache: *save-node-modules-cache
       - save_cache: *save-yarn-cache
-      - persist_to_workspace:
-          root: "."
-          paths: [
-            packages/*/node_modules
-          ]
 
   test:
     docker: *docker-node-lts
