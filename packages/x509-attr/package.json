@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-attr",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "description": "ASN.1 schema of `An Internet Attribute Certificate` (RFC3281)",
   "files": [
     "build",
