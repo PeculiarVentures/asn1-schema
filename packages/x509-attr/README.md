@@ -5,4 +5,4 @@
   
 [![NPM](https://nodei.co/npm/@peculiar/asn1-x509-attr.png)](https://nodei.co/npm/@peculiar/asn1-x509-attr/)
 
-[RFC 3281](https://tools.ietf.org/html/rfc3281) An Internet Attribute Certificate
+[RFC 5755](https://tools.ietf.org/html/rfc5755) An Internet Attribute Certificate
