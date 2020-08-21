@@ -1,3 +1,5 @@
+import { execSync } from "child_process";
+import * as rimraf from "rimraf";
 import * as fs from "fs";
 import * as path from "path";
 const pkg = require("../package.json");
@@ -13,24 +15,19 @@ async function main(name: string) {
     throw new Error(`Module '${name}' already exists`);
   }
 
-  // Create project folder
-  fs.mkdirSync(moduleDir);
+  // Create package
+  execSync(`lerna create ${moduleName} --dependencies @peculiar/asn1-schema asn1js tslib --keywords asn --yes`);
+  fs.renameSync(path.join(projectDir, "packages", `asn1-${name}`), moduleDir);
 
-  // Create package.json
-  const packageJson = {
-    name: moduleName,
-    version: "0.0.0",
+  // Update package.json
+  const packageJson = require(path.join(moduleDir, "package.json"));
+  Object.assign(packageJson, {
     description: "",
     files: [
       "build",
       "LICENSE",
       "README.md"
     ],
-    bugs: {
-      url: "https://github.com/PeculiarVentures/asn1-schema/issues"
-    },
-    homepage: `https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/${name}#readme`,
-    keywords: ["asn"],
     author: "PeculiarVentures, Inc",
     license: "MIT",
     main: "build/cjs/index.js",
@@ -50,14 +47,12 @@ async function main(name: string) {
       "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
       "rebuild": "npm run clear && npm run build"
     },
-    dependencies: {
-      "@peculiar/asn1-schema": "^2.0.3",
-      "asn1js": pkg.dependencies["asn1js"],
-      "tslib": pkg.dependencies["tslib"],
-    }
-  };
-  fs.writeFileSync(path.join(moduleDir, "package.json"), JSON.stringify(packageJson, null, "  "));
+  });
+  delete packageJson.directories;
+  fs.writeFileSync(path.join(moduleDir, "package.json"), JSON.stringify(packageJson, null, "  "), { flag: "w+" });
 
+  rimraf.sync(path.join(moduleDir, "__tests__"));
+  rimraf.sync(path.join(moduleDir, "lib"));
   fs.mkdirSync(path.join(moduleDir, "test"));
   fs.mkdirSync(path.join(moduleDir, "src"));
 
@@ -68,7 +63,7 @@ async function main(name: string) {
 
 [![NPM](https://nodei.co/npm/@peculiar/asn1-${name}.png)](https://nodei.co/npm/@peculiar/asn1-${name}/)
 `;
-  fs.writeFileSync(path.join(moduleDir, "README.md"), readme);
+  fs.writeFileSync(path.join(moduleDir, "README.md"), readme, { flag: "w+" });
 
   const license = `MIT License
 
@@ -92,27 +87,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 `;
-  fs.writeFileSync(path.join(moduleDir, "LICENSE"), license);
+  fs.writeFileSync(path.join(moduleDir, "LICENSE"), license, { flag: "w+" });
 
   const tsconfig = {
     extends: "../../tsconfig.compile.json",
     include: ["src"],
   };
-  fs.writeFileSync(path.join(moduleDir, "tsconfig.compile.json"), JSON.stringify(tsconfig, null, "  "));
-
-  // Add to main package
-  pkg.dependencies[moduleName] = `file:packages/${name}`;
-  const orderedDeps: { [key: string]: string; } = {};
-  Object.keys(pkg.dependencies).sort().forEach((key) => {
-    orderedDeps[key] = pkg.dependencies[key];
-  });
-  pkg.dependencies = orderedDeps;
-  fs.writeFileSync(path.join(projectDir, "package.json"), `${JSON.stringify(pkg, null, "  ")}\n`);
+  fs.writeFileSync(path.join(moduleDir, "tsconfig.compile.json"), JSON.stringify(tsconfig, null, "  ")), { flag: "w+" };
 
   // Add TS alias
   const globalTsConfig = require("../tsconfig.json");
   globalTsConfig.compilerOptions.paths[moduleName] = [`./packages/${name}`];
-  fs.writeFileSync(path.join(projectDir, "tsconfig.json"), `${JSON.stringify(globalTsConfig, null, "  ")}\n`);
+  fs.writeFileSync(path.join(projectDir, "tsconfig.json"), `${JSON.stringify(globalTsConfig, null, "  ")}\n`, { flag: "w+" });
 
   console.log(`Package '${moduleName}' created`);
 }

@@ -51,5 +51,9 @@
     "spec": [
       "packages/*/test/**/*.ts"
     ]
+  },
+  "dependencies": {
+    "@types/rimraf": "^3.0.0",
+    "rimraf": "^3.0.2"
   }
 }
