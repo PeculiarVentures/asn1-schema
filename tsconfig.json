@@ -59,6 +59,9 @@
       ],
       "@peculiar/asn1-adobe-acrobat": [
         "./packages/adobe-acrobat"
+      ],
+      "@peculiar/asn1-ntqwac": [
+        "./packages/ntqwac"
       ]
     }
   },
