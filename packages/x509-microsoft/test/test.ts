@@ -24,7 +24,7 @@ context("Microsoft X509", () => {
       for (const key in vectors) {
         it(key, () => {
           const caVersion = AsnConvert.parse(vectors[key], CaVersion);
-          assert.equal(caVersion.toString(), key);
+          assert.strictEqual(caVersion.toString(), key);
         });
       }
     });

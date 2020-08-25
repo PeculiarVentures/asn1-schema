@@ -14,8 +14,8 @@ context("Schema", () => {
     }
     const parentSchema = schemaStorage.get(Parent);
     const childSchema = schemaStorage.get(Child);
-    assert.equal(Object.keys(parentSchema.items).length, 1);
-    assert.equal(Object.keys(childSchema.items).length, 2);
+    assert.strictEqual(Object.keys(parentSchema.items).length, 1);
+    assert.strictEqual(Object.keys(childSchema.items).length, 2);
   });
   it("throw error on a non-existent schema", () => {
     class Parent {

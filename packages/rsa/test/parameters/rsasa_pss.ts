@@ -9,7 +9,7 @@ context("RSASSA-PSS params", () => {
     const params = new RsaSaPssParams();
 
     const der = AsnConvert.serialize(params);
-    assert.equal(Buffer.from(der).toString("hex"), "3000");
+    assert.strictEqual(Buffer.from(der).toString("hex"), "3000");
   });
 
   it("serialize hash:md5 ", () => {
@@ -45,7 +45,7 @@ context("RSASSA-PSS params", () => {
     //     INTEGER 1000
     //   [3] (1 elem)
     //     INTEGER 2
-    assert.equal(Buffer.from(der).toString("hex"), "3031a00e300c06082a864886f70d02050500a114301206052b0e03021a300906052b0e03021a0500a204020203e8a303020102");
+    assert.strictEqual(Buffer.from(der).toString("hex"), "3031a00e300c06082a864886f70d02050500a114301206052b0e03021a300906052b0e03021a0500a204020203e8a303020102");
   });
 
 });

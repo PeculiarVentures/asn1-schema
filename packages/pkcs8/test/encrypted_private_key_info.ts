@@ -17,13 +17,13 @@ context("PrivateKeyInfo", () => {
     });
 
     const der = AsnConvert.serialize(obj);
-    assert.equal(Buffer.from(der).toString("hex"), hex);
+    assert.strictEqual(Buffer.from(der).toString("hex"), hex);
   });
 
   it("parse", () => {
     const obj = AsnConvert.parse(Buffer.from(hex, "hex"), EncryptedPrivateKeyInfo);
-    assert.equal(obj.encryptionAlgorithm.algorithm, "1.2.3.4.5");
-    assert.equal(obj.encryptedData.byteLength, 3);
+    assert.strictEqual(obj.encryptionAlgorithm.algorithm, "1.2.3.4.5");
+    assert.strictEqual(obj.encryptedData.byteLength, 3);
   })
 
 });

@@ -8,7 +8,7 @@ context("lei", () => {
     // const hex = "";
 
     // const lei = AsnConvert.parse(Buffer.from(hex, "hex"), LeiChoice);
-    // assert.equal(lei.text, "");
+    // assert.strictEqual(lei.text, "");
   });
 
 });

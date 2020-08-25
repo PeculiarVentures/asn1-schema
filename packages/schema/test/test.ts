@@ -8,7 +8,7 @@ import { AsnSerializer } from "../src/serializer";
 import { IAsnConvertible } from "../src/types";
 
 function assertBuffer(actual: Buffer, expected: Buffer) {
-  assert.equal(Buffer.compare(actual, expected), 0,
+  assert.strictEqual(Buffer.compare(actual, expected), 0,
     `Buffers are not equal.\n\tActual:   ${actual.toString("hex")}\n\tExpected: ${expected.toString("hex")}`);
 }
 
@@ -68,7 +68,7 @@ context("Test", () => {
         });
         it("parse", () => {
           const obj = AsnParser.parse(Buffer.from("a1060c0474657374", "hex"), Test);
-          assert.equal(obj.select2, "test");
+          assert.strictEqual(obj.select2, "test");
         });
       });
       context("IMPLICIT", () => {
@@ -81,7 +81,7 @@ context("Test", () => {
           });
           it("parse", () => {
             const obj = AsnParser.parse(new Uint8Array(Buffer.from("80050102030405", "hex")).buffer, Test);
-            assert.equal(obj.select1!.byteLength, 5);
+            assert.strictEqual(obj.select1!.byteLength, 5);
           });
         });
         context("Repeated SET", () => {
@@ -100,7 +100,7 @@ context("Test", () => {
           });
           it("parse", () => {
             const obj = AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test2);
-            assert.equal(obj.items.join(""), "12345");
+            assert.strictEqual(obj.items.join(""), "12345");
           });
         });
         context("Repeated SEQUENCE", () => {
@@ -119,7 +119,7 @@ context("Test", () => {
           });
           it("parse", () => {
             const obj = AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test2);
-            assert.equal(obj.items.join(""), "12345");
+            assert.strictEqual(obj.items.join(""), "12345");
           });
         });
         context("Constructed", () => {
@@ -129,13 +129,13 @@ context("Test", () => {
             obj.select4 = new Child();
 
             const buf = AsnSerializer.serialize(obj);
-            assert.equal(Buffer.from(buf).toString("hex"), der.toString("hex"));
+            assert.strictEqual(Buffer.from(buf).toString("hex"), der.toString("hex"));
           });
           it("parse", () => {
             const obj = AsnParser.parse(new Uint8Array(der).buffer, Test);
-            assert.equal(!!obj.select4, true);
-            assert.equal(obj.select4!.text, "test");
-            assert.equal(obj.select4!.value, 2);
+            assert.strictEqual(!!obj.select4, true);
+            assert.strictEqual(obj.select4!.text, "test");
+            assert.strictEqual(obj.select4!.value, 2);
           });
         });
       });
@@ -160,7 +160,7 @@ context("Test", () => {
       });
       it("parse", () => {
         const obj = AsnParser.parse(new Uint8Array(Buffer.from("06022a03", "hex")).buffer, Choice);
-        assert.equal(obj.oidValue, "1.2.3");
+        assert.strictEqual(obj.oidValue, "1.2.3");
       });
     });
 
@@ -197,7 +197,7 @@ context("Test", () => {
         if (assertCb) {
           assertCb(obj.value, expected);
         } else {
-          assert.equal(obj.value, expected);
+          assert.strictEqual(obj.value, expected);
         }
       });
     }
@@ -448,10 +448,10 @@ context("Test", () => {
 
       const obj1 = new Test();
       const der = AsnSerializer.serialize(obj1);
-      assert.equal(Buffer.from(der).toString("hex"), "3003020101");
+      assert.strictEqual(Buffer.from(der).toString("hex"), "3003020101");
 
       const obj2 = AsnParser.parse(der, Test);
-      assert.equal(obj2.value, 1);
+      assert.strictEqual(obj2.value, 1);
     });
     it("SET", () => {
       @AsnType({ type: AsnTypeTypes.Set })
@@ -462,10 +462,10 @@ context("Test", () => {
 
       const obj1 = new Test();
       const der = AsnSerializer.serialize(obj1);
-      assert.equal(Buffer.from(der).toString("hex"), "3103020101");
+      assert.strictEqual(Buffer.from(der).toString("hex"), "3103020101");
 
       const obj2 = AsnParser.parse(der, Test);
-      assert.equal(obj2.value, 1);
+      assert.strictEqual(obj2.value, 1);
     });
     it("child schema ", () => {
       class TbsCertificate {
@@ -518,7 +518,7 @@ context("Test", () => {
 
       it("parse", () => {
         const obj = AsnParser.parse(new Uint8Array(Buffer.from("300780050102030405", "hex")).buffer, Test);
-        assert.equal(obj.value.byteLength, 5);
+        assert.strictEqual(obj.value.byteLength, 5);
       });
 
     });
@@ -542,7 +542,7 @@ context("Test", () => {
 
       it("parse", () => {
         const obj = AsnParser.parse(new Uint8Array(Buffer.from("3009a00704050102030405", "hex")).buffer, Test);
-        assert.equal(obj.value.byteLength, 5);
+        assert.strictEqual(obj.value.byteLength, 5);
       });
 
     });
@@ -557,10 +557,10 @@ context("Test", () => {
           public value = new Uint8Array([255, 1]).buffer;
         }
         const der = AsnSerializer.serialize(new Test());
-        assert.equal(Buffer.from(der).toString("hex"), "3005030300ff01");
+        assert.strictEqual(Buffer.from(der).toString("hex"), "3005030300ff01");
 
         const obj = AsnParser.parse(der, Test);
-        assert.equal(obj.value.byteLength, 2);
+        assert.strictEqual(obj.value.byteLength, 2);
       });
     });
     context("IMPLICIT", () => {
@@ -570,10 +570,10 @@ context("Test", () => {
           public value = new Uint8Array([255, 1]).buffer;
         }
         const der = AsnSerializer.serialize(new Test());
-        assert.equal(Buffer.from(der).toString("hex"), "3005800300ff01");
+        assert.strictEqual(Buffer.from(der).toString("hex"), "3005800300ff01");
 
         const obj = AsnParser.parse(der, Test);
-        assert.equal(obj.value.byteLength, 2);
+        assert.strictEqual(obj.value.byteLength, 2);
       });
     });
   });
@@ -587,10 +587,10 @@ context("Test", () => {
       }
 
       const der = AsnSerializer.serialize(new Test());
-      assert.equal(Buffer.from(der).toString("hex"), "3006820474657374");
+      assert.strictEqual(Buffer.from(der).toString("hex"), "3006820474657374");
 
       const obj = AsnParser.parse(der, Test);
-      assert.equal(obj.value, "test");
+      assert.strictEqual(obj.value, "test");
     });
   });
 
@@ -615,10 +615,10 @@ context("Test", () => {
       obj1.value = "test";
 
       const der = AsnSerializer.serialize(obj1);
-      assert.equal(Buffer.from(der).toString("hex"), "0c0474657374");
+      assert.strictEqual(Buffer.from(der).toString("hex"), "0c0474657374");
 
       const obj2 = AsnParser.parse(der, Test);
-      assert.equal(obj1.value, obj2.value);
+      assert.strictEqual(obj1.value, obj2.value);
     });
   });
 
@@ -632,11 +632,11 @@ context("Test", () => {
 
     const obj1 = new Test();
     const der = AsnSerializer.serialize(obj1);
-    assert.equal(Buffer.from(der).toString("hex"), "3003020101");
+    assert.strictEqual(Buffer.from(der).toString("hex"), "3003020101");
 
     const obj2 = AsnParser.parse(der, Test);
-    assert.equal(obj2.opt, undefined);
-    assert.equal(obj2.value, 1);
+    assert.strictEqual(obj2.opt, undefined);
+    assert.strictEqual(obj2.value, 1);
   });
 
   context("REPEATED", () => {
@@ -649,10 +649,10 @@ context("Test", () => {
 
         const obj1 = new Test();
         const der = AsnSerializer.serialize(obj1);
-        assert.equal(Buffer.from(der).toString("hex"), "3011310f020101020102020103020104020105");
+        assert.strictEqual(Buffer.from(der).toString("hex"), "3011310f020101020102020103020104020105");
 
         const obj2 = AsnParser.parse(der, Test);
-        assert.equal(obj2.values.join(""), "12345");
+        assert.strictEqual(obj2.values.join(""), "12345");
       });
       it("SEQUENCE", () => {
         class Test {
@@ -662,10 +662,10 @@ context("Test", () => {
 
         const obj1 = new Test();
         const der = AsnSerializer.serialize(obj1);
-        assert.equal(Buffer.from(der).toString("hex"), "3011300f020101020102020103020104020105");
+        assert.strictEqual(Buffer.from(der).toString("hex"), "3011300f020101020102020103020104020105");
 
         const obj2 = AsnParser.parse(der, Test);
-        assert.equal(obj2.values.join(""), "12345");
+        assert.strictEqual(obj2.values.join(""), "12345");
       });
     });
     context("CONSTRUCTED", () => {
@@ -688,12 +688,12 @@ context("Test", () => {
         obj1.values.push(new Child(1));
         obj1.values.push(new Child(2));
         const der = AsnSerializer.serialize(obj1);
-        assert.equal(Buffer.from(der).toString("hex"), "300c310a30030201013003020102");
+        assert.strictEqual(Buffer.from(der).toString("hex"), "300c310a30030201013003020102");
 
         const obj2 = AsnParser.parse(der, Test);
-        assert.equal(obj2.values.length, 2);
-        assert.equal(obj2.values[0].value, 1);
-        assert.equal(obj2.values[1].value, 2);
+        assert.strictEqual(obj2.values.length, 2);
+        assert.strictEqual(obj2.values[0].value, 1);
+        assert.strictEqual(obj2.values[1].value, 2);
       });
       it("SEQUENCE", () => {
         class Child {
@@ -714,12 +714,12 @@ context("Test", () => {
         obj1.values.push(new Child(1));
         obj1.values.push(new Child(2));
         const der = AsnSerializer.serialize(obj1);
-        assert.equal(Buffer.from(der).toString("hex"), "300c300a30030201013003020102");
+        assert.strictEqual(Buffer.from(der).toString("hex"), "300c300a30030201013003020102");
 
         const obj2 = AsnParser.parse(der, Test);
-        assert.equal(obj2.values.length, 2);
-        assert.equal(obj2.values[0].value, 1);
-        assert.equal(obj2.values[1].value, 2);
+        assert.strictEqual(obj2.values.length, 2);
+        assert.strictEqual(obj2.values[0].value, 1);
+        assert.strictEqual(obj2.values[1].value, 2);
       });
     });
   });
@@ -748,15 +748,15 @@ context("Test", () => {
 
       it("Buffer", () => {
         const obj = AsnParser.parse(Buffer.from(arrayBuffer), Test);
-        assert.equal(obj.value, 1);
+        assert.strictEqual(obj.value, 1);
       });
       it("ArrayBuffer", () => {
         const obj = AsnParser.parse(arrayBuffer, Test);
-        assert.equal(obj.value, 1);
+        assert.strictEqual(obj.value, 1);
       });
       it("ArrayBufferView", () => {
         const obj = AsnParser.parse(new Uint8Array(arrayBuffer), Test);
-        assert.equal(obj.value, 1);
+        assert.strictEqual(obj.value, 1);
       });
       it("ArrayBufferView", () => {
         assert.throws(() => {
@@ -799,8 +799,8 @@ context("Test", () => {
     });
     it("parse", () => {
       const obj = AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test);
-      assert.equal(obj.join(", "), "1.2.3.4.5, 2.3.4.5.6");
-      assert.equal(obj instanceof Test, true);
+      assert.strictEqual(obj.join(", "), "1.2.3.4.5, 2.3.4.5.6");
+      assert.strictEqual(obj instanceof Test, true);
       const type = typeof (obj);
     });
   });

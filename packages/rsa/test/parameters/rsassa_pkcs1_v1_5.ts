@@ -22,15 +22,15 @@ context("RSASSA PKCS v1.5", () => {
       //     NULL
       //   OCTET STRING (20 byte) DA39A3EE5E6B4B0D3255BFEF95601890AFD80709
       const hex = Buffer.from(der).toString("hex");
-      assert.equal(hex, digestInfoHex);
+      assert.strictEqual(hex, digestInfoHex);
     });
 
     it("parse", () => {
       const der = Buffer.from(digestInfoHex, "hex");
 
       const digestInfo = AsnConvert.parse(der, DigestInfo);
-      assert.equal(digestInfo.digestAlgorithm.algorithm, id_sha1);
-      assert.equal(digestInfo.digest.byteLength, 20);
+      assert.strictEqual(digestInfo.digestAlgorithm.algorithm, id_sha1);
+      assert.strictEqual(digestInfo.digest.byteLength, 20);
     });
   });
 });

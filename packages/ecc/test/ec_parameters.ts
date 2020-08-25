@@ -11,12 +11,12 @@ context("EC parameters", () => {
       namedCurve: id_secp256r1,
     })
     const der = AsnConvert.serialize(ecParams);
-    assert.equal(Buffer.from(der).toString("hex"), ecParamsHex);
+    assert.strictEqual(Buffer.from(der).toString("hex"), ecParamsHex);
   });
 
   it("parse", () => {
     const ecParams = AsnConvert.parse(Buffer.from(ecParamsHex, "hex"), ECParameters);
-    assert.equal(ecParams.namedCurve, id_secp256r1);
+    assert.strictEqual(ecParams.namedCurve, id_secp256r1);
   });
 
 });

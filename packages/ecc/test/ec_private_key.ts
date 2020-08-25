@@ -13,15 +13,15 @@ context("EC Private Key", () => {
       publicKey: new Uint8Array([0, 128, 0, 0, 2]).buffer,
     })
     const der = AsnConvert.serialize(privateKey);
-    assert.equal(Buffer.from(der).toString("hex"), privateKeyHex);
+    assert.strictEqual(Buffer.from(der).toString("hex"), privateKeyHex);
   });
 
   it("parse", () => {
     const privateKey = AsnConvert.parse(Buffer.from(privateKeyHex, "hex"), ECPrivateKey);
-    assert.equal(privateKey.version, 1);
-    assert.equal(privateKey.privateKey.byteLength, 4);
-    assert.equal(privateKey.parameters?.namedCurve, id_secp256r1);
-    assert.equal(privateKey.publicKey?.byteLength, 5);
+    assert.strictEqual(privateKey.version, 1);
+    assert.strictEqual(privateKey.privateKey.byteLength, 4);
+    assert.strictEqual(privateKey.parameters?.namedCurve, id_secp256r1);
+    assert.strictEqual(privateKey.publicKey?.byteLength, 5);
   });
 
 });

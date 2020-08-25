@@ -33,22 +33,22 @@ context("RSA Private Key", () => {
       //   INTEGER 8388615
       //   INTEGER 8388616
       const hex = Buffer.from(der).toString("hex");
-      assert.equal(hex, privateKeyWithoutPrimeInfoHex);
+      assert.strictEqual(hex, privateKeyWithoutPrimeInfoHex);
     });
 
     it("parse", () => {
       const der = Buffer.from(privateKeyWithoutPrimeInfoHex, "hex");
 
       const privateKey = AsnConvert.parse(der, RSAPrivateKey);
-      assert.equal(privateKey.version, 0);
-      assert.equal(privateKey.modulus.byteLength, 4);
-      assert.equal(privateKey.publicExponent.byteLength, 5);
-      assert.equal(privateKey.privateExponent.byteLength, 6);
-      assert.equal(privateKey.prime1.byteLength, 7);
-      assert.equal(privateKey.prime2.byteLength, 8);
-      assert.equal(privateKey.exponent1.byteLength, 9);
-      assert.equal(privateKey.exponent2.byteLength, 10);
-      assert.equal(privateKey.coefficient.byteLength, 11);
+      assert.strictEqual(privateKey.version, 0);
+      assert.strictEqual(privateKey.modulus.byteLength, 4);
+      assert.strictEqual(privateKey.publicExponent.byteLength, 5);
+      assert.strictEqual(privateKey.privateExponent.byteLength, 6);
+      assert.strictEqual(privateKey.prime1.byteLength, 7);
+      assert.strictEqual(privateKey.prime2.byteLength, 8);
+      assert.strictEqual(privateKey.exponent1.byteLength, 9);
+      assert.strictEqual(privateKey.exponent2.byteLength, 10);
+      assert.strictEqual(privateKey.coefficient.byteLength, 11);
     });
   });
 
@@ -75,18 +75,18 @@ context("RSA Private Key", () => {
       const der = AsnConvert.serialize(privateKey);
 
       const hex = Buffer.from(der).toString("hex");
-      assert.equal(hex, privateKeyWithPrimeInfoHex);
+      assert.strictEqual(hex, privateKeyWithPrimeInfoHex);
     });
 
     it("parse", () => {
       const der = Buffer.from(privateKeyWithPrimeInfoHex, "hex");
 
       const privateKey = AsnConvert.parse(der, RSAPrivateKey);
-      assert.equal(privateKey.version, 1);
-      assert.equal(privateKey.otherPrimeInfos?.length, 1);
-      assert.equal(privateKey.otherPrimeInfos?.[0].coefficient.byteLength, 4);
-      assert.equal(privateKey.otherPrimeInfos?.[0].exponent.byteLength, 5);
-      assert.equal(privateKey.otherPrimeInfos?.[0].prime.byteLength, 6);
+      assert.strictEqual(privateKey.version, 1);
+      assert.strictEqual(privateKey.otherPrimeInfos?.length, 1);
+      assert.strictEqual(privateKey.otherPrimeInfos?.[0].coefficient.byteLength, 4);
+      assert.strictEqual(privateKey.otherPrimeInfos?.[0].exponent.byteLength, 5);
+      assert.strictEqual(privateKey.otherPrimeInfos?.[0].prime.byteLength, 6);
     });
   });
 });

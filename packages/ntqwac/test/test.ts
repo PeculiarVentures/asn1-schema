@@ -16,47 +16,47 @@ context("ntQWAC", () => {
   it("Domain name #1", () => {
     const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_1), DomainName);
 
-    assert.equal(!!obj, true);
+    assert.strictEqual(!!obj, true);
   });
 
   it("Domain name #2", () => {
     const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_2), DomainName);
 
-    assert.equal(!!obj, true);
+    assert.strictEqual(!!obj, true);
   });
 
   it("Type Relationship", () => {
     const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_5), TypeRelationship);
 
-    assert.equal(!!obj, true);
-    assert.equal(!!obj.DNBvsDNO.toNumber(), 1);
-    assert.equal(!!obj.DNBvsDNT.toNumber(), 1);
-    assert.equal(!!obj.DNOvsDNT.toNumber(), 1);
+    assert.strictEqual(!!obj, true);console.log(obj.DNBvsDNO.toNumber());
+    assert.strictEqual(obj.DNBvsDNO.toNumber(), 1);
+    assert.strictEqual(obj.DNBvsDNT.toNumber(), 1);
+    assert.strictEqual(obj.DNOvsDNT.toNumber(), 1);
   });
 
   it("Activity Description", () => {
     const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_6), ActivityDescription);
 
-    assert.equal(!!obj, true);
+    assert.strictEqual(!!obj, true);
   });
 
   it("Web GDPR", () => {
     const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_7), WebGDPR);
 
-    assert.equal(!!obj, true);
+    assert.strictEqual(!!obj, true);
   });
 
   it("Insurance Value", () => {
     const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_8), InsuranceValue);
 
-    assert.equal(!!obj, true);
-    assert.equal(obj.toString(), "1000 x 10^2 EUR");
+    assert.strictEqual(!!obj, true);
+    assert.strictEqual(obj.toString(), "1000 x 10^2 EUR");
   });
 
   it("Insurance Value", () => {
     const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_9), ValuationRanking);
 
-    assert.equal(!!obj, true);
+    assert.strictEqual(!!obj, true);
   });
 
 });

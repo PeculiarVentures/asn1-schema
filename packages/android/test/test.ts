@@ -12,24 +12,24 @@ context("Android", () => {
 
       const kd = AsnConvert.parse(Buffer.from(hex, "hex"), KeyDescription);
 
-      assert.equal(kd.attestationVersion, Version.KM3);
-      assert.equal(kd.attestationSecurityLevel, SecurityLevel.software);
-      assert.equal(kd.keymasterVersion, 1);
-      assert.equal(kd.keymasterSecurityLevel, SecurityLevel.software);
-      assert.equal(kd.attestationChallenge.byteLength, 32);
-      assert.equal(kd.uniqueId.byteLength, 0);
-      assert.equal(kd.softwareEnforced.creationDateTime, 1506793476000);
-      assert.equal(kd.softwareEnforced.attestationApplicationId!.byteLength, 87);
-      assert.equal(kd.teeEnforced.purpose!.length, 1);
-      assert.equal(kd.teeEnforced.purpose![0], 2);
-      assert.equal(kd.teeEnforced.algorithm, 3);
-      assert.equal(kd.teeEnforced.keySize, 256);
-      assert.equal(kd.teeEnforced.digest!.length, 1);
-      assert.equal(kd.teeEnforced.digest![0], 4);
-      assert.equal(kd.teeEnforced.ecCurve, 1);
-      assert.equal(kd.teeEnforced.userAuthType, 2);
-      assert.equal(kd.teeEnforced.origin, 0);
-      assert.equal(kd.teeEnforced.rollbackResistant, null);
+      assert.strictEqual(kd.attestationVersion, Version.KM3);
+      assert.strictEqual(kd.attestationSecurityLevel, SecurityLevel.software);
+      assert.strictEqual(kd.keymasterVersion, 1);
+      assert.strictEqual(kd.keymasterSecurityLevel, SecurityLevel.software);
+      assert.strictEqual(kd.attestationChallenge.byteLength, 32);
+      assert.strictEqual(kd.uniqueId.byteLength, 0);
+      assert.strictEqual(kd.softwareEnforced.creationDateTime, '1506793476000');
+      assert.strictEqual(kd.softwareEnforced.attestationApplicationId!.byteLength, 87);
+      assert.strictEqual(kd.teeEnforced.purpose!.length, 1);
+      assert.strictEqual(kd.teeEnforced.purpose![0], 2);
+      assert.strictEqual(kd.teeEnforced.algorithm, 3);
+      assert.strictEqual(kd.teeEnforced.keySize, 256);
+      assert.strictEqual(kd.teeEnforced.digest!.length, 1);
+      assert.strictEqual(kd.teeEnforced.digest![0], 4);
+      assert.strictEqual(kd.teeEnforced.ecCurve, 1);
+      assert.strictEqual(kd.teeEnforced.userAuthType, 2);
+      assert.strictEqual(kd.teeEnforced.origin, 0);
+      assert.strictEqual(kd.teeEnforced.rollbackResistant, null);
     });
 
   });

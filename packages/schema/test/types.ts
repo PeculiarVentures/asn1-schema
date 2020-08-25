@@ -14,14 +14,14 @@ context("asn1-schema", () => {
         const obj = new BitString(new Uint8Array([1, 2, 3]), 3);
         const der = AsnConvert.serialize(obj);
 
-        assert.equal(Convert.ToHex(der), hex);
+        assert.strictEqual(Convert.ToHex(der), hex);
       });
 
       it("parse", () => {
         const obj = AsnConvert.parse(Convert.FromHex(hex), BitString);
 
-        assert.equal(obj.unusedBits, 3);
-        assert.equal(Convert.ToHex(obj.value), "010203");
+        assert.strictEqual(obj.unusedBits, 3);
+        assert.strictEqual(Convert.ToHex(obj.value), "010203");
       });
 
     });
@@ -35,21 +35,21 @@ context("asn1-schema", () => {
         const obj = new BitString(num);
         const der = AsnConvert.serialize(obj);
 
-        assert.equal(Convert.ToHex(der), hex);
+        assert.strictEqual(Convert.ToHex(der), hex);
       });
 
       it("parse", () => {
         const obj = AsnConvert.parse(Convert.FromHex(hex), BitString);
 
-        assert.equal(obj.unusedBits, 7);
-        assert.equal(obj.toNumber(), num);
+        assert.strictEqual(obj.unusedBits, 7);
+        assert.strictEqual(obj.toNumber(), num);
       });
 
       it("parse #2", () => {
         const obj = AsnConvert.parse(Convert.FromHex("03030740ff"), BitString);
 
-        assert.equal(obj.unusedBits, 7);
-        assert.equal(obj.toNumber(), num);
+        assert.strictEqual(obj.unusedBits, 7);
+        assert.strictEqual(obj.toNumber(), num);
       });
 
     });

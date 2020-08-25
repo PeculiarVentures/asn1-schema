@@ -55,10 +55,10 @@ context("cms", () => {
       "UHH1QQQwNuRlC7xCJd0SMQA=";
 
     const contentInfo = AsnParser.parse(Convert.FromBase64(pem), ContentInfo)
-    assert.equal(contentInfo.contentType, "1.2.840.113549.1.7.2");
+    assert.strictEqual(contentInfo.contentType, "1.2.840.113549.1.7.2");
     
     const signedData = AsnParser.parse(contentInfo.content, SignedData);
-    assert.equal(!!signedData, true);
+    assert.strictEqual(!!signedData, true);
   });
 
 });

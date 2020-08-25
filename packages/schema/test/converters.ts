@@ -8,19 +8,19 @@ context("converters", () => {
       const asn = AsnAnyConverter.toASN(null);
 
       const der = asn.toBER();
-      assert.equal(Buffer.from(der).toString("hex"), "0500");
+      assert.strictEqual(Buffer.from(der).toString("hex"), "0500");
 
       const value = AsnAnyConverter.fromASN(asn);
-      assert.equal(value, null);
+      assert.strictEqual(value, null);
     });
     it("Integer", () => {
       const asn = AsnAnyConverter.toASN(new Uint8Array([2, 1, 1]).buffer);
 
       const der = asn.toBER();
-      assert.equal(Buffer.from(der).toString("hex"), "020101");
+      assert.strictEqual(Buffer.from(der).toString("hex"), "020101");
 
       const value = AsnAnyConverter.fromASN(asn);
-      assert.equal(value!.byteLength, 3);
+      assert.strictEqual(value!.byteLength, 3);
     });
     it("Throw error on wrong encoded value", () => {
       assert.throws(() => {
@@ -35,10 +35,10 @@ context("converters", () => {
       const asn = AsnGeneralizedTimeConverter.toASN(new Date(dateNum));
 
       const der = asn.toBER();
-      assert.equal(Buffer.from(der).toString("hex"), "181332303138303932313230303332342e3435355a");
+      assert.strictEqual(Buffer.from(der).toString("hex"), "181332303138303932313230303332342e3435355a");
 
       const value = AsnGeneralizedTimeConverter.fromASN(asn);
-      assert.equal(value.getTime(), dateNum);
+      assert.strictEqual(value.getTime(), dateNum);
     });
   });
 
@@ -48,10 +48,10 @@ context("converters", () => {
       const asn = AsnUTCTimeConverter.toASN(new Date(dateNum));
 
       const der = asn.toBER();
-      assert.equal(Buffer.from(der).toString("hex"), "170d3138303932313230303332345a");
+      assert.strictEqual(Buffer.from(der).toString("hex"), "170d3138303932313230303332345a");
 
       const value = AsnUTCTimeConverter.fromASN(asn);
-      assert.equal(value.getTime(), dateNum);
+      assert.strictEqual(value.getTime(), dateNum);
     });
   });
 });

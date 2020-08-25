@@ -16,7 +16,7 @@ context("RSA Public Key", () => {
     //   INTEGER (1023 bit) -4.587926122739843e+307
     //   INTEGER 65537
     const hex = Buffer.from(der).toString("hex");
-    assert.equal(hex, "308188028180beaa6f771bb267aaca6275938ff6730c1159000025a5ee61a688981ea6b68f990aeeff14e4468f6366cb89bf66e01e348fe9f7155f715021a2a6559da8c249293fb83e318ee44dd2e0df648c586ee7b9e8613ef3ef7d36274b095dea056d7c65804fb81b9e4ec659b9d880f6fd125eb0fe67cdc193ae2430a116eb24fe4e12dd0203010001");
+    assert.strictEqual(hex, "308188028180beaa6f771bb267aaca6275938ff6730c1159000025a5ee61a688981ea6b68f990aeeff14e4468f6366cb89bf66e01e348fe9f7155f715021a2a6559da8c249293fb83e318ee44dd2e0df648c586ee7b9e8613ef3ef7d36274b095dea056d7c65804fb81b9e4ec659b9d880f6fd125eb0fe67cdc193ae2430a116eb24fe4e12dd0203010001");
   });
 
   it("parse", () => {
@@ -24,7 +24,7 @@ context("RSA Public Key", () => {
     const der = Buffer.from(pem, "base64");
 
     const publicKey = AsnConvert.parse(der, RSAPublicKey);
-    assert.equal(publicKey.publicExponent.byteLength, 3);
-    assert.equal(publicKey.modulus.byteLength, 129);
+    assert.strictEqual(publicKey.publicExponent.byteLength, 3);
+    assert.strictEqual(publicKey.modulus.byteLength, 129);
   });
 });

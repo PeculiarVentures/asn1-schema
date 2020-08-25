@@ -25,15 +25,15 @@ context("PrivateKeyInfo", () => {
     });
 
     const der = AsnConvert.serialize(obj);
-    assert.equal(Buffer.from(der).toString("hex"), hex);
+    assert.strictEqual(Buffer.from(der).toString("hex"), hex);
   });
 
   it("parse", () => {
     const obj = AsnConvert.parse(Buffer.from(hex, "hex"), PrivateKeyInfo);
-    assert.equal(obj.version, 0);
-    assert.equal(obj.privateKeyAlgorithm.algorithm, "1.2.3.4.5");
-    assert.equal(obj.privateKey.byteLength, 3);
-    assert.equal(obj.attributes?.length, 1);
+    assert.strictEqual(obj.version, 0);
+    assert.strictEqual(obj.privateKeyAlgorithm.algorithm, "1.2.3.4.5");
+    assert.strictEqual(obj.privateKey.byteLength, 3);
+    assert.strictEqual(obj.attributes?.length, 1);
   })
 
 });
