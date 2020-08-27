@@ -1,5 +1,6 @@
 import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, AsnArray } from "@peculiar/asn1-schema";
 import { Certificate } from "@peculiar/asn1-x509";
+import { AttributeCertificate } from '@peculiar/asn1-x509-attr';
 /**
  * ```
  * OtherCertificateFormat ::= SEQUENCE {
@@ -44,12 +45,15 @@ export class CertificateChoices {
   // @AsnProp({ type: AttributeCertificateV1, context: 1, implicit: true })
   // public v1AttrCert?: AttributeCertificateV1;
 
-  // TODO AttributeCertificateV2
-  // @AsnProp({ type: AttributeCertificateV2, context: 2, implicit: true })
-  // public v2AttrCert?: AttributeCertificateV2;
+  @AsnProp({ type: AttributeCertificate, context: 2, implicit: true })
+  public v2AttrCert?: AttributeCertificate;
 
   @AsnProp({ type: OtherCertificateFormat, context: 3, implicit: true })
   public other?: OtherCertificateFormat;
+
+  constructor(params: Partial<CertificateChoices> = {}) {
+    Object.assign(this, params);
+  }
 }
 
 /**
