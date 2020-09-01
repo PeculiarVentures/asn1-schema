@@ -62,6 +62,9 @@
       ],
       "@peculiar/asn1-ntqwac": [
         "./packages/ntqwac"
+      ],
+      "@peculiar/asn1-pkcs9": [
+        "./packages/pkcs9"
       ]
     }
   },

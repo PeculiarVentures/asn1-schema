@@ -40,6 +40,9 @@ export class DirectoryString {
     Object.assign(this, params);
   }
 
+  /**
+   * Returns a string representation of an object.
+   */
   public toString() {
     return this.bmpString || this.printableString || this.teletexString || this.universalString
       || this.utf8String || "";
