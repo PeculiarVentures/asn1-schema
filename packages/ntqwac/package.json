@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-ntqwac",
-  "version": "2.0.17",
+  "version": "2.0.20",
   "description": "",
   "keywords": [
     "asn"
@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.0.17",
-    "@peculiar/asn1-x509": "^2.0.17",
+    "@peculiar/asn1-x509": "^2.0.20",
     "asn1js": "^2.0.26",
     "tslib": "^2.0.1"
   },
