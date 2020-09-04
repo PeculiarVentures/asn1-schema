@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { AsnParser, AsnConvert } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
-import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName, UserNotice } from "../src";
+import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName, UserNotice, PrivateKeyUsagePeriod } from "../src";
 import { CertificateTemplate } from "@peculiar/asn1-x509-microsoft";
 
 context("x509", () => {
@@ -97,6 +97,16 @@ context("x509", () => {
     const userNotice = AsnConvert.parse(raw, UserNotice);
 
     assert.strictEqual(userNotice.explicitText!.bmpString, "Implementa la Politica de la Raiz Costarricense de Certificacion Digital v2");
+  });
+
+  it("PrivateKeyUsagePeriod", () => {
+    const hex = "3022800f32303033303130383233333732335a810f32303233303130393030303732335a";
+    const raw = Buffer.from(hex, "hex");
+
+    const privateKeyUsagePeriod = AsnConvert.parse(raw, PrivateKeyUsagePeriod);
+
+    assert.strictEqual(privateKeyUsagePeriod.notBefore?.getTime(), 1042069043000);
+    assert.strictEqual(privateKeyUsagePeriod.notAfter?.getTime(), 1673222843000);
   });
 
 });
