@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { AsnParser, AsnConvert } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
-import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName, UserNotice, PrivateKeyUsagePeriod } from "../src";
+import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName, UserNotice, PrivateKeyUsagePeriod, EntrustVersionInfo } from "../src";
 import { CertificateTemplate } from "@peculiar/asn1-x509-microsoft";
 
 context("x509", () => {
@@ -107,6 +107,16 @@ context("x509", () => {
 
     assert.strictEqual(privateKeyUsagePeriod.notBefore?.getTime(), 1042069043000);
     assert.strictEqual(privateKeyUsagePeriod.notAfter?.getTime(), 1673222843000);
+  });
+
+  it("EntrustVersionInfo", () => {
+    const hex = "300e1b0856362e303a342e3003020490";
+    const raw = Buffer.from(hex, "hex");
+
+    const entrustVersionInfo = AsnConvert.parse(raw, EntrustVersionInfo);
+
+    assert.strictEqual(entrustVersionInfo.entrustVers, "V6.0:4.0");
+    assert.strictEqual(entrustVersionInfo.entrustInfoFlags.toString(), "[keyUpdateAllowed]");
   });
 
 });
