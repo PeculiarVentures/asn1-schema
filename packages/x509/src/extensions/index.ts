@@ -16,3 +16,4 @@ export * from "./policy_mappings";
 export * from "./subject_alternative_name";
 export * from "./subject_directory_attributes";
 export * from "./subject_key_identifier";
+export * from "./private_key_usage_period";
