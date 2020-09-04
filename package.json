@@ -15,7 +15,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "lerna run build --since",
+    "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "clear": "lerna run --parallel clear",
     "create": "ts-node scripts/create_package.ts",
