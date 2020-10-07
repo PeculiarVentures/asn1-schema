@@ -37,7 +37,7 @@
     "@peculiar/asn1-schema": "^2.0.17",
     "@peculiar/asn1-x509": "^2.0.22",
     "asn1js": "^2.0.26",
-    "pvtsutils": "^1.0.11",
-    "tslib": "^2.0.1"
+    "pvtsutils": "^1.0.14",
+    "tslib": "^2.0.2"
   }
 }

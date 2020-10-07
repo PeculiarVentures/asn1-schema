@@ -39,8 +39,8 @@
   "dependencies": {
     "@peculiar/asn1-schema": "^2.0.17",
     "asn1js": "^2.0.26",
-    "ipaddr.js": "^1.9.1",
-    "pvtsutils": "^1.0.11",
-    "tslib": "^2.0.1"
+    "ipaddr.js": "^2.0.0",
+    "pvtsutils": "^1.0.14",
+    "tslib": "^2.0.2"
   }
 }
