@@ -1,5 +1,20 @@
-import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 import { ContentType } from "./types";
+
+@AsnType({ type: AsnTypeTypes.Choice })
+export class EncapsulatedContent {
+
+  @AsnProp({ type: OctetString })
+  public single?: OctetString;
+
+  @AsnProp({ type: AsnPropTypes.Any })
+  public any?: ArrayBuffer;
+
+  constructor(params: Partial<EncapsulatedContent> = {}) {
+    Object.assign(this, params);
+  }
+
+}
 
 /**
  * ```
@@ -12,9 +27,9 @@ export class EncapsulatedContentInfo {
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public eContentType: ContentType = "";
-  
-  @AsnProp({ type: OctetString, context: 0, optional: true })
-  public eContent?: OctetString;
+
+  @AsnProp({ type: EncapsulatedContent, context: 0, optional: true })
+  public eContent?: EncapsulatedContent;
 
   constructor(params: Partial<EncapsulatedContentInfo> = {}) {
     Object.assign(this, params);

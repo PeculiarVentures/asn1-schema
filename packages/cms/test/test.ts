@@ -1,7 +1,9 @@
 import { AsnParser } from "@peculiar/asn1-schema";
 import * as assert from "assert";
 import { Convert } from "pvtsutils";
-import { ContentInfo, SignedData } from "../src";
+import { ContentInfo, EncapsulatedContentInfo, id_data, id_signedData, SignedData } from "../src";
+
+import * as asn1 from "asn1js";
 
 context("cms", () => {
 
@@ -54,11 +56,31 @@ context("cms", () => {
       "DAWdaCDiRdWSWlrb6YNHUUI6jfdaTX94BpJHrT/BfYvZ9JvMFRdxZLrZz9Hn/T9t" +
       "UHH1QQQwNuRlC7xCJd0SMQA=";
 
-    const contentInfo = AsnParser.parse(Convert.FromBase64(pem), ContentInfo)
-    assert.strictEqual(contentInfo.contentType, "1.2.840.113549.1.7.2");
-    
+    const contentInfo = AsnParser.parse(Convert.FromBase64(pem), ContentInfo);
+    assert.strictEqual(contentInfo.contentType, id_signedData);
+
     const signedData = AsnParser.parse(contentInfo.content, SignedData);
     assert.strictEqual(!!signedData, true);
+  });
+
+  context("EncapsulatedContentInfo", () => {
+
+    it("parse constructed OCTET STREAM", () => {
+      const pem = "MIAGCSqGSIb3DQEHAaCAJIAAAAAAAAA=";
+
+      const contentInfo = AsnParser.parse(Convert.FromBase64(pem), EncapsulatedContentInfo);
+      assert.strictEqual(contentInfo.eContentType, id_data);
+      assert.strictEqual(contentInfo.eContent?.any?.byteLength, 4);
+    });
+
+    it("parse single OCTET STREAM", () => {
+      const pem = "308006092A864886F70D010701A080040000000000";
+
+      const contentInfo = AsnParser.parse(Convert.FromHex(pem), EncapsulatedContentInfo);
+      assert.strictEqual(contentInfo.eContentType, id_data);
+      assert.strictEqual(contentInfo.eContent?.single?.byteLength, 0);
+    });
+
   });
 
 });
