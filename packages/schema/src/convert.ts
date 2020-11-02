@@ -1,3 +1,4 @@
+import type { BufferSource } from "pvtsutils";
 import { AsnParser } from "./parser";
 import { IEmptyConstructor } from "./types";
 import { AsnSerializer } from "./serializer";

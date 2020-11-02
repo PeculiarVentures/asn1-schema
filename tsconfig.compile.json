@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "lib": [
+      "ES2015"
+    ],
     "incremental": true,
     "target": "ES2015",
     "module": "CommonJS",
