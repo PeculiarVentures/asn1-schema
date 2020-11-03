@@ -1,4 +1,4 @@
-import { BufferSourceConverter } from "pvtsutils";
+import { BufferSource, BufferSourceConverter } from "pvtsutils";
 import { ByteStream } from "./byte_stream";
 
 export abstract class Structure {

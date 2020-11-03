@@ -1,5 +1,5 @@
 import { BitString as AsnBitString } from "asn1js";
-import { BufferSourceConverter } from "pvtsutils";
+import { BufferSource, BufferSourceConverter } from "pvtsutils";
 import { IAsnConvertible } from "../types";
 
 export class BitString<T extends number = number> implements IAsnConvertible {

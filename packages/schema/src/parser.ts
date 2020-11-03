@@ -1,5 +1,6 @@
 // @ts-ignore
 import * as asn1 from "asn1js";
+import type { BufferSource } from "pvtsutils";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import * as converters from "./converters";
 import { AsnSchemaValidationError } from "./errors";
