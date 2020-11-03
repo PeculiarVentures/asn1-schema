@@ -41,7 +41,7 @@
     "@types/asn1js": "^0.0.2",
     "asn1js": "^2.0.26",
     "pvtsutils": "^1.0.15",
-    "tslib": "^2.0.2"
+    "tslib": "^2.0.3"
   },
   "contributors": [
     {

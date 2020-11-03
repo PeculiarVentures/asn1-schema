@@ -40,7 +40,7 @@
     "@peculiar/asn1-schema": "^2.0.23",
     "asn1js": "^2.0.26",
     "ipaddr.js": "^2.0.0",
-    "pvtsutils": "^1.0.14",
-    "tslib": "^2.0.2"
+    "pvtsutils": "^1.1.0",
+    "tslib": "^2.0.3"
   }
 }

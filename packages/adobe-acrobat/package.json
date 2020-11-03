@@ -37,6 +37,6 @@
     "@peculiar/asn1-schema": "^2.0.23",
     "@peculiar/asn1-x509": "^2.0.23",
     "asn1js": "^2.0.26",
-    "tslib": "^2.0.2"
+    "tslib": "^2.0.3"
   }
 }
