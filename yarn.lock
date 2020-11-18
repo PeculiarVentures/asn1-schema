@@ -904,12 +904,10 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@types/asn1js@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@types/asn1js/-/asn1js-0.0.2.tgz#f278a8af81861813d4fc9cd0a86c8b1ac5f16db3"
-  integrity sha512-xtLPq140WhPqvDZDpY70rTx4qTezHs+8htbhWQGuevBRQko8FRjFSO5WVTwXOwd3W5tQRxJ7eni30fDUP2q4wQ==
-  dependencies:
-    "@types/pvutils" "*"
+"@types/asn1js@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/asn1js/-/asn1js-2.0.0.tgz#10ca75692575744d0117098148a8dc84cbee6682"
+  integrity sha512-Jjzp5EqU0hNpADctc/UqhiFbY1y2MqIxBVa2S4dBlbnZHTLPMuggoL5q43X63LpsOIINRDirBjP56DUUKIUWIA==
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
@@ -958,11 +956,6 @@
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
   integrity sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==
-
-"@types/pvutils@*":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@types/pvutils/-/pvutils-0.0.2.tgz#e21684962cfa58ac920fd576d90556032dc86009"
-  integrity sha512-CgQAm7pjyeF3Gnv78ty4RBVIfluB+Td+2DR8iPaU0prF18pkzptHHP+DoKPfpsJYknKsVZyVsJEu5AuGgAqQ5w==
 
 "@types/rimraf@^3.0.0":
   version "3.0.0"
