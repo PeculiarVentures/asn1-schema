@@ -67,7 +67,7 @@ async function main(name: string) {
 
   const license = `MIT License
 
-Copyright (c) ${new Date().getFullYear()}
+Copyright (c) ${new Date().getFullYear()} Peculiar Ventures, LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
