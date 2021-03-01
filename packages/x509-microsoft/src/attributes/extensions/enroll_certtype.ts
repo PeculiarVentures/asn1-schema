@@ -1,4 +1,5 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { DirectoryString } from "@peculiar/asn1-x509";
 
 export const id_enrollCertType = "1.3.6.1.4.1.311.20.2";
 
@@ -33,8 +34,8 @@ export class EnrollCertType {
 @AsnType({type: AsnTypeTypes.Choice})
 export class EnrollCertTypeChoice {
 
-  @AsnProp({ type: AsnPropTypes.BmpString })
-  public name?: string;
+  @AsnProp({ type: DirectoryString })
+  public name?: DirectoryString;
 
   @AsnProp({ type: EnrollCertType })
   public spec?: EnrollCertType;
@@ -42,4 +43,12 @@ export class EnrollCertTypeChoice {
   constructor(params: Partial<EnrollCertTypeChoice> = {}) {
     Object.assign(this, params);
   }
+
+  /**
+   * Returns a string representation of an object.
+   */
+  public toString() {
+    return this.name?.toString() || this.spec?.name || "";
+  }
+
 }
