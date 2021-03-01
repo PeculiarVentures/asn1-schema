@@ -1,8 +1,7 @@
 import * as assert from "assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { CaVersion } from "../src/attributes/extensions/ca_version";
-import * as x509 from "@peculiar/asn1-x509";
-import { EnrollCertTypeChoice, id_enrollCertType } from "../src/attributes";
+import { EnrollCertTypeChoice } from "../src/attributes";
 
 context("Microsoft X509", () => {
 
