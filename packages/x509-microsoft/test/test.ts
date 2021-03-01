@@ -1,6 +1,8 @@
 import * as assert from "assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { CaVersion } from "../src/attributes/extensions/ca_version";
+import * as x509 from "@peculiar/asn1-x509";
+import { EnrollCertTypeChoice, id_enrollCertType } from "../src/attributes";
 
 context("Microsoft X509", () => {
 
@@ -28,6 +30,24 @@ context("Microsoft X509", () => {
         });
       }
     });
+  });
+
+  context("EnrollCertType", () => {
+
+    it("BMPString", () => {
+      const hex = `1E0A00530075006200430041`;
+      const enrollCertType = AsnConvert.parse(Buffer.from(hex, "hex"), EnrollCertTypeChoice);
+      assert.strictEqual(enrollCertType.toString(), "SubCA");
+      console.log(enrollCertType);
+    });
+
+    it("UTF8String", () => {
+      const hex = `0C086365727454797065`;
+      const enrollCertType = AsnConvert.parse(Buffer.from(hex, "hex"), EnrollCertTypeChoice);
+      assert.strictEqual(enrollCertType.toString(), "certType");
+      console.log(enrollCertType);
+    });
+
   });
 
 });
