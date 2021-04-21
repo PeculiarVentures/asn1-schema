@@ -23,7 +23,7 @@ export class LogotypeExtn {
   public subjectLogo?: LogotypeInfo;
 
   @AsnProp({ type: OtherLogotypeInfo, context: 3, repeated: "sequence", optional: true })
-  public otherLogos?: OtherLogotypeInfo;
+  public otherLogos?: OtherLogotypeInfo[];
 
   constructor(params: Partial<LogotypeExtn> = {}) {
     Object.assign(this, params);

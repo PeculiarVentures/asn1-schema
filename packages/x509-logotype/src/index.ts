@@ -10,3 +10,4 @@ export * from "./logotype_image_resolution";
 export * from "./logotype_info";
 export * from "./logotype_reference";
 export * from "./object_identifiers";
+export * from "./other_logotype_info";
