@@ -39,9 +39,9 @@
   },
   "dependencies": {
     "@types/asn1js": "^2.0.0",
-    "asn1js": "^2.0.26",
-    "pvtsutils": "^1.1.1",
-    "tslib": "^2.0.3"
+    "asn1js": "^2.1.1",
+    "pvtsutils": "^1.1.2",
+    "tslib": "^2.2.0"
   },
   "contributors": [
     {

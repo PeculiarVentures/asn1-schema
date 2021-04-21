@@ -5,13 +5,13 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@types/mocha": "^8.0.4",
-    "@types/node": "^14.14.10",
-    "lerna": "^3.22.1",
-    "mocha": "^8.2.1",
-    "ts-node": "^9.0.0",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.41",
+    "lerna": "^4.0.0",
+    "mocha": "^8.3.2",
+    "ts-node": "^9.1.1",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.1.2"
+    "typescript": "^4.2.4"
   },
   "scripts": {
     "test": "mocha",
