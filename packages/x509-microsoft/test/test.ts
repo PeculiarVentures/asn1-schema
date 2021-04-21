@@ -37,14 +37,14 @@ context("Microsoft X509", () => {
       const hex = `1E0A00530075006200430041`;
       const enrollCertType = AsnConvert.parse(Buffer.from(hex, "hex"), EnrollCertTypeChoice);
       assert.strictEqual(enrollCertType.toString(), "SubCA");
-      console.log(enrollCertType);
+      // console.log(enrollCertType);
     });
 
     it("UTF8String", () => {
       const hex = `0C086365727454797065`;
       const enrollCertType = AsnConvert.parse(Buffer.from(hex, "hex"), EnrollCertTypeChoice);
       assert.strictEqual(enrollCertType.toString(), "certType");
-      console.log(enrollCertType);
+      // console.log(enrollCertType);
     });
 
   });
