@@ -10,11 +10,11 @@ import { TBSRequest } from "./tbs_request";
  * ```
  */
 export class OCSPRequest {
-  
+
   @AsnProp({type: TBSRequest})
   public tbsRequest = new TBSRequest();
-  
-  @AsnProp({type: Signature, optional: true})
+
+  @AsnProp({type: Signature, optional: true, context: 0})
   public optionalSignature?: Signature;
 
   constructor(params: Partial<OCSPRequest> = {}) {
