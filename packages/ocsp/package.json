@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-ocsp",
-  "version": "2.0.30",
+  "version": "2.0.31",
   "description": "ASN.1 schema of `X.509 Internet Public Key Infrastructure Online Certificate Status Protocol - OCSP` (RFC6990)",
   "files": [
     "build",
