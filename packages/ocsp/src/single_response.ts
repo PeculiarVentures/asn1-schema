@@ -21,13 +21,13 @@ export class SingleResponse {
   @AsnProp({ type: CertID })
   public certID = new CertID();
 
-  @AsnProp({ type: CertID })
+  @AsnProp({ type: CertStatus })
   public certStatus = new CertStatus();
 
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public thisUpdate = new Date();
 
-  @AsnProp({ type: AsnPropTypes.GeneralizedTime, context: 0 })
+  @AsnProp({ type: AsnPropTypes.GeneralizedTime, context: 0, optional: true })
   public nextUpdate?: Date;
 
   @AsnProp({ type: Extension, context: 1, repeated: "sequence", optional: true })
