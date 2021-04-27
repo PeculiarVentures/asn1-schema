@@ -28,7 +28,7 @@ export class ResponseData {
   @AsnProp({ type: SingleResponse, repeated: "sequence" })
   public responses: SingleResponse[] = [];
 
-  @AsnProp({ type: Extension, repeated: "sequence", context: 0, optional: true })
+  @AsnProp({ type: Extension, repeated: "sequence", context: 1, optional: true })
   public responseExtensions?: Extension[];
 
   constructor(params: Partial<ResponseData> = {}) {
