@@ -21,7 +21,7 @@ export class SingleResponse {
   @AsnProp({ type: CertID })
   public certID = new CertID();
 
-  @AsnProp({ type: CertID })
+  @AsnProp({ type: CertStatus })
   public certStatus = new CertStatus();
 
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
