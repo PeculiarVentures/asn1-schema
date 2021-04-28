@@ -69,7 +69,7 @@ export class AsnSerializer {
             if (!schemaItem.repeated
               && (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))) {
               const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer } = {};
-              value.valueHex = asn1Item.valueBlock.toBER();
+              value.valueHex = asn1Item instanceof asn1.Null ? asn1Item.valueBeforeDecode: asn1Item.valueBlock.toBER();
               asn1Value.push(new asn1.Primitive({
                 optional: schemaItem.optional,
                 idBlock: {
