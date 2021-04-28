@@ -28,7 +28,7 @@ context("ntQWAC", () => {
   it("Type Relationship", () => {
     const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_5), TypeRelationship);
 
-    assert.strictEqual(!!obj, true);console.log(obj.DNBvsDNO.toNumber());
+    assert.strictEqual(!!obj, true);
     assert.strictEqual(obj.DNBvsDNO.toNumber(), 1);
     assert.strictEqual(obj.DNBvsDNT.toNumber(), 1);
     assert.strictEqual(obj.DNOvsDNT.toNumber(), 1);

@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { AsnProp, AsnPropTypes } from "../src";
+import { AsnConvert, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "../src";
 import { schemaStorage } from "../src/storage";
 
 context("Schema", () => {
@@ -25,4 +25,44 @@ context("Schema", () => {
       schemaStorage.get(Parent);
     });
   });
+
+  it("Null valueBlock does not have toBER", () => {
+    // see PR https://github.com/PeculiarVentures/asn1-schema/pull/44
+
+    @AsnType({ type: AsnTypeTypes.Choice })
+    class CertStatus {
+
+      @AsnProp({
+        type: AsnPropTypes.Null,
+        context: 0,
+        implicit: true,
+      })
+      good!: null;
+
+      @AsnProp({
+        type: AsnPropTypes.Any,
+        context: 1,
+        implicit: true,
+      })
+      revoked!: ArrayBuffer;
+
+      @AsnProp({
+        type: AsnPropTypes.Any,
+        context: 2,
+        implicit: true,
+      })
+      unknown!: ArrayBuffer;
+    }
+
+    const asn = new CertStatus();
+    asn.good = null;
+
+    const raw = AsnConvert.serialize(asn);
+    assert.strictEqual(Buffer.from(raw).toString("hex"), "8000");
+
+    const asnParsed = AsnConvert.parse(raw, CertStatus);
+
+    assert.strictEqual(asn.good, null);
+  });
+
 });
