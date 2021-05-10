@@ -1,4 +1,28 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
+import { id_pkix } from "@peculiar/asn1-x509"
+
+/**
+ * ```
+ * id-ri OBJECT IDENTIFIER  ::=
+ *               { iso(1) identified-organization(3)
+     dod(6) internet(1) security(5) mechanisms(5) pkix(7) ri(16) }
+ * ```
+ */
+export const id_ri = `${id_pkix}.16`;
+
+/**
+ * ```
+ * id-ri-ocsp-response OBJECT IDENTIFIER ::= { id-ri 2 }
+ * ```
+ */
+export const id_ri_ocsp_response = `${id_ri}.2`;
+
+/**
+ * ```
+ * id-ri-scvp OBJECT IDENTIFIER ::= { id-ri 4 }
+ * ```
+ */
+export const id_ri_scvp = `${id_ri}.4`;
 
 /**
  * ```
