@@ -82,6 +82,15 @@ export const id_aa_mlExpandHistory = `${id_aa}.3`;
  */
 export const id_aa_signingCertificate = `${id_aa}.12`;
 
+/**
+ * ```
+ * id-aa-signingCertificateV2 OBJECT IDENTIFIER ::= { iso(1)
+ *     member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs9(9)
+ *     smime(16) id-aa(2) 47 }
+ * ```
+ */
+export const id_aa_signingCertificateV2 = `${id_aa}.47`;
+
 export const id_ct = `${id_smime}.1`;
 
 /**
