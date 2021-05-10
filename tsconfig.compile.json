@@ -4,7 +4,7 @@
       "ES2015"
     ],
     "incremental": true,
-    "target": "ES2015",
+    "target": "ES2020",
     "module": "CommonJS",
     "moduleResolution": "node",
     "skipLibCheck": true,

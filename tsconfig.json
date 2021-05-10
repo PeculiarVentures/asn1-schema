@@ -68,6 +68,9 @@
       ],
       "@peculiar/asn1-x509-qualified-etsi": [
         "./packages/x509-qualified-etsi"
+      ],
+      "@peculiar/asn1": [
+        "./packages/asn1"
       ]
     }
   },

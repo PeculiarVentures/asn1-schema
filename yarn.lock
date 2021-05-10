@@ -3742,6 +3742,13 @@ pvtsutils@^1.1.2:
   dependencies:
     tslib "^2.1.0"
 
+pvtsutils@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/pvtsutils/-/pvtsutils-1.1.4.tgz#482c3ad79f494da7b78945993331c740df2866bd"
+  integrity sha512-SDKiVEJhRtZafLzzu2Zh2Zi0OLH4v/zuwWTcNEdQS7pIyr0NObAsP545LvKyeBEMZXKSVe4ADFpB59lLj7S9Og==
+  dependencies:
+    tslib "^2.2.0"
+
 pvutils@latest:
   version "1.0.17"
   resolved "https://registry.yarnpkg.com/pvutils/-/pvutils-1.0.17.tgz#ade3c74dfe7178944fe44806626bd2e249d996bf"
