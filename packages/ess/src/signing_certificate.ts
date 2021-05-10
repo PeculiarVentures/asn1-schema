@@ -1,6 +1,7 @@
 import { AsnProp, AsnPropTypes, OctetString } from '@peculiar/asn1-schema';
-import { CertificateSerialNumber, GeneralNames, PolicyInformation } from '@peculiar/asn1-x509';
+import { CertificateSerialNumber, GeneralNames, PolicyInformation, AlgorithmIdentifier } from '@peculiar/asn1-x509';
 import { Hash } from './types';
+import { id_sha256 } from '@peculiar/asn1-rsa'
 
 /**
  * ```
@@ -48,6 +49,41 @@ export class EssCertID {
  */
 export class SigningCertificate {
     @AsnProp({ type: EssCertID, repeated: 'sequence' })
+    public certs = [];
+
+    @AsnProp({ type: PolicyInformation, repeated: 'sequence', optional: true })
+    public policies = [];
+}
+
+/**
+ * ```
+ * ESSCertIDv2 ::=  SEQUENCE {
+ *     hashAlgorithm           AlgorithmIdentifier
+ *            DEFAULT {algorithm id-sha256},
+ *     certHash                 Hash,
+ *     issuerSerial             IssuerSerial OPTIONAL
+ * }
+ * ```
+ */
+export class ESSCertIDv2 extends EssCertID {
+    @AsnProp({ type: AlgorithmIdentifier, defaultValue: id_sha256 })
+    public hashAlgorithm?: AlgorithmIdentifier;
+
+    constructor(params: Partial<ESSCertIDv2> = {}) {
+        super(params);
+    }
+}
+
+/**
+ * ```
+ * SigningCertificateV2 ::=  SEQUENCE {
+ *     certs        SEQUENCE OF ESSCertIDv2,
+ *     policies     SEQUENCE OF PolicyInformation OPTIONAL
+ * }
+ * ```
+ */
+export class SigningCertificateV2 {
+    @AsnProp({ type: ESSCertIDv2, repeated: 'sequence' })
     public certs = [];
 
     @AsnProp({ type: PolicyInformation, repeated: 'sequence', optional: true })

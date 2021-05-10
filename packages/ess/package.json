@@ -6,7 +6,8 @@
     "asn",
     "ESS",
     "SMIME",
-    "rfc2634"
+    "rfc2634",
+    "rfc5035"
   ],
   "author": "PeculiarVentures, Inc",
   "license": "MIT",
@@ -37,6 +38,7 @@
   "dependencies": {
     "@peculiar/asn1-cms": "^2.0.32",
     "@peculiar/asn1-pkcs9": "^2.0.32",
+    "@peculiar/asn1-rsa": "^2.0.32",
     "@peculiar/asn1-schema": "^2.0.32",
     "@peculiar/asn1-x509": "^2.0.32",
     "asn1js": "^2.1.1",
