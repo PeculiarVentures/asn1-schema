@@ -60,7 +60,8 @@ export const id_sha1WithRSAEncryption = `${id_pkcs_1}.5`;
  * sha224WithRSAEncryption      OBJECT IDENTIFIER ::= { pkcs-1 14 }
  * ```
  */
-export const id_ssha224WithRSAEncryption = `${id_pkcs_1}.14`;
+export const id_sha224WithRSAEncryption = `${id_pkcs_1}.14`;
+export const id_ssha224WithRSAEncryption = id_sha224WithRSAEncryption;
 
 /**
  * ```
