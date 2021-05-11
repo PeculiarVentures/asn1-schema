@@ -61,5 +61,5 @@ export enum SecurityClassification {
     restricted = 2,
     confidential = 3,
     secret = 4,
-    'top-secret' = 5,
+    topSecret = 5,
 }
