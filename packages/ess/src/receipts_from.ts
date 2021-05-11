@@ -12,10 +12,10 @@ import { GeneralNames } from '@peculiar/asn1-x509';
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ReceiptsFrom {
-    @AsnProp({ type: AsnPropTypes.Integer, context: 0 })
+    @AsnProp({ type: AsnPropTypes.Integer, context: 0, implicit: true })
     public allOrFirstTier: AllOrFirstTier = AllOrFirstTier.allReceipts;
 
-    @AsnProp({ type: GeneralNames, repeated: "sequence", context: 1 })
+    @AsnProp({ type: GeneralNames, repeated: "sequence", context: 1, implicit: true })
     public receiptList: GeneralNames[] = [];
 
     constructor(params: Partial<ReceiptsFrom> = {}) {
