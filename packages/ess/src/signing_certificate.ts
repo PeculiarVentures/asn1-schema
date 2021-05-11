@@ -1,5 +1,10 @@
 import { AsnProp, AsnPropTypes, OctetString } from '@peculiar/asn1-schema';
-import { CertificateSerialNumber, GeneralNames, PolicyInformation, AlgorithmIdentifier } from '@peculiar/asn1-x509';
+import {
+    AlgorithmIdentifier,
+    CertificateSerialNumber,
+    GeneralNames,
+    PolicyInformation,
+} from '@peculiar/asn1-x509';
 import { Hash } from './types';
 import { id_sha256 } from '@peculiar/asn1-rsa'
 
