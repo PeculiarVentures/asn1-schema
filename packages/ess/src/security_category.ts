@@ -14,6 +14,10 @@ export class SecurityCategory {
 
     @AsnProp({ type: AsnPropTypes.Any, context: 1 })
     public value: ArrayBuffer = new ArrayBuffer(0);
+
+    constructor(params: Partial<SecurityCategory> = {}) {
+        Object.assign(this, params);
+    }
 }
 
 /**
