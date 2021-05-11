@@ -17,6 +17,10 @@ export class IssuerSerial {
 
     @AsnProp({ type: AsnPropTypes.Integer })
     public serialNumber: CertificateSerialNumber = new ArrayBuffer(0);
+
+    constructor(params: Partial<IssuerSerial> = {}) {
+        Object.assign(this, params);
+    }
 }
 
 /**
@@ -53,6 +57,10 @@ export class SigningCertificate {
 
     @AsnProp({ type: PolicyInformation, repeated: 'sequence', optional: true })
     public policies = [];
+
+    constructor(params: Partial<SigningCertificate> = {}) {
+        Object.assign(this, params);
+    }
 }
 
 /**
@@ -88,4 +96,8 @@ export class SigningCertificateV2 {
 
     @AsnProp({ type: PolicyInformation, repeated: 'sequence', optional: true })
     public policies = [];
+
+    constructor(params: Partial<SigningCertificateV2> = {}) {
+        Object.assign(this, params);
+    }
 }
