@@ -14,10 +14,10 @@ export class ContentReference {
     @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
     public contentType: ContentType = '';
 
-    @AsnProp({ type: AsnPropTypes.OctetString })
+    @AsnProp({ type: OctetString })
     public signedContentIdentifier: ContentIdentifier = new OctetString();
 
-    @AsnProp({ type: AsnPropTypes.OctetString })
+    @AsnProp({ type: OctetString })
     public originatorSignatureValue: OctetString = new OctetString();
 
     constructor(params: Partial<ContentReference> = {}) {
