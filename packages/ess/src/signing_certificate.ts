@@ -43,7 +43,7 @@ export class EssCertID {
     @AsnProp({ type: IssuerSerial, optional: true })
     public issuerSerial?: IssuerSerial;
 
-    constructor(params: Partial<ESSCertIDv2> = {}) {
+    constructor(params: Partial<EssCertID> = {}) {
         Object.assign(this, params);
     }
 }
@@ -58,10 +58,10 @@ export class EssCertID {
  */
 export class SigningCertificate {
     @AsnProp({ type: EssCertID, repeated: 'sequence' })
-    public certs = [];
+    public certs: EssCertID[] = [];
 
     @AsnProp({ type: PolicyInformation, repeated: 'sequence', optional: true })
-    public policies = [];
+    public policies?: PolicyInformation[];
 
     constructor(params: Partial<SigningCertificate> = {}) {
         Object.assign(this, params);
@@ -97,10 +97,10 @@ export class ESSCertIDv2 extends EssCertID {
  */
 export class SigningCertificateV2 {
     @AsnProp({ type: ESSCertIDv2, repeated: 'sequence' })
-    public certs = [];
+    public certs: ESSCertIDv2[] = [];
 
     @AsnProp({ type: PolicyInformation, repeated: 'sequence', optional: true })
-    public policies = [];
+    public policies?: PolicyInformation[];
 
     constructor(params: Partial<SigningCertificateV2> = {}) {
         Object.assign(this, params);
