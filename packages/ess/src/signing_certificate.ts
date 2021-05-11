@@ -37,7 +37,7 @@ export class IssuerSerial {
  * ```
  */
 export class EssCertID {
-    @AsnProp({ type: AsnPropTypes.OctetString })
+    @AsnProp({ type: OctetString })
     public certHash: Hash = new OctetString();
 
     @AsnProp({ type: IssuerSerial, optional: true })
