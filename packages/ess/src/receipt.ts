@@ -11,7 +11,7 @@ import { ContentIdentifier, ESSVersion } from './types';
  *   originatorSignatureValue OCTET STRING }
  * ```
  */
-class Receipt {
+export class Receipt {
     @AsnProp({ type: AsnPropTypes.Integer })
     public version: ESSVersion = ESSVersion.v1;
 
