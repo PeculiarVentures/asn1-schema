@@ -41,13 +41,13 @@ export class EntityIdentifier {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class MLReceiptPolicy {
-    @AsnProp({ type: AsnPropTypes.Null, context: 0 })
+    @AsnProp({ type: AsnPropTypes.Null, context: 0, implicit: true })
     public none?: AsnPropTypes.Null;
 
-    @AsnProp({ type: GeneralNames, repeated: "sequence", context: 1 })
+    @AsnProp({ type: GeneralNames, repeated: "sequence", context: 1 , implicit: true })
     public insteadOf?: GeneralNames[];
 
-    @AsnProp({ type: GeneralNames, repeated: "sequence", context: 2 })
+    @AsnProp({ type: GeneralNames, repeated: "sequence", context: 2, implicit: true })
     public inAdditionTo?: GeneralNames[];
 
     constructor(params: Partial<MLReceiptPolicy> = {}) {
