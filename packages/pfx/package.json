@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-pfx",
-  "version": "2.0.33",
+  "version": "2.0.34",
   "description": "ASN.1 schema of `PKCS #12: Personal Information Exchange Syntax v1.1` (RFC7292)",
   "files": [
     "build",
@@ -36,7 +36,7 @@
   "dependencies": {
     "@peculiar/asn1-cms": "^2.0.33",
     "@peculiar/asn1-pkcs8": "^2.0.32",
-    "@peculiar/asn1-rsa": "^2.0.32",
+    "@peculiar/asn1-rsa": "^2.0.34",
     "@peculiar/asn1-schema": "^2.0.32",
     "asn1js": "^2.1.1",
     "tslib": "^2.2.0"

@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-rsa",
-  "version": "2.0.32",
+  "version": "2.0.34",
   "description": "ASN.1 schema of `RSA Cryptography Specifications Version 2.2` (RFC8017)",
   "files": [
     "build",

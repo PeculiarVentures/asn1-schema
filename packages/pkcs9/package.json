@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-pkcs9",
-  "version": "2.0.33",
+  "version": "2.0.34",
   "description": "ASN.1 schema based on PKCS#9 (RFC 2985)",
   "keywords": [
     "asn",
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@peculiar/asn1-cms": "^2.0.33",
-    "@peculiar/asn1-pfx": "^2.0.33",
+    "@peculiar/asn1-pfx": "^2.0.34",
     "@peculiar/asn1-pkcs8": "^2.0.32",
     "@peculiar/asn1-schema": "^2.0.32",
     "@peculiar/asn1-x509": "^2.0.32",
