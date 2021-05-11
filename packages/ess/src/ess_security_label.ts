@@ -49,6 +49,10 @@ export class ESSSecurityLabel {
 
     @AsnProp({ type: SecurityCategories, optional: true })
     public securityCategories?: SecurityCategories;
+
+    constructor(params: Partial<ESSSecurityLabel> = {}) {
+        Object.assign(this, params);
+    }
 }
 
 /**
