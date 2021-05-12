@@ -1,9 +1,11 @@
 {
   "name": "@peculiar/asn1-tsp",
   "version": "2.0.34",
-  "description": "",
+  "description": "Internet X.509 Public Key Infrastructure Time-Stamp Protocol (TSP)",
   "keywords": [
-    "asn"
+    "asn",
+    "tsp",
+    "rfc3161"
   ],
   "author": "PeculiarVentures, Inc",
   "license": "MIT",

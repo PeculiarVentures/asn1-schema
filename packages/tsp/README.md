@@ -5,4 +5,4 @@
 
 [![NPM](https://nodei.co/npm/@peculiar/asn1-tsp.png)](https://nodei.co/npm/@peculiar/asn1-tsp/)
 
-[RFC 3161](https://datatracker.ietf.org/doc/html/rfc3161) nternet X.509 Public Key Infrastructure Time-Stamp Protocol (TSP)
+[RFC 3161](https://datatracker.ietf.org/doc/html/rfc3161) Internet X.509 Public Key Infrastructure Time-Stamp Protocol (TSP)
