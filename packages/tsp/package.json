@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-tsp",
-  "version": "2.0.34",
+  "version": "2.0.35",
   "description": "Internet X.509 Public Key Infrastructure Time-Stamp Protocol (TSP)",
   "keywords": [
     "asn",
