@@ -36,14 +36,14 @@ export class IssuerSerial {
  * }
  * ```
  */
-export class EssCertID {
+export class ESSCertID {
     @AsnProp({ type: OctetString })
     public certHash: Hash = new OctetString();
 
     @AsnProp({ type: IssuerSerial, optional: true })
     public issuerSerial?: IssuerSerial;
 
-    constructor(params: Partial<EssCertID> = {}) {
+    constructor(params: Partial<ESSCertID> = {}) {
         Object.assign(this, params);
     }
 }
@@ -57,8 +57,8 @@ export class EssCertID {
  * ```
  */
 export class SigningCertificate {
-    @AsnProp({ type: EssCertID, repeated: 'sequence' })
-    public certs: EssCertID[] = [];
+    @AsnProp({ type: ESSCertID, repeated: 'sequence' })
+    public certs: ESSCertID[] = [];
 
     @AsnProp({ type: PolicyInformation, repeated: 'sequence', optional: true })
     public policies?: PolicyInformation[];
@@ -78,7 +78,7 @@ export class SigningCertificate {
  * }
  * ```
  */
-export class ESSCertIDv2 extends EssCertID {
+export class ESSCertIDv2 extends ESSCertID {
     @AsnProp({ type: AlgorithmIdentifier, defaultValue: id_sha256 })
     public hashAlgorithm?: AlgorithmIdentifier;
 
