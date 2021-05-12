@@ -78,12 +78,18 @@ export class SigningCertificate {
  * }
  * ```
  */
-export class ESSCertIDv2 extends ESSCertID {
+export class ESSCertIDv2 {
     @AsnProp({ type: AlgorithmIdentifier, defaultValue: id_sha256 })
     public hashAlgorithm?: AlgorithmIdentifier;
 
+    @AsnProp({ type: OctetString })
+    public certHash: Hash = new OctetString();
+
+    @AsnProp({ type: IssuerSerial, optional: true })
+    public issuerSerial?: IssuerSerial;
+
     constructor(params: Partial<ESSCertIDv2> = {}) {
-        super(params);
+        Object.assign(this, params);
     }
 }
 
