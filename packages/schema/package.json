@@ -40,7 +40,7 @@
   "dependencies": {
     "@types/asn1js": "^2.0.0",
     "asn1js": "^2.1.1",
-    "pvtsutils": "^1.1.2",
+    "pvtsutils": "^1.1.7",
     "tslib": "^2.2.0"
   },
   "contributors": [
