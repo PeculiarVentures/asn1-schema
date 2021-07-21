@@ -38,6 +38,6 @@
     "@peculiar/asn1-x509": "^2.0.36",
     "@peculiar/asn1-x509-attr": "^2.0.36",
     "asn1js": "^2.1.1",
-    "tslib": "^2.2.0"
+    "tslib": "^2.3.0"
   }
 }
