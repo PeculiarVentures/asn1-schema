@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-adobe-acrobat",
-  "version": "2.0.36",
+  "version": "2.0.37",
   "description": "",
   "files": [
     "build",
@@ -34,8 +34,8 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.0.36",
-    "@peculiar/asn1-x509": "^2.0.36",
+    "@peculiar/asn1-schema": "^2.0.37",
+    "@peculiar/asn1-x509": "^2.0.37",
     "asn1js": "^2.1.1",
     "tslib": "^2.3.0"
   }
