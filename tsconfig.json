@@ -71,6 +71,9 @@
       ],
       "@peculiar/asn1": [
         "./packages/asn1"
+      ],
+      "@peculiar/asn1-tsp": [
+        "./packages/tsp"
       ]
     }
   },

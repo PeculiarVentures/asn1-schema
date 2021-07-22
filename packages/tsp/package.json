@@ -1,26 +1,26 @@
 {
-  "name": "@peculiar/asn1-pkcs8",
+  "name": "@peculiar/asn1-tsp",
   "version": "2.0.37",
-  "description": "ASN.1 schema of `Public-Key Cryptography Standards (PKCS) #8: Private-Key Information Syntax Specification Version 1.2` (RFC5208)",
+  "description": "Internet X.509 Public Key Infrastructure Time-Stamp Protocol (TSP)",
+  "keywords": [
+    "asn",
+    "tsp",
+    "rfc3161"
+  ],
+  "author": "PeculiarVentures, Inc",
+  "license": "MIT",
+  "main": "build/cjs/index.js",
   "files": [
     "build",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/pkcs8#readme",
-  "keywords": [
-    "asn"
-  ],
-  "author": "PeculiarVentures, Inc",
-  "license": "MIT",
-  "main": "build/cjs/index.js",
-  "module": "build/es2015/index.js",
-  "types": "build/types/index.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PeculiarVentures/asn1-schema.git"
   },
   "scripts": {
     "test": "mocha",
@@ -34,9 +34,16 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
+    "@peculiar/asn1-cms": "^2.0.37",
     "@peculiar/asn1-schema": "^2.0.37",
     "@peculiar/asn1-x509": "^2.0.37",
     "asn1js": "^2.1.1",
     "tslib": "^2.3.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema#readme",
+  "module": "build/es2015/index.js",
+  "types": "build/types/index.d.ts"
 }

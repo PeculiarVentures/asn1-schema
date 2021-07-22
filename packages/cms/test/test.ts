@@ -1,66 +1,91 @@
-import { AsnParser } from "@peculiar/asn1-schema";
+import { AsnConvert, AsnParser } from "@peculiar/asn1-schema";
 import * as assert from "assert";
 import { Convert } from "pvtsutils";
-import { ContentInfo, EncapsulatedContentInfo, id_data, id_signedData, SignedData } from "../src";
-
-import * as asn1 from "asn1js";
+import { ContentInfo, EncapsulatedContentInfo, id_data, id_signedData, SignedData, SignerIdentifier } from "../src";
 
 context("cms", () => {
 
-  it("parse", () => {
+  it("parse CMS with SignerInfo version 1", () => {
     const pem =
-      "MIIIfQYJKoZIhvcNAQcCoIIIbjCCCGoCAQExADALBgkqhkiG9w0BBwGggghSMIIC" +
-      "wjCCAaygAwIBAgIBATALBgkqhkiG9w0BAQUwHjEcMAkGA1UEBhMCUlUwDwYDVQQD" +
-      "HggAVABlAHMAdDAeFw0xMjEyMzEyMDAwMDBaFw0xNTEyMzEyMTAwMDBaMB4xHDAJ" +
-      "BgNVBAYTAlJVMA8GA1UEAx4IAFQAZQBzAHQwggEiMA0GCSqGSIb3DQEBAQUAA4IB" +
-      "DwAwggEKAoIBAQCk50GKJAc8kh8NEztm6ooRjDJNA7Awqn9uvSnsRad5C7tlyB+Y" +
-      "pDiha0VteHKwU9br94RKQFyPV7+XDCZa2bLpiAApXYqPOkv4WUV8mmonhFS5ui9e" +
-      "SIOmcwRt2eLyRIb9wQVaynXm0PyHEbRyLfKVAHSY2j01l1nMsOOfsIFSqJWjzXdK" +
-      "XzexKlDP2axyNgOztuJcEvp6EYNj9pK1frZ2s52CrPbeJ4N3P4moS7VaWUJ5XPQM" +
-      "7XHCGzrMTc+aQEMIya11HafL/L0kr3Kz/vZDkTvOXrMDpsnaCnbI3Fwaocr90gov" +
-      "Qa7sr+MBkxvkAiZlhg4Omq/CbIBDLx+qAklDAgMBAAGjDzANMAsGA1UdDwQEAwIA" +
-      "AjALBgkqhkiG9w0BAQUDggEBACHYNIjYrzmNP/nONpoBKGnctJisNZ+0k80dv2A8" +
-      "83jZuXyk/YuPBgo3xThnHgdVW7xve17CnQx9018ulOWmYVB37BJahKeAYG20/vH4" +
-      "osAZz2bwl5VIJNolwRvnK+bAoYJo6Nd8AWTm5UhJ9SIcUEfevBQmhAfuTJZHrU3U" +
-      "2ab3Vbys6uCEnYtg9W1mhKmpJI2zhCM1sFWLnJ42La6f2ccaBWp5OAcnsmeolQJ1" +
-      "CjEKvM2yCPUp6VhzZIzETnHWqQgMBZ1oIOJF1ZJaWtvpg0dRQjqN91pNf3gGkket" +
-      "P8F9i9n0m8wVF3FkutnP0ef9P21QcfVBBDA25GULvEIl3RIwggLCMIIBrKADAgEC" +
-      "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" +
-      "UHH1QQQwNuRlC7xCJd0SMQA=";
+      "MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0B" +
+      "BwGggCSABAV0ZXN0CgAAAAAAAKCCAsYwggLCMIIBrKADAgECAgEBMAsGCSqGSIb3" +
+      "DQEBCzAeMRwwCQYDVQQGEwJSVTAPBgNVBAMeCABUAGUAcwB0MB4XDTE2MDEzMTIx" +
+      "MDAwMFoXDTE5MDEzMTIxMDAwMFowHjEcMAkGA1UEBhMCUlUwDwYDVQQDHggAVABl" +
+      "AHMAdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAPHkz61wmuKdfIo/" +
+      "USEOqZtypZel35gpTeEzrb92G6c9MySPFIb0aIaaJXg+g5cIi+do2EM4xib1h7Ba" +
+      "BrkkQcpzPN/bBpagLfMD+0EFA8omJxbYiwIuzz3JHhrkV7/aOUzmZgjtq4rOHyMP" +
+      "c8oD/by7rZYFFaCctrPKjUEFA19/mSCPmZXzY5ZMsL41qbURD35j4FqlbVXLkeVO" +
+      "2EGW7537pI1ZG9c4bMhdZ6oCpqKZYZhSPHK3ZGrVmJHTRCPmL2n+vI+BYtQHfbaC" +
+      "cD5wWn2ZZoGnuyAYn+4pjup/H+IKpBZ7uw0p715G65sX+aUm6Zb0v1iTF3QZ7mbV" +
+      "9Psy3n0CAwEAAaMPMA0wCwYDVR0PBAQDAgACMAsGCSqGSIb3DQEBCwOCAQEANxUt" +
+      "zRzgLI+8ixF8IP8DaTpVNb936zos7hTF/o0Hi1iPWC1WlXvu5FlhzFC0Zevk9h2D" +
+      "Fs2IGjdPZGOLMpwVp00o3Z6PnBo0rIPNOH3ptxknch+Igj9K0DV/IpJXaf21u4MT" +
+      "Q0/xUE9Lg2ap7eIVoReEYP8MvH/C3Geqg7hRfZ9bD0lltgpMKAMvFqf6ivM8xPDT" +
+      "Jk3d3vCYIkKqiZxDMk4AhFgBveoWRgHm9n/TL5QnO0Qj5aK7oTtk86bHlYprMdQY" +
+      "rqU/UgmA1q9P+vaIf83JaPIk9sVEL5EmAAOjbWGORxQhHp3rbqqjiTkEr9ACwTiM" +
+      "OweFDzvXExm0El6HdjGCAbcwggGzAgEBMCMwHjEcMAkGA1UEBhMCUlUwDwYDVQQD" +
+      "HggAVABlAHMAdAIBATANBglghkgBZQMEAgEFAKBpMBgGCSqGSIb3DQEJAzELBgkq" +
+      "hkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTIxMDcyMTEyMDUyMFowLwYJKoZIhvcN" +
+      "AQkEMSIEIPLKG7bH6QfQba/kaH5Xn852s35Ok7dgUCLaUubMwm/SMAsGCSqGSIb3" +
+      "DQEBCwSCAQDIyv0B/Z7ylchO+4VKU3+83dmpnqeQa8UacNmoT9jmuRemXLkjDuCs" +
+      "LQbmo0uZY6BUdhCSyegI5GaIhfkdlXALGyyMg+ZYrOabLJ9RQ1zlk6fD8UZL7ih8" +
+      "0x1S7CN5Oq9FEMdyYSgNof3gP8k0BzEuQSFa1mRW1UHbzWkMx99DSi9DHdMPvIaB" +
+      "Eky1LY3r+CU+kzV0+Al1WkfSXQ2w1gdr5vLrs1osmNhuK9LUfhYByYoAFxnwxEBP" +
+      "xscwrRK2g4RdhmFvHhT3RKZT12p+NZqexzkkMIYso+DCYFT66Fy+yC9uTJ/7rARq" +
+      "d4sO/vmLB9MFCMbdvsEJNvj/4/tedg8cAAAAAAAA";
 
     const contentInfo = AsnParser.parse(Convert.FromBase64(pem), ContentInfo);
     assert.strictEqual(contentInfo.contentType, id_signedData);
 
     const signedData = AsnParser.parse(contentInfo.content, SignedData);
     assert.strictEqual(!!signedData, true);
+
+    const signer = signedData.signerInfos[0];
+    assert.strictEqual(signer.version, 1);
+    assert.ok(signer.sid.issuerAndSerialNumber);
+  });
+
+  it("parse CMS with SignerInfo version 3", () => {
+    const rpkiMftB64 = "MIIHegYJKoZIhvcNAQcCoIIHazCCB2cCAQMxDzANBglghkgBZQMEAgEFADCB4gYLKoZIhvcNAQkQARqg" +
+      "gdIEgc8wgcwCFAENDJ9DKFg6a/e5tj8Sq6XsJk0AGA8yMDIxMDYyOTE3MjAyM1oYDzIwMjExMjMwMTgy" +
+      "MDIzWgYJYIZIAWUDBAIBMIGGME0WKDVlNGEyM2VhLWU4MGEtNDAzZS1iMDhjLTIxNzFkYTIxNTdkMy5j" +
+      "ZXIDIQDdvsR8ZqiAhaeRC0XWNl8bv4tKPrF/pDghqotUc8nerzA1FhBhcmluLXJwa2ktdGEuY3JsAyEA" +
+      "Q4DLnJEqUJsJavhuOSFbF7xURKeTtCqez5JptqZr5jSgggS6MIIEtjCCA56gAwIBAgIUAQ0Mn0MoWDpr" +
+      "97miMnAxCovs+oAwDQYJKoZIhvcNAQELBQAwFzEVMBMGA1UEAxMMYXJpbi1ycGtpLXRhMB4XDTIxMDYy" +
+      "OTE3MjAyM1oXDTIxMTIzMDE4MjAyM1owLzEtMCsGA1UEAxMkYTUxNGYzYmMtMmEyMC00ZGMzLTk1Mzgt" +
+      "NWFiODhiZWMxYzZlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu0gRRsCGYdaNKSARedui" +
+      "fDJBoN7O7DmWDES6XtImK/H2FFvOeTOhuh9l1V+JrG3jme2vLC2E6bNmbB3HrpnVZtqqgREIIKKdUsUz" +
+      "Zf/ItCkQQ0TV0jrKFVRJWyBJyG7t/+U/gR5WX7ayzv45ka6kNES+p5iXuoSAadVOO4o0/vRr4geZ+hkK" +
+      "CoUGvxPbyZHk4vRO8avDwbnRg44eS8SZYKXLsLnnKW6hhNHioRIyANABuqGf7427YESam1frGedWBMEV" +
+      "UdzwFx4uO+kKFQzcdBSbDYq42GdAewZ+ukHSRs8hntEbb2ZjFEKyu8PaUiQ+c+DWj+7mR+Y5sS8LE8qb" +
+      "DwIDAQABo4IB4DCCAdwwHQYDVR0OBBYEFESIeM9tGe3J1PC9I5FEEFS5uHBHMFoGCCsGAQUFBwELBE4w" +
+      "TDBKBggrBgEFBQcwC4Y+cnN5bmM6Ly9ycGtpLmFyaW4ubmV0L3JlcG9zaXRvcnkvYXJpbi1ycGtpLXRh" +
+      "L2FyaW4tcnBraS10YS5tZnQwTwYDVR0fBEgwRjBEoEKgQIY+cnN5bmM6Ly9ycGtpLmFyaW4ubmV0L3Jl" +
+      "cG9zaXRvcnkvYXJpbi1ycGtpLXRhL2FyaW4tcnBraS10YS5jcmwwHwYDVR0jBBgwFoAUE9TyT5qfzZjb" +
+      "NvkwYxgIyI85dLwwDgYDVR0PAQH/BAQDAgeAME0GCCsGAQUFBwEBBEEwPzA9BggrBgEFBQcwAoYxcnN5" +
+      "bmM6Ly9ycGtpLmFyaW4ubmV0L3JlcG9zaXRvcnkvYXJpbi1ycGtpLXRhLmNlcjAhBggrBgEFBQcBBwEB" +
+      "/wQSMBAwBgQCAAEFADAGBAIAAgUAMBUGCCsGAQUFBwEIAQH/BAYwBKACBQAwVAYDVR0gAQH/BEowSDBG" +
+      "BggrBgEFBQcOAjA6MDgGCCsGAQUFBwIBFixodHRwczovL3d3dy5hcmluLm5ldC9yZXNvdXJjZXMvcnBr" +
+      "aS9jcHMuaHRtbDANBgkqhkiG9w0BAQsFAAOCAQEAK7C1nrNoQD8OTX+XVbUK/kMltMgire0+QddU/XdX" +
+      "Ko0wghXMe0Y+QnGTXCKjZTK7Z3ajOvdaeENiO/1EGe5Db3j2B9RsmLquySNcwCodajTOLsHavYWUQgql" +
+      "RcEelbT3UwgCzihBnXZCoUyBaYQVyidyPnJr4AIc9RkC8w3jIutu2vewCRU1g7uYfiEaCv6J8+l2RpZc" +
+      "aK+dbqNC6WhUDAxsmS0KjjFNK6bGRy+Od+zlMwS9P/Jkiw6q++ud+QzPhdcnZyHC7fe7f1QtbDEiKe5j" +
+      "cNXkEPMVNXEbTXPJ1dmIBMF6dVGsVYiHlhifbgqg8pPYYeIeP0/09nWX5Med1zGCAawwggGoAgEDgBRE" +
+      "iHjPbRntydTwvSORRBBUubhwRzANBglghkgBZQMEAgEFAKBrMBoGCSqGSIb3DQEJAzENBgsqhkiG9w0B" +
+      "CRABGjAcBgkqhkiG9w0BCQUxDxcNMjEwNjI5MTcyMDIzWjAvBgkqhkiG9w0BCQQxIgQgmQgjda0elAPh" +
+      "EuLwS72w6uxYjJi/J1grTnMx2ap2FKEwDQYJKoZIhvcNAQELBQAEggEArx6Zj/emmmn9VWjY5bzQPebI" +
+      "lf6PHeW0Z2I9xZsQcIaNMNQQX4K+QyPmFe2i5WFeUExcaw3JM8l4EKg3EM9E0V7evkY1PilT/QbXm0bA" +
+      "Q5vo1Vzfe/cgkHV051ySS3gkBaNfindua6rN7Bft25fKiBvWY0bmKkSUvFOOb+bUfr0Lw5LLdwfXFaN1" +
+      "0l6lRMEg7jPbOABwQpc66dFb+lQc6bvn0kNMv5iLzlpYwe+PpH4cWhaJRq59bym3XOpBe6gkvGeHR0dC" +
+      "TYbY3LQ33K7LWpVJwB9Oalvx6dvvU9zhwX+nE6oLPSkwbC5J9OIdIq8W62aEBsZ8qRJU79a/JM676Q==";
+    const rpkiMftBuffer = Buffer.from(rpkiMftB64, "base64");
+
+    const contentInfo = AsnConvert.parse(rpkiMftBuffer, ContentInfo);
+    const signedData = AsnConvert.parse(contentInfo.content, SignedData);
+
+    const signer = signedData.signerInfos[0];
+    assert.strictEqual(signer.version, 3);
+    assert.ok(signer.sid.subjectKeyIdentifier);
   });
 
   context("EncapsulatedContentInfo", () => {
@@ -79,6 +104,13 @@ context("cms", () => {
       const contentInfo = AsnParser.parse(Convert.FromHex(pem), EncapsulatedContentInfo);
       assert.strictEqual(contentInfo.eContentType, id_data);
       assert.strictEqual(contentInfo.eContent?.single?.byteLength, 0);
+    });
+
+    it("parse signer info", () => {
+      const sidRaw = "8014448878CF6D19EDC9D4F0BD2391441054B9B87047";
+      const sid = AsnConvert.parse(Buffer.from(sidRaw, "hex"), SignerIdentifier);
+
+      console.log(sid);
     });
 
   });

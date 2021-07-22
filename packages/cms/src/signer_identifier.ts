@@ -12,11 +12,12 @@ import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
 @AsnType({ type: AsnTypeTypes.Choice })
 export class SignerIdentifier {
 
-  @AsnProp({ type: IssuerAndSerialNumber })
-  public issuerAndSerialNumber = new IssuerAndSerialNumber();
-
+  // * Declare subjectKeyIdentifier before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
   @AsnProp({ type: SubjectKeyIdentifier, context: 0, implicit: true })
-  public subjectKeyIdentifier = new SubjectKeyIdentifier();
+  public subjectKeyIdentifier?: SubjectKeyIdentifier;
+
+  @AsnProp({ type: IssuerAndSerialNumber })
+  public issuerAndSerialNumber?: IssuerAndSerialNumber;
 
   constructor(params: Partial<SignerIdentifier> = {}) {
     Object.assign(this, params);

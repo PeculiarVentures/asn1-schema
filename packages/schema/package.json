@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-schema",
-  "version": "2.0.32",
+  "version": "2.0.37",
   "description": "Decorators for ASN.1 schemas building",
   "files": [
     "build",
@@ -38,10 +38,10 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@types/asn1js": "^2.0.0",
+    "@types/asn1js": "^2.0.2",
     "asn1js": "^2.1.1",
-    "pvtsutils": "^1.1.2",
-    "tslib": "^2.2.0"
+    "pvtsutils": "^1.1.7",
+    "tslib": "^2.3.0"
   },
   "contributors": [
     {
