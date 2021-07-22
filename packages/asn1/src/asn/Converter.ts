@@ -31,7 +31,7 @@ import { BERObject, BERConverter, BERIdentifierOctets, BERTagClassFlags } from "
 
 export class ASNConverter extends BERConverter {
 
-  protected static onBeforeObjectInit(id: BERIdentifierOctets): typeof BERObject {
+  protected static override onBeforeObjectInit(id: BERIdentifierOctets): typeof BERObject {
     switch (id.tagClass) {
       case BERTagClassFlags.universal: {
         switch (id.tagNumber) {
@@ -102,7 +102,7 @@ export class ASNConverter extends BERConverter {
     }
   }
 
-  protected static onAfterObjectInit(object: BERObject): void {
+  protected static override onAfterObjectInit(object: BERObject): void {
   }
 
 }

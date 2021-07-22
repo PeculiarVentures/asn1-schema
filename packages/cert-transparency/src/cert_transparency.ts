@@ -12,7 +12,7 @@ export class CertificateTransparency extends OctetString {
 
   public items: SignedCertificateTimestamp[] = [];
 
-  public fromASN(asn: any) {
+  public override fromASN(asn: any) {
     super.fromASN(asn);
 
     // parse value

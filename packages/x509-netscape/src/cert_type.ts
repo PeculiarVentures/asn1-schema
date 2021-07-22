@@ -74,7 +74,7 @@ export class NetscapeCertType extends BitString {
     return res;
   }
 
-  public toString() {
+  public override toString() {
     return `[${this.toJSON().join(", ")}]`;
   }
 

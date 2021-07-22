@@ -16,7 +16,7 @@ export type BERParseHandler = (data: BufferSource | ViewReader) => IBERObject;
 
 export class BERContentOctets extends BEROctets {
 
-  public fromBER(data: BufferSource | ViewReader, identifier: BERIdentifierOctets, length: BERLengthOctets, handler: BERParseHandler): void {
+  public override fromBER(data: BufferSource | ViewReader, identifier: BERIdentifierOctets, length: BERLengthOctets, handler: BERParseHandler): void {
     super.fromBER(data, identifier, length, handler);
   }
 

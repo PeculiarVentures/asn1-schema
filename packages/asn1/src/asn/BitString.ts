@@ -4,7 +4,7 @@ import { ASNObject } from "./Object";
 
 export class ASNBitString extends ASNObject {
 
-  public static readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x03]);
+  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x03]);
 
   constructor(value?: BufferSource, unusedBits = 0) {
     super();

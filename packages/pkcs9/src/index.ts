@@ -358,7 +358,7 @@ export class PKCS9String extends x509.DirectoryString {
     super(params);
   }
 
-  public toString() {
+  public override toString() {
     const o = {};
     o.toString();
     return this.ia5String || super.toString();

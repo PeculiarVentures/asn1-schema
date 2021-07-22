@@ -3,7 +3,7 @@ import { ASNObject } from "./Object";
 
 export class ASNUniversalString extends ASNObject {
 
-  public static readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x1c]);
+  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x1c]);
 
   public get value(): string {
     const view = this.content.view.slice();

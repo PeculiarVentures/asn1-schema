@@ -155,7 +155,18 @@ context.only("serialization", () => {
 
     asn.value = -1234567890n;
     raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "020a00ce86e356fc8a9f0ad2");
+    assert.strictEqual(Convert.ToHex(raw), "0204b669fd2e");
+  });
+
+  it("ObjectIdentifier", () => {
+    const asn = new src.ASNObjectIdentifier("1.2.3.4.5");
+
+    let raw = src.ASNConverter.serialize(asn);
+    assert.strictEqual(Convert.ToHex(raw), "06042a030405");
+
+    asn.value = "2.3.4.5";
+    raw = src.ASNConverter.serialize(asn);
+    assert.strictEqual(Convert.ToHex(raw), "0603530405");
   });
 
 });

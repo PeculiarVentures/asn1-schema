@@ -72,7 +72,7 @@ export class ObjectIdentifierConverter {
 
 export class ASNObjectIdentifier extends ASNObject {
 
-  public static readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x06]);
+  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x06]);
 
   constructor(value?: string) {
     super();

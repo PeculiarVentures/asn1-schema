@@ -109,8 +109,6 @@ context("cms", () => {
     it("parse signer info", () => {
       const sidRaw = "8014448878CF6D19EDC9D4F0BD2391441054B9B87047";
       const sid = AsnConvert.parse(Buffer.from(sidRaw, "hex"), SignerIdentifier);
-
-      console.log(sid);
     });
 
   });

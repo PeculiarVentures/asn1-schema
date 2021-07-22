@@ -4,7 +4,7 @@ import { ViewWriter } from "../ViewWriter";
 
 export class ASNRelativeObjectIdentifier extends ASNObject {
 
-  public static readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x0D]);
+  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x0D]);
   public static readonly SPLITTER = " ";
 
   protected readSubIdentifiers() {

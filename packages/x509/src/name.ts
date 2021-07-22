@@ -69,7 +69,7 @@ export class AttributeValue extends DirectoryString {
     Object.assign(this, params);
   }
 
-  public toString() {
+  public override toString() {
     return this.ia5String || (this.anyValue ? Convert.ToHex(this.anyValue) : super.toString());
   }
 }

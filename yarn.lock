@@ -872,7 +872,7 @@
     "@octokit/plugin-request-log" "^1.0.2"
     "@octokit/plugin-rest-endpoint-methods" "5.0.1"
 
-"@octokit/types@^5.0.0", "@octokit/types@^5.0.1":
+"@octokit/types@^5.0.0":
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/@octokit/types/-/types-5.4.1.tgz#d5d5f2b70ffc0e3f89467c3db749fa87fc3b7031"
   integrity sha512-OlMlSySBJoJ6uozkr/i03nO5dlYQyE05vmQNZhAh9MyO4DPBP88QlwsDVLmVjIMFssvIZB6WO0ctIGMRG+xsJQ==
@@ -915,11 +915,6 @@
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/asn1js/-/asn1js-2.0.2.tgz#bb1992291381b5f06e22a829f2ae009267cdf8c5"
   integrity sha512-t4YHCgtD+ERvH0FyxvNlYwJ2ezhqw7t+Ygh4urQ7dJER8i185JPv6oIM3ey5YQmGN6Zp9EMbpohkjZi9t3UxwA==
-
-"@types/color-name@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
-  integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
 "@types/glob@*":
   version "7.1.3"
@@ -3703,13 +3698,6 @@ pvtsutils@^1.1.7:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/pvtsutils/-/pvtsutils-1.1.7.tgz#39a65ccb3b7448c974f6a6141ce2aad037b3f13c"
   integrity sha512-faOiD/XpB/cIebRzYwzYjCmYgiDd53YEBni+Mt1+8/HlrARHYBpsU2OHOt3EZ1ZhfRNxPL0dH3K/vKaMgNWVGA==
-  dependencies:
-    tslib "^2.2.0"
-
-pvtsutils@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/pvtsutils/-/pvtsutils-1.1.4.tgz#482c3ad79f494da7b78945993331c740df2866bd"
-  integrity sha512-SDKiVEJhRtZafLzzu2Zh2Zi0OLH4v/zuwWTcNEdQS7pIyr0NObAsP545LvKyeBEMZXKSVe4ADFpB59lLj7S9Og==
   dependencies:
     tslib "^2.2.0"
 

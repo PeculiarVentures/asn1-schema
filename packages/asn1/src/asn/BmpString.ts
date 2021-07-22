@@ -4,7 +4,7 @@ import { ASNObject } from "./Object";
 
 export class ASNBmpString extends ASNObject {
 
-  public static readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x1e]);
+  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x1e]);
 
   public get value(): string {
     const view = this.content.view.slice(0);

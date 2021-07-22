@@ -53,5 +53,3 @@ export const sha384WithRSAEncryption = create(oid.id_sha384WithRSAEncryption);
 export const sha512WithRSAEncryption = create(oid.id_sha512WithRSAEncryption);
 export const sha512_224WithRSAEncryption = create(oid.id_sha512_224WithRSAEncryption);
 export const sha512_256WithRSAEncryption = create(oid.id_sha512_256WithRSAEncryption);
-
-console.log(Buffer.from(AsnConvert.serialize(rsaEncryption)).toString("hex"));

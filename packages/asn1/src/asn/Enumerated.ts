@@ -4,7 +4,7 @@ import { ASNObject } from "./Object";
 
 export class ASNEnumerated extends ASNObject {
 
-  public static readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x0A]);
+  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x0A]);
 
   constructor(value?: number) {
     super();
