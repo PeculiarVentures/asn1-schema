@@ -169,5 +169,16 @@ context.only("serialization", () => {
     assert.strictEqual(Convert.ToHex(raw), "0603530405");
   });
 
+  it("Enumerated", () => {
+    const asn = new src.ASNEnumerated(1);
+
+    let raw = src.ASNConverter.serialize(asn);
+    assert.strictEqual(Convert.ToHex(raw), "0a0101");
+
+    asn.value = 2;
+    raw = src.ASNConverter.serialize(asn);
+    assert.strictEqual(Convert.ToHex(raw), "0a0102");
+  });
+
 });
 

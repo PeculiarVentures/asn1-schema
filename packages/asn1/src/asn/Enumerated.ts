@@ -29,6 +29,7 @@ export class ASNEnumerated extends ASNObject {
     if (value > 0 && view[0] & 0x80) {
       writer.writeByte(0);
     }
+    writer.write(view);
 
     this.content.view = writer.toUint8Array();
   }
