@@ -34,9 +34,11 @@ export class ViewWriter {
   }
 
   public toUint8Array(): Uint8Array {
-    const length = this.buffer
-      .map(o => o.length)
-      .reduce((prev, cur) => prev + cur);
+    let length = 0;
+
+    for (const buf of this.buffer) {
+      length += buf.length;
+    }
 
     const res = new Uint8Array(length);
     let offset = 0;
