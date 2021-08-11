@@ -12,10 +12,10 @@ import { LogotypeAudioInfo } from "./logotype_audio_info";
 export class LogotypeAudio {
 
   @AsnProp({ type: LogotypeDetails })
-  public imageDetails = new LogotypeDetails();
+  public audioDetails = new LogotypeDetails();
 
   @AsnProp({ type: LogotypeAudioInfo, optional: true })
-  public imageInfo?: LogotypeAudioInfo;
+  public audioInfo?: LogotypeAudioInfo;
 
   constructor(params: Partial<LogotypeAudio> = {}) {
     Object.assign(this, params);
