@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-cert-transparency",
-  "version": "2.0.37",
+  "version": "2.0.38",
   "description": "",
   "files": [
     "build",
@@ -34,7 +34,7 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.0.37",
+    "@peculiar/asn1-schema": "^2.0.38",
     "asn1js": "^2.1.1",
     "pvtsutils": "^1.2.0",
     "tslib": "^2.3.0"
