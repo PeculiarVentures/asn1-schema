@@ -71,6 +71,9 @@
       ],
       "@peculiar/asn1-tsp": [
         "./packages/tsp"
+      ],
+      "@peculiar/asn1-rfc8226": [
+        "./packages/rfc8226"
       ]
     }
   },
