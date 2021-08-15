@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-rfc8226",
-  "version": "2.0.38",
+  "version": "2.0.39",
   "description": "ASN.1 schema implementation of RFC8226",
   "keywords": [
     "asn",
