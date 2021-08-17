@@ -3,7 +3,7 @@ import { PrintableString } from "asn1js";
 
 /**
  * ```
- * lei     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 52266 1}
+ * Lei     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 52266 1}
  * ```
  */
 export const id_lei = "1.3.6.1.4.1.52266.1";
@@ -33,7 +33,13 @@ export class Lei {
 
 @AsnType({ type: AsnTypeTypes.Choice })
 export class LeiChoice {
-  @AsnProp({ type: AsnPropTypes.Utf8String })
+
+  /**
+   * ```
+   * PrintableString(SIZE(20))
+   * ```
+   */
+  @AsnProp({ type: AsnPropTypes.PrintableString })
   public text?: string;
 
   @AsnProp({ type: Lei })
@@ -50,14 +56,25 @@ export class LeiChoice {
 
 /**
  * ```
- * lei-roles     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 52266 1}
+ * Role     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 52266 2}
  * ```
  */
-export const id_lei_roles = "1.3.6.1.4.1.52266.2";
+export const id_role = "1.3.6.1.4.1.52266.2";
 
+/**
+ * ```
+ * roleExtension EXTENSION ::= {
+ *   SYNTAX PrintableString(SIZE(1.. ub-leiRole-length))
+ *   IDENTIFIED BY role}
+ * ```
+ */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class LeiRoles {
-  @AsnProp({ type: AsnPropTypes.Utf8String })
+export class LeiRole {
+
+  /**
+   * PrintableString(SIZE(1.. ub-leiRole-length))
+   */
+  @AsnProp({ type: AsnPropTypes.PrintableString })
   public text = "";
 
   public constructor(value?: string) {
