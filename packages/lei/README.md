@@ -6,3 +6,4 @@
 [![NPM](https://nodei.co/npm/@peculiar/asn1-lei.png)](https://nodei.co/npm/@peculiar/asn1-lei/)
 
 [Legal Entity Identifier in Digital Certificates](https://www.ubisecure.com/legal-entity-identifier-lei/lei-in-digital-certificates-best-practice-definitions/)
+[ISO-17442-2-2020](https://cdn.standards.iteh.ai/samples/79917/71eede156b4a4ad589b2b2eb1a4455fa/ISO-17442-2-2020.pdf)
