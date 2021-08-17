@@ -72,7 +72,9 @@ export const id_role = "1.3.6.1.4.1.52266.2";
 export class LeiRole {
 
   /**
+   * ```
    * PrintableString(SIZE(1.. ub-leiRole-length))
+   * ```
    */
   @AsnProp({ type: AsnPropTypes.PrintableString })
   public text = "";
