@@ -44,7 +44,16 @@ export const id_pe_JWTClaimConstraints = `${id_pe}.27`;
   type: asn.AsnTypeTypes.Sequence,
   itemType: asn.AsnPropTypes.IA5String
 })
-export class JWTClaimNames extends asn.AsnArray<JWTClaimName> { }
+export class JWTClaimNames extends asn.AsnArray<JWTClaimName> {
+
+  constructor(items?: JWTClaimName[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, JWTClaimNames.prototype);
+  }
+
+}
 
 /**
  * ```asn
@@ -80,7 +89,16 @@ export class JWTClaimPermittedValues {
   type: asn.AsnTypeTypes.Sequence,
   itemType: JWTClaimPermittedValues
 })
-export class JWTClaimPermittedValuesList extends asn.AsnArray<JWTClaimPermittedValues> { }
+export class JWTClaimPermittedValuesList extends asn.AsnArray<JWTClaimPermittedValues> {
+
+  constructor(items?: JWTClaimPermittedValues[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, JWTClaimPermittedValuesList.prototype);
+  }
+
+}
 
 /**
  * JWTClaimConstraints ::= SEQUENCE {
@@ -127,38 +145,38 @@ export class JWTClaimConstraints {
  * id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }
  * ```
  */
- export const id_pe_TNAuthList = `${id_pe}.26`;
+export const id_pe_TNAuthList = `${id_pe}.26`;
 
 /**
  * ```asn
  * TelephoneNumber ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
  * ```
  */
- export type TelephoneNumber = string;
+export type TelephoneNumber = string;
 
- /**
-  * ```asn
-  * TelephoneNumberRange ::= SEQUENCE {
-  *   start TelephoneNumber,
-  *   count INTEGER (2..MAX),
-  *   ...
-  *   }
-  * ```
-  */
- export class TelephoneNumberRange {
-   @asn.AsnProp({ type: asn.AsnPropTypes.IA5String })
-   public start: TelephoneNumber = "";
+/**
+ * ```asn
+ * TelephoneNumberRange ::= SEQUENCE {
+ *   start TelephoneNumber,
+ *   count INTEGER (2..MAX),
+ *   ...
+ *   }
+ * ```
+ */
+export class TelephoneNumberRange {
+  @asn.AsnProp({ type: asn.AsnPropTypes.IA5String })
+  public start: TelephoneNumber = "";
 
-   @asn.AsnProp({ type: asn.AsnPropTypes.Integer })
-   public count = 2;
- }
+  @asn.AsnProp({ type: asn.AsnPropTypes.Integer })
+  public count = 2;
+}
 
 /**
  * ```asn
  * ServiceProviderCode ::= IA5String
  * ```
  */
- export type ServiceProviderCode = string;
+export type ServiceProviderCode = string;
 
 /**
  * ```asn
@@ -205,7 +223,16 @@ export class TNEntry {
   type: asn.AsnTypeTypes.Sequence,
   itemType: TNEntry,
 })
-export class TNAuthorizationList extends asn.AsnArray<TNEntry>{ }
+export class TNAuthorizationList extends asn.AsnArray<TNEntry>{
+
+  constructor(items?: TNEntry[]) {
+    super(items);
+
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, TNAuthorizationList.prototype);
+  }
+
+}
 
 // -- SPCs may be OCNs, various SPIDs, or other SP identifiers
 // -- from the telephone network.
