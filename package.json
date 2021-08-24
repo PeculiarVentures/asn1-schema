@@ -60,6 +60,8 @@
   "resolutions": {
     "hosted-git-info": "^4.0.2",
     "node-fetch": "^2.6.1",
+    "path-parse": "^1.0.7",
+    "tar": "^6.1.10",
     "trim-newlines": "^4.0.2"
   }
 }
