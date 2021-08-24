@@ -96,6 +96,7 @@ export class BaseLeiChoice {
   }
 }
 
+@AsnType({ type: AsnTypeTypes.Choice })
 export class LeiChoice extends BaseLeiChoice {
 
   @AsnProp({ type: Lei })
@@ -126,4 +127,5 @@ export const id_role = "1.3.6.1.4.1.52266.2";
  *   IDENTIFIED BY role}
  * ```
  */
+ @AsnType({ type: AsnTypeTypes.Choice })
 export class LeiRole extends BaseLeiChoice { }

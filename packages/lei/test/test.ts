@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
-import { LeiChoice } from "../src";
+import { LeiChoice, LeiRole } from "../src";
 
 context("lei", () => {
 
@@ -9,6 +9,13 @@ context("lei", () => {
 
     const lei = AsnConvert.parse(Buffer.from(hex, "hex"), LeiChoice);
     assert.strictEqual(lei.text, "506700GE1G29325QX363");
+  });
+
+  context("LeiRole", () => {
+    const hex = "13074D616E61676572";
+
+    const role = AsnConvert.parse(Buffer.from(hex, "hex"), LeiRole);
+    assert.strictEqual(role.text, "Manager");
   });
 
 });
