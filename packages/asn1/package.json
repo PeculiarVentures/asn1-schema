@@ -32,8 +32,8 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "pvtsutils": "^1.1.7",
-    "tslib": "^2.2.0"
+    "pvtsutils": "^1.2.0",
+    "tslib": "^2.3.1"
   },
   "bugs": {
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"

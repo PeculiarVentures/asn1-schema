@@ -34,7 +34,7 @@
   "dependencies": {
     "@peculiar/asn1-schema": "^2.0.37",
     "asn1js": "^2.1.1",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.1"
   },
   "bugs": {
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
