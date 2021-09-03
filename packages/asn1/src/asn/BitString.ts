@@ -1,8 +1,7 @@
 import { BufferSource, BufferSourceConverter } from "pvtsutils";
-import { ASNObject } from "./Object";
+import { AsnObject } from "./Object";
 
-
-export class ASNBitString extends ASNObject {
+export class AsnBitString extends AsnObject {
 
   public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x03]);
 

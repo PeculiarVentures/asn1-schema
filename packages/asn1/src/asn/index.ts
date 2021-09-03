@@ -21,6 +21,8 @@ export * from "./PrintableString";
 export * from "./RelativeObjectIdentifier";
 export * from "./Sequence";
 export * from "./Set";
+export * from "./String";
+export * from "./TeletexString";
 export * from "./Time";
 export * from "./TimeOfDay";
 export * from "./UTCTime";

@@ -1,8 +1,8 @@
-import { ASNObject } from "./Object";
+import { AsnObject } from "./Object";
 import { Utils } from "../Utils";
 import { ViewWriter } from "../ViewWriter";
 
-export class ASNRelativeObjectIdentifier extends ASNObject {
+export class AsnRelativeObjectIdentifier extends AsnObject {
 
   public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x0D]);
   public static readonly SPLITTER = " ";
@@ -26,13 +26,13 @@ export class ASNRelativeObjectIdentifier extends ASNObject {
   public get value(): string {
     return this.readSubIdentifiers()
       .map(o => Utils.toBase(o.map(Utils.disableLastBit), 7))
-      .join(ASNRelativeObjectIdentifier.SPLITTER);
+      .join(AsnRelativeObjectIdentifier.SPLITTER);
   }
 
   public set value(value: string) {
     const writer = new ViewWriter();
 
-    const subIdentifiers = value.split(ASNRelativeObjectIdentifier.SPLITTER)
+    const subIdentifiers = value.split(AsnRelativeObjectIdentifier.SPLITTER)
       .map(o => +o);
     for (const subIdentifier of subIdentifiers) {
       const view = Utils.fromBase(subIdentifier, 7).map(Utils.enableLastBit);

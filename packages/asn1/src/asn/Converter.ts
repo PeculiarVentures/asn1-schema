@@ -1,98 +1,98 @@
-import { ASNBitString } from "./BitString";
-import { ASNBmpString } from "./BmpString";
-import { ASNBoolean } from "./Boolean";
-import { ASNCharacterString } from "./CharacterString";
-import { ASNDate } from "./Date";
-import { ASNDateTime } from "./DateTime";
-import { ASNDuration } from "./Duration";
-import { ASNEnumerated } from "./Enumerated";
-import { ASNGeneralizedTime } from "./GeneralizedTime";
-import { ASNGeneralString } from "./GeneralString";
-import { ASNGraphicString } from "./GraphicString";
-import { ASNIA5String } from "./IA5String";
-import { ASNInteger } from "./Integer";
-import { ASNNull } from "./Null";
-import { ASNNumericString } from "./NumericString";
-import { ASNObjectIdentifier } from "./ObjectIdentifier";
-import { ASNOctetString } from "./OctetString";
-import { ASNPrintableString } from "./PrintableString";
-import { ASNRelativeObjectIdentifier } from "./RelativeObjectIdentifier";
-import { ASNSequence } from "./Sequence";
-import { ASNSet } from "./Set";
-import { ASNTeletexString } from "./TeletexString";
-import { ASNTime } from "./Time";
-import { ASNTimeOfDay } from "./TimeOfDay";
-import { ASNUniversalString } from "./UniversalString";
-import { ASNUTCTime } from "./UTCTime";
-import { ASNUtf8String } from "./Utf8String";
-import { ASNVideotexString } from "./VideotexString";
-import { ASNVisibleString } from "./VisibleString";
+import { AsnBitString } from "./BitString";
+import { AsnBmpString } from "./BmpString";
+import { AsnBoolean } from "./Boolean";
+import { AsnCharacterString } from "./CharacterString";
+import { AsnDate } from "./Date";
+import { AsnDateTime } from "./DateTime";
+import { AsnDuration } from "./Duration";
+import { AsnEnumerated } from "./Enumerated";
+import { AsnGeneralizedTime } from "./GeneralizedTime";
+import { AsnGeneralString } from "./GeneralString";
+import { AsnGraphicString } from "./GraphicString";
+import { AsnIA5String } from "./IA5String";
+import { AsnInteger } from "./Integer";
+import { AsnNull } from "./Null";
+import { AsnNumericString } from "./NumericString";
+import { AsnObjectIdentifier } from "./ObjectIdentifier";
+import { AsnOctetString } from "./OctetString";
+import { AsnPrintableString } from "./PrintableString";
+import { AsnRelativeObjectIdentifier } from "./RelativeObjectIdentifier";
+import { AsnSequence } from "./Sequence";
+import { AsnSet } from "./Set";
+import { AsnTeletexString } from "./TeletexString";
+import { AsnTime } from "./Time";
+import { AsnTimeOfDay } from "./TimeOfDay";
+import { AsnUniversalString } from "./UniversalString";
+import { AsnUTCTime } from "./UTCTime";
+import { AsnUtf8String } from "./Utf8String";
+import { AsnVideotexString } from "./VideotexString";
+import { AsnVisibleString } from "./VisibleString";
 import { BERObject, BERConverter, BERIdentifierOctets, BERTagClassFlags } from "../ber";
 
-export class ASNConverter extends BERConverter {
+export class AsnConverter extends BERConverter {
 
   protected static override onBeforeObjectInit(id: BERIdentifierOctets): typeof BERObject {
     switch (id.tagClass) {
       case BERTagClassFlags.universal: {
         switch (id.tagNumber) {
           case 1:
-            return ASNBoolean;
+            return AsnBoolean;
           case 2:
-            return ASNInteger;
+            return AsnInteger;
           case 3:
-            return ASNBitString;
+            return AsnBitString;
           case 4:
-            return ASNOctetString;
+            return AsnOctetString;
           case 5:
-            return ASNNull;
+            return AsnNull;
           case 6:
-            return ASNObjectIdentifier;
+            return AsnObjectIdentifier;
           case 10:
-            return ASNEnumerated;
+            return AsnEnumerated;
           case 12:
-            return ASNUtf8String;
+            return AsnUtf8String;
           case 13:
-            return ASNRelativeObjectIdentifier;
+            return AsnRelativeObjectIdentifier;
           case 14:
-            return ASNTime;
+            return AsnTime;
           case 16:
-            return ASNSequence;
+            return AsnSequence;
           case 17:
-            return ASNSet;
+            return AsnSet;
           case 18:
-            return ASNNumericString;
+            return AsnNumericString;
           case 19:
-            return ASNPrintableString;
+            return AsnPrintableString;
           case 20:
-            return ASNTeletexString;
+            return AsnTeletexString;
           case 21:
-            return ASNVideotexString;
+            return AsnVideotexString;
           case 22:
-            return ASNIA5String;
+            return AsnIA5String;
           case 23:
-            return ASNUTCTime;
+            return AsnUTCTime;
           case 24:
-            return ASNGeneralizedTime;
+            return AsnGeneralizedTime;
           case 25:
-            return ASNGraphicString;
+            return AsnGraphicString;
           case 26:
-            return ASNVisibleString;
+            return AsnVisibleString;
           case 27:
-            return ASNGeneralString;
+            return AsnGeneralString;
           case 28:
-            return ASNUniversalString;
+            return AsnUniversalString;
           case 29:
-            return ASNCharacterString;
+            return AsnCharacterString;
           case 30:
-            return ASNBmpString;
+            return AsnBmpString;
           case 31:
-            return ASNDate;
+            return AsnDate;
           case 32:
-            return ASNTimeOfDay;
+            return AsnTimeOfDay;
           case 33:
-            return ASNDateTime;
+            return AsnDateTime;
           case 34:
-            return ASNDuration;
+            return AsnDuration;
         }
       }
       case BERTagClassFlags.contextSpecific:

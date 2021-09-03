@@ -1,6 +1,6 @@
-import { ASNObject } from "./Object";
+import { AsnObject } from "./Object";
 
-export class ASNBoolean extends ASNObject {
+export class AsnBoolean extends AsnObject {
 
   public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x01]);
 

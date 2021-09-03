@@ -19,7 +19,13 @@ export abstract class BEROctets extends ViewObject {
     try {
       this.onFromBER(data, ...args);
     } catch (e) {
-      throw new Error(`BER parsing error at position ${data.position}. ${e.message}`); // TODO internal
+      const message = `BER parsing error at position ${data.position}.`;
+      if (e instanceof Error) {
+        e.message = `${message} ${e.message}`;
+        throw e;
+      }
+
+      throw new Error(message);
     }
 
     this.view = data.subarray(start, data.position);

@@ -1,9 +1,9 @@
 import { BufferSourceConverter, Convert } from "pvtsutils";
 import { ViewWriter } from "../ViewWriter";
-import { ASNObject } from "./Object";
+import { AsnObject } from "./Object";
 
 
-export class ASNInteger extends ASNObject {
+export class AsnInteger extends AsnObject {
 
   public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x02]);
 

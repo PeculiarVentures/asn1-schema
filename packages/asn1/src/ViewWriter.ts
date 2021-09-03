@@ -36,11 +36,14 @@ export class ViewWriter {
   public toUint8Array(): Uint8Array {
     let length = 0;
 
+    // Compute th final length
     for (const buf of this.buffer) {
       length += buf.length;
     }
 
     const res = new Uint8Array(length);
+
+    // Copy buffers to the single buffer
     let offset = 0;
     for (const item of this.buffer) {
       res.set(item, offset);

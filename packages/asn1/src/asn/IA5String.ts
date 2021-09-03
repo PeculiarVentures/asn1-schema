@@ -1,10 +1,7 @@
-import { ASNObject } from "./Object";
+import { AsnString } from "./String";
 
-export class ASNIA5String extends ASNObject {
+export class AsnIA5String extends AsnString {
 
   public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x16]);
 
-  public get value(): string {
-    return this.content.toString("binary");
-  }
 }

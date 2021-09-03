@@ -1,6 +1,6 @@
 import { Convert } from "pvtsutils";
 
-export type StringEnconding = "utf8" | "binary" | "base64" | "base64url" | "hex";
+export type StringEncoding = "utf8" | "binary" | "base64" | "base64url" | "hex" | 'utf16be';
 
 export class ViewObject {
 
@@ -12,7 +12,7 @@ export class ViewObject {
    * @param encoding Encoding format
    * @returns A string representation of BER octets
    */
-  public toString(encoding: StringEnconding) {
+  public toString(encoding: StringEncoding) {
     return Convert.ToString(this.view, encoding);
   }
 }

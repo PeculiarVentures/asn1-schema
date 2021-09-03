@@ -1,10 +1,10 @@
-import { ASNObject } from "./Object";
+import { AsnObject } from "./Object";
 
-export class ASNSequence extends ASNObject {
+export class AsnSequence extends AsnObject {
 
   public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x48]);
 
-  constructor(items?: ASNObject[]) {
+  constructor(items?: AsnObject[]) {
     super();
 
     if (items) {

@@ -65,7 +65,7 @@ context("BER", () => {
 
       it("SEQUENCE with children", () => {
         const raw = Convert.FromHex("300D06096086480165030402010500");
-        const asn = src.ASNConverter.parse(raw);
+        const asn = src.AsnConverter.parse(raw);
         assert.strictEqual(asn.identifier.constructed, true);
         assert.strictEqual(asn.length.value, 13);
         assert.strictEqual(asn.content.items.length, 2);
@@ -91,7 +91,7 @@ context("BER", () => {
     iterations.forEach(i => {
       console.time("next");
       while (i--)
-        src.ASNConverter.parse(view);
+        src.AsnConverter.parse(view);
       console.timeEnd("next");
     });
 
@@ -114,71 +114,11 @@ context("Relative object identifier", () => {
 
   it("test", () => {
     const raw = new Uint8Array([0x0D, 0x04, 0xC2, 0x7B, 0x03, 0x02]);
-    const rid = src.ASNConverter.parse(raw, src.ASNRelativeObjectIdentifier);
+    const rid = src.AsnConverter.parse(raw, src.AsnRelativeObjectIdentifier);
     console.log(rid.value);
-    const rid2 = new src.ASNRelativeObjectIdentifier();
+    const rid2 = new src.AsnRelativeObjectIdentifier();
     rid.value = "8571 3 2";
     console.log(Convert.ToHex(rid.content.view));
   });
 
 });
-
-context.only("serialization", () => {
-
-  it("Null", () => {
-    const asn = new src.ASNNull();
-
-    const raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "0500");
-  });
-
-  it("Boolean", () => {
-    const asn = new src.ASNBoolean(true);
-
-    let raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "010101");
-
-    asn.value = false;
-    raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "010100");
-  });
-
-  it("Integer", () => {
-    const asn = new src.ASNInteger(12345);
-
-    let raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "02023039");
-
-    asn.value = 3809748987247620721362n;
-    raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "020a00ce86e356fc8a9f0ad2");
-
-    asn.value = -1234567890n;
-    raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "0204b669fd2e");
-  });
-
-  it("ObjectIdentifier", () => {
-    const asn = new src.ASNObjectIdentifier("1.2.3.4.5");
-
-    let raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "06042a030405");
-
-    asn.value = "2.3.4.5";
-    raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "0603530405");
-  });
-
-  it("Enumerated", () => {
-    const asn = new src.ASNEnumerated(1);
-
-    let raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "0a0101");
-
-    asn.value = 2;
-    raw = src.ASNConverter.serialize(asn);
-    assert.strictEqual(Convert.ToHex(raw), "0a0102");
-  });
-
-});
-
