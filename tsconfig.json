@@ -46,34 +46,34 @@
         "./packages/x509-trustanchor/src"
       ],
       "@peculiar/asn1-x509-netscape": [
-        "./packages/x509-netscape"
+        "./packages/x509-netscape/src"
       ],
       "@peculiar/asn1-android": [
-        "./packages/android"
+        "./packages/android/src"
       ],
       "@peculiar/asn1-cert-transparency": [
-        "./packages/cert-transparency"
+        "./packages/cert-transparency/src"
       ],
       "@peculiar/asn1-lei": [
-        "./packages/lei"
+        "./packages/lei/src"
       ],
       "@peculiar/asn1-adobe-acrobat": [
-        "./packages/adobe-acrobat"
+        "./packages/adobe-acrobat/src"
       ],
       "@peculiar/asn1-ntqwac": [
-        "./packages/ntqwac"
+        "./packages/ntqwac/src"
       ],
       "@peculiar/asn1-pkcs9": [
-        "./packages/pkcs9"
+        "./packages/pkcs9/src"
       ],
       "@peculiar/asn1-x509-qualified-etsi": [
-        "./packages/x509-qualified-etsi"
+        "./packages/x509-qualified-etsi/src"
       ],
       "@peculiar/asn1": [
-        "./packages/asn1"
+        "./packages/asn1/src"
       ],
       "@peculiar/asn1-tsp": [
-        "./packages/tsp"
+        "./packages/tsp/src"
       ]
     }
   },
