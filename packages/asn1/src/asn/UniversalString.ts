@@ -1,7 +1,9 @@
 import { Convert } from "pvtsutils";
 import { Utils } from "..";
 import { AsnString } from "./String";
+import { universal } from "./Types";
 
+@universal(28)
 export class AsnUniversalString extends AsnString {
 
   public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x1c]);

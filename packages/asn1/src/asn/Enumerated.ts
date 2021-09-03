@@ -1,7 +1,9 @@
 import { Convert } from "pvtsutils";
 import { ViewWriter } from "../ViewWriter";
 import { AsnObject } from "./Object";
+import { universal } from "./Types";
 
+@universal(10)
 export class AsnEnumerated extends AsnObject {
 
   public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x0A]);

@@ -2,6 +2,7 @@ import { BufferSource, BufferSourceConverter } from "pvtsutils";
 import { Utils } from "../Utils";
 import { ViewWriter } from "../ViewWriter";
 import { AsnObject } from "./Object";
+import { universal } from "./Types";
 
 export class ObjectIdentifierConverter {
 
@@ -70,6 +71,7 @@ export class ObjectIdentifierConverter {
   }
 }
 
+@universal(6)
 export class AsnObjectIdentifier extends AsnObject {
 
   public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x06]);
