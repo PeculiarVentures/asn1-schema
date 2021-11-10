@@ -1,8 +1,6 @@
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
+import { AlgorithmIdentifier, Extension, Extensions, id_ce_keyUsage, KeyUsage, KeyUsageFlags } from "@peculiar/asn1-x509";
 import * as assert from "assert";
-import { AlgorithmIdentifier } from "packages/x509/src/algorithm_identifier";
-import { Extension, Extensions } from "packages/x509/src/extension";
-import { id_ce_keyUsage, KeyUsage, KeyUsageFlags } from "packages/x509/src/extensions";
 import * as src from "../src";
 
 context("TSP", () => {
