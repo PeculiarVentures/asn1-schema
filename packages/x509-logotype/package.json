@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-logotype",
-  "version": "2.0.38",
+  "version": "2.0.44",
   "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure: Logotypes in X.509 Certificates` (RFC3709)",
   "files": [
     "build",
@@ -34,8 +34,8 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.0.38",
-    "@peculiar/asn1-x509": "^2.0.38",
+    "@peculiar/asn1-schema": "^2.0.44",
+    "@peculiar/asn1-x509": "^2.0.44",
     "asn1js": "^2.1.1",
     "tslib": "^2.3.0"
   }
