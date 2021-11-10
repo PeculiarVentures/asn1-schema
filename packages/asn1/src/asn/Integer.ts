@@ -26,12 +26,12 @@ export class AsnInteger extends AsnObject {
       first[0] |= 0x80;
 
       const second = this.content.view.slice();
-      second[0] |= 0x7F;
+      second[0] ^= 0x80;
 
       const firstInt = BigInt(`0x${Convert.ToHex(first)}`);
       const secondInt = BigInt(`0x${Convert.ToHex(second)}`);
 
-      return firstInt - secondInt;
+      return -(firstInt - secondInt);
     }
 
     // a positive number
