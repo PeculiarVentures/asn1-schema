@@ -26,4 +26,8 @@ export abstract class AsnString extends AsnObject {
     this.content.view = new Uint8Array(array);
   }
 
+  protected toAsnString(): string {
+    return `${this.name} '${this.value}'`;
+  }
+
 }

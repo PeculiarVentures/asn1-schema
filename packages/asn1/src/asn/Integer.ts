@@ -7,7 +7,10 @@ import { universal } from "./Types";
 @universal(2)
 export class AsnInteger extends AsnObject {
 
-  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x02]);
+  public static override readonly BER_IDENTIFIER = new Uint8Array([0x02]);
+  public static readonly NAME = "INTEGER";
+
+  public readonly name: typeof AsnInteger.NAME = AsnInteger.NAME;
 
   constructor(value?: bigint | number) {
     super();
@@ -65,6 +68,10 @@ export class AsnInteger extends AsnObject {
 
 
     this.content.view = writer.toUint8Array();
+  }
+
+  protected toAsnString(): string {
+    return `${this.name} ${this.value}`;
   }
 
 }

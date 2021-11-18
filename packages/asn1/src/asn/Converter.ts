@@ -9,7 +9,7 @@ export class AsnConverter extends BERConverter {
       case BERTagClassFlags.universal: {
         const asnType = AsnUniversalMap.get(id.tagNumber);
         if (asnType) {
-          return asnType
+          return asnType as any; // fix type error
         }
       }
       case BERTagClassFlags.contextSpecific:

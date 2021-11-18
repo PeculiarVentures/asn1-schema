@@ -6,8 +6,11 @@ import { universal } from "./Types";
 @universal(13)
 export class AsnRelativeObjectIdentifier extends AsnObject {
 
-  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x0D]);
+  public static override readonly BER_IDENTIFIER = new Uint8Array([0x0D]);
   public static readonly SPLITTER = " ";
+  public static readonly NAME = "RelativeObjectIdentifier";
+
+  public readonly name: typeof AsnRelativeObjectIdentifier.NAME = AsnRelativeObjectIdentifier.NAME;
 
   protected readSubIdentifiers() {
     const subIdentifiers: Uint8Array[] = [];
@@ -42,6 +45,10 @@ export class AsnRelativeObjectIdentifier extends AsnObject {
     }
 
     this.content.view = writer.toUint8Array();
+  }
+
+  protected override toAsnString(): string {
+    return `${this.name} '${this.value}'`;
   }
 
 }

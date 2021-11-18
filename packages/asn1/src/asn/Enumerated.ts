@@ -6,7 +6,10 @@ import { universal } from "./Types";
 @universal(10)
 export class AsnEnumerated extends AsnObject {
 
-  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x0A]);
+  public static override readonly BER_IDENTIFIER = new Uint8Array([0x0A]);
+  public static readonly NAME = "ENUMERATED";
+
+  public readonly name: typeof AsnEnumerated.NAME = AsnEnumerated.NAME;
 
   constructor(value?: number) {
     super();
@@ -34,6 +37,10 @@ export class AsnEnumerated extends AsnObject {
     writer.write(view);
 
     this.content.view = writer.toUint8Array();
+  }
+
+  protected override toAsnString(): string {
+    return `${this.name} ${this.value}`;
   }
 
 }

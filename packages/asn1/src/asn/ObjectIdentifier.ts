@@ -74,7 +74,10 @@ export class ObjectIdentifierConverter {
 @universal(6)
 export class AsnObjectIdentifier extends AsnObject {
 
-  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x06]);
+  public static override readonly BER_IDENTIFIER = new Uint8Array([0x06]);
+  public static readonly NAME = "OBJECT IDENTIFIER";
+
+  public readonly name: typeof AsnObjectIdentifier.NAME = AsnObjectIdentifier.NAME;
 
   constructor(value?: string) {
     super();
@@ -90,6 +93,10 @@ export class AsnObjectIdentifier extends AsnObject {
 
   public set value(value: string) {
     this.content.view = ObjectIdentifierConverter.fromString(value);
+  }
+
+  protected override toAsnString(): string {
+    return `${this.name} ${this.value}`;
   }
 
 }

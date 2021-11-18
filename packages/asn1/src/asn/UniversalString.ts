@@ -6,7 +6,10 @@ import { universal } from "./Types";
 @universal(28)
 export class AsnUniversalString extends AsnString {
 
-  public static override readonly DEFAULT_BER_IDENTIFIER = new Uint8Array([0x1c]);
+  public static override readonly BER_IDENTIFIER = new Uint8Array([0x1c]);
+  public static readonly NAME = "UniversalString";
+
+  public readonly name: typeof AsnUniversalString.NAME = AsnUniversalString.NAME;
 
   public override get value(): string {
     const view = this.content.view.slice();
