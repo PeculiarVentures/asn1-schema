@@ -77,23 +77,24 @@ context("BER", () => {
 
 context("ObjectIdentifierConverter", () => {
 
-  it("test", () => {
+  it("to/from string", () => {
     const raw = new Uint8Array([0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x09, 0x05]);
     const oid = src.ObjectIdentifierConverter.toString(raw);
-    console.log(oid);
-    console.log(Convert.ToHex(src.ObjectIdentifierConverter.fromString(oid)));
+    assert.strictEqual(oid, "1.2.840.113549.1.9.5");
+    assert.strictEqual(Convert.ToHex(src.ObjectIdentifierConverter.fromString(oid)), "2a864886f70d010905");
   });
 
 });
 
 context("Relative object identifier", () => {
 
-  it("test", () => {
+  it.skip("test", () => {
     const raw = new Uint8Array([0x0D, 0x04, 0xC2, 0x7B, 0x03, 0x02]);
     const rid = src.AsnConverter.parse(raw, src.AsnRelativeObjectIdentifier);
     console.log(rid.value);
     const rid2 = new src.AsnRelativeObjectIdentifier();
     rid.value = "8571 3 2";
+    console.log(rid.toString("hex"));
     console.log(Convert.ToHex(rid.content.view));
   });
 
