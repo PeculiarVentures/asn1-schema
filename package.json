@@ -41,18 +41,6 @@
       "html"
     ]
   },
-  "mocha": {
-    "require": [
-      "tsconfig-paths/register",
-      "ts-node/register"
-    ],
-    "extension": [
-      "ts"
-    ],
-    "spec": [
-      "packages/*/test/**/*.ts"
-    ]
-  },
   "dependencies": {
     "@types/rimraf": "^3.0.2",
     "rimraf": "^3.0.2"

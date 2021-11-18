@@ -1,0 +1,7 @@
+require:
+  - "tsconfig-paths/register"
+  - "ts-node/register"
+extension:
+  - "ts"
+spec:
+  - "{packages/*/test,test}/**/*.ts"
