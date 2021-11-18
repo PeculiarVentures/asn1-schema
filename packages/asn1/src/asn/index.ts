@@ -3,6 +3,7 @@ export * from "./BmpString";
 export * from "./Boolean";
 export * from "./CharacterString";
 export * from "./Converter";
+export * from "./DateObject";
 export * from "./Date";
 export * from "./DateTime";
 export * from "./Duration";
