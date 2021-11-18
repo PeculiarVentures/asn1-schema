@@ -1,7 +1,5 @@
 import * as assert from "assert";
-import * as fs from "fs";
-import { BufferSourceConverter, Convert } from "pvtsutils";
-const asn1js = require("asn1js");
+import { Convert } from "pvtsutils";
 import * as src from "../src";
 
 context("BER", () => {
@@ -71,28 +69,6 @@ context("BER", () => {
         assert.strictEqual(asn.content.items.length, 2);
       });
 
-    });
-
-  });
-
-  it("speed test", () => {
-    const file = fs.readFileSync("/Users/microshine/Downloads/dss.root.cer");
-    const view = BufferSourceConverter.toArrayBuffer(file);
-
-    const iterations = [1000];
-
-    iterations.forEach(i => {
-      console.time("prev");
-      while (i--)
-        asn1js.fromBER(view);
-      console.timeEnd("prev");
-    });
-
-    iterations.forEach(i => {
-      console.time("next");
-      while (i--)
-        src.AsnConverter.parse(view);
-      console.timeEnd("next");
     });
 
   });

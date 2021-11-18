@@ -3,7 +3,7 @@ import { Convert } from "pvtsutils";
 import * as src from "@peculiar/asn1";
 import { randomBytes } from "crypto";
 
-context.only("ASN", () => {
+context("ASN", () => {
 
   it("Null", () => {
     const asn = new src.AsnNull();
