@@ -90,10 +90,15 @@ SOFTWARE.
   fs.writeFileSync(path.join(moduleDir, "LICENSE"), license, { flag: "w+" });
 
   const tsconfig = {
+    extends: "../../tsconfig.json",
+  };
+  fs.writeFileSync(path.join(moduleDir, "tsconfig.json"), JSON.stringify(tsconfig, null, "  ")), { flag: "w+" };
+
+  const tsconfigCompile = {
     extends: "../../tsconfig.compile.json",
     include: ["src"],
   };
-  fs.writeFileSync(path.join(moduleDir, "tsconfig.compile.json"), JSON.stringify(tsconfig, null, "  ")), { flag: "w+" };
+  fs.writeFileSync(path.join(moduleDir, "tsconfig.compile.json"), JSON.stringify(tsconfigCompile, null, "  ")), { flag: "w+" };
 
   // Add TS alias
   const globalTsConfig = require("../tsconfig.json");
