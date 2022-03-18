@@ -33,5 +33,5 @@ export type AnyConverterType = ArrayBuffer | null;
 export interface IAsnConvertible<T = any> {
   fromASN(asn: T): this;
   toASN(): T;
-  toSchema(name: string): asn1.BaseBlock<asn1.LocalValueBlock>;
+  toSchema(name: string): asn1.BaseBlock<any>;
 }

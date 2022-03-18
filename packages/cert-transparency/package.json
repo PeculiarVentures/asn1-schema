@@ -35,8 +35,8 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.0.44",
-    "asn1js": "^2.1.1",
+    "asn1js": "^2.3.1",
     "pvtsutils": "^1.2.1",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.1"
   }
 }
