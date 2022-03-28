@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-ess",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "ASN.1 schema based on Enhanced Security Services (ESS) for S/MIME (RFC 2634)",
   "keywords": [
     "asn",
