@@ -74,6 +74,9 @@
       ],
       "@peculiar/asn1-rfc8226": [
         "./packages/rfc8226"
+      ],
+      "@peculiar/asn1-ess": [
+        "./packages/ess"
       ]
     }
   },
