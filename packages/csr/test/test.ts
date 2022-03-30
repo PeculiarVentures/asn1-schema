@@ -14,4 +14,14 @@ context("csr", () => {
     assert.strictEqual(csr.signature.byteLength, 256);
   });
 
+  it("parse request without attributes", () => {
+    const pem = "MIHRMHgCAQAwGDEWMAkGA1UEBhMCTlIwCQYDVQQDEwJUQTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABAG9W7fXg4Ba6D3SYagOgTwa9RcHt1GEyWF2lZS/nh8T0mFA9oF/ZNE6ebZVupqz8ivCMT+HYbSeoWgukO12KNIwCgYIKoZIzj0EAwIDSQAwRgIhAK9OCgvJ4ZpQ72zSDjQ8WA3PF7pb0AQfJbBbG6boHfOkAiEAlHEHSDdPZyw6dvH0UZYwreSpja063buVBpQiPZhIckI=";
+    const csr = AsnConvert.parse(Buffer.from(pem, "base64"), CertificationRequest);
+
+    assert.strictEqual(csr.certificationRequestInfo.subject[0].length, 2);
+    assert.strictEqual(csr.certificationRequestInfo.version, 0);
+    assert.strictEqual(csr.certificationRequestInfo.attributes.length, 0);
+    assert.strictEqual(csr.signature.byteLength, 72);
+  });
+
 });

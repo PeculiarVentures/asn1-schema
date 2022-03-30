@@ -22,7 +22,7 @@ export class CertificationRequestInfo {
   @AsnProp({ type: SubjectPublicKeyInfo })
   public subjectPKInfo = new SubjectPublicKeyInfo();
 
-  @AsnProp({ type: Attributes, implicit: true, context: 0 })
+  @AsnProp({ type: Attributes, implicit: true, context: 0, optional: true })
   public attributes = new Attributes();
 
   constructor(params: Partial<CertificationRequestInfo> = {}) {
