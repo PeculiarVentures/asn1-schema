@@ -59,9 +59,13 @@
   },
   "resolutions": {
     "hosted-git-info": "^4.0.2",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.7",
     "path-parse": "^1.0.7",
     "tar": "^6.1.10",
-    "trim-newlines": "^4.0.2"
+    "trim-newlines": "^4.0.2",
+    "shelljs": "^0.8.5",
+    "trim-off-newlines": "^1.0.3",
+    "ansi-regex": "^3.0.1",
+    "json-schema": "^0.4.0"
   }
 }
