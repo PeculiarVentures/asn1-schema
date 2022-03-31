@@ -5,7 +5,7 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 //   SYNTAX PreferredSignatureAlgorithms
 //   IDENTIFIED BY id-pkix-ocsp-pref-sig-algs  }
 
-/** 
+/**
  * ```
  * PreferredSignatureAlgorithm ::= SEQUENCE {
  *    sigIdentifier  AlgorithmIdentifier{SIGNATURE-ALGORITHM, {...}},
@@ -30,10 +30,10 @@ export class PreferredSignatureAlgorithm {
  * PreferredSignatureAlgorithms ::= SEQUENCE OF PreferredSignatureAlgorithm
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: AlgorithmIdentifier })
-export class PreferredSignatureAlgorithms extends AsnArray<AlgorithmIdentifier> {
+@AsnType({ type: AsnTypeTypes.Sequence, itemType: PreferredSignatureAlgorithm })
+export class PreferredSignatureAlgorithms extends AsnArray<PreferredSignatureAlgorithm> {
 
-  constructor(items?: AlgorithmIdentifier[]) {
+  constructor(items?: PreferredSignatureAlgorithm[]) {
     super(items);
 
     // Set the prototype explicitly.
