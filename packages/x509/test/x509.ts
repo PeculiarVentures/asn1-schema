@@ -1,7 +1,7 @@
 import * as assert from "assert";
-import { AsnParser, AsnConvert } from "@peculiar/asn1-schema";
+import { AsnParser, AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
-import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName, UserNotice, PrivateKeyUsagePeriod, EntrustVersionInfo } from "../src";
+import { Certificate, id_ce_cRLDistributionPoints, CRLDistributionPoints, id_ce_keyUsage, KeyUsage, id_ce_extKeyUsage, ExtendedKeyUsage, NameConstraints, GeneralSubtrees, GeneralSubtree, GeneralName, UserNotice, PrivateKeyUsagePeriod, EntrustVersionInfo, AlgorithmIdentifier } from "../src";
 import { CertificateTemplate } from "@peculiar/asn1-x509-microsoft";
 
 context("x509", () => {
@@ -117,6 +117,89 @@ context("x509", () => {
 
     assert.strictEqual(entrustVersionInfo.entrustVers, "V6.0:4.0");
     assert.strictEqual(entrustVersionInfo.entrustInfoFlags.toString(), "[keyUpdateAllowed]");
+  });
+
+  context("AlgorithmIdentifier", () => {
+    context("isEqual", () => {
+      it("algorithm: equal, parameters: equal(default)", () => {
+        const alg1 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+        })
+        const alg2 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+        });
+
+        assert.strictEqual(alg1.isEqual(alg2), true);
+      });
+      it("algorithm: not equal, parameters: equal(default)", () => {
+        const alg1 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+        })
+        const alg2 = new AlgorithmIdentifier({
+          algorithm:"1.2.3.4",
+        });
+
+        assert.strictEqual(alg1.isEqual(alg2), false);
+      });
+      it("algorithm: equal, parameters: not equal(alg1.parameters null)", () => {
+        const alg1 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+          parameters: null,
+        })
+        const alg2 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+        });
+
+        assert.strictEqual(alg1.isEqual(alg2), false);
+      });
+      it("algorithm: equal, parameters: not equal(alg2.parameters null)", () => {
+        const alg1 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+        })
+        const alg2 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+          parameters: null,
+        });
+
+        assert.strictEqual(alg1.isEqual(alg2), false);
+      });
+      it("algorithm: equal, parameters: equal(null)", () => {
+        const alg1 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+          parameters: null,
+        })
+        const alg2 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+          parameters: null,
+        });
+
+        assert.strictEqual(alg1.isEqual(alg2), true);
+      });
+      it("algorithm: equal, parameters: equal(OcetetString)", () => {
+        const alg1 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+          parameters: AsnConvert.serialize(new OctetString([1,2,3])),
+        })
+        const alg2 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+          parameters: AsnConvert.serialize(new OctetString([1,2,3])),
+        });
+
+        assert.strictEqual(alg1.isEqual(alg2), true);
+      });
+      it("algorithm: equal, parameters: not equal(OctetString)", () => {
+        const alg1 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+          parameters: AsnConvert.serialize(new OctetString([1,2,3])),
+        })
+        const alg2 = new AlgorithmIdentifier({
+          algorithm:"1.2.3",
+          parameters: AsnConvert.serialize(new OctetString([1,2,3,4])),
+        });
+
+        assert.strictEqual(alg1.isEqual(alg2), false);
+      });
+    });
   });
 
 });

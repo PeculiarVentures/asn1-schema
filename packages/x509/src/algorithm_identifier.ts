@@ -1,4 +1,5 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import * as pvtsutils from "pvtsutils";
 
 export type ParametersType = ArrayBuffer | null;
 
@@ -25,7 +26,22 @@ export class AlgorithmIdentifier {
   })
   public parameters?: ParametersType;
 
-  constructor(params: Partial<AlgorithmIdentifier> = {}) {
+  constructor(params: Partial<Omit<AlgorithmIdentifier, "isEqual">> = {}) {
     Object.assign(this, params);
+  }
+
+  public isEqual(data: unknown): data is this {
+    return data instanceof AlgorithmIdentifier
+      && data.algorithm == this.algorithm
+      && (
+        (
+          data.parameters && this.parameters
+          && pvtsutils.isEqual(data.parameters, this.parameters)
+        )
+        ||
+        (
+          data.parameters === this.parameters
+        )
+      )
   }
 }
