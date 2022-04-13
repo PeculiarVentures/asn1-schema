@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-ocsp",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "ASN.1 schema of `X.509 Internet Public Key Infrastructure Online Certificate Status Protocol - OCSP` (RFC6990)",
   "files": [
     "build",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.1.0",
-    "@peculiar/asn1-x509": "^2.1.0",
+    "@peculiar/asn1-x509": "^2.1.3",
     "asn1js": "^2.3.1",
     "tslib": "^2.3.1"
   }
