@@ -40,7 +40,7 @@ export enum ReasonFlags {
  * ```
  */
 export class Reason extends BitString {
-  
+
   public toJSON() {
     const res: ReasonType[] = [];
     const flags = this.toNumber();

@@ -3,7 +3,6 @@ import { AsnParser, AsnSerializer, OctetString } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 import { OCSPRequest, TBSRequest, CertID, Request } from "../src";
 import { GeneralName, AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import * as fs from "fs";
 
 context("ocsp", () => {
   it("request", () => {
