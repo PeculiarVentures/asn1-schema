@@ -22,3 +22,4 @@ export * from "./subject_directory_attributes";
 export * from "./subject_key_identifier";
 export * from "./private_key_usage_period";
 export * from "./entrust_version_info";
+export * from "./subject_info_access";

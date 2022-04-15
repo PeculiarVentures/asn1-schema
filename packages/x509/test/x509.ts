@@ -207,4 +207,11 @@ context("x509", () => {
     assert.strictEqual(policyMappings.length, 3);
   });
 
+  it("subjectInfoAccess", () => {
+    const subjectInfoAccess =  AsnParser.parse(Convert.FromBase64Url('MEcwRQYIKwYBBQUHMAWGOWh0dHA6Ly9pcGtpLnVzcHRvLmdvdi9JUEtJL0NlcnRzL0NBY2VydHNJc3N1ZWRCeVVTUFRPLnA3Yw'), src.SubjectInfoAccessSyntax);
+    assert.strictEqual(subjectInfoAccess.length, 1);
+    assert.strictEqual(subjectInfoAccess[0].accessMethod, "1.3.6.1.5.5.7.48.5");
+    assert.strictEqual(subjectInfoAccess[0].accessLocation.uniformResourceIdentifier, "http://ipki.uspto.gov/IPKI/Certs/CAcertsIssuedByUSPTO.p7c");
+  });
+
 });
