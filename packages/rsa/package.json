@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-rsa",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "ASN.1 schema of `RSA Cryptography Specifications Version 2.2` (RFC8017)",
   "files": [
     "build",
@@ -34,8 +34,8 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.1.5",
-    "@peculiar/asn1-x509": "^2.1.5",
+    "@peculiar/asn1-schema": "^2.1.6",
+    "@peculiar/asn1-x509": "^2.1.6",
     "asn1js": "^3.0.0",
     "tslib": "^2.4.0"
   }
