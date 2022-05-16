@@ -110,7 +110,8 @@ context("cms", () => {
       const sidRaw = "8014448878CF6D19EDC9D4F0BD2391441054B9B87047";
       const sid = AsnConvert.parse(Buffer.from(sidRaw, "hex"), SignerIdentifier);
 
-      console.log(sid);
+      assert.ok(sid.subjectKeyIdentifier);
+      assert.strictEqual(Convert.ToHex(sid.subjectKeyIdentifier), "448878cf6d19edc9d4f0bd2391441054b9b87047");
     });
 
   });
