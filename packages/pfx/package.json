@@ -38,7 +38,7 @@
     "@peculiar/asn1-pkcs8": "^2.1.6",
     "@peculiar/asn1-rsa": "^2.1.6",
     "@peculiar/asn1-schema": "^2.1.6",
-    "asn1js": "^3.0.0",
+    "asn1js": "^3.0.3",
     "tslib": "^2.4.0"
   }
 }
