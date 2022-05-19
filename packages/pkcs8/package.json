@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-pkcs8",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "ASN.1 schema of `Public-Key Cryptography Standards (PKCS) #8: Private-Key Information Syntax Specification Version 1.2` (RFC5208)",
   "files": [
     "build",
@@ -34,8 +34,8 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.1.7",
-    "@peculiar/asn1-x509": "^2.1.7",
+    "@peculiar/asn1-schema": "^2.1.8",
+    "@peculiar/asn1-x509": "^2.1.8",
     "asn1js": "^3.0.4",
     "tslib": "^2.4.0"
   }

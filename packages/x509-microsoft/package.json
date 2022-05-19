@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-microsoft",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "ASN.1 schema of `Microsoft X509 extensions`",
   "files": [
     "build",
@@ -34,8 +34,8 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.1.7",
-    "@peculiar/asn1-x509": "^2.1.7",
+    "@peculiar/asn1-schema": "^2.1.8",
+    "@peculiar/asn1-x509": "^2.1.8",
     "asn1js": "^3.0.4",
     "pvtsutils": "^1.3.2",
     "tslib": "^2.4.0"

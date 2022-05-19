@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-tsp",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "Internet X.509 Public Key Infrastructure Time-Stamp Protocol (TSP)",
   "keywords": [
     "asn",
@@ -34,9 +34,9 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-cms": "^2.1.7",
-    "@peculiar/asn1-schema": "^2.1.7",
-    "@peculiar/asn1-x509": "^2.1.7",
+    "@peculiar/asn1-cms": "^2.1.8",
+    "@peculiar/asn1-schema": "^2.1.8",
+    "@peculiar/asn1-x509": "^2.1.8",
     "asn1js": "^3.0.4",
     "tslib": "^2.4.0"
   },
