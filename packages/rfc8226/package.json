@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.1.7",
-    "asn1js": "^3.0.3",
+    "asn1js": "^3.0.4",
     "tslib": "^2.4.0"
   },
   "bugs": {
