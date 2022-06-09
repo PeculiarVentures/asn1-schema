@@ -20,7 +20,7 @@ export class AsnParser {
    */
   public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>): T {
     let buf: ArrayBuffer;
-    if (data instanceof ArrayBuffer) {
+    if (isArrayBuffer(data)) {
       buf = data;
     } else if (typeof Buffer !== "undefined" && Buffer.isBuffer(data)) {
       buf = new Uint8Array(data).buffer;
@@ -171,4 +171,9 @@ export class AsnParser {
       throw error;
     }
   }
+}
+
+function isArrayBuffer(data: BufferSource): data is ArrayBuffer {
+  // See https://github.com/PeculiarVentures/asn1-schema/issues/71
+  return data instanceof ArrayBuffer || data.toString() === "[object ArrayBuffer]";
 }
