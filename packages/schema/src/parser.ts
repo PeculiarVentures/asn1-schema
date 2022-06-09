@@ -24,7 +24,7 @@ export class AsnParser {
       buf = data;
     } else if (typeof Buffer !== "undefined" && Buffer.isBuffer(data)) {
       buf = new Uint8Array(data).buffer;
-    } else if (ArrayBuffer.isView(data) || (data as any).buffer instanceof ArrayBuffer) {
+    } else if (ArrayBuffer.isView(data) || isArrayBuffer((data as any).buffer)) {
       buf = data.buffer;
     } else {
       throw new TypeError("Wrong type of 'data' argument");
