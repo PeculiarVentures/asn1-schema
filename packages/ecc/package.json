@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-ecc",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "ASN.1 schema of `Elliptic Curve Private Key Structure` (RFC5915)",
   "files": [
     "build",
@@ -34,8 +34,8 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.1.8",
-    "@peculiar/asn1-x509": "^2.1.8",
+    "@peculiar/asn1-schema": "^2.1.9",
+    "@peculiar/asn1-x509": "^2.1.9",
     "asn1js": "^3.0.4",
     "tslib": "^2.4.0"
   }
