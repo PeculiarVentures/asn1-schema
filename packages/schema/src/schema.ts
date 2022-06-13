@@ -102,7 +102,7 @@ export class AsnSchemaStorage {
       }
       const optional = !!item.optional || item.defaultValue !== undefined;
       if (item.repeated) {
-        asn1Item.name = "";
+        asn1Item.name = ""; // erase name for repeated items
         const Container = item.repeated === "set"
           ? asn1.Set
           : asn1.Sequence;
@@ -114,7 +114,7 @@ export class AsnSchemaStorage {
               value: asn1Item,
             }),
           ],
-        } as any);
+        });
       }
       if (item.context !== null && item.context !== undefined) {
         // CONTEXT-SPECIFIC
