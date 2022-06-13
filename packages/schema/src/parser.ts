@@ -19,18 +19,7 @@ export class AsnParser {
    * @param target Target schema for object deserialization
    */
   public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>): T {
-    let buf: ArrayBuffer;
-    if (data instanceof ArrayBuffer) {
-      buf = data;
-    } else if (typeof Buffer !== "undefined" && Buffer.isBuffer(data)) {
-      buf = new Uint8Array(data).buffer;
-    } else if (ArrayBuffer.isView(data) || (data as any).buffer instanceof ArrayBuffer) {
-      buf = data.buffer;
-    } else {
-      throw new TypeError("Wrong type of 'data' argument");
-    }
-
-    const asn1Parsed = asn1.fromBER(buf);
+    const asn1Parsed = asn1.fromBER(data);
     if (asn1Parsed.result.error) {
       throw new Error(asn1Parsed.result.error);
     }
@@ -74,7 +63,7 @@ export class AsnParser {
 
       // Check the schema is valid
       const asn1ComparedSchema = asn1.compareSchema(
-        asn1Schema,
+        {} as any,
         asn1Schema,
         targetSchema,
       );
@@ -99,7 +88,8 @@ export class AsnParser {
       }
 
       for (const key in schema.items) {
-        if (!asn1Schema[key]) {
+        const asn1SchemaValue = asn1ComparedSchema.result[key]
+        if (!asn1SchemaValue) {
           // TODO: we need to skip empty values for Choice and Optional params
           continue; // skip empty props
         }
@@ -121,14 +111,14 @@ export class AsnParser {
                 ? asn1.Sequence
                 : asn1.Set;
               const newItem = new Container();
-              newItem.valueBlock = asn1Schema[key].valueBlock;
+              newItem.valueBlock = asn1SchemaValue.valueBlock;
               const value = (asn1 as any).fromBER(newItem.toBER(false)).result.valueBlock.value;
               res[key] = Array.from(value, (element) => converter.fromASN(element));
             } else {
-              res[key] = Array.from(asn1Schema[key], (element) => converter.fromASN(element));
+              res[key] = Array.from(asn1SchemaValue, (element) => converter.fromASN(element));
             }
           } else {
-            let value = asn1Schema[key];
+            let value = asn1SchemaValue;
             if (schemaItem.implicit) {
               let newItem: any;
               if (isConvertible(schemaItem.type)) {
@@ -150,10 +140,10 @@ export class AsnParser {
           // SEQUENCE | SET | CHOICE
           // use ASN1 schema
           if (schemaItem.repeated) {
-            res[key] = Array.from(asn1Schema[key], (element: any) =>
+            res[key] = Array.from(asn1SchemaValue, (element: any) =>
               this.fromASN(element, schemaItem.type as any));
           } else {
-            res[key] = this.fromASN(asn1Schema[key], schemaItem.type);
+            res[key] = this.fromASN(asn1SchemaValue, schemaItem.type);
           }
         }
       }
