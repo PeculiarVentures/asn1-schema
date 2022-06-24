@@ -215,7 +215,7 @@ context("Test", () => {
            * SEQUENCE (1 elem)
            *   INTEGER (47 bit) 123456789012345
            */
-          test(Test, "300802067048860ddf79", 123456789012345);
+          test(Test, "300802067048860ddf79", "123456789012345");
         });
       });
       context("BooleanConverter", () => {
@@ -855,7 +855,7 @@ context("Test", () => {
       const buf = Buffer.from("020401020304", "hex");
       const test = src.AsnConvert.parse(buf, Test);
 
-      assert.strictEqual(test.value, 16909060);
+      assert.strictEqual(test.value, "16909060");
     });
 
     it("parse more than 4 bytes INTEGER", () => {
@@ -868,7 +868,7 @@ context("Test", () => {
       const buf = Buffer.from("020f0102030405060708090a0b0c0d0e0f01", "hex");
       const test = src.AsnConvert.parse(buf, Test);
 
-      assert.strictEqual(test.value, 5.233100606242807e+33);
+      assert.strictEqual(test.value, "5233100606242806050955395731361295");
     });
 
   });

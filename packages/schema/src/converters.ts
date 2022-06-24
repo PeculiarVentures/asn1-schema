@@ -27,9 +27,9 @@ export const AsnAnyConverter: IAsnConverter<AnyConverterType> = {
 /**
  * ASN.1 INTEGER to Number/String converter
  */
-export const AsnIntegerConverter: IAsnConverter<IntegerConverterType> = {
-  fromASN: (value: any) => value.valueBlock.valueHex.byteLength >= 4
-    ? parseInt(value.valueBlock.toString())
+export const AsnIntegerConverter: IAsnConverter<IntegerConverterType, asn1.Integer> = {
+  fromASN: (value: asn1.Integer) => value.valueBlock.valueHexView.byteLength >= 4
+    ? value.valueBlock.toString() // use string format
     : value.valueBlock.valueDec, // use number format
   toASN: (value: IntegerConverterType) => new asn1.Integer({ value: value as any }),
 };

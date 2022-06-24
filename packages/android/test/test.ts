@@ -18,7 +18,7 @@ context("Android", () => {
       assert.strictEqual(kd.keymasterSecurityLevel, SecurityLevel.software);
       assert.strictEqual(kd.attestationChallenge.byteLength, 32);
       assert.strictEqual(kd.uniqueId.byteLength, 0);
-      assert.strictEqual(kd.softwareEnforced.creationDateTime, 1506793476000);
+      assert.strictEqual(kd.softwareEnforced.creationDateTime, "1506793476000");
       assert.strictEqual(kd.softwareEnforced.attestationApplicationId!.byteLength, 87);
       assert.strictEqual(kd.teeEnforced.purpose!.length, 1);
       assert.strictEqual(kd.teeEnforced.purpose![0], 2);
