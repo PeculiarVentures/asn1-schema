@@ -1,7 +1,7 @@
 // @ts-ignore
 import * as asn1 from "asn1js";
 import * as assert from "assert";
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString, AsnArray } from "../src";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString, AsnArray, AsnConvert } from "../src";
 import * as Converters from "../src/converters";
 import { AsnParser } from "../src/parser";
 import { AsnSerializer } from "../src/serializer";
@@ -219,7 +219,7 @@ context("Test", () => {
            * SEQUENCE (1 elem)
            *   INTEGER (47 bit) 123456789012345
            */
-          test(Test, "300802067048860ddf79", "123456789012345");
+          test(Test, "300802067048860ddf79", 123456789012345);
         });
       });
       context("BooleanConverter", () => {
@@ -803,6 +803,50 @@ context("Test", () => {
       assert.strictEqual(obj instanceof Test, true);
       const type = typeof (obj);
     });
+  });
+
+  // https://github.com/PeculiarVentures/asn1-schema/issues/75
+  context("issue #75", () => {
+
+    it("parse 3 bytes INTEGER", () => {
+      @AsnType({ type: AsnTypeTypes.Choice })
+      class Test {
+        @AsnProp({ type: AsnPropTypes.Integer })
+        public value!: number;
+      }
+
+      const buf = Buffer.from("0203010203", "hex");
+      const test = AsnConvert.parse(buf, Test);
+
+      assert.strictEqual(test.value, 66051);
+    });
+
+    it("parse 4 bytes INTEGER", () => {
+      @AsnType({ type: AsnTypeTypes.Choice })
+      class Test {
+        @AsnProp({ type: AsnPropTypes.Integer })
+        public value!: number;
+      }
+
+      const buf = Buffer.from("020401020304", "hex");
+      const test = AsnConvert.parse(buf, Test);
+
+      assert.strictEqual(test.value, 16909060);
+    });
+
+    it("parse more than 4 bytes INTEGER", () => {
+      @AsnType({ type: AsnTypeTypes.Choice })
+      class Test {
+        @AsnProp({ type: AsnPropTypes.Integer })
+        public value!: number;
+      }
+
+      const buf = Buffer.from("020f0102030405060708090a0b0c0d0e0f01", "hex");
+      const test = AsnConvert.parse(buf, Test);
+
+      assert.strictEqual(test.value, 5.233100606242807e+33);
+    });
+
   });
 
 });
