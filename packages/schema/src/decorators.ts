@@ -4,16 +4,18 @@ import { IAsnSchema, IAsnSchemaItem } from "./schema";
 import { schemaStorage } from "./storage";
 import { IAsnConverter, IEmptyConstructor } from "./types";
 
-interface IAsn1TypeOptions {
+export type AsnItemType<T = any> = AsnPropTypes | IEmptyConstructor<T>;
+
+export interface IAsn1TypeOptions {
   type: AsnTypeTypes;
-  itemType?: AsnPropTypes | IEmptyConstructor<any>;
+  itemType?: AsnItemType;
 }
 export type AsnRepeatTypeString = "sequence" | "set";
 
 export type AsnRepeatType = AsnRepeatTypeString;
 
-interface IAsn1PropOptions {
-  type: AsnPropTypes | IEmptyConstructor<any>;
+export interface IAsn1PropOptions {
+  type: AsnItemType;
   optional?: boolean;
   defaultValue?: any;
   context?: number;
@@ -32,6 +34,20 @@ export const AsnType = (options: IAsn1TypeOptions) => (target: object) => {
   }
   Object.assign(schema, options);
 };
+
+export const AsnChoiceType = () => AsnType({ type: AsnTypeTypes.Choice });
+
+export interface IAsn1SetOptions {
+  itemType: AsnItemType;
+}
+
+export const AsnSetType = (options: IAsn1SetOptions) => AsnType({ type: AsnTypeTypes.Set, ...options });
+
+export interface IAsn1SequenceOptions {
+  itemType?: AsnItemType;
+}
+
+export const AsnSequenceType = (options: IAsn1SequenceOptions) => AsnType({ type: AsnTypeTypes.Sequence, ...options });
 
 export const AsnProp = (options: IAsn1PropOptions) => (target: object, propertyKey: string) => {
   let schema: IAsnSchema;
