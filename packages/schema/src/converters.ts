@@ -51,6 +51,14 @@ export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer> = {
 };
 
 /**
+ * ASN.1 INTEGER to BigInt converter
+ */
+export const AsnIntegerBigIntConverter: IAsnConverter<bigint, asn1.Integer> = {
+  fromASN: (value: asn1.Integer) => value.toBigInt(),
+  toASN: (value: bigint) => asn1.Integer.fromBigInt(value),
+};
+
+/**
  * ASN.1 BIT STRING converter
  */
 export const AsnBitStringConverter: IAsnConverter<ArrayBuffer> = {
