@@ -219,7 +219,7 @@ context("Test", () => {
            * SEQUENCE (1 elem)
            *   INTEGER (47 bit) 123456789012345
            */
-          test(Test, "300802067048860ddf79", "123456789012345");
+          test(Test, "300802067048860ddf79", 123456789012345);
         });
       });
       context("BooleanConverter", () => {
