@@ -8,9 +8,28 @@
 
 ## List of schemas
 
+- [adobe acrobat](packages/adobe-acrobat/README.md)
+- [android](packages/android/README.md)
+- [cert transparency](packages/cert-transparency/README.md) (RFC 6962)
 - [cms](packages/cms/README.md) (RFC 5652)
+- [csr](packages/csr/README.md) (RFC 2986)
+- [ecc](packages/ecc/README.md) (RFC 5915, RFC 5480)
+- [lei](packages/lei/README.md)
+- [ntqwac](packages/ntqwac/README.md)
 - [ocsp](packages/ocsp/README.md) (RFC 6960)
+- [pfx](packages/pfx/README.md) (RFC 7292)
+- [pkcs8](packages/pkcs8/README.md) (RFC 5208)
+- [pkcs9](packages/pkcs9/README.md) (RFC 2985)
+- [rfc8226](packages/rfc8226/README.md) (RFC 8226)
+- [rsa](packages/rsa/README.md) (RFC 8017)
+- [tsp](packages/tsp/README.md) (RFC 3161)
 - [x509](packages/x509/README.md) (RFC 5280)
+- [x509 attr](packages/x509-attr/README.md) (RFC 5755)
+- [x509 logotype](packages/x509-logotype/README.md) (RFC 3709)
+- [x509 netscape](packages/x509-netscape/README.md)
+- [x509 qualified](packages/x509-qualified/README.md) (RFC 3739)
+- [x509 qualified etsi](packages/x509-qualified-etsi/README.md)
+- [x509 trustanchor](packages/x509-trustanchor/README.md) (RFC 5914)
 
 ## Usage
 
