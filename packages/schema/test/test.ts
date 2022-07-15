@@ -1,4 +1,3 @@
-// @ts-ignore
 import * as asn1 from "asn1js";
 import * as assert from "assert";
 import * as src from "../src";

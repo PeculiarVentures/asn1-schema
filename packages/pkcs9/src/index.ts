@@ -460,7 +460,7 @@ export class EmailAddress {
   @AsnProp({ type: AsnPropTypes.IA5String })
   public value: string;
 
-  public constructor(value: string = "") {
+  public constructor(value = "") {
     this.value = value;
   }
 
@@ -691,7 +691,7 @@ export class SequenceNumber {
   @AsnProp({ type: AsnPropTypes.Integer })
   public value: number;
 
-  public constructor(value: number = 0) {
+  public constructor(value = 0) {
     this.value = value;
   }
 

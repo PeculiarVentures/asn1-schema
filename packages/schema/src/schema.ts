@@ -1,4 +1,3 @@
-// @ts-ignore
 import * as asn1 from "asn1js";
 import { AsnRepeatType } from "./decorators";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
@@ -18,7 +17,7 @@ export interface IAsnSchemaItem {
 export interface IAsnSchema {
   type: AsnTypeTypes;
   itemType: AsnPropTypes | IEmptyConstructor<any>;
-  items: { [key: string]: IAsnSchemaItem };
+  items: { [key: string]: IAsnSchemaItem; };
   schema?: any;
 }
 

@@ -19,7 +19,7 @@ export const id_pe_authorityInfoAccess = `${id_pe}.1`;
 export class AccessDescription {
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public accessMethod: string = "";
+  public accessMethod = "";
 
   @AsnProp({ type: GeneralName })
   public accessLocation = new GeneralName();

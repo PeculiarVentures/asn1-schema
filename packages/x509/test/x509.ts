@@ -46,7 +46,7 @@ context("x509", () => {
   });
 
   it("Name constrains", () => {
-    var nameConstrains = new src.NameConstraints({
+    const nameConstrains = new src.NameConstraints({
       permittedSubtrees: new src.GeneralSubtrees([
         new src.GeneralSubtree({
           base: new src.GeneralName({

@@ -32,19 +32,19 @@ export class IssuingDistributionPoint {
   public distributionPoint?: DistributionPointName;
 
   @AsnProp({type: AsnPropTypes.Boolean, context: 1, defaultValue: IssuingDistributionPoint.ONLY})
-  public onlyContainsUserCerts = IssuingDistributionPoint.ONLY;;
+  public onlyContainsUserCerts = IssuingDistributionPoint.ONLY;
 
   @AsnProp({type: AsnPropTypes.Boolean, context: 2, defaultValue: IssuingDistributionPoint.ONLY})
-  public onlyContainsCACerts = IssuingDistributionPoint.ONLY;;
+  public onlyContainsCACerts = IssuingDistributionPoint.ONLY;
 
   @AsnProp({type: Reason, context: 3, optional: true})
   public onlySomeReasons?: Reason;
 
   @AsnProp({type: AsnPropTypes.Boolean, context: 4, defaultValue: IssuingDistributionPoint.ONLY})
-  public indirectCRL = IssuingDistributionPoint.ONLY;;
+  public indirectCRL = IssuingDistributionPoint.ONLY;
 
   @AsnProp({type: AsnPropTypes.Boolean, context: 5, defaultValue: IssuingDistributionPoint.ONLY})
-  public onlyContainsAttributeCerts = IssuingDistributionPoint.ONLY;;
+  public onlyContainsAttributeCerts = IssuingDistributionPoint.ONLY;
 
   public constructor(params: Partial<IssuingDistributionPoint> = {}) {
     Object.assign(this, params);

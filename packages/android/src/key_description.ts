@@ -35,7 +35,7 @@ export class RootOfTrust {
   public verifiedBootKey: OctetString = new OctetString();
 
   @AsnProp({ type: AsnPropTypes.Boolean })
-  public deviceLocked: boolean = false;
+  public deviceLocked = false;
 
   @AsnProp({ type: AsnPropTypes.Enumerated })
   public verifiedBootState: VerifiedBootState = VerifiedBootState.verified;
@@ -266,7 +266,7 @@ export class KeyDescription {
   public attestationSecurityLevel: SecurityLevel = SecurityLevel.software;
 
   @AsnProp({ type: AsnPropTypes.Integer })
-  public keymasterVersion: number = 0;
+  public keymasterVersion = 0;
 
   @AsnProp({ type: AsnPropTypes.Enumerated })
   public keymasterSecurityLevel: SecurityLevel = SecurityLevel.software;

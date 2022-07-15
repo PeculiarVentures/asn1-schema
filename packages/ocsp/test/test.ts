@@ -21,7 +21,7 @@ context("ocsp", () => {
   });
 
   it("request build", () => {
-    var request = new OCSPRequest({
+    const request = new OCSPRequest({
       tbsRequest: new TBSRequest({
         requestorName: new GeneralName({
           iPAddress: "1.0.1.0",

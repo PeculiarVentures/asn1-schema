@@ -21,7 +21,7 @@ export const id_lei = "1.3.6.1.4.1.52266.1";
 export class Lei {
 
   @AsnProp({ type: PrintableString })
-  public leiCode: string = "";
+  public leiCode = "";
 
   @AsnProp({ type: PrintableString, context: 0, optional: true })
   public leiRole?: string;

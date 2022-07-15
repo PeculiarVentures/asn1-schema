@@ -10,7 +10,7 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from '@peculia
  */
 export class SecurityCategory {
     @AsnProp({ type: AsnPropTypes.ObjectIdentifier, context: 0, implicit: true })
-    public type: string = '';
+    public type = '';
 
     @AsnProp({ type: AsnPropTypes.Any, context: 1, implicit: true })
     public value: ArrayBuffer = new ArrayBuffer(0);

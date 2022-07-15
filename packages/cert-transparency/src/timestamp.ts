@@ -36,7 +36,7 @@ export enum SignatureAlgorithm {
 
 export class SignedCertificateTimestamp extends Structure {
 
-  public version: number = 0;
+  public version = 0;
   public logId: ArrayBuffer = new ArrayBuffer(32);
   public timestamp = new Date();
   public extensions: ArrayBuffer = new ArrayBuffer(0);

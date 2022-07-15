@@ -1,4 +1,3 @@
-// @ts-ignore
 import * as asn1 from "asn1js";
 import { AnyConverterType, IAsnConverter, IntegerConverterType } from "./types";
 import { AsnPropTypes } from "./enums";

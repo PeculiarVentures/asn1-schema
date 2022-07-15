@@ -11,7 +11,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 export class Attribute {
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public type: string = "";
+  public type = "";
 
   @AsnProp({ type: AsnPropTypes.Any, repeated: "set" })
   public values: ArrayBuffer[] = [];

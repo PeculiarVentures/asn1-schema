@@ -84,7 +84,7 @@ export class AttributeValue extends DirectoryString {
 export class AttributeTypeAndValue {
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public type: string = "";
+  public type = "";
 
   @AsnProp({ type: AttributeValue })
   public value = new AttributeValue();

@@ -16,7 +16,7 @@ export const AsnIpConverter: IAsnConverter<string> = {
  */
 export class OtherName {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public typeId: string = "";
+  public typeId = "";
 
   @AsnProp({ type: AsnPropTypes.Any, context: 0 })
   public value: ArrayBuffer = new ArrayBuffer(0);

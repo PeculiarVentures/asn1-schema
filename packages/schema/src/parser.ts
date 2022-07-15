@@ -1,4 +1,3 @@
-// @ts-ignore
 import * as asn1 from "asn1js";
 import type { BufferSource } from "pvtsutils";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
@@ -88,7 +87,7 @@ export class AsnParser {
       }
 
       for (const key in schema.items) {
-        const asn1SchemaValue = asn1ComparedSchema.result[key]
+        const asn1SchemaValue = asn1ComparedSchema.result[key];
         if (!asn1SchemaValue) {
           // TODO: we need to skip empty values for Choice and Optional params
           continue; // skip empty props

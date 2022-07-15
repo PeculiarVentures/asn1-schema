@@ -2,7 +2,6 @@ import { execSync } from "child_process";
 import * as rimraf from "rimraf";
 import * as fs from "fs";
 import * as path from "path";
-const pkg = require("../package.json");
 
 async function main(name: string) {
   if (!name) {
@@ -20,7 +19,7 @@ async function main(name: string) {
   fs.renameSync(path.join(projectDir, "packages", `asn1-${name}`), moduleDir);
 
   // Update package.json
-  const packageJson = require(path.join(moduleDir, "package.json"));
+  const packageJson = await import(path.join(moduleDir, "package.json"));
   Object.assign(packageJson, {
     description: "",
     files: [
@@ -96,14 +95,14 @@ SOFTWARE.
   fs.writeFileSync(path.join(moduleDir, "tsconfig.compile.json"), JSON.stringify(tsconfig, null, "  ")), { flag: "w+" };
 
   // Add TS alias
-  const globalTsConfig = require("../tsconfig.json");
-  globalTsConfig.compilerOptions.paths[moduleName] = [`./packages/${name}`];
+  const globalTsConfig = await import("../tsconfig.json");
+  (globalTsConfig.compilerOptions.paths as Record<string, string[]>)[moduleName] = [`./packages/${name}`];
   fs.writeFileSync(path.join(projectDir, "tsconfig.json"), `${JSON.stringify(globalTsConfig, null, "  ")}\n`, { flag: "w+" });
 
   console.log(`Package '${moduleName}' created`);
 }
 
-main.apply(null, process.argv.slice(2) as any)
+main(process.argv.slice(2)[0])
   .catch((error) => {
     console.error(error);
     process.exit(1);

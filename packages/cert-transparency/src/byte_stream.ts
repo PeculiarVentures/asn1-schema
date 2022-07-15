@@ -13,7 +13,7 @@ export class ByteStream {
     this.view = BufferSourceConverter.toUint8Array(bytes);
   }
 
-  public read(size: number = 1) {
+  public read(size = 1) {
     const res = this.view.slice(this.offset, this.offset + size);
     this.offset = this.offset + res.length;
     return res;

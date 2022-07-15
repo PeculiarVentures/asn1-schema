@@ -1,4 +1,3 @@
-// @ts-ignore
 import * as asn1 from "asn1js";
 import * as converters from "./converters";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
@@ -16,7 +15,7 @@ export class AsnSerializer {
    */
   public static serialize(obj: any): ArrayBuffer {
     if (obj instanceof asn1.BaseBlock) {
-      return (obj as any).toBER(false)
+      return (obj as any).toBER(false);
     }
     return this.toASN(obj).toBER(false);
   }
@@ -37,7 +36,7 @@ export class AsnSerializer {
     let asn1Value: any[] = [];
 
     if (schema.itemType) {// repeated
-      if (typeof schema.itemType === "number" ) {
+      if (typeof schema.itemType === "number") {
         // primitive
         const converter = converters.defaultConverter(schema.itemType);
         if (!converter) {
@@ -61,15 +60,15 @@ export class AsnSerializer {
           continue; // skip item
         }
 
-        let asn1Item: any = AsnSerializer.toAsnItem(schemaItem, key, target, objProp);
+        const asn1Item: any = AsnSerializer.toAsnItem(schemaItem, key, target, objProp);
         if (typeof schemaItem.context === "number") {
           // CONTEXT-SPECIFIC
           if (schemaItem.implicit) {
             // IMPLICIT
             if (!schemaItem.repeated
               && (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))) {
-              const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer } = {};
-              value.valueHex = asn1Item instanceof asn1.Null ? asn1Item.valueBeforeDecode: asn1Item.valueBlock.toBER();
+              const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer; } = {};
+              value.valueHex = asn1Item instanceof asn1.Null ? asn1Item.valueBeforeDecode : asn1Item.valueBlock.toBER();
               asn1Value.push(new asn1.Primitive({
                 optional: schemaItem.optional,
                 idBlock: {

@@ -17,7 +17,7 @@ export class Extension {
   public static CRITICAL = false;
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public extnID: string = "";
+  public extnID = "";
 
   @AsnProp({
     type: AsnPropTypes.Boolean,
