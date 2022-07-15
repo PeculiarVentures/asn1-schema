@@ -426,7 +426,7 @@ context("Test", () => {
           Test,
           "300e020c010203040506070809000102",
           new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2]).buffer,
-          (value, expected) => {
+          (value) => {
             assertBuffer(Buffer.from(value), Buffer.from("010203040506070809000102", "hex"));
           },
         );
@@ -824,7 +824,6 @@ context("Test", () => {
       const obj = src.AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test);
       assert.strictEqual(obj.join(", "), "1.2.3.4.5, 2.3.4.5.6");
       assert.strictEqual(obj instanceof Test, true);
-      const type = typeof (obj);
     });
   });
 

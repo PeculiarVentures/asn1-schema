@@ -1,4 +1,4 @@
-import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import { OctetString } from "@peculiar/asn1-schema";
 
 // re-ocsp-nonce EXTENSION ::= { SYNTAX OCTET STRING IDENTIFIED
 //   BY id-pkix-ocsp-nonce }

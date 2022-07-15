@@ -1,4 +1,4 @@
-import { AsnParser, AsnProp, AsnPropTypes, AsnSerializer } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "./algorithm_identifier";
 
 /**

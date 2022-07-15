@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import { AsnProp, OctetString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 /**

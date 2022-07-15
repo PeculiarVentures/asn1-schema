@@ -164,8 +164,8 @@ export const AsnGeneralizedTimeConverter: IAsnConverter<Date> = {
  * ASN.1 ANY converter
  */
 export const AsnNullConverter: IAsnConverter<null> = {
-  fromASN: (value: any) => null,
-  toASN: (value: null) => {
+  fromASN: () => null,
+  toASN: () => {
     return new asn1.Null();
   },
 };

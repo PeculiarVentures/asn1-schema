@@ -1,4 +1,4 @@
-import { AsnProp, AsnConvert, AsnOctetStringConverter } from "@peculiar/asn1-schema";
+import { AsnProp, AsnConvert } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 import { id_mgf1, id_RSAES_OAEP } from "../object_identifiers";
 import { sha1, mgf1SHA1, pSpecifiedEmpty } from "../algorithms";

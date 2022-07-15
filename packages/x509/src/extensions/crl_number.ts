@@ -1,4 +1,4 @@
-import { AsnIntegerArrayBufferConverter, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
 
 /**

@@ -60,19 +60,19 @@ context("Schema", () => {
     const raw = AsnConvert.serialize(asn);
     assert.strictEqual(Buffer.from(raw).toString("hex"), "8000");
 
-    const asnParsed = AsnConvert.parse(raw, CertStatus);
+    AsnConvert.parse(raw, CertStatus);
 
     assert.strictEqual(asn.good, null);
   });
 
   it.skip("empty sequence", () => {
     class Test {
-      @AsnProp({type: AsnPropTypes.Boolean, repeated: "sequence", optional: true,})
+      @AsnProp({ type: AsnPropTypes.Boolean, repeated: "sequence", optional: true, })
       public items?: boolean[];
     }
 
     const asn = AsnConvert.parse(Buffer.from("30023000", "hex"), Test);
     assert.ok(asn.items); // TODO It throws exception. Looks like asn1js doesn't assign empty structures to schema
-  })
+  });
 
 });

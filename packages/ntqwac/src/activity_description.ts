@@ -1,4 +1,4 @@
-import { AsnType, AsnTypeTypes, AsnProp, BitString, AsnPropTypes } from '@peculiar/asn1-schema';
+import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from '@peculiar/asn1-schema';
 import { GeneralName } from '@peculiar/asn1-x509';
 import { id_ntQWAC } from './oids';
 
@@ -10,7 +10,7 @@ export class ActivityDescription {
   @AsnProp({ type: GeneralName, context: 0 })
   public codeAuthority = new GeneralName();
 
-  @AsnProp({ type: GeneralName, context: 1})
+  @AsnProp({ type: GeneralName, context: 1 })
   public codeId = new GeneralName();
 
   @AsnProp({ type: AsnPropTypes.Utf8String, context: 2 })

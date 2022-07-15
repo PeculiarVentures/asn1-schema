@@ -1,6 +1,6 @@
 import * as assert from "assert";
 import { RsaSaPssParams, id_md5, id_sha1 } from "../../src";
-import { AsnConvert, AsnOctetStringConverter } from "@peculiar/asn1-schema";
+import { AsnConvert } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 context("RSASSA-PSS params", () => {

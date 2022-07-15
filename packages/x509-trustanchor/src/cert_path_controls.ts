@@ -1,5 +1,5 @@
 import { Name, Certificate, CertificatePolicies, NameConstraints } from "@peculiar/asn1-x509";
-import { AsnProp, AsnPropTypes, IAsnConverter, BitString } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, BitString } from "@peculiar/asn1-schema";
 
 export type CertPolicyType = "inhibitPolicyMapping" | "requireExplicitPolicy" | "inhibitAnyPolicy";
 

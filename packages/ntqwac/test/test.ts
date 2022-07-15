@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { AsnParser, AsnConvert } from "@peculiar/asn1-schema";
+import { AsnParser } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 import { DomainName, TypeRelationship, ActivityDescription, WebGDPR, InsuranceValue, ValuationRanking } from '../src';
 

@@ -1,4 +1,4 @@
-import { AsnProp, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { Attribute } from "../attribute";
 import { id_ce } from "../object_identifiers";
 

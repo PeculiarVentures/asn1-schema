@@ -1,5 +1,4 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
-import { SkipCerts } from "./policy_constraints";
 import { id_ce } from "../object_identifiers";
 
 /**

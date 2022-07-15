@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes, AsnType, IAsnConverter, AsnTypeTypes, BitString } from "@peculiar/asn1-schema";
+import { BitString } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
 
 /**
