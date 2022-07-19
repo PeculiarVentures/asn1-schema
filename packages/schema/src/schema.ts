@@ -1,4 +1,4 @@
-import * as asn1 from "asn1js";
+import * as asn1js from "asn1js";
 import { AsnRepeatType } from "./decorators";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { IAsnConverter, IEmptyConstructor, IAsnConvertible } from "./types";
@@ -71,7 +71,7 @@ export class AsnSchemaStorage {
       if (typeof (item.type) === "number") {
         // type is AsnPropType Enum
         const Asn1TypeName = AsnPropTypes[item.type];
-        const Asn1Type = (asn1 as any)[Asn1TypeName];
+        const Asn1Type = (asn1js as any)[Asn1TypeName];
         if (!Asn1Type) {
           throw new Error(`Cannot get ASN1 class by name '${Asn1TypeName}'`);
         }
@@ -88,7 +88,7 @@ export class AsnSchemaStorage {
         if (itemSchema.type === AsnTypeTypes.Choice) {
           // ASN1.js doesn't assign CHOICE to named property
           // Use ANY block to fix it
-          asn1Item = new asn1.Any({ name });
+          asn1Item = new asn1js.Any({ name });
         } else {
           asn1Item = this.create(item.type, false);
           asn1Item.name = name;
@@ -96,19 +96,19 @@ export class AsnSchemaStorage {
       } else {
         // type is class with schema
         // asn1Item = createAsn1Schema(item.type, schema.type === Asn1TypeType.Choice ? true : false);
-        asn1Item = new asn1.Any({ name });
+        asn1Item = new asn1js.Any({ name });
         // asn1Item.name = name;
       }
       const optional = !!item.optional || item.defaultValue !== undefined;
       if (item.repeated) {
         asn1Item.name = ""; // erase name for repeated items
         const Container = item.repeated === "set"
-          ? asn1.Set
-          : asn1.Sequence;
+          ? asn1js.Set
+          : asn1js.Sequence;
         asn1Item = new Container({
           name: "",
           value: [
-            new asn1.Repeated({
+            new asn1js.Repeated({
               name,
               value: asn1Item,
             }),
@@ -121,8 +121,8 @@ export class AsnSchemaStorage {
           // IMPLICIT
           if (typeof item.type === "number" || isConvertible(item.type)) {
             const Container = item.repeated
-              ? asn1.Constructed
-              : asn1.Primitive;
+              ? asn1js.Constructed
+              : asn1js.Primitive;
             asn1Value.push(new Container({
               name,
               optional,
@@ -138,7 +138,7 @@ export class AsnSchemaStorage {
               ? this.get(item.type).schema
               : asn1Item;
             value = value.valueBlock ? value.valueBlock.value : value.value;
-            asn1Value.push(new asn1.Constructed({
+            asn1Value.push(new asn1js.Constructed({
               name: !isRepeated ? name : "",
               optional,
               idBlock: {
@@ -150,7 +150,7 @@ export class AsnSchemaStorage {
           }
         } else {
           // EXPLICIT
-          asn1Value.push(new asn1.Constructed({
+          asn1Value.push(new asn1js.Constructed({
             optional,
             idBlock: {
               tagClass: 3,
@@ -168,11 +168,11 @@ export class AsnSchemaStorage {
 
     switch (schema.type) {
       case AsnTypeTypes.Sequence:
-        return new asn1.Sequence({ value: asn1Value, name: "" } as any);
+        return new asn1js.Sequence({ value: asn1Value, name: "" } as any);
       case AsnTypeTypes.Set:
-        return new asn1.Set({ value: asn1Value, name: "" } as any);
+        return new asn1js.Set({ value: asn1Value, name: "" } as any);
       case AsnTypeTypes.Choice:
-        return new asn1.Choice({ value: asn1Value, name: "" } as any);
+        return new asn1js.Choice({ value: asn1Value, name: "" } as any);
       default:
         throw new Error(`Unsupported ASN1 type in use`);
     }

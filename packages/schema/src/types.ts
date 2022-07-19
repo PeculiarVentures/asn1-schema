@@ -2,7 +2,7 @@
  * ASN1 type
  */
 
-import * as asn1 from "asn1js";
+import * as asn1js from "asn1js";
 
 export interface IEmptyConstructor<T> {
   new(): T;
@@ -33,5 +33,5 @@ export type AnyConverterType = ArrayBuffer | null;
 export interface IAsnConvertible<T = any> {
   fromASN(asn: T): this;
   toASN(): T;
-  toSchema(name: string): asn1.BaseBlock<any>;
+  toSchema(name: string): asn1js.BaseBlock<any>;
 }

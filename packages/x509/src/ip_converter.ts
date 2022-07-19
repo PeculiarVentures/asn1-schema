@@ -34,7 +34,7 @@ export class IpConverter {
   }
 
   public static fromString(text: string): ArrayBuffer {
-    const addr = ip.parse(text) as any;
+    const addr = ip.parse(text);
     return new Uint8Array(addr.toByteArray()).buffer;
   }
 }

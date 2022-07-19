@@ -1,4 +1,4 @@
-import * as asn1 from "asn1js";
+import * as asn1js from "asn1js";
 import * as assert from "assert";
 import * as src from "../src";
 
@@ -628,11 +628,11 @@ context("Test", () => {
           return this;
         }
         public toASN(): any {
-          return new asn1.Utf8String({ value: this.value });
+          return new asn1js.Utf8String({ value: this.value });
         }
 
         public toSchema(name: string) {
-          return new asn1.Utf8String({ name } as any);
+          return new asn1js.Utf8String({ name } as any);
         }
       }
 

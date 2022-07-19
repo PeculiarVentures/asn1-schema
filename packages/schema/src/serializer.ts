@@ -1,4 +1,4 @@
-import * as asn1 from "asn1js";
+import * as asn1js from "asn1js";
 import * as converters from "./converters";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible, isArrayEqual } from "./helper";
@@ -14,7 +14,7 @@ export class AsnSerializer {
    * @param obj The object to serialize
    */
   public static serialize(obj: any): ArrayBuffer {
-    if (obj instanceof asn1.BaseBlock) {
+    if (obj instanceof asn1js.BaseBlock) {
       return (obj as any).toBER(false);
     }
     return this.toASN(obj).toBER(false);
@@ -68,8 +68,8 @@ export class AsnSerializer {
             if (!schemaItem.repeated
               && (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))) {
               const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer; } = {};
-              value.valueHex = asn1Item instanceof asn1.Null ? asn1Item.valueBeforeDecode : asn1Item.valueBlock.toBER();
-              asn1Value.push(new asn1.Primitive({
+              value.valueHex = asn1Item instanceof asn1js.Null ? asn1Item.valueBeforeDecode : asn1Item.valueBlock.toBER();
+              asn1Value.push(new asn1js.Primitive({
                 optional: schemaItem.optional,
                 idBlock: {
                   tagClass: 3,
@@ -78,7 +78,7 @@ export class AsnSerializer {
                 ...value,
               } as any));
             } else {
-              asn1Value.push(new asn1.Constructed({
+              asn1Value.push(new asn1js.Constructed({
                 optional: schemaItem.optional,
                 idBlock: {
                   tagClass: 3,
@@ -89,7 +89,7 @@ export class AsnSerializer {
             }
           } else {
             // EXPLICIT
-            asn1Value.push(new asn1.Constructed({
+            asn1Value.push(new asn1js.Constructed({
               optional: schemaItem.optional,
               idBlock: {
                 tagClass: 3,
@@ -110,10 +110,10 @@ export class AsnSerializer {
     let asnSchema: any;
     switch (schema.type) {
       case AsnTypeTypes.Sequence:
-        asnSchema = new asn1.Sequence({ value: asn1Value } as any);
+        asnSchema = new asn1js.Sequence({ value: asn1Value } as any);
         break;
       case AsnTypeTypes.Set:
-        asnSchema = new asn1.Set({ value: asn1Value } as any);
+        asnSchema = new asn1js.Set({ value: asn1Value } as any);
         break;
       case AsnTypeTypes.Choice:
         if (!asn1Value[0]) {
@@ -140,8 +140,8 @@ export class AsnSerializer {
       if (schemaItem.repeated) {
         const items = Array.from(objProp, (element) => converter.toASN(element));
         const Container = schemaItem.repeated === "sequence"
-          ? asn1.Sequence
-          : asn1.Set;
+          ? asn1js.Sequence
+          : asn1js.Set;
         asn1Item = new Container({
           value: items,
         } as any);
@@ -156,8 +156,8 @@ export class AsnSerializer {
       if (schemaItem.repeated) {
         const items = Array.from(objProp, (element) => this.toASN(element));
         const Container = schemaItem.repeated === "sequence"
-          ? asn1.Sequence
-          : asn1.Set;
+          ? asn1js.Sequence
+          : asn1js.Set;
         asn1Item = new Container({
           value: items,
         } as any);

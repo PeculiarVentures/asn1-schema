@@ -1,4 +1,4 @@
-import { OctetString as AsnOctetString } from "asn1js";
+import * as asn1js from "asn1js";
 import { BufferSource, BufferSourceConverter } from "pvtsutils";
 import { IAsnConvertible } from "../types";
 
@@ -33,7 +33,7 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
   }
 
   public fromASN(asn: any): this {
-    if (!(asn instanceof AsnOctetString)) {
+    if (!(asn instanceof asn1js.OctetString)) {
       throw new TypeError("Argument 'asn' is not instance of ASN.1 OctetString");
     }
     this.buffer = asn.valueBlock.valueHex;
@@ -41,11 +41,11 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
   }
 
   public toASN() {
-    return new AsnOctetString({ valueHex: this.buffer });
+    return new asn1js.OctetString({ valueHex: this.buffer });
   }
 
   public toSchema(name: string) {
-    return new AsnOctetString({ name } as any);
+    return new asn1js.OctetString({ name } as any);
   }
 
 }

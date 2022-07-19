@@ -1,4 +1,4 @@
-import * as asn1 from "asn1js";
+import * as asn1js from "asn1js";
 import type { BufferSource } from "pvtsutils";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import * as converters from "./converters";
@@ -18,7 +18,7 @@ export class AsnParser {
    * @param target Target schema for object deserialization
    */
   public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>): T {
-    const asn1Parsed = asn1.fromBER(data);
+    const asn1Parsed = asn1js.fromBER(data);
     if (asn1Parsed.result.error) {
       throw new Error(asn1Parsed.result.error);
     }
@@ -45,9 +45,9 @@ export class AsnParser {
       let targetSchema = schema.schema;
 
       //#region Verify incoming ASN1 object with target schema
-      if (asn1Schema.constructor === asn1.Constructed && schema.type !== AsnTypeTypes.Choice) {
+      if (asn1Schema.constructor === asn1js.Constructed && schema.type !== AsnTypeTypes.Choice) {
         // fix tag value for IMPLICIT
-        targetSchema = new asn1.Constructed({
+        targetSchema = new asn1js.Constructed({
           idBlock: {
             tagClass: 3,
             tagNumber: asn1Schema.idBlock.tagNumber,
@@ -61,7 +61,7 @@ export class AsnParser {
       }
 
       // Check the schema is valid
-      const asn1ComparedSchema = asn1.compareSchema(
+      const asn1ComparedSchema = asn1js.compareSchema(
         {} as any,
         asn1Schema,
         targetSchema,
@@ -107,11 +107,11 @@ export class AsnParser {
           if (schemaItem.repeated) {
             if (schemaItem.implicit) {
               const Container = schemaItem.repeated === "sequence"
-                ? asn1.Sequence
-                : asn1.Set;
+                ? asn1js.Sequence
+                : asn1js.Set;
               const newItem = new Container();
               newItem.valueBlock = asn1SchemaValue.valueBlock;
-              const value = (asn1 as any).fromBER(newItem.toBER(false)).result.valueBlock.value;
+              const value = (asn1js as any).fromBER(newItem.toBER(false)).result.valueBlock.value;
               res[key] = Array.from(value, (element) => converter.fromASN(element));
             } else {
               res[key] = Array.from(asn1SchemaValue, (element) => converter.fromASN(element));
@@ -124,14 +124,14 @@ export class AsnParser {
                 newItem = new schemaItem.type().toSchema("");
               } else {
                 const Asn1TypeName = AsnPropTypes[schemaItem.type];
-                const Asn1Type = (asn1 as any)[Asn1TypeName];
+                const Asn1Type = (asn1js as any)[Asn1TypeName];
                 if (!Asn1Type) {
                   throw new Error(`Cannot get '${Asn1TypeName}' class from asn1js module`);
                 }
                 newItem = new Asn1Type();
               }
               newItem.valueBlock = value.valueBlock;
-              value = asn1.fromBER(newItem.toBER(false)).result;
+              value = asn1js.fromBER(newItem.toBER(false)).result;
             }
             res[key] = converter.fromASN(value);
           }

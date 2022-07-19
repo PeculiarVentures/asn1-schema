@@ -1,4 +1,4 @@
-import { BitString as AsnBitString } from "asn1js";
+import * as asn1js from "asn1js";
 import { BufferSource, BufferSourceConverter } from "pvtsutils";
 import { IAsnConvertible } from "../types";
 
@@ -19,28 +19,28 @@ export class BitString<T extends number = number> implements IAsnConvertible {
         this.unusedBits = unusedBits;
         this.value = BufferSourceConverter.toArrayBuffer(params);
       } else {
-        throw TypeError("Unsupported type of 'params' argument for BitString")
+        throw TypeError("Unsupported type of 'params' argument for BitString");
       }
     }
   }
 
   public fromASN(asn: any): this {
-    if (!(asn instanceof AsnBitString)) {
+    if (!(asn instanceof asn1js.BitString)) {
       throw new TypeError("Argument 'asn' is not instance of ASN.1 BitString");
     }
 
-    this.unusedBits = asn.valueBlock.unusedBits
+    this.unusedBits = asn.valueBlock.unusedBits;
     this.value = asn.valueBlock.valueHex;
 
     return this;
   }
 
   public toASN() {
-    return new AsnBitString({ unusedBits: this.unusedBits, valueHex: this.value });
+    return new asn1js.BitString({ unusedBits: this.unusedBits, valueHex: this.value });
   }
 
   public toSchema(name: string) {
-    return new AsnBitString({ name } as any);
+    return new asn1js.BitString({ name } as any);
   }
 
   public toNumber() {
