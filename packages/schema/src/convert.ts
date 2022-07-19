@@ -6,7 +6,7 @@ import { AsnSerializer } from "./serializer";
 
 export class AsnConvert {
 
-  public static serialize(obj: any) {
+  public static serialize(obj: unknown) {
     return AsnSerializer.serialize(obj);
   }
 
@@ -25,8 +25,8 @@ export class AsnConvert {
    * @param obj Object which can be serialized to ASN.1 schema
    * @returns String representation of ASN.1 structure
    */
-  public static toString(obj: any): string;
-  public static toString(data: any): string {
+  public static toString(obj: unknown): string;
+  public static toString(data: unknown): string {
     const buf = BufferSourceConverter.isBufferSource(data)
       ? BufferSourceConverter.toArrayBuffer(data)
       : AsnConvert.serialize(data);

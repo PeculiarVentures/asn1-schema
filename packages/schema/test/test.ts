@@ -178,7 +178,7 @@ context("Test", () => {
   });
 
   context("Converter", () => {
-    function test(cls: any, hex: string, expected: any, assertCb?: (value: any, excepted: any) => void) {
+    function test<T>(cls: new () => { value: T; }, hex: string, expected: T, assertCb?: (value: T, excepted: T) => void) {
       it("serialize", () => {
         const obj = new cls();
         obj.value = expected;
@@ -189,7 +189,7 @@ context("Test", () => {
         const obj = src.AsnParser.parse(
           new Uint8Array(Buffer.from(hex, "hex")).buffer,
           cls,
-        ) as any;
+        );
         // console.log(obj);
         if (assertCb) {
           assertCb(obj.value, expected);
@@ -272,7 +272,7 @@ context("Test", () => {
       context("EnumeratedConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.Enumerated })
-          public value!: boolean;
+          public value!: number;
         }
         /**
          * SEQUENCE (1 elem)
@@ -623,16 +623,16 @@ context("Test", () => {
     it("correct", () => {
       class Test implements src.IAsnConvertible {
         public value = "";
-        public fromASN(asn: any): this {
+        public fromASN(asn: asn1js.Utf8String): this {
           this.value = asn.valueBlock.value;
           return this;
         }
-        public toASN(): any {
+        public toASN(): asn1js.Utf8String {
           return new asn1js.Utf8String({ value: this.value });
         }
 
         public toSchema(name: string) {
-          return new asn1js.Utf8String({ name } as any);
+          return new asn1js.Utf8String({ name });
         }
       }
 
@@ -785,7 +785,7 @@ context("Test", () => {
       });
       it("ArrayBufferView", () => {
         assert.throws(() => {
-          src.AsnParser.parse([48, 3, 2, 1, 1] as any, Test);
+          src.AsnParser.parse([48, 3, 2, 1, 1] as unknown as ArrayBuffer, Test);
         });
       });
     });

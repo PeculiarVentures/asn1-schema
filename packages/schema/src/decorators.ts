@@ -4,7 +4,7 @@ import { IAsnSchema, IAsnSchemaItem } from "./schema";
 import { schemaStorage } from "./storage";
 import { IAsnConverter, IEmptyConstructor } from "./types";
 
-export type AsnItemType<T = any> = AsnPropTypes | IEmptyConstructor<T>;
+export type AsnItemType<T = unknown> = AsnPropTypes | IEmptyConstructor<T>;
 
 export interface IAsn1TypeOptions {
   type: AsnTypeTypes;
@@ -17,7 +17,7 @@ export type AsnRepeatType = AsnRepeatTypeString;
 export interface IAsn1PropOptions {
   type: AsnItemType;
   optional?: boolean;
-  defaultValue?: any;
+  defaultValue?: unknown;
   context?: number;
   implicit?: boolean;
   converter?: IAsnConverter;

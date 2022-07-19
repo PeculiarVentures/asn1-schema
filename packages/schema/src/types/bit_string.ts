@@ -11,7 +11,7 @@ export class BitString<T extends number = number> implements IAsnConvertible {
   constructor();
   constructor(value: T);
   constructor(value: BufferSource, unusedBits?: number);
-  constructor(params?: any, unusedBits = 0) {
+  constructor(params?: number | BufferSource, unusedBits = 0) {
     if (params) {
       if (typeof params === "number") {
         this.fromNumber(params as T);
@@ -24,7 +24,7 @@ export class BitString<T extends number = number> implements IAsnConvertible {
     }
   }
 
-  public fromASN(asn: any): this {
+  public fromASN(asn: asn1js.BitString): this {
     if (!(asn instanceof asn1js.BitString)) {
       throw new TypeError("Argument 'asn' is not instance of ASN.1 BitString");
     }
@@ -40,7 +40,7 @@ export class BitString<T extends number = number> implements IAsnConvertible {
   }
 
   public toSchema(name: string) {
-    return new asn1js.BitString({ name } as any);
+    return new asn1js.BitString({ name });
   }
 
   public toNumber() {

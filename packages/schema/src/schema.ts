@@ -130,7 +130,7 @@ export class AsnSchemaStorage {
                 tagClass: 3,
                 tagNumber: item.context,
               },
-            } as any));
+            }));
           } else {
             this.cache(item.type);
             const isRepeated = !!item.repeated;
@@ -146,7 +146,7 @@ export class AsnSchemaStorage {
                 tagNumber: item.context,
               },
               value,
-            } as any));
+            }));
           }
         } else {
           // EXPLICIT
@@ -157,7 +157,7 @@ export class AsnSchemaStorage {
               tagNumber: item.context,
             },
             value: [asn1Item],
-          } as any));
+          }));
         }
       } else {
         // UNIVERSAL
@@ -168,11 +168,11 @@ export class AsnSchemaStorage {
 
     switch (schema.type) {
       case AsnTypeTypes.Sequence:
-        return new asn1js.Sequence({ value: asn1Value, name: "" } as any);
+        return new asn1js.Sequence({ value: asn1Value, name: "" });
       case AsnTypeTypes.Set:
-        return new asn1js.Set({ value: asn1Value, name: "" } as any);
+        return new asn1js.Set({ value: asn1Value, name: "" });
       case AsnTypeTypes.Choice:
-        return new asn1js.Choice({ value: asn1Value, name: "" } as any);
+        return new asn1js.Choice({ value: asn1Value, name: "" });
       default:
         throw new Error(`Unsupported ASN1 type in use`);
     }

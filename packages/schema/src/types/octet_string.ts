@@ -32,11 +32,11 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
     }
   }
 
-  public fromASN(asn: any): this {
+  public fromASN(asn: asn1js.OctetString): this {
     if (!(asn instanceof asn1js.OctetString)) {
       throw new TypeError("Argument 'asn' is not instance of ASN.1 OctetString");
     }
-    this.buffer = asn.valueBlock.valueHex;
+    this.buffer = asn.valueBlock.valueHexView;
     return this;
   }
 
@@ -45,7 +45,7 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
   }
 
   public toSchema(name: string) {
-    return new asn1js.OctetString({ name } as any);
+    return new asn1js.OctetString({ name });
   }
 
 }

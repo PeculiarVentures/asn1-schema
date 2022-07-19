@@ -13,9 +13,9 @@ export class AsnSerializer {
    * Serializes an object to the ASN.1 encoded buffer
    * @param obj The object to serialize
    */
-  public static serialize(obj: any): ArrayBuffer {
+  public static serialize(obj: unknown): ArrayBuffer {
     if (obj instanceof asn1js.BaseBlock) {
-      return (obj as any).toBER(false);
+      return obj.toBER(false);
     }
     return this.toASN(obj).toBER(false);
   }
@@ -76,7 +76,7 @@ export class AsnSerializer {
                   tagNumber: schemaItem.context,
                 },
                 ...value,
-              } as any));
+              }));
             } else {
               asn1Value.push(new asn1js.Constructed({
                 optional: schemaItem.optional,
@@ -85,7 +85,7 @@ export class AsnSerializer {
                   tagNumber: schemaItem.context,
                 },
                 value: asn1Item.valueBlock.value,
-              } as any));
+              }));
             }
           } else {
             // EXPLICIT
@@ -96,7 +96,7 @@ export class AsnSerializer {
                 tagNumber: schemaItem.context,
               },
               value: [asn1Item],
-            } as any));
+            }));
           }
         } else if (schemaItem.repeated) {
           asn1Value = asn1Value.concat(asn1Item);
@@ -110,10 +110,10 @@ export class AsnSerializer {
     let asnSchema: any;
     switch (schema.type) {
       case AsnTypeTypes.Sequence:
-        asnSchema = new asn1js.Sequence({ value: asn1Value } as any);
+        asnSchema = new asn1js.Sequence({ value: asn1Value });
         break;
       case AsnTypeTypes.Set:
-        asnSchema = new asn1js.Set({ value: asn1Value } as any);
+        asnSchema = new asn1js.Set({ value: asn1Value });
         break;
       case AsnTypeTypes.Choice:
         if (!asn1Value[0]) {
@@ -144,7 +144,7 @@ export class AsnSerializer {
           : asn1js.Set;
         asn1Item = new Container({
           value: items,
-        } as any);
+        });
       }
       else {
         asn1Item = converter.toASN(objProp);
@@ -160,7 +160,7 @@ export class AsnSerializer {
           : asn1js.Set;
         asn1Item = new Container({
           value: items,
-        } as any);
+        });
       }
       else {
         asn1Item = this.toASN(objProp);

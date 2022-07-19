@@ -10,8 +10,8 @@ import { AsnPropTypes } from "./enums";
  * ASN.1 ANY converter
  */
 export const AsnAnyConverter: IAsnConverter<AnyConverterType> = {
-  fromASN: (value: any) => value instanceof asn1js.Null ? null : value.valueBeforeDecode,
-  toASN: (value: AnyConverterType) => {
+  fromASN: (value: asn1js.AsnType) => value instanceof asn1js.Null ? null : value.valueBeforeDecodeView,
+  toASN: (value: AnyConverterType): asn1js.AsnType => {
     if (value === null) {
       return new asn1js.Null();
     }
@@ -30,23 +30,23 @@ export const AsnIntegerConverter: IAsnConverter<IntegerConverterType, asn1js.Int
   fromASN: (value: asn1js.Integer) => value.valueBlock.valueHexView.byteLength >= 4
     ? value.valueBlock.toString() // use string format
     : value.valueBlock.valueDec, // use number format
-  toASN: (value: IntegerConverterType) => new asn1js.Integer({ value: value as any }),
+  toASN: (value: IntegerConverterType) => new asn1js.Integer({ value: +value }),
 };
 
 /**
  * ASN.1 ENUMERATED converter
  */
-export const AsnEnumeratedConverter: IAsnConverter<number> = {
-  fromASN: (value: any) => value.valueBlock.valueDec,
+export const AsnEnumeratedConverter: IAsnConverter<number, asn1js.Enumerated> = {
+  fromASN: (value: asn1js.Enumerated) => value.valueBlock.valueDec,
   toASN: (value: number) => new asn1js.Enumerated({ value }),
 };
 
 /**
  * ASN.1 INTEGER to ArrayBuffer converter
  */
-export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer> = {
-  fromASN: (value: any) => value.valueBlock.valueHex,
-  toASN: (value: ArrayBuffer) => new asn1js.Integer({ valueHex: value } as any),
+export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer, asn1js.Integer> = {
+  fromASN: (value: asn1js.Integer) => value.valueBlock.valueHexView,
+  toASN: (value: ArrayBuffer) => new asn1js.Integer({ valueHex: value }),
 };
 
 /**
@@ -60,38 +60,38 @@ export const AsnIntegerBigIntConverter: IAsnConverter<bigint, asn1js.Integer> = 
 /**
  * ASN.1 BIT STRING converter
  */
-export const AsnBitStringConverter: IAsnConverter<ArrayBuffer> = {
-  fromASN: (value: any) => value.valueBlock.valueHex,
+export const AsnBitStringConverter: IAsnConverter<ArrayBuffer, asn1js.BitString> = {
+  fromASN: (value: asn1js.BitString) => value.valueBlock.valueHexView,
   toASN: (value: ArrayBuffer) => new asn1js.BitString({ valueHex: value }),
 };
 
 /**
  * ASN.1 OBJECT IDENTIFIER converter
  */
-export const AsnObjectIdentifierConverter: IAsnConverter<string> = {
-  fromASN: (value: any) => value.valueBlock.toString(),
+export const AsnObjectIdentifierConverter: IAsnConverter<string, asn1js.ObjectIdentifier> = {
+  fromASN: (value: asn1js.ObjectIdentifier) => value.valueBlock.toString(),
   toASN: (value: string) => new asn1js.ObjectIdentifier({ value }),
 };
 
 /**
  * ASN.1 BOOLEAN converter
  */
-export const AsnBooleanConverter: IAsnConverter<boolean> = {
-  fromASN: (value: any) => value.valueBlock.value,
-  toASN: (value: boolean) => new asn1js.Boolean({ value } as any),
+export const AsnBooleanConverter: IAsnConverter<boolean, asn1js.Boolean> = {
+  fromASN: (value: asn1js.Boolean) => value.valueBlock.value,
+  toASN: (value: boolean) => new asn1js.Boolean({ value }),
 };
 
 /**
  * ASN.1 OCTET_STRING converter
  */
-export const AsnOctetStringConverter: IAsnConverter<ArrayBuffer> = {
-  fromASN: (value: any) => value.valueBlock.valueHex,
+export const AsnOctetStringConverter: IAsnConverter<ArrayBuffer, asn1js.OctetString> = {
+  fromASN: (value: asn1js.OctetString) => value.valueBlock.valueHexView,
   toASN: (value: ArrayBuffer) => new asn1js.OctetString({ valueHex: value }),
 };
 
-function createStringConverter(Asn1Type: any): IAsnConverter<string> {
+function createStringConverter<T extends asn1js.BaseStringBlock>(Asn1Type: new (params: { value: string; }) => T): IAsnConverter<string> {
   return {
-    fromASN: (value: any) => value.valueBlock.value,
+    fromASN: (value: T) => value.valueBlock.value,
     toASN: (value: string) => new Asn1Type({ value }),
   };
 }
@@ -148,22 +148,22 @@ export const AsnCharacterStringConverter = createStringConverter(asn1js.Characte
 /**
  * ASN.1 UTCTime converter
  */
-export const AsnUTCTimeConverter: IAsnConverter<Date> = {
-  fromASN: (value: any) => value.toDate(),
+export const AsnUTCTimeConverter: IAsnConverter<Date, asn1js.UTCTime> = {
+  fromASN: (value: asn1js.UTCTime) => value.toDate(),
   toASN: (value: Date) => new asn1js.UTCTime({ valueDate: value }),
 };
 /**
  * ASN.1 GeneralizedTime converter
  */
-export const AsnGeneralizedTimeConverter: IAsnConverter<Date> = {
-  fromASN: (value: any) => value.toDate(),
+export const AsnGeneralizedTimeConverter: IAsnConverter<Date, asn1js.GeneralizedTime> = {
+  fromASN: (value: asn1js.GeneralizedTime) => value.toDate(),
   toASN: (value: Date) => new asn1js.GeneralizedTime({ valueDate: value }),
 };
 
 /**
  * ASN.1 ANY converter
  */
-export const AsnNullConverter: IAsnConverter<null> = {
+export const AsnNullConverter: IAsnConverter<null, asn1js.Null> = {
   fromASN: () => null,
   toASN: () => {
     return new asn1js.Null();
