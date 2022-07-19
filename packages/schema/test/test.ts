@@ -76,7 +76,8 @@ context("Test", () => {
           });
           it("parse", () => {
             const obj = src.AsnParser.parse(new Uint8Array(Buffer.from("80050102030405", "hex")).buffer, Test);
-            assert.strictEqual(obj.select1!.byteLength, 5);
+            assert.ok(obj.select1);
+            assert.strictEqual(obj.select1.byteLength, 5);
           });
         });
         context("Repeated SET", () => {
@@ -129,8 +130,9 @@ context("Test", () => {
           it("parse", () => {
             const obj = src.AsnParser.parse(new Uint8Array(der).buffer, Test);
             assert.strictEqual(!!obj.select4, true);
-            assert.strictEqual(obj.select4!.text, "test");
-            assert.strictEqual(obj.select4!.value, 2);
+            assert.ok(obj.select4);
+            assert.strictEqual(obj.select4.text, "test");
+            assert.strictEqual(obj.select4.value, 2);
           });
         });
       });
