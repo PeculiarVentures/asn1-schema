@@ -5,9 +5,9 @@ import { IAsnConverter, IEmptyConstructor, IAsnConvertible } from "./types";
 import { isConvertible } from "./helper";
 
 export interface IAsnSchemaItem {
-  type: AsnPropTypes | IEmptyConstructor<any>;
+  type: AsnPropTypes | IEmptyConstructor;
   optional?: boolean;
-  defaultValue?: any;
+  defaultValue?: unknown;
   context?: number;
   implicit?: boolean;
   converter?: IAsnConverter;
@@ -16,10 +16,12 @@ export interface IAsnSchemaItem {
 
 export interface IAsnSchema {
   type: AsnTypeTypes;
-  itemType: AsnPropTypes | IEmptyConstructor<any>;
+  itemType: AsnPropTypes | IEmptyConstructor;
   items: { [key: string]: IAsnSchemaItem; };
-  schema?: any;
+  schema?: AsnSchemaType;
 }
+
+export type AsnSchemaType = asn1js.Sequence | asn1js.Set | asn1js.Choice;
 
 export class AsnSchemaStorage {
   protected items = new WeakMap<object, IAsnSchema>();
@@ -28,15 +30,20 @@ export class AsnSchemaStorage {
     return this.items.has(target);
   }
 
-  public get(target: object) {
+  public get(target: IEmptyConstructor, checkSchema: true): IAsnSchema & Required<Pick<IAsnSchema, "schema">>;
+  public get(target: IEmptyConstructor, checkSchema?: false): IAsnSchema;
+  public get(target: IEmptyConstructor, checkSchema = false) {
     const schema = this.items.get(target);
     if (!schema) {
-      throw new Error(`Cannot get schema for '${(target as any)?.prototype?.constructor?.name ?? target}' target`);
+      throw new Error(`Cannot get schema for '${target.prototype.constructor.name}' target`);
+    }
+    if (checkSchema && !schema.schema) {
+      throw new Error(`Schema '${target.prototype.constructor.name}' doesn't contain ASN.1 schema. Call 'AsnSchemaStorage.cache'.`);
     }
     return schema;
   }
 
-  public cache(target: object) {
+  public cache(target: IEmptyConstructor) {
     const schema = this.get(target);
     if (!schema.schema) {
       schema.schema = this.create(target, true);
@@ -60,18 +67,18 @@ export class AsnSchemaStorage {
     return schema;
   }
 
-  public create(target: object, useNames: boolean) {
+  public create(target: object, useNames: boolean): AsnSchemaType {
     const schema = this.items.get(target) || this.createDefault(target);
 
     const asn1Value = [];
     for (const key in schema.items) {
       const item = schema.items[key];
       const name = useNames ? key : "";
-      let asn1Item: any;
+      let asn1Item: asn1js.AsnSchemaType;
       if (typeof (item.type) === "number") {
         // type is AsnPropType Enum
         const Asn1TypeName = AsnPropTypes[item.type];
-        const Asn1Type = (asn1js as any)[Asn1TypeName];
+        const Asn1Type = (asn1js as unknown as Record<string, typeof asn1js.BaseBlock>)[Asn1TypeName];
         if (!Asn1Type) {
           throw new Error(`Cannot get ASN1 class by name '${Asn1TypeName}'`);
         }
@@ -135,9 +142,10 @@ export class AsnSchemaStorage {
             this.cache(item.type);
             const isRepeated = !!item.repeated;
             let value = !isRepeated
-              ? this.get(item.type).schema
+              ? this.get(item.type, true).schema
               : asn1Item;
-            value = value.valueBlock ? value.valueBlock.value : value.value;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            value = "valueBlock" in value ? (value as asn1js.Sequence).valueBlock.value : (value as any).value;
             asn1Value.push(new asn1js.Constructed({
               name: !isRepeated ? name : "",
               optional,
@@ -145,7 +153,8 @@ export class AsnSchemaStorage {
                 tagClass: 3,
                 tagNumber: item.context,
               },
-              value,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              value: value as any,
             }));
           }
         } else {
@@ -172,7 +181,7 @@ export class AsnSchemaStorage {
       case AsnTypeTypes.Set:
         return new asn1js.Set({ value: asn1Value, name: "" });
       case AsnTypeTypes.Choice:
-        return new asn1js.Choice({ value: asn1Value, name: "" });
+        return new asn1js.Choice({ value: asn1Value as asn1js.BaseBlock[], name: "" });
       default:
         throw new Error(`Unsupported ASN1 type in use`);
     }
@@ -184,6 +193,7 @@ export class AsnSchemaStorage {
   }
 
   protected findParentSchema(target: object): IAsnSchema | null {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const parent = (target as any).__proto__;
     if (parent) {
       const schema = this.items.get(parent);

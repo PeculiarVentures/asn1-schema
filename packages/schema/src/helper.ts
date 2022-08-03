@@ -1,5 +1,7 @@
-import { IAsnConvertible } from "./types";
+import { IAsnConvertible, IEmptyConstructor } from "./types";
 
+export function isConvertible(target: IEmptyConstructor): target is (new () => IAsnConvertible);
+export function isConvertible(target: unknown): target is IAsnConvertible;
 export function isConvertible(target: unknown): target is IAsnConvertible {
   if (typeof target === "function" && target.prototype) {
     if (target.prototype.toASN && target.prototype.fromASN) {

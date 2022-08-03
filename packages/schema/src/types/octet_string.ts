@@ -36,7 +36,7 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
     if (!(asn instanceof asn1js.OctetString)) {
       throw new TypeError("Argument 'asn' is not instance of ASN.1 OctetString");
     }
-    this.buffer = asn.valueBlock.valueHexView;
+    this.buffer = asn.valueBlock.valueHex;
     return this;
   }
 

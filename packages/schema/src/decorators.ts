@@ -24,7 +24,7 @@ export interface IAsn1PropOptions {
   repeated?: AsnRepeatType;
 }
 
-export const AsnType = (options: IAsn1TypeOptions) => (target: object) => {
+export const AsnType = (options: IAsn1TypeOptions) => (target: IEmptyConstructor) => {
   let schema: IAsnSchema;
   if (!schemaStorage.has(target)) {
     schema = schemaStorage.createDefault(target);
@@ -55,7 +55,7 @@ export const AsnProp = (options: IAsn1PropOptions) => (target: object, propertyK
     schema = schemaStorage.createDefault(target.constructor);
     schemaStorage.set(target.constructor, schema);
   } else {
-    schema = schemaStorage.get(target.constructor);
+    schema = schemaStorage.get(target.constructor as IEmptyConstructor);
   }
 
   const copyOptions = Object.assign({}, options) as IAsnSchemaItem;
