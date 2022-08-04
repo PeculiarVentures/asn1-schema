@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-rfc8226",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "ASN.1 schema implementation of RFC8226",
   "keywords": [
     "asn",
@@ -34,7 +34,7 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.2.0",
+    "@peculiar/asn1-schema": "^2.3.0",
     "asn1js": "^3.0.5",
     "tslib": "^2.4.0"
   },
