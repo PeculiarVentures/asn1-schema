@@ -34,7 +34,7 @@ export class CertPolicy extends BitString<CertPolicyFlags> {
     return res;
   }
 
-  public toString(): string {
+  public override toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
 }
