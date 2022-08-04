@@ -47,7 +47,7 @@ export class EnrollCertTypeChoice {
   /**
    * Returns a string representation of an object.
    */
-  public toString() {
+  public toString(): string {
     return this.name?.toString() || this.spec?.name || "";
   }
 

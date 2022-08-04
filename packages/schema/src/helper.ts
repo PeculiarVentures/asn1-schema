@@ -25,7 +25,7 @@ export function isTypeOfArray(target: unknown): target is typeof Array {
   return false;
 }
 
-export function isArrayEqual(bytes1: ArrayBuffer, bytes2: ArrayBuffer) {
+export function isArrayEqual(bytes1: ArrayBuffer, bytes2: ArrayBuffer): boolean {
   if (!(bytes1 && bytes2)) { return false; }
   if (bytes1.byteLength !== bytes2.byteLength) { return false; }
 

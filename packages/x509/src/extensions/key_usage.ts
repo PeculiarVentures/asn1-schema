@@ -40,7 +40,7 @@ export enum KeyUsageFlags {
  */
 export class KeyUsage extends BitString {
 
-  public toJSON() {
+  public toJSON(): KeyUsageType[] {
     const flag = this.toNumber();
     const res: KeyUsageType[] = [];
     if (flag & KeyUsageFlags.cRLSign) {
@@ -73,7 +73,7 @@ export class KeyUsage extends BitString {
     return res;
   }
 
-  public toString() {
+  public toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
 

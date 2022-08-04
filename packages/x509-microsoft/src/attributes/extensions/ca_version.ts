@@ -18,12 +18,12 @@ export class CaVersion {
   @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
   public value = new ArrayBuffer(0);
 
-  public toString() {
+  public toString(): string {
     const version = this.getVersion();
     return `V${version.certificateIndex}.${version.keyIndex}`;
   }
 
-  public getVersion() {
+  public getVersion(): ICaVersion {
     let data = new Uint8Array(this.value);
     if (this.value.byteLength < 4) {
       data = new Uint8Array(4);

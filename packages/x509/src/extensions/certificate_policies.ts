@@ -43,9 +43,8 @@ export class DisplayText {
     Object.assign(this, params);
   }
 
-  public toString() {
-    return this.ia5String || this.visibleString || this.bmpString || this.utf8String
-      "";
+  public toString(): string {
+    return this.ia5String || this.visibleString || this.bmpString || this.utf8String || "";
   }
 }
 

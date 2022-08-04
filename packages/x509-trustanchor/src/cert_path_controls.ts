@@ -19,7 +19,7 @@ export enum CertPolicyFlags {
 
 export class CertPolicy extends BitString<CertPolicyFlags> {
 
-  public toJSON() {
+  public toJSON(): CertPolicyType[] {
     const res: CertPolicyType[] = [];
     const flags = this.toNumber();
     if (flags & CertPolicyFlags.inhibitAnyPolicy) {
@@ -34,7 +34,7 @@ export class CertPolicy extends BitString<CertPolicyFlags> {
     return res;
   }
 
-  public toString() {
+  public toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
 }

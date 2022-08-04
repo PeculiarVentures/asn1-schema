@@ -26,13 +26,13 @@ export type AsnSchemaType = asn1js.Sequence | asn1js.Set | asn1js.Choice;
 export class AsnSchemaStorage {
   protected items = new WeakMap<object, IAsnSchema>();
 
-  public has(target: object) {
+  public has(target: object): boolean {
     return this.items.has(target);
   }
 
   public get(target: IEmptyConstructor, checkSchema: true): IAsnSchema & Required<Pick<IAsnSchema, "schema">>;
   public get(target: IEmptyConstructor, checkSchema?: false): IAsnSchema;
-  public get(target: IEmptyConstructor, checkSchema = false) {
+  public get(target: IEmptyConstructor, checkSchema = false): IAsnSchema {
     const schema = this.items.get(target);
     if (!schema) {
       throw new Error(`Cannot get schema for '${target.prototype.constructor.name}' target`);
@@ -43,14 +43,14 @@ export class AsnSchemaStorage {
     return schema;
   }
 
-  public cache(target: IEmptyConstructor) {
+  public cache(target: IEmptyConstructor): void {
     const schema = this.get(target);
     if (!schema.schema) {
       schema.schema = this.create(target, true);
     }
   }
 
-  public createDefault(target: object) {
+  public createDefault(target: object): IAsnSchema {
     // Initialize default ASN1 schema
     const schema = {
       type: AsnTypeTypes.Sequence,
@@ -187,7 +187,7 @@ export class AsnSchemaStorage {
     }
   }
 
-  public set(target: object, schema: IAsnSchema) {
+  public set(target: object, schema: IAsnSchema): this {
     this.items.set(target, schema);
     return this;
   }

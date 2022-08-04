@@ -35,15 +35,15 @@ export class BitString<T extends number = number> implements IAsnConvertible {
     return this;
   }
 
-  public toASN() {
+  public toASN(): asn1js.BitString {
     return new asn1js.BitString({ unusedBits: this.unusedBits, valueHex: this.value });
   }
 
-  public toSchema(name: string) {
+  public toSchema(name: string): asn1js.BitString {
     return new asn1js.BitString({ name });
   }
 
-  public toNumber() {
+  public toNumber(): T {
     let res = "";
     const uintArray = new Uint8Array(this.value);
     for (const octet of uintArray) {
@@ -57,7 +57,7 @@ export class BitString<T extends number = number> implements IAsnConvertible {
     return parseInt(res, 2) as T;
   }
 
-  public fromNumber(value: T) {
+  public fromNumber(value: T): void {
     let bits = value.toString(2);
     const octetSize = (bits.length + 7) >> 3;
     this.unusedBits = (octetSize << 3) - bits.length;

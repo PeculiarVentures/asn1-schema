@@ -7,10 +7,10 @@ import { IAsnConvertible } from "../types";
 export class OctetString implements IAsnConvertible, ArrayBufferView {
 
   public buffer: ArrayBuffer;
-  public get byteLength() {
+  public get byteLength(): number {
     return this.buffer.byteLength;
   }
-  public get byteOffset() {
+  public get byteOffset(): number {
     return 0;
   }
 
@@ -40,11 +40,11 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
     return this;
   }
 
-  public toASN() {
+  public toASN(): asn1js.OctetString {
     return new asn1js.OctetString({ valueHex: this.buffer });
   }
 
-  public toSchema(name: string) {
+  public toSchema(name: string): asn1js.OctetString {
     return new asn1js.OctetString({ name });
   }
 

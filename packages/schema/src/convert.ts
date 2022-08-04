@@ -6,7 +6,7 @@ import { AsnSerializer } from "./serializer";
 
 export class AsnConvert {
 
-  public static serialize(obj: unknown) {
+  public static serialize(obj: unknown): ArrayBuffer {
     return AsnSerializer.serialize(obj);
   }
 

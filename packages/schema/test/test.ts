@@ -2,7 +2,7 @@ import * as asn1js from "asn1js";
 import * as assert from "assert";
 import * as src from "../src";
 
-function assertBuffer(actual: Buffer, expected: Buffer) {
+function assertBuffer(actual: Buffer, expected: Buffer): void {
   assert.strictEqual(Buffer.compare(actual, expected), 0,
     `Buffers are not equal.\n\tActual:   ${actual.toString("hex")}\n\tExpected: ${expected.toString("hex")}`);
 }
@@ -178,7 +178,7 @@ context("Test", () => {
   });
 
   context("Converter", () => {
-    function test<T>(cls: new () => { value: T; }, hex: string, expected: T, assertCb?: (value: T, excepted: T) => void) {
+    function test<T>(cls: new () => { value: T; }, hex: string, expected: T, assertCb?: (value: T, excepted: T) => void): void {
       it("serialize", () => {
         const obj = new cls();
         obj.value = expected;
@@ -631,7 +631,7 @@ context("Test", () => {
           return new asn1js.Utf8String({ value: this.value });
         }
 
-        public toSchema(name: string) {
+        public toSchema(name: string): asn1js.Utf8String {
           return new asn1js.Utf8String({ name });
         }
       }

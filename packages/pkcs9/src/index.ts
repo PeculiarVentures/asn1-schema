@@ -358,7 +358,7 @@ export class PKCS9String extends x509.DirectoryString {
     super(params);
   }
 
-  public toString() {
+  public toString(): string {
     const o = {};
     o.toString();
     return this.ia5String || super.toString();
@@ -467,7 +467,7 @@ export class EmailAddress {
   /**
    * Returns a string representation of an object.
    */
-  public toString() {
+  public toString(): string {
     return this.value;
   }
 }
@@ -551,7 +551,7 @@ export class Gender {
   /**
    * Returns a string representation of an object.
    */
-  public toString() {
+  public toString(): string {
     return this.value;
   }
 
@@ -582,7 +582,7 @@ export class CountryOfCitizenship {
   /**
    * Returns a string representation of an object.
    */
-  public toString() {
+  public toString(): string {
     return this.value;
   }
 
@@ -631,7 +631,7 @@ export class ContentType {
   /**
    * Returns a string representation of an object.
    */
-  public toString() {
+  public toString(): string {
     return this.value;
   }
 
@@ -698,7 +698,7 @@ export class SequenceNumber {
   /**
    * Returns a string representation of an object.
    */
-  public toString() {
+  public toString(): string {
     return this.value.toString();
   }
 }
@@ -783,7 +783,7 @@ export class FriendlyName {
   /**
    * Returns a string representation of an object.
    */
-  public toString() {
+  public toString(): string {
     return this.value;
   }
 
@@ -817,7 +817,7 @@ export class SigningDescription extends x509.DirectoryString { }
  *
  * SMIMEv3Algorithms ALGORITHM ::= {...-- See RFC 2633 --}
  */
-@AsnType({type: AsnTypeTypes.Sequence})
+@AsnType({ type: AsnTypeTypes.Sequence })
 export class SMIMECapability extends x509.AlgorithmIdentifier { }
 
 /**

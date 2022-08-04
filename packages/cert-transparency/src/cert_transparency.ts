@@ -1,5 +1,5 @@
 import { OctetString } from "@peculiar/asn1-schema";
-import { SignedCertificateTimestamp } from "./timestamp";
+import { IJsonSignedCertificateTimestamp, SignedCertificateTimestamp } from "./timestamp";
 import { ByteStream } from "./byte_stream";
 import type * as asn1js from "asn1js";
 
@@ -13,7 +13,7 @@ export class CertificateTransparency extends OctetString {
 
   public items: SignedCertificateTimestamp[] = [];
 
-  public fromASN(asn: asn1js.OctetString) {
+  public fromASN(asn: asn1js.OctetString): this {
     super.fromASN(asn);
 
     // parse value
@@ -26,7 +26,7 @@ export class CertificateTransparency extends OctetString {
 
     return this;
   }
-  public toJSON() {
+  public toJSON(): IJsonSignedCertificateTimestamp[] {
     return this.items.map(o => o.toJSON());
   }
 }

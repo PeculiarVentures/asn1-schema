@@ -51,7 +51,7 @@ export class SignedCertificateTimestamp extends Structure {
     }
   }
 
-  public parse(stream: ByteStream) {
+  public parse(stream: ByteStream): void {
     this.version = stream.readByte();
 
     stream.read(2); // struct
@@ -76,6 +76,6 @@ export class SignedCertificateTimestamp extends Structure {
       hashAlgorithm: HashAlgorithm[this.hashAlgorithm] || "undefined",
       signatureAlgorithm: SignatureAlgorithm[this.signatureAlgorithm] || "undefined",
       signature: Convert.ToBase64(this.signature),
-    }
+    };
   }
 }

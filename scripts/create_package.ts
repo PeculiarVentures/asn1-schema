@@ -3,7 +3,7 @@ import * as rimraf from "rimraf";
 import * as fs from "fs";
 import * as path from "path";
 
-async function main(name: string) {
+async function main(name: string): Promise<void> {
   if (!name) {
     throw new Error("Argument 'name' is empty");
   }
