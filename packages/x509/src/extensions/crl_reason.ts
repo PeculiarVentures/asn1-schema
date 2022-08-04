@@ -47,11 +47,11 @@ export class CRLReason {
     this.reason = reason;
   }
 
-  public toJSON() {
+  public toJSON(): string {
     return CRLReasons[this.reason];
   }
 
-  public toString() {
+  public toString(): string {
     return this.toJSON();
   }
 }

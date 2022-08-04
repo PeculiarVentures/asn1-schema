@@ -17,7 +17,7 @@ export type AttributeValue = ArrayBuffer;
 export class Attribute {
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public attrType: string = "";
+  public attrType = "";
 
   @AsnProp({ type: AsnPropTypes.Any, repeated: "set" })
   public attrValues: AttributeValue[] = [];

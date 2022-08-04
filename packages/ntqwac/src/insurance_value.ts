@@ -19,7 +19,7 @@ export class InsuranceValue {
     Object.assign(this, params);
   }
 
-  public toString() {
+  public toString(): string {
     return `${this.base} x 10^${this.degree} ${this.location}`;
   }
 }

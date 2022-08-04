@@ -46,7 +46,7 @@ context("x509", () => {
   });
 
   it("Name constrains", () => {
-    var nameConstrains = new src.NameConstraints({
+    const nameConstrains = new src.NameConstraints({
       permittedSubtrees: new src.GeneralSubtrees([
         new src.GeneralSubtree({
           base: new src.GeneralName({
@@ -70,9 +70,10 @@ context("x509", () => {
 
     const test = AsnParser.parse(der, src.NameConstraints);
 
-    assert.strictEqual(test.permittedSubtrees![0].base.dNSName, "some.dns.com");
-    assert.strictEqual(test.permittedSubtrees![1].base.iPAddress, "192.168.1.1");
-    assert.strictEqual(test.permittedSubtrees![2].base.iPAddress, "2001:db8:11a3:9d7:1f34:8a2e:7a0:765d");
+    assert.ok(test.permittedSubtrees);
+    assert.strictEqual(test.permittedSubtrees[0].base.dNSName, "some.dns.com");
+    assert.strictEqual(test.permittedSubtrees[1].base.iPAddress, "192.168.1.1");
+    assert.strictEqual(test.permittedSubtrees[2].base.iPAddress, "2001:db8:11a3:9d7:1f34:8a2e:7a0:765d");
   });
 
   it("Certificate template", () => {
@@ -96,7 +97,8 @@ context("x509", () => {
 
     const userNotice = AsnConvert.parse(raw, src.UserNotice);
 
-    assert.strictEqual(userNotice.explicitText!.bmpString, "Implementa la Politica de la Raiz Costarricense de Certificacion Digital v2");
+    assert.ok(userNotice.explicitText);
+    assert.strictEqual(userNotice.explicitText.bmpString, "Implementa la Politica de la Raiz Costarricense de Certificacion Digital v2");
   });
 
   it("PrivateKeyUsagePeriod", () => {
@@ -123,41 +125,41 @@ context("x509", () => {
     context("isEqual", () => {
       it("algorithm: equal, parameters: equal(default)", () => {
         const alg1 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
-        })
+          algorithm: "1.2.3",
+        });
         const alg2 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
+          algorithm: "1.2.3",
         });
 
         assert.strictEqual(alg1.isEqual(alg2), true);
       });
       it("algorithm: not equal, parameters: equal(default)", () => {
         const alg1 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
-        })
+          algorithm: "1.2.3",
+        });
         const alg2 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3.4",
+          algorithm: "1.2.3.4",
         });
 
         assert.strictEqual(alg1.isEqual(alg2), false);
       });
       it("algorithm: equal, parameters: not equal(alg1.parameters null)", () => {
         const alg1 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
+          algorithm: "1.2.3",
           parameters: null,
-        })
+        });
         const alg2 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
+          algorithm: "1.2.3",
         });
 
         assert.strictEqual(alg1.isEqual(alg2), false);
       });
       it("algorithm: equal, parameters: not equal(alg2.parameters null)", () => {
         const alg1 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
-        })
+          algorithm: "1.2.3",
+        });
         const alg2 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
+          algorithm: "1.2.3",
           parameters: null,
         });
 
@@ -165,11 +167,11 @@ context("x509", () => {
       });
       it("algorithm: equal, parameters: equal(null)", () => {
         const alg1 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
+          algorithm: "1.2.3",
           parameters: null,
-        })
+        });
         const alg2 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
+          algorithm: "1.2.3",
           parameters: null,
         });
 
@@ -177,24 +179,24 @@ context("x509", () => {
       });
       it("algorithm: equal, parameters: equal(OcetetString)", () => {
         const alg1 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
-          parameters: AsnConvert.serialize(new OctetString([1,2,3])),
-        })
+          algorithm: "1.2.3",
+          parameters: AsnConvert.serialize(new OctetString([1, 2, 3])),
+        });
         const alg2 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
-          parameters: AsnConvert.serialize(new OctetString([1,2,3])),
+          algorithm: "1.2.3",
+          parameters: AsnConvert.serialize(new OctetString([1, 2, 3])),
         });
 
         assert.strictEqual(alg1.isEqual(alg2), true);
       });
       it("algorithm: equal, parameters: not equal(OctetString)", () => {
         const alg1 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
-          parameters: AsnConvert.serialize(new OctetString([1,2,3])),
-        })
+          algorithm: "1.2.3",
+          parameters: AsnConvert.serialize(new OctetString([1, 2, 3])),
+        });
         const alg2 = new src.AlgorithmIdentifier({
-          algorithm:"1.2.3",
-          parameters: AsnConvert.serialize(new OctetString([1,2,3,4])),
+          algorithm: "1.2.3",
+          parameters: AsnConvert.serialize(new OctetString([1, 2, 3, 4])),
         });
 
         assert.strictEqual(alg1.isEqual(alg2), false);
@@ -203,12 +205,12 @@ context("x509", () => {
   });
 
   it("issue #68", () => {
-    const policyMappings =  AsnParser.parse(Convert.FromHex('304e3018060a60864801650302010302060a608648016503020102073018060a60864801650302010303060a608648016503020102083018060a6086480165030201030c060a60864801650302010209'), src.PolicyMappings);
+    const policyMappings = AsnParser.parse(Convert.FromHex('304e3018060a60864801650302010302060a608648016503020102073018060a60864801650302010303060a608648016503020102083018060a6086480165030201030c060a60864801650302010209'), src.PolicyMappings);
     assert.strictEqual(policyMappings.length, 3);
   });
 
   it("subjectInfoAccess", () => {
-    const subjectInfoAccess =  AsnParser.parse(Convert.FromBase64Url('MEcwRQYIKwYBBQUHMAWGOWh0dHA6Ly9pcGtpLnVzcHRvLmdvdi9JUEtJL0NlcnRzL0NBY2VydHNJc3N1ZWRCeVVTUFRPLnA3Yw'), src.SubjectInfoAccessSyntax);
+    const subjectInfoAccess = AsnParser.parse(Convert.FromBase64Url('MEcwRQYIKwYBBQUHMAWGOWh0dHA6Ly9pcGtpLnVzcHRvLmdvdi9JUEtJL0NlcnRzL0NBY2VydHNJc3N1ZWRCeVVTUFRPLnA3Yw'), src.SubjectInfoAccessSyntax);
     assert.strictEqual(subjectInfoAccess.length, 1);
     assert.strictEqual(subjectInfoAccess[0].accessMethod, "1.3.6.1.5.5.7.48.5");
     assert.strictEqual(subjectInfoAccess[0].accessLocation.uniformResourceIdentifier, "http://ipki.uspto.gov/IPKI/Certs/CAcertsIssuedByUSPTO.p7c");

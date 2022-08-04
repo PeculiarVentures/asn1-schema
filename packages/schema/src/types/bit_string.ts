@@ -1,4 +1,4 @@
-import { BitString as AsnBitString } from "asn1js";
+import * as asn1js from "asn1js";
 import { BufferSource, BufferSourceConverter } from "pvtsutils";
 import { IAsnConvertible } from "../types";
 
@@ -11,7 +11,7 @@ export class BitString<T extends number = number> implements IAsnConvertible {
   constructor();
   constructor(value: T);
   constructor(value: BufferSource, unusedBits?: number);
-  constructor(params?: any, unusedBits = 0) {
+  constructor(params?: number | BufferSource, unusedBits = 0) {
     if (params) {
       if (typeof params === "number") {
         this.fromNumber(params as T);
@@ -19,31 +19,31 @@ export class BitString<T extends number = number> implements IAsnConvertible {
         this.unusedBits = unusedBits;
         this.value = BufferSourceConverter.toArrayBuffer(params);
       } else {
-        throw TypeError("Unsupported type of 'params' argument for BitString")
+        throw TypeError("Unsupported type of 'params' argument for BitString");
       }
     }
   }
 
-  public fromASN(asn: any): this {
-    if (!(asn instanceof AsnBitString)) {
+  public fromASN(asn: asn1js.BitString): this {
+    if (!(asn instanceof asn1js.BitString)) {
       throw new TypeError("Argument 'asn' is not instance of ASN.1 BitString");
     }
 
-    this.unusedBits = asn.valueBlock.unusedBits
+    this.unusedBits = asn.valueBlock.unusedBits;
     this.value = asn.valueBlock.valueHex;
 
     return this;
   }
 
-  public toASN() {
-    return new AsnBitString({ unusedBits: this.unusedBits, valueHex: this.value });
+  public toASN(): asn1js.BitString {
+    return new asn1js.BitString({ unusedBits: this.unusedBits, valueHex: this.value });
   }
 
-  public toSchema(name: string) {
-    return new AsnBitString({ name } as any);
+  public toSchema(name: string): asn1js.BitString {
+    return new asn1js.BitString({ name });
   }
 
-  public toNumber() {
+  public toNumber(): T {
     let res = "";
     const uintArray = new Uint8Array(this.value);
     for (const octet of uintArray) {
@@ -57,7 +57,7 @@ export class BitString<T extends number = number> implements IAsnConvertible {
     return parseInt(res, 2) as T;
   }
 
-  public fromNumber(value: T) {
+  public fromNumber(value: T): void {
     let bits = value.toString(2);
     const octetSize = (bits.length + 7) >> 3;
     this.unusedBits = (octetSize << 3) - bits.length;

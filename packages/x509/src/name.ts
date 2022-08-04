@@ -43,7 +43,7 @@ export class DirectoryString {
   /**
    * Returns a string representation of an object.
    */
-  public toString() {
+  public toString(): string {
     return this.bmpString || this.printableString || this.teletexString || this.universalString
       || this.utf8String || "";
   }
@@ -69,7 +69,7 @@ export class AttributeValue extends DirectoryString {
     Object.assign(this, params);
   }
 
-  public toString() {
+  public override toString(): string {
     return this.ia5String || (this.anyValue ? Convert.ToHex(this.anyValue) : super.toString());
   }
 }
@@ -84,7 +84,7 @@ export class AttributeValue extends DirectoryString {
 export class AttributeTypeAndValue {
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public type: string = "";
+  public type = "";
 
   @AsnProp({ type: AttributeValue })
   public value = new AttributeValue();

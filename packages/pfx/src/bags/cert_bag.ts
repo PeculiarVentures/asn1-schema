@@ -1,4 +1,4 @@
-import { AsnType, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { id_pkcs_9 } from "./types";
 
 /**

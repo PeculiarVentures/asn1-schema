@@ -3,7 +3,7 @@ import { Convert } from "pvtsutils";
 
 export class IpConverter {
 
-  private static decodeIP(value: string) {
+  private static decodeIP(value: string): string {
     if (value.length === 64 && parseInt(value, 16) === 0) {
       return "::/0";
     }
@@ -24,7 +24,7 @@ export class IpConverter {
     return `${ip}/${mask}`;
   }
 
-  public static toString(buf: ArrayBuffer) {
+  public static toString(buf: ArrayBuffer): string {
     if (buf.byteLength === 4 || buf.byteLength === 16) {
       const uint8 = new Uint8Array(buf);
       const addr = ip.fromByteArray(Array.from(uint8));
@@ -34,7 +34,7 @@ export class IpConverter {
   }
 
   public static fromString(text: string): ArrayBuffer {
-    const addr = ip.parse(text) as any;
+    const addr = ip.parse(text);
     return new Uint8Array(addr.toByteArray()).buffer;
   }
 }

@@ -31,7 +31,7 @@ export class Time {
     }
   }
 
-  public getTime() {
+  public getTime(): Date {
     const time = this.utcTime || this.generalTime;
     if (!time) {
       throw new Error("Cannot get time from CHOICE object")

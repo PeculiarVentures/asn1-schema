@@ -11,7 +11,7 @@ import { AttributeCertificate } from '@peculiar/asn1-x509-attr';
 export class OtherCertificateFormat {
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public otherCertFormat: string = "";
+  public otherCertFormat = "";
 
   @AsnProp({ type: AsnPropTypes.Any })
   public otherCert = new ArrayBuffer(0);

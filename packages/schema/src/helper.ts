@@ -1,18 +1,20 @@
-import { IAsnConvertible } from "./types";
+import { IAsnConvertible, IEmptyConstructor } from "./types";
 
-export function isConvertible(target: any): target is IAsnConvertible<any> {
-  if (target && target.prototype) {
+export function isConvertible(target: IEmptyConstructor): target is (new () => IAsnConvertible);
+export function isConvertible(target: unknown): target is IAsnConvertible;
+export function isConvertible(target: unknown): target is IAsnConvertible {
+  if (typeof target === "function" && target.prototype) {
     if (target.prototype.toASN && target.prototype.fromASN) {
       return true;
     } else {
       return isConvertible(target.prototype);
     }
   } else {
-    return !!(target && target.toASN && target.fromASN);
+    return !!(target && typeof target === "object" && "toASN" in target && "fromASN" in target);
   }
 }
 
-export function isTypeOfArray(target: any): target is typeof Array {
+export function isTypeOfArray(target: unknown): target is typeof Array {
   if (target) {
     const proto = Object.getPrototypeOf(target);
     if (proto?.prototype?.constructor === Array) {
@@ -23,14 +25,14 @@ export function isTypeOfArray(target: any): target is typeof Array {
   return false;
 }
 
-export function isArrayEqual(bytes1: ArrayBuffer, bytes2: ArrayBuffer) {
+export function isArrayEqual(bytes1: ArrayBuffer, bytes2: ArrayBuffer): boolean {
   if (!(bytes1 && bytes2)) { return false; }
   if (bytes1.byteLength !== bytes2.byteLength) { return false; }
 
   const b1 = new Uint8Array(bytes1);
   const b2 = new Uint8Array(bytes2);
   for (let i = 0; i < bytes1.byteLength; i++) {
-      if (b1[i] !== b2[i]) { return false; }
+    if (b1[i] !== b2[i]) { return false; }
   }
   return true;
 }

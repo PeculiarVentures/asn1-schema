@@ -1,4 +1,4 @@
-import { AsnProp, AsnType, AsnTypeTypes, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import { AsnProp, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 import { Name } from "@peculiar/asn1-x509";
 
 /**

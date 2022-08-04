@@ -1,5 +1,5 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
-import { Name, SubjectPublicKeyInfo, Attribute } from "@peculiar/asn1-x509";
+import { Name, SubjectPublicKeyInfo } from "@peculiar/asn1-x509";
 import { Attributes } from "./attributes";
 /**
  * ```

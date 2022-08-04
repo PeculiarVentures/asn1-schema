@@ -1,5 +1,5 @@
 import { Name, Certificate, CertificatePolicies, NameConstraints } from "@peculiar/asn1-x509";
-import { AsnProp, AsnPropTypes, IAsnConverter, BitString } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, BitString } from "@peculiar/asn1-schema";
 
 export type CertPolicyType = "inhibitPolicyMapping" | "requireExplicitPolicy" | "inhibitAnyPolicy";
 
@@ -19,7 +19,7 @@ export enum CertPolicyFlags {
 
 export class CertPolicy extends BitString<CertPolicyFlags> {
 
-  public toJSON() {
+  public toJSON(): CertPolicyType[] {
     const res: CertPolicyType[] = [];
     const flags = this.toNumber();
     if (flags & CertPolicyFlags.inhibitAnyPolicy) {
@@ -34,7 +34,7 @@ export class CertPolicy extends BitString<CertPolicyFlags> {
     return res;
   }
 
-  public toString() {
+  public override toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
 }

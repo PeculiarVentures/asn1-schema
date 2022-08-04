@@ -2,8 +2,8 @@ import { AsnConvert, AsnOctetStringConverter } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 import * as oid from "./object_identifiers";
 
-function create(algorithm: string) {
-  return new AlgorithmIdentifier({ algorithm, parameters: null })
+function create(algorithm: string): AlgorithmIdentifier {
+  return new AlgorithmIdentifier({ algorithm, parameters: null });
 }
 
 export const md2 = create(oid.id_md2);

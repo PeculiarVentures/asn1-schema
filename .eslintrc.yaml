@@ -1,0 +1,11 @@
+root: true
+parser: "@typescript-eslint/parser"
+plugins:
+  - "@typescript-eslint"
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+ignorePatterns:
+  - "packages/*/build/**/*.ts"
+rules:
+  "@typescript-eslint/explicit-function-return-type": 1

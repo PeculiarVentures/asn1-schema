@@ -18,7 +18,7 @@ export class AlgorithmIdentifier {
   @AsnProp({
     type: AsnPropTypes.ObjectIdentifier,
   })
-  public algorithm: string = "";
+  public algorithm = "";
 
   @AsnProp({
     type: AsnPropTypes.Any,

@@ -34,7 +34,7 @@ export const id_ri_scvp = `${id_ri}.4`;
 export class OtherRevocationInfoFormat {
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public otherRevInfoFormat: string = "";
+  public otherRevInfoFormat = "";
 
   @AsnProp({ type: AsnPropTypes.Any })
   public otherRevInfo = new ArrayBuffer(0);

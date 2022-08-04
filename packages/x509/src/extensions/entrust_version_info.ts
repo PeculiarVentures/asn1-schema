@@ -26,7 +26,7 @@ export enum EntrustInfoFlags {
  * ```
  */
 export class EntrustInfo extends BitString {
-  public toJSON() {
+  public toJSON(): EntrustInfoType[] {
     const res: EntrustInfoType[] = [];
     const flags = this.toNumber();
     if (flags & EntrustInfoFlags.pKIXCertificate) {
@@ -41,7 +41,7 @@ export class EntrustInfo extends BitString {
     return res;
   }
 
-  public toString() {
+  public override toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
 }

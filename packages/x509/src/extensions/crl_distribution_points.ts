@@ -41,7 +41,7 @@ export enum ReasonFlags {
  */
 export class Reason extends BitString {
 
-  public toJSON() {
+  public toJSON(): ReasonType[] {
     const res: ReasonType[] = [];
     const flags = this.toNumber();
     if (flags & ReasonFlags.aACompromise) {
@@ -74,7 +74,7 @@ export class Reason extends BitString {
     return res;
   }
 
-  public toString() {
+  public override toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
 }

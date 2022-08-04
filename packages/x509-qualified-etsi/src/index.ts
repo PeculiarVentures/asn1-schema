@@ -140,7 +140,7 @@ export class PdsLocation {
    * ```
    */
   @AsnProp({ type: AsnPropTypes.IA5String })
-  public url: string = "";
+  public url = "";
 
   /**
    * ```
@@ -148,7 +148,7 @@ export class PdsLocation {
    * ```
    */
   @AsnProp({ type: AsnPropTypes.PrintableString })
-  public language: string = "";
+  public language = "";
 
   public constructor(params: Partial<PdsLocation> = {}) {
     Object.assign(this, params);

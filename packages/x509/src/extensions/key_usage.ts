@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes, AsnType, IAsnConverter, AsnTypeTypes, BitString } from "@peculiar/asn1-schema";
+import { BitString } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
 
 /**
@@ -40,7 +40,7 @@ export enum KeyUsageFlags {
  */
 export class KeyUsage extends BitString {
 
-  public toJSON() {
+  public toJSON(): KeyUsageType[] {
     const flag = this.toNumber();
     const res: KeyUsageType[] = [];
     if (flag & KeyUsageFlags.cRLSign) {
@@ -73,7 +73,7 @@ export class KeyUsage extends BitString {
     return res;
   }
 
-  public toString() {
+  public override toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
 

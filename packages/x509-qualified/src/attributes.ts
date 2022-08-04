@@ -31,7 +31,7 @@ export const id_pds_placeOfBirth = `${id_pda}.2`;
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class PlaceOfBirth extends DirectoryString {};
+export class PlaceOfBirth extends DirectoryString {}
 
 /**
  * ```

@@ -1,9 +1,10 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnOctetStringConverter, IAsnConverter } from "@peculiar/asn1-schema";
+import * as asn1js from "asn1js";
 import { IpConverter } from "./ip_converter";
 import { DirectoryString, Name } from "./name";
 
 export const AsnIpConverter: IAsnConverter<string> = {
-  fromASN: (value: any) => IpConverter.toString(AsnOctetStringConverter.fromASN(value)),
+  fromASN: (value: asn1js.OctetString) => IpConverter.toString(AsnOctetStringConverter.fromASN(value)),
   toASN: (value: string) => AsnOctetStringConverter.toASN(IpConverter.fromString(value)),
 };
 
@@ -16,7 +17,7 @@ export const AsnIpConverter: IAsnConverter<string> = {
  */
 export class OtherName {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public typeId: string = "";
+  public typeId = "";
 
   @AsnProp({ type: AsnPropTypes.Any, context: 0 })
   public value: ArrayBuffer = new ArrayBuffer(0);

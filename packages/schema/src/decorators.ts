@@ -4,7 +4,7 @@ import { IAsnSchema, IAsnSchemaItem } from "./schema";
 import { schemaStorage } from "./storage";
 import { IAsnConverter, IEmptyConstructor } from "./types";
 
-export type AsnItemType<T = any> = AsnPropTypes | IEmptyConstructor<T>;
+export type AsnItemType<T = unknown> = AsnPropTypes | IEmptyConstructor<T>;
 
 export interface IAsn1TypeOptions {
   type: AsnTypeTypes;
@@ -17,57 +17,65 @@ export type AsnRepeatType = AsnRepeatTypeString;
 export interface IAsn1PropOptions {
   type: AsnItemType;
   optional?: boolean;
-  defaultValue?: any;
+  defaultValue?: unknown;
   context?: number;
   implicit?: boolean;
   converter?: IAsnConverter;
   repeated?: AsnRepeatType;
 }
 
-export const AsnType = (options: IAsn1TypeOptions) => (target: object) => {
-  let schema: IAsnSchema;
-  if (!schemaStorage.has(target)) {
-    schema = schemaStorage.createDefault(target);
-    schemaStorage.set(target, schema);
-  } else {
-    schema = schemaStorage.get(target);
-  }
-  Object.assign(schema, options);
-};
+export type AsnTypeDecorator = (target: IEmptyConstructor) => void;
 
-export const AsnChoiceType = () => AsnType({ type: AsnTypeTypes.Choice });
+export const AsnType = (options: IAsn1TypeOptions): AsnTypeDecorator =>
+  (target: IEmptyConstructor): void => {
+    let schema: IAsnSchema;
+    if (!schemaStorage.has(target)) {
+      schema = schemaStorage.createDefault(target);
+      schemaStorage.set(target, schema);
+    } else {
+      schema = schemaStorage.get(target);
+    }
+    Object.assign(schema, options);
+  };
+
+export const AsnChoiceType = (): AsnTypeDecorator =>
+  AsnType({ type: AsnTypeTypes.Choice });
 
 export interface IAsn1SetOptions {
   itemType: AsnItemType;
 }
 
-export const AsnSetType = (options: IAsn1SetOptions) => AsnType({ type: AsnTypeTypes.Set, ...options });
+export const AsnSetType = (options: IAsn1SetOptions): AsnTypeDecorator =>
+  AsnType({ type: AsnTypeTypes.Set, ...options });
 
 export interface IAsn1SequenceOptions {
   itemType?: AsnItemType;
 }
 
-export const AsnSequenceType = (options: IAsn1SequenceOptions) => AsnType({ type: AsnTypeTypes.Sequence, ...options });
+export const AsnSequenceType = (options: IAsn1SequenceOptions): AsnTypeDecorator =>
+  AsnType({ type: AsnTypeTypes.Sequence, ...options });
 
-export const AsnProp = (options: IAsn1PropOptions) => (target: object, propertyKey: string) => {
-  let schema: IAsnSchema;
-  if (!schemaStorage.has(target.constructor)) {
-    schema = schemaStorage.createDefault(target.constructor);
-    schemaStorage.set(target.constructor, schema);
-  } else {
-    schema = schemaStorage.get(target.constructor);
-  }
-
-  const copyOptions = Object.assign({}, options) as IAsnSchemaItem;
-
-  if (typeof copyOptions.type === "number" && !copyOptions.converter) {
-    // Set default converters
-    const defaultConverter = converters.defaultConverter(options.type as AsnPropTypes);
-    if (!defaultConverter) {
-      throw new Error(`Cannot get default converter for property '${propertyKey}' of ${target.constructor.name}`);
+export type AsnPropDecorator = (target: object, propertyKey: string) => void;
+export const AsnProp = (options: IAsn1PropOptions): AsnPropDecorator =>
+  (target: object, propertyKey: string) => {
+    let schema: IAsnSchema;
+    if (!schemaStorage.has(target.constructor)) {
+      schema = schemaStorage.createDefault(target.constructor);
+      schemaStorage.set(target.constructor, schema);
+    } else {
+      schema = schemaStorage.get(target.constructor as IEmptyConstructor);
     }
-    copyOptions.converter = defaultConverter;
-  }
 
-  schema.items[propertyKey] = copyOptions;
-};
+    const copyOptions = Object.assign({}, options) as IAsnSchemaItem;
+
+    if (typeof copyOptions.type === "number" && !copyOptions.converter) {
+      // Set default converters
+      const defaultConverter = converters.defaultConverter(options.type as AsnPropTypes);
+      if (!defaultConverter) {
+        throw new Error(`Cannot get default converter for property '${propertyKey}' of ${target.constructor.name}`);
+      }
+      copyOptions.converter = defaultConverter;
+    }
+
+    schema.items[propertyKey] = copyOptions;
+  };

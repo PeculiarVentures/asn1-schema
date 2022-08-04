@@ -1,5 +1,4 @@
 import { AsnProp } from "@peculiar/asn1-schema";
-import { id_ct_tstInfo } from "./object_identifiers";
 import { PKIStatusInfo } from "./pki_status_info";
 import { TimeStampToken } from "./time_stamp_token";
 

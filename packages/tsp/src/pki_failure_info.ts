@@ -38,6 +38,8 @@ export enum PKIFailureInfoFlags {
 }
 
 export type PKIFailureInfoType = keyof typeof PKIFailureInfoFlags;
+export type PKIFailureInfoJson = PKIFailureInfoType[];
+
 /**
  * ```
  * PKIFailureInfo ::= BIT STRING {
@@ -63,7 +65,7 @@ export type PKIFailureInfoType = keyof typeof PKIFailureInfoFlags;
 
 export class PKIFailureInfo extends BitString {
 
-  public toJSON() {
+  public toJSON(): PKIFailureInfoJson {
     const flag = this.toNumber();
     const res: PKIFailureInfoType[] = [];
     if (flag & PKIFailureInfoFlags.addInfoNotAvailable) {
@@ -97,7 +99,7 @@ export class PKIFailureInfo extends BitString {
     return res;
   }
 
-  public toString() {
+  public override toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
 

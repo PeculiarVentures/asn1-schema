@@ -1,9 +1,8 @@
-// @ts-ignore
-import * as asn1 from "asn1js";
+import * as asn1js from "asn1js";
 import * as assert from "assert";
 import * as src from "../src";
 
-function assertBuffer(actual: Buffer, expected: Buffer) {
+function assertBuffer(actual: Buffer, expected: Buffer): void {
   assert.strictEqual(Buffer.compare(actual, expected), 0,
     `Buffers are not equal.\n\tActual:   ${actual.toString("hex")}\n\tExpected: ${expected.toString("hex")}`);
 }
@@ -77,7 +76,8 @@ context("Test", () => {
           });
           it("parse", () => {
             const obj = src.AsnParser.parse(new Uint8Array(Buffer.from("80050102030405", "hex")).buffer, Test);
-            assert.strictEqual(obj.select1!.byteLength, 5);
+            assert.ok(obj.select1);
+            assert.strictEqual(obj.select1.byteLength, 5);
           });
         });
         context("Repeated SET", () => {
@@ -130,8 +130,9 @@ context("Test", () => {
           it("parse", () => {
             const obj = src.AsnParser.parse(new Uint8Array(der).buffer, Test);
             assert.strictEqual(!!obj.select4, true);
-            assert.strictEqual(obj.select4!.text, "test");
-            assert.strictEqual(obj.select4!.value, 2);
+            assert.ok(obj.select4);
+            assert.strictEqual(obj.select4.text, "test");
+            assert.strictEqual(obj.select4.value, 2);
           });
         });
       });
@@ -177,7 +178,7 @@ context("Test", () => {
   });
 
   context("Converter", () => {
-    function test(cls: any, hex: string, expected: any, assertCb?: (value: any, excepted: any) => void) {
+    function test<T>(cls: new () => { value: T; }, hex: string, expected: T, assertCb?: (value: T, excepted: T) => void): void {
       it("serialize", () => {
         const obj = new cls();
         obj.value = expected;
@@ -188,7 +189,7 @@ context("Test", () => {
         const obj = src.AsnParser.parse(
           new Uint8Array(Buffer.from(hex, "hex")).buffer,
           cls,
-        ) as any;
+        );
         // console.log(obj);
         if (assertCb) {
           assertCb(obj.value, expected);
@@ -271,7 +272,7 @@ context("Test", () => {
       context("EnumeratedConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.Enumerated })
-          public value!: boolean;
+          public value!: number;
         }
         /**
          * SEQUENCE (1 elem)
@@ -427,7 +428,7 @@ context("Test", () => {
           Test,
           "300e020c010203040506070809000102",
           new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2]).buffer,
-          (value, expected) => {
+          (value) => {
             assertBuffer(Buffer.from(value), Buffer.from("010203040506070809000102", "hex"));
           },
         );
@@ -622,16 +623,16 @@ context("Test", () => {
     it("correct", () => {
       class Test implements src.IAsnConvertible {
         public value = "";
-        public fromASN(asn: any): this {
+        public fromASN(asn: asn1js.Utf8String): this {
           this.value = asn.valueBlock.value;
           return this;
         }
-        public toASN(): any {
-          return new asn1.Utf8String({ value: this.value });
+        public toASN(): asn1js.Utf8String {
+          return new asn1js.Utf8String({ value: this.value });
         }
 
-        public toSchema(name: string) {
-          return new asn1.Utf8String({ name } as any);
+        public toSchema(name: string): asn1js.Utf8String {
+          return new asn1js.Utf8String({ name });
         }
       }
 
@@ -784,7 +785,7 @@ context("Test", () => {
       });
       it("ArrayBufferView", () => {
         assert.throws(() => {
-          src.AsnParser.parse([48, 3, 2, 1, 1] as any, Test);
+          src.AsnParser.parse([48, 3, 2, 1, 1] as unknown as ArrayBuffer, Test);
         });
       });
     });
@@ -825,7 +826,6 @@ context("Test", () => {
       const obj = src.AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test);
       assert.strictEqual(obj.join(", "), "1.2.3.4.5, 2.3.4.5.6");
       assert.strictEqual(obj instanceof Test, true);
-      const type = typeof (obj);
     });
   });
 

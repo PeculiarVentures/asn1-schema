@@ -20,7 +20,8 @@ context("converters", () => {
       assert.strictEqual(Buffer.from(der).toString("hex"), "020101");
 
       const value = AsnAnyConverter.fromASN(asn);
-      assert.strictEqual(value!.byteLength, 3);
+      assert.ok(value);
+      assert.strictEqual(value.byteLength, 3);
     });
     it("Throw error on wrong encoded value", () => {
       assert.throws(() => {

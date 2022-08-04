@@ -3,7 +3,7 @@ import { AlgorithmIdentifier } from "./algorithm_identifier";
 import { Name } from "./name";
 import { SubjectPublicKeyInfo } from "./subject_public_key_info";
 import { Validity } from "./validity";
-import { Extension, Extensions } from "./extension";
+import { Extensions } from "./extension";
 import { Version, CertificateSerialNumber, UniqueIdentifier } from "./types";
 
 /**

@@ -9,6 +9,7 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "strict": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "noImplicitOverride": true
   }
 }
