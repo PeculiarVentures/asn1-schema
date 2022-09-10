@@ -1,7 +1,7 @@
 import { AsnConvert, AsnParser } from "@peculiar/asn1-schema";
 import * as assert from "assert";
 import { Convert } from "pvtsutils";
-import { ContentInfo, EncapsulatedContentInfo, id_data, id_signedData, SignedData, SignerIdentifier } from "../src";
+import { ContentInfo, EncapsulatedContentInfo, EnvelopedData, id_data, id_envelopedData, id_signedData, SignedData, SignerIdentifier } from "../src";
 
 context("cms", () => {
 
@@ -112,6 +112,34 @@ context("cms", () => {
 
       assert.ok(sid.subjectKeyIdentifier);
       assert.strictEqual(Convert.ToHex(sid.subjectKeyIdentifier), "448878cf6d19edc9d4f0bd2391441054b9b87047");
+    });
+
+  });
+
+  context("EnvelopedData", () => {
+
+    it("parse CMS with EnvelopedData", () => {
+      const pem = "MIAGCSqGSIb3DQEHA6CAMIACAQIxggFcMIIBWAIBADBAMCsxKTAnBgNVBAMeIAB0" +
+      "AGUAcwB0AEAAZQB4AGEAbQBwAGwAZQAuAGMAbwBtAhEArCY1BXmx0dEycmMiIYRa" +
+      "cDANBgkqhkiG9w0BAQEFAASCAQAfvvx+Gp/pI4NciVPywwu1l3ivfZ1K7s10RTf4" +
+      "jgclZn3ShOvBDsxbnf/KcgpxIeKo3Ik6xHCS9TEu0caVb41VBsKKeHd3vfkeCFjO" +
+      "kctoTiFoi03G5vZqAHBXOsM+9ngl2YYob22Wp9DPh6TuHzmyWNJv6XU86RePEk0m" +
+      "O6bxRucYNyryOSy1tGnw1BksJdsKxJHsM93WpTNfJUPRM5GQpLnL4swE/czubnqL" +
+      "LjeuAmGSWxjMgJCFBhEa1vGI85MlB5HVgMedlu/DlnKdTTKPATEX4HNVlTkxjw4U" +
+      "QFbqLJUkZLYGt+PXMlbpTdC8o3Flh8z7NsbBCtjnCqEqjO+9MIAGCSqGSIb3DQEH" +
+      "ATAdBglghkgBZQMEASoEEApTJq854NYO1bqCHf1wlJuggAQQGlV/5YkunKR5KRYg" +
+      "L36BkQAAAAAAAAAAAAA="
+
+      const contentInfo = AsnParser.parse(Convert.FromBase64(pem), ContentInfo);
+      assert.strictEqual(contentInfo.contentType, id_envelopedData);
+
+      const envelopedData = AsnParser.parse(contentInfo.content, EnvelopedData);
+      assert.strictEqual(!!envelopedData, true);
+
+      const recipientInfo = envelopedData.recipientInfos[0];
+      assert.strictEqual(!!recipientInfo.ktri, true);
+
+      assert.ok(recipientInfo?.ktri?.rid?.issuerAndSerialNumber);
     });
 
   });

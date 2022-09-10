@@ -1,5 +1,5 @@
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import { AsnTypeTypes, AsnType } from "@peculiar/asn1-schema";
+import { AsnTypeTypes, AsnType, OctetString } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -24,6 +24,20 @@ export enum CMSVersion {
 
 /**
  * ```
+ * EncryptedKey ::= OCTET STRING
+ * ```
+ */
+ export type EncryptedKey = OctetString;
+
+ /**
+ * ```
+ * EncryptedContent ::= OCTET STRING
+ * ```
+ */
+export type EncryptedContent = OctetString;
+
+/**
+ * ```
  * DigestAlgorithmIdentifier ::= AlgorithmIdentifier
  * ```
  */
@@ -37,3 +51,35 @@ export class DigestAlgorithmIdentifier extends AlgorithmIdentifier { }
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class SignatureAlgorithmIdentifier extends AlgorithmIdentifier { }
+
+/**
+ * ```
+ * KeyEncryptionAlgorithmIdentifier ::= AlgorithmIdentifier
+ * ```
+ */
+@AsnType({ type: AsnTypeTypes.Sequence })
+export class KeyEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { }
+
+/**
+ * ```
+ * ContentEncryptionAlgorithmIdentifier ::= AlgorithmIdentifier
+ * ```
+ */
+@AsnType({ type: AsnTypeTypes.Sequence })
+export class ContentEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { }
+
+/**
+ * ```
+ * MessageAuthenticationCodeAlgorithm ::= AlgorithmIdentifier
+ * ```
+ */
+@AsnType({ type: AsnTypeTypes.Sequence })
+export class MessageAuthenticationCodeAlgorithm extends AlgorithmIdentifier { }
+
+/**
+ * ```
+ * KeyDerivationAlgorithmIdentifier ::= AlgorithmIdentifier
+ * ```
+ */
+@AsnType({ type: AsnTypeTypes.Sequence })
+export class KeyDerivationAlgorithmIdentifier extends AlgorithmIdentifier { }
