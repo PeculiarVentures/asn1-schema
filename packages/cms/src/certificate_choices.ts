@@ -2,7 +2,7 @@ import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, AsnArray } from "@peculia
 import { Certificate } from "@peculiar/asn1-x509";
 import { AttributeCertificate } from '@peculiar/asn1-x509-attr';
 /**
- * ```
+ * ```asn
  * OtherCertificateFormat ::= SEQUENCE {
  *   otherCertFormat OBJECT IDENTIFIER,
  *   otherCert ANY DEFINED BY otherCertFormat }
@@ -22,7 +22,7 @@ export class OtherCertificateFormat {
 }
 
 /**
- * ```
+ * ```asn
  * CertificateChoices ::= CHOICE {
  *   certificate Certificate,
  *   extendedCertificate [0] IMPLICIT ExtendedCertificate,  -- Obsolete
@@ -57,7 +57,7 @@ export class CertificateChoices {
 }
 
 /**
- * ```
+ * ```asn
  * CertificateSet ::= SET OF CertificateChoices
  * ```
  */

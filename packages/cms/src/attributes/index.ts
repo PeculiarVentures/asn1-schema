@@ -3,7 +3,7 @@ export * from "./message_digest";
 export * from "./signing_time";
 
 /**
- * ```
+ * ```asn
  * id-contentType OBJECT IDENTIFIER ::= { iso(1) member-body(2)
  *   us(840) rsadsi(113549) pkcs(1) pkcs9(9) 3 }
  * ```

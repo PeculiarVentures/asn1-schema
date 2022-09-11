@@ -6,7 +6,7 @@ import { RevocationInfoChoice, RevocationInfoChoices } from "./revocation_info_c
 import { SignerInfos } from "./signer_info";
 
 /**
- * ```
+ * ```asn
  * DigestAlgorithmIdentifiers ::= SET OF DigestAlgorithmIdentifier
  * ```
  */
@@ -23,7 +23,7 @@ export class DigestAlgorithmIdentifiers extends AsnArray<DigestAlgorithmIdentifi
 }
 
 /**
- * ```
+ * ```asn
  * SignedData ::= SEQUENCE {
  *   version CMSVersion,
  *   digestAlgorithms DigestAlgorithmIdentifiers,

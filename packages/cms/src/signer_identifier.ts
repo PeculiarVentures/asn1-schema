@@ -3,7 +3,7 @@ import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn
  * SignerIdentifier ::= CHOICE {
  *   issuerAndSerialNumber IssuerAndSerialNumber,
  *   subjectKeyIdentifier [0] SubjectKeyIdentifier }

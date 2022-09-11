@@ -4,21 +4,21 @@ import { CMSVersion, SignatureAlgorithmIdentifier, DigestAlgorithmIdentifier } f
 import { Attribute } from "./attribute";
 
 /**
- * ```
+ * ```asn
  * SignedAttributes ::= SET SIZE (1..MAX) OF Attribute
  * ```
  */
 export type SignedAttributes = Attribute[]
 
 /**
- * ```
+ * ```asn
  * UnsignedAttributes ::= SET SIZE (1..MAX) OF Attribute
  * ```
  */
 export type UnsignedAttributes = Attribute[]
 
 /**
- * ```
+ * ```asn
  * SignatureValue ::= OCTET STRING
  * ```
  */
@@ -26,7 +26,7 @@ export type SignatureValue = OctetString;
 
 
 /**
- * ```
+ * ```asn
  * SignerInfo ::= SEQUENCE {
  *   version CMSVersion,
  *   sid SignerIdentifier,
@@ -66,7 +66,7 @@ export class SignerInfo {
 }
 
 /**
- * ```
+ * ```asn
  * SignerInfos ::= SET OF SignerInfo
  * ```
  */

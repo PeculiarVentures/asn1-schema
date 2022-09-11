@@ -5,7 +5,7 @@ import { SignerInfo } from "./signer_info";
 export type MessageDigest = ArrayBuffer;
 
 /**
- * ```
+ * ```asn
  * SigningTime  ::= Time
  * ```
  */
@@ -13,7 +13,7 @@ export type MessageDigest = ArrayBuffer;
 export class SigningTime extends Time { }
 
 /**
- * ```
+ * ```asn
  * Countersignature ::= SignerInfo
  * ```
  */

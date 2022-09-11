@@ -4,9 +4,11 @@ import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
 
 /**
+ * ```asn
  * RecipientIdentifier ::= CHOICE {
  *  issuerAndSerialNumber IssuerAndSerialNumber,
  *  subjectKeyIdentifier [0] SubjectKeyIdentifier }
+ * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class RecipientIdentifier {
@@ -24,7 +26,7 @@ export class RecipientIdentifier {
 }
 
 /**
- * ```
+ * ```asn
  * KeyTransRecipientInfo ::= SEQUENCE {
  *  version CMSVersion,  -- always set to 0 or 2
  *  rid RecipientIdentifier,

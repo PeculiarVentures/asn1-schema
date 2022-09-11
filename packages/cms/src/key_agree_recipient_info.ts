@@ -5,17 +5,19 @@ import { AlgorithmIdentifier, SubjectKeyIdentifier } from "@peculiar/asn1-x509";
 import { OtherKeyAttribute } from "./recipient_info";
 
 /**
- * ```
+ * ```asn
  * UserKeyingMaterial ::= OCTET STRING
  * ```
  */
 export type UserKeyingMaterial = OctetString;
 
 /**
+ * ```asn
  * RecipientKeyIdentifier ::= SEQUENCE {
  *  subjectKeyIdentifier SubjectKeyIdentifier,
  *  date GeneralizedTime OPTIONAL,
  *  other OtherKeyAttribute OPTIONAL }
+ * ```
  */
 export class RecipientKeyIdentifier {
 
@@ -34,9 +36,11 @@ export class RecipientKeyIdentifier {
 }
 
 /**
+ * ```asn
  * KeyAgreeRecipientIdentifier ::= CHOICE {
  *  issuerAndSerialNumber IssuerAndSerialNumber,
  *  rKeyId [0] IMPLICIT RecipientKeyIdentifier }
+ * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class KeyAgreeRecipientIdentifier {
@@ -54,9 +58,11 @@ export class KeyAgreeRecipientIdentifier {
 }
 
 /**
+ * ```asn
  * RecipientEncryptedKey ::= SEQUENCE {
  *  rid KeyAgreeRecipientIdentifier,
  *  encryptedKey EncryptedKey }
+ * ```
  */
 export class RecipientEncryptedKey {
 
@@ -72,7 +78,9 @@ export class RecipientEncryptedKey {
 }
 
 /**
+ * ```asn
  * RecipientEncryptedKeys ::= SEQUENCE OF RecipientEncryptedKey
+ * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: RecipientEncryptedKey })
 export class RecipientEncryptedKeys extends AsnArray<RecipientEncryptedKey> {
@@ -86,9 +94,11 @@ export class RecipientEncryptedKeys extends AsnArray<RecipientEncryptedKey> {
 }
 
 /**
+ * ```asn
  * OriginatorPublicKey ::= SEQUENCE {
  *  algorithm AlgorithmIdentifier,
  *  publicKey BIT STRING }
+ * ```
  */
 export class OriginatorPublicKey {
 
@@ -104,10 +114,12 @@ export class OriginatorPublicKey {
 }
 
 /**
+ * ```asn
  * OriginatorIdentifierOrKey ::= CHOICE {
  *  issuerAndSerialNumber IssuerAndSerialNumber,
  *  subjectKeyIdentifier [0] SubjectKeyIdentifier,
  *  originatorKey [1] OriginatorPublicKey }
+ * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class OriginatorIdentifierOrKey {
@@ -129,12 +141,14 @@ export class OriginatorIdentifierOrKey {
 }
 
 /**
+ * ```asn
  * KeyAgreeRecipientInfo ::= SEQUENCE {
  *  version CMSVersion,  -- always set to 3
  *  originator [0] EXPLICIT OriginatorIdentifierOrKey,
  *  ukm [1] EXPLICIT UserKeyingMaterial OPTIONAL,
  *  keyEncryptionAlgorithm KeyEncryptionAlgorithmIdentifier,
  *  recipientEncryptedKeys RecipientEncryptedKeys }
+ * ```
  */
  export class KeyAgreeRecipientInfo {
 

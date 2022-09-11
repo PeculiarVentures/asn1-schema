@@ -3,10 +3,12 @@ import { OtherKeyAttribute } from "./recipient_info";
 import { CMSVersion, EncryptedKey, KeyEncryptionAlgorithmIdentifier } from "./types";
 
 /**
+ * ```asn
  * KEKIdentifier ::= SEQUENCE {
  *  keyIdentifier OCTET STRING,
  *  date GeneralizedTime OPTIONAL,
  *  other OtherKeyAttribute OPTIONAL }
+ * ```
  */
 export class KEKIdentifier {
 
@@ -25,11 +27,13 @@ export class KEKIdentifier {
 }
 
 /**
+ * ```asn
  * KEKRecipientInfo ::= SEQUENCE {
  *  version CMSVersion,  -- always set to 4
  *  kekid KEKIdentifier,
  *  keyEncryptionAlgorithm KeyEncryptionAlgorithmIdentifier,
  *  encryptedKey EncryptedKey }
+ * ```
  */
 export class KEKRecipientInfo {
 

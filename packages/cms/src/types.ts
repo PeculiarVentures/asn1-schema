@@ -2,14 +2,14 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 import { AsnTypeTypes, AsnType, OctetString } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn
  * ContentType ::= OBJECT IDENTIFIER
  * ```
  */
 export type ContentType = string;
 
 /**
- * ```
+ * ```asn
  * CMSVersion ::= INTEGER  { v0(0), v1(1), v2(2), v3(3), v4(4), v5(5) }
  * ```
  */
@@ -23,21 +23,14 @@ export enum CMSVersion {
 }
 
 /**
- * ```
+ * ```asn
  * EncryptedKey ::= OCTET STRING
  * ```
  */
  export type EncryptedKey = OctetString;
 
- /**
- * ```
- * EncryptedContent ::= OCTET STRING
- * ```
- */
-export type EncryptedContent = OctetString;
-
 /**
- * ```
+ * ```asn
  * DigestAlgorithmIdentifier ::= AlgorithmIdentifier
  * ```
  */
@@ -45,7 +38,7 @@ export type EncryptedContent = OctetString;
 export class DigestAlgorithmIdentifier extends AlgorithmIdentifier { }
 
 /**
- * ```
+ * ```asn
  * SignatureAlgorithmIdentifier ::= AlgorithmIdentifier
  * ```
  */
@@ -53,7 +46,7 @@ export class DigestAlgorithmIdentifier extends AlgorithmIdentifier { }
 export class SignatureAlgorithmIdentifier extends AlgorithmIdentifier { }
 
 /**
- * ```
+ * ```asn
  * KeyEncryptionAlgorithmIdentifier ::= AlgorithmIdentifier
  * ```
  */
@@ -61,7 +54,7 @@ export class SignatureAlgorithmIdentifier extends AlgorithmIdentifier { }
 export class KeyEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { }
 
 /**
- * ```
+ * ```asn
  * ContentEncryptionAlgorithmIdentifier ::= AlgorithmIdentifier
  * ```
  */
@@ -69,7 +62,7 @@ export class KeyEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { }
 export class ContentEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { }
 
 /**
- * ```
+ * ```asn
  * MessageAuthenticationCodeAlgorithm ::= AlgorithmIdentifier
  * ```
  */
@@ -77,7 +70,7 @@ export class ContentEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { 
 export class MessageAuthenticationCodeAlgorithm extends AlgorithmIdentifier { }
 
 /**
- * ```
+ * ```asn
  * KeyDerivationAlgorithmIdentifier ::= AlgorithmIdentifier
  * ```
  */

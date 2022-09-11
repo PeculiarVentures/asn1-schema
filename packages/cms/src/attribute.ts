@@ -1,14 +1,14 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn
  * AttributeValue ::= ANY
  * ```
  */
 export type AttributeValue = ArrayBuffer;
 
 /**
- * ```
+ * ```asn
  * Attribute ::= SEQUENCE {
  *   attrType OBJECT IDENTIFIER,
  *   attrValues SET OF AttributeValue }

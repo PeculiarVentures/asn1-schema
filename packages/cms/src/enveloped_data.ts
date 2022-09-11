@@ -6,7 +6,9 @@ import { OriginatorInfo } from "./originator_info";
 import { EncryptedContentInfo } from "./encrypted_content_info";
 
 /**
+ * ```asn
  * UnprotectedAttributes ::= SET SIZE (1..MAX) OF Attribute
+ * ```
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: Attribute })
 export class UnprotectedAttributes extends AsnArray<Attribute> {
@@ -20,7 +22,7 @@ export class UnprotectedAttributes extends AsnArray<Attribute> {
 }
 
 /**
- * ```
+ * ```asn
  * EnvelopedData ::= SEQUENCE {
  *  version CMSVersion,
  *  originatorInfo [0] IMPLICIT OriginatorInfo OPTIONAL,

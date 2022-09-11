@@ -2,7 +2,7 @@ import { AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { RecipientInfo } from "./recipient_info";
 
 /**
- * ```
+ * ```asn
  * RecipientInfos ::= SET SIZE (1..MAX) OF RecipientInfo
  * ```
  */

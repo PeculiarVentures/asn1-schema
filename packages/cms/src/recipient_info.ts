@@ -5,9 +5,11 @@ import { KEKRecipientInfo } from "./kek_recipient_info";
 import { PasswordRecipientInfo } from "./password_recipient_info";
 
 /**
+ * ```asn
  * OtherKeyAttribute ::= SEQUENCE {
  *  keyAttrId OBJECT IDENTIFIER,
  *  keyAttr ANY DEFINED BY keyAttrId OPTIONAL }
+ * ```
  */
 export class OtherKeyAttribute {
 
@@ -23,9 +25,11 @@ export class OtherKeyAttribute {
 }
 
 /**
+ * ```asn
  * OtherRecipientInfo ::= SEQUENCE {
  *  oriType OBJECT IDENTIFIER,
  *  oriValue ANY DEFINED BY oriType }
+ * ```
  */
 export class OtherRecipientInfo {
 
@@ -41,7 +45,7 @@ export class OtherRecipientInfo {
 }
 
 /**
- * ```
+ * ```asn
  * RecipientInfo ::= CHOICE {
  *  ktri KeyTransRecipientInfo,
  *  kari [1] KeyAgreeRecipientInfo,
