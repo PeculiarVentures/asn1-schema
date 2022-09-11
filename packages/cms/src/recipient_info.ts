@@ -6,26 +6,6 @@ import { PasswordRecipientInfo } from "./password_recipient_info";
 
 /**
  * ```asn
- * OtherKeyAttribute ::= SEQUENCE {
- *  keyAttrId OBJECT IDENTIFIER,
- *  keyAttr ANY DEFINED BY keyAttrId OPTIONAL }
- * ```
- */
-export class OtherKeyAttribute {
-
-  @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public keyAttrId = "";
-
-  @AsnProp({ type: AsnPropTypes.Any, optional: true })
-  public keyAttr?: ArrayBuffer;
-
-  constructor(params: Partial<OtherKeyAttribute> = {}) {
-    Object.assign(this, params);
-  }
-}
-
-/**
- * ```asn
  * OtherRecipientInfo ::= SEQUENCE {
  *  oriType OBJECT IDENTIFIER,
  *  oriValue ANY DEFINED BY oriType }
@@ -57,19 +37,19 @@ export class OtherRecipientInfo {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class RecipientInfo {
 
-  @AsnProp({ type: KeyTransRecipientInfo })
+  @AsnProp({ type: KeyTransRecipientInfo, optional: true })
   public ktri?: KeyTransRecipientInfo;
 
-  @AsnProp({ type: KeyAgreeRecipientInfo, context: 1 })
+  @AsnProp({ type: KeyAgreeRecipientInfo, context: 1, implicit: true, optional: true })
   public kari?: KeyAgreeRecipientInfo;
 
-  @AsnProp({ type: KEKRecipientInfo, context: 2 })
+  @AsnProp({ type: KEKRecipientInfo, context: 2, implicit: true, optional: true })
   public kekri?: KEKRecipientInfo;
 
-  @AsnProp({ type: PasswordRecipientInfo, context: 3 })
+  @AsnProp({ type: PasswordRecipientInfo, context: 3, implicit: true, optional: true })
   public pwri?: PasswordRecipientInfo;
 
-  @AsnProp({ type: OtherRecipientInfo, context: 4 })
+  @AsnProp({ type: OtherRecipientInfo, context: 4, implicit: true, optional: true })
   public ori?: OtherRecipientInfo;
 
   constructor(params: Partial<RecipientInfo> = {}) {

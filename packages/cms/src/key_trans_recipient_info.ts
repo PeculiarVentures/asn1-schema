@@ -14,7 +14,7 @@ import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
 export class RecipientIdentifier {
 
   // * Declare subjectKeyIdentifier before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
-  @AsnProp({ type: SubjectKeyIdentifier, context: 0 })
+  @AsnProp({ type: SubjectKeyIdentifier, context: 0, implicit: true })
   public subjectKeyIdentifier?: SubjectKeyIdentifier;
 
   @AsnProp({ type: IssuerAndSerialNumber })

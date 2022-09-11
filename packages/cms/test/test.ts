@@ -121,6 +121,7 @@ context("cms", () => {
     const contentInfoPEMs = [
       {
         implicit: false,
+        type: "KeyTransfer",
         pem: "MIAGCSqGSIb3DQEHA6CAMIACAQIxggFcMIIBWAIBADBAMCsxKTAnBgNVBAMeIAB0" +
           "AGUAcwB0AEAAZQB4AGEAbQBwAGwAZQAuAGMAbwBtAhEArCY1BXmx0dEycmMiIYRa" +
           "cDANBgkqhkiG9w0BAQEFAASCAQAfvvx+Gp/pI4NciVPywwu1l3ivfZ1K7s10RTf4" +
@@ -134,21 +135,35 @@ context("cms", () => {
       },
       {
         implicit: true,
+        type: "KeyTransfer",
         pem: "MIIBtAYJKoZIhvcNAQcDoIIBpTCCAaECAQIxggFcMIIBWAIBADBAMCsxKTAnBgNV" +
-        "BAMeIAB0AGUAcwB0AEAAZQB4AGEAbQBwAGwAZQAuAGMAbwBtAhEArCY1BXmx0dEy" +
-        "cmMiIYRacDANBgkqhkiG9w0BAQEFAASCAQAfvvx+Gp/pI4NciVPywwu1l3ivfZ1K" +
-        "7s10RTf4jgclZn3ShOvBDsxbnf/KcgpxIeKo3Ik6xHCS9TEu0caVb41VBsKKeHd3" +
-        "vfkeCFjOkctoTiFoi03G5vZqAHBXOsM+9ngl2YYob22Wp9DPh6TuHzmyWNJv6XU8" +
-        "6RePEk0mO6bxRucYNyryOSy1tGnw1BksJdsKxJHsM93WpTNfJUPRM5GQpLnL4swE" +
-        "/czubnqLLjeuAmGSWxjMgJCFBhEa1vGI85MlB5HVgMedlu/DlnKdTTKPATEX4HNV" +
-        "lTkxjw4UQFbqLJUkZLYGt+PXMlbpTdC8o3Flh8z7NsbBCtjnCqEqjO+9MDwGCSqG" +
-        "SIb3DQEHATAdBglghkgBZQMEASoEEApTJq854NYO1bqCHf1wlJuAEBpVf+WJLpyk" +
-        "eSkWIC9+gZE="
+          "BAMeIAB0AGUAcwB0AEAAZQB4AGEAbQBwAGwAZQAuAGMAbwBtAhEArCY1BXmx0dEy" +
+          "cmMiIYRacDANBgkqhkiG9w0BAQEFAASCAQAfvvx+Gp/pI4NciVPywwu1l3ivfZ1K" +
+          "7s10RTf4jgclZn3ShOvBDsxbnf/KcgpxIeKo3Ik6xHCS9TEu0caVb41VBsKKeHd3" +
+          "vfkeCFjOkctoTiFoi03G5vZqAHBXOsM+9ngl2YYob22Wp9DPh6TuHzmyWNJv6XU8" +
+          "6RePEk0mO6bxRucYNyryOSy1tGnw1BksJdsKxJHsM93WpTNfJUPRM5GQpLnL4swE" +
+          "/czubnqLLjeuAmGSWxjMgJCFBhEa1vGI85MlB5HVgMedlu/DlnKdTTKPATEX4HNV" +
+          "lTkxjw4UQFbqLJUkZLYGt+PXMlbpTdC8o3Flh8z7NsbBCtjnCqEqjO+9MDwGCSqG" +
+          "SIb3DQEHATAdBglghkgBZQMEASoEEApTJq854NYO1bqCHf1wlJuAEBpVf+WJLpyk" +
+          "eSkWIC9+gZE="
+      },
+      {
+        implicit: false,
+        type: "KeyAgreement",
+        pem: "MIAGCSqGSIb3DQEHA6CAMIACAQIxggEvoYIBKwIBA6BboVkwEwYHKoZIzj0CAQYI" +
+          "KoZIzj0DAQcDQgAEXYtv0mvYZS9r3T1ACG1snNX6rHze8c9WvN3GCpMECYnTUwk1" +
+          "Oq6WOyZQK5DjOqE9QbvnagIGCeRW1hf0lFUwWqFCBEBicHhjiM0DncuQYs+uleiD" +
+          "XUEusztkUu2KgTkmZe5WUuAiEMZZZEEv7rVOgjjOUJPPKrC3BoGe09AIP18vTwUm" +
+          "MBUGBiuBBAELAzALBglghkgBZQMEAS0wbjBsMEAwKzEpMCcGA1UEAx4gAHQAZQBz" +
+          "AHQAQABlAHgAYQBtAHAAbABlAC4AYwBvAG0CEQDt88GyTDvYPzAPACKBF9GRBCiE" +
+          "/PPO0dDEeSaA+ZsPk5kyseTH+oF/17Vv1OOB/vteBuYOBzGvMU8ZMIAGCSqGSIb3" +
+          "DQEHATAdBglghkgBZQMEASoEEF/kaKixfwI4FlzjI1SkA5mggAQQJB0YtxHaNhef" +
+          "D3JOjs958wAAAAAAAAAAAAA="
       }
     ]
 
-    for (const { implicit, pem } of contentInfoPEMs) {
-      it(`parse CMS with EnvelopedData - ${implicit ? "implicit" : "explicit"} EncryptedContent`, () => {
+    for (const { type, implicit, pem } of contentInfoPEMs) {
+      it(`parse CMS with ${type} EnvelopedData - ${implicit ? "implicit" : "explicit"} EncryptedContent`, () => {
         // parse contentInfo
         const contentInfo = AsnParser.parse(Convert.FromBase64(pem), ContentInfo);
         assert.strictEqual(contentInfo.contentType, id_envelopedData);
@@ -157,9 +172,18 @@ context("cms", () => {
         assert.strictEqual(!!envelopedData, true);
 
         const recipientInfo = envelopedData.recipientInfos[0];
-        assert.strictEqual(!!recipientInfo.ktri, true);
 
-        assert.ok(recipientInfo?.ktri?.rid?.issuerAndSerialNumber);
+        switch (type) {
+          case "KeyTransfer": {
+            assert.strictEqual(!!recipientInfo.ktri, true);
+            assert.ok(recipientInfo?.ktri?.rid?.issuerAndSerialNumber);
+            break;
+          }
+          case "KeyAgreement": {
+            assert.strictEqual(!!recipientInfo.kari, true);
+            break;
+          }
+        }
 
         const encryptedContentInfo = envelopedData.encryptedContentInfo;
         assert.strictEqual(!!encryptedContentInfo, true);

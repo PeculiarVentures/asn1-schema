@@ -1,8 +1,8 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString, BitString } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 import { CMSVersion, KeyEncryptionAlgorithmIdentifier, EncryptedKey } from "./types";
 import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 import { AlgorithmIdentifier, SubjectKeyIdentifier } from "@peculiar/asn1-x509";
-import { OtherKeyAttribute } from "./recipient_info";
+import { OtherKeyAttribute } from "./other_key_attribute";
 
 /**
  * ```asn
@@ -46,10 +46,10 @@ export class RecipientKeyIdentifier {
 export class KeyAgreeRecipientIdentifier {
 
   // * Declare rKeyId before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
-  @AsnProp({ type: RecipientKeyIdentifier, context: 0, implicit: true })
+  @AsnProp({ type: RecipientKeyIdentifier, context: 0, implicit: true, optional: true })
   public rKeyId?: RecipientKeyIdentifier;
 
-  @AsnProp({ type: IssuerAndSerialNumber })
+  @AsnProp({ type: IssuerAndSerialNumber, optional: true })
   public issuerAndSerialNumber?: IssuerAndSerialNumber;
 
   constructor(params: Partial<KeyAgreeRecipientIdentifier> = {}) {
@@ -105,8 +105,8 @@ export class OriginatorPublicKey {
   @AsnProp({ type: AlgorithmIdentifier })
   public algorithm = new AlgorithmIdentifier();
 
-  @AsnProp({ type: BitString })
-  public publicKey = new BitString();
+  @AsnProp({ type: AsnPropTypes.BitString })
+  public publicKey = new ArrayBuffer(0);
 
   constructor(params: Partial<OriginatorPublicKey> = {}) {
     Object.assign(this, params);
@@ -125,14 +125,14 @@ export class OriginatorPublicKey {
 export class OriginatorIdentifierOrKey {
 
   // * Declare subjectKeyIdentifier before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
-  @AsnProp({ type: SubjectKeyIdentifier, context: 0 })
+  @AsnProp({ type: SubjectKeyIdentifier, context: 0, implicit: true, optional: true })
   public subjectKeyIdentifier?: SubjectKeyIdentifier;
 
   // * Declare originatorKey before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
-  @AsnProp({ type: OriginatorPublicKey, context: 1 })
+  @AsnProp({ type: OriginatorPublicKey, context: 1, implicit: true, optional: true })
   public originatorKey?: OriginatorPublicKey;
 
-  @AsnProp({ type: IssuerAndSerialNumber })
+  @AsnProp({ type: IssuerAndSerialNumber, optional: true })
   public issuerAndSerialNumber?: IssuerAndSerialNumber;
 
   constructor(params: Partial<OriginatorIdentifierOrKey> = {}) {
@@ -159,7 +159,7 @@ export class OriginatorIdentifierOrKey {
   public originator = new OriginatorIdentifierOrKey();
 
   @AsnProp({ type: OctetString, context: 1, optional: true })
-  public ukm?: UserKeyingMaterial = new OctetString();
+  public ukm?: UserKeyingMaterial;
 
   @AsnProp({ type: KeyEncryptionAlgorithmIdentifier })
   public keyEncryptionAlgorithm = new KeyEncryptionAlgorithmIdentifier();
