@@ -118,29 +118,59 @@ context("cms", () => {
 
   context("EnvelopedData", () => {
 
-    it("parse CMS with EnvelopedData", () => {
-      const pem = "MIAGCSqGSIb3DQEHA6CAMIACAQIxggFcMIIBWAIBADBAMCsxKTAnBgNVBAMeIAB0" +
-      "AGUAcwB0AEAAZQB4AGEAbQBwAGwAZQAuAGMAbwBtAhEArCY1BXmx0dEycmMiIYRa" +
-      "cDANBgkqhkiG9w0BAQEFAASCAQAfvvx+Gp/pI4NciVPywwu1l3ivfZ1K7s10RTf4" +
-      "jgclZn3ShOvBDsxbnf/KcgpxIeKo3Ik6xHCS9TEu0caVb41VBsKKeHd3vfkeCFjO" +
-      "kctoTiFoi03G5vZqAHBXOsM+9ngl2YYob22Wp9DPh6TuHzmyWNJv6XU86RePEk0m" +
-      "O6bxRucYNyryOSy1tGnw1BksJdsKxJHsM93WpTNfJUPRM5GQpLnL4swE/czubnqL" +
-      "LjeuAmGSWxjMgJCFBhEa1vGI85MlB5HVgMedlu/DlnKdTTKPATEX4HNVlTkxjw4U" +
-      "QFbqLJUkZLYGt+PXMlbpTdC8o3Flh8z7NsbBCtjnCqEqjO+9MIAGCSqGSIb3DQEH" +
-      "ATAdBglghkgBZQMEASoEEApTJq854NYO1bqCHf1wlJuggAQQGlV/5YkunKR5KRYg" +
-      "L36BkQAAAAAAAAAAAAA="
+    const contentInfoPEMs = [
+      {
+        implicit: false,
+        pem: "MIAGCSqGSIb3DQEHA6CAMIACAQIxggFcMIIBWAIBADBAMCsxKTAnBgNVBAMeIAB0" +
+          "AGUAcwB0AEAAZQB4AGEAbQBwAGwAZQAuAGMAbwBtAhEArCY1BXmx0dEycmMiIYRa" +
+          "cDANBgkqhkiG9w0BAQEFAASCAQAfvvx+Gp/pI4NciVPywwu1l3ivfZ1K7s10RTf4" +
+          "jgclZn3ShOvBDsxbnf/KcgpxIeKo3Ik6xHCS9TEu0caVb41VBsKKeHd3vfkeCFjO" +
+          "kctoTiFoi03G5vZqAHBXOsM+9ngl2YYob22Wp9DPh6TuHzmyWNJv6XU86RePEk0m" +
+          "O6bxRucYNyryOSy1tGnw1BksJdsKxJHsM93WpTNfJUPRM5GQpLnL4swE/czubnqL" +
+          "LjeuAmGSWxjMgJCFBhEa1vGI85MlB5HVgMedlu/DlnKdTTKPATEX4HNVlTkxjw4U" +
+          "QFbqLJUkZLYGt+PXMlbpTdC8o3Flh8z7NsbBCtjnCqEqjO+9MIAGCSqGSIb3DQEH" +
+          "ATAdBglghkgBZQMEASoEEApTJq854NYO1bqCHf1wlJuggAQQGlV/5YkunKR5KRYg" +
+          "L36BkQAAAAAAAAAAAAA="
+      },
+      {
+        implicit: true,
+        pem: "MIIBtAYJKoZIhvcNAQcDoIIBpTCCAaECAQIxggFcMIIBWAIBADBAMCsxKTAnBgNV" +
+        "BAMeIAB0AGUAcwB0AEAAZQB4AGEAbQBwAGwAZQAuAGMAbwBtAhEArCY1BXmx0dEy" +
+        "cmMiIYRacDANBgkqhkiG9w0BAQEFAASCAQAfvvx+Gp/pI4NciVPywwu1l3ivfZ1K" +
+        "7s10RTf4jgclZn3ShOvBDsxbnf/KcgpxIeKo3Ik6xHCS9TEu0caVb41VBsKKeHd3" +
+        "vfkeCFjOkctoTiFoi03G5vZqAHBXOsM+9ngl2YYob22Wp9DPh6TuHzmyWNJv6XU8" +
+        "6RePEk0mO6bxRucYNyryOSy1tGnw1BksJdsKxJHsM93WpTNfJUPRM5GQpLnL4swE" +
+        "/czubnqLLjeuAmGSWxjMgJCFBhEa1vGI85MlB5HVgMedlu/DlnKdTTKPATEX4HNV" +
+        "lTkxjw4UQFbqLJUkZLYGt+PXMlbpTdC8o3Flh8z7NsbBCtjnCqEqjO+9MDwGCSqG" +
+        "SIb3DQEHATAdBglghkgBZQMEASoEEApTJq854NYO1bqCHf1wlJuAEBpVf+WJLpyk" +
+        "eSkWIC9+gZE="
+      }
+    ]
 
-      const contentInfo = AsnParser.parse(Convert.FromBase64(pem), ContentInfo);
-      assert.strictEqual(contentInfo.contentType, id_envelopedData);
+    for (const { implicit, pem } of contentInfoPEMs) {
+      it(`parse CMS with EnvelopedData - ${implicit ? "implicit" : "explicit"} EncryptedContent`, () => {
+        // parse contentInfo
+        const contentInfo = AsnParser.parse(Convert.FromBase64(pem), ContentInfo);
+        assert.strictEqual(contentInfo.contentType, id_envelopedData);
 
-      const envelopedData = AsnParser.parse(contentInfo.content, EnvelopedData);
-      assert.strictEqual(!!envelopedData, true);
+        const envelopedData = AsnParser.parse(contentInfo.content, EnvelopedData);
+        assert.strictEqual(!!envelopedData, true);
 
-      const recipientInfo = envelopedData.recipientInfos[0];
-      assert.strictEqual(!!recipientInfo.ktri, true);
+        const recipientInfo = envelopedData.recipientInfos[0];
+        assert.strictEqual(!!recipientInfo.ktri, true);
 
-      assert.ok(recipientInfo?.ktri?.rid?.issuerAndSerialNumber);
-    });
+        assert.ok(recipientInfo?.ktri?.rid?.issuerAndSerialNumber);
+
+        const encryptedContentInfo = envelopedData.encryptedContentInfo;
+        assert.strictEqual(!!encryptedContentInfo, true);
+
+        if (implicit) {
+          assert.strictEqual(!!encryptedContentInfo.implicitEncryptedContentInfo?.encryptedContent, true);
+        } else {
+          assert.strictEqual(!!encryptedContentInfo.explicitEncryptedContentInfo?.encryptedContent?.single, true);
+        }
+      })
+    }
 
   });
 

@@ -6,6 +6,13 @@ import { ContentType, ContentEncryptionAlgorithmIdentifier } from "./types";
  * EncryptedContent ::= OCTET STRING
  * ```
  */
+export type PrimitiveEncryptedContent = OctetString;
+
+/**
+ * ```asn
+ * EncryptedContent ::= OCTET STRING
+ * ```
+ */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class EncryptedContent {
 
@@ -20,6 +27,38 @@ export class EncryptedContent {
   }
 }
 
+export class ImplicitEncryptedContentInfo {
+
+  @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
+  public contentType: ContentType = "";
+
+  @AsnProp({ type: ContentEncryptionAlgorithmIdentifier })
+  public contentEncryptionAlgorithm = new ContentEncryptionAlgorithmIdentifier();
+
+  @AsnProp({ type: OctetString, context: 0, implicit: true, optional: true })
+  public encryptedContent?: PrimitiveEncryptedContent;
+
+  constructor(params: Partial<ImplicitEncryptedContentInfo> = {}) {
+    Object.assign(this, params);
+  }
+}
+
+export class ExplicitEncryptedContentInfo {
+
+  @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
+  public contentType: ContentType = "";
+
+  @AsnProp({ type: ContentEncryptionAlgorithmIdentifier })
+  public contentEncryptionAlgorithm = new ContentEncryptionAlgorithmIdentifier();
+
+  @AsnProp({ type: EncryptedContent, context: 0, optional: true })
+  public encryptedContent?: EncryptedContent;
+
+  constructor(params: Partial<ExplicitEncryptedContentInfo> = {}) {
+    Object.assign(this, params);
+  }
+}
+
 /**
  * ```asn
  * EncryptedContentInfo ::= SEQUENCE {
@@ -28,17 +67,16 @@ export class EncryptedContent {
  *  encryptedContent [0] IMPLICIT EncryptedContent OPTIONAL }
  * ```
  */
+@AsnType({ type: AsnTypeTypes.Choice })
 export class EncryptedContentInfo {
 
-  @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public contentType: ContentType = "";
+  // RFC compliant
+  @AsnProp({ type: ImplicitEncryptedContentInfo, optional: true })
+  public implicitEncryptedContentInfo?: ImplicitEncryptedContentInfo;
 
-  @AsnProp({ type: ContentEncryptionAlgorithmIdentifier })
-  public contentEncryptionAlgorithm = new ContentEncryptionAlgorithmIdentifier();
-
-  // !!! The RFC specifies EncryptedContent as [0] IMPLICIT but modern crypto libraries use [0] EXPLICIT
-  @AsnProp({ type: EncryptedContent, context: 0, /*implicit: true,*/ optional: true })
-  public encryptedContent?: EncryptedContent;
+  // !!! Non RFC compliant but used by modern crypto libraries
+  @AsnProp({ type: ExplicitEncryptedContentInfo, optional: true })
+  public explicitEncryptedContentInfo?: ExplicitEncryptedContentInfo;
 
   constructor(params: Partial<EncryptedContentInfo> = {}) {
     Object.assign(this, params);
