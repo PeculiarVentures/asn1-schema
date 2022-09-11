@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { ContentType } from "./types";
 
 /**
- * ```
+ * ```asn
  * ContentInfo ::= SEQUENCE {
  *    contentType ContentType,
  *    content [0] EXPLICIT ANY DEFINED BY contentType }

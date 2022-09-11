@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
 import { Name } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn
  * IssuerAndSerialNumber ::= SEQUENCE {
  *   issuer Name,
  *   serialNumber CertificateSerialNumber }
@@ -21,7 +21,7 @@ export class IssuerAndSerialNumber {
 }
 
 /**
- * ```
+ * ```asn
  * CertificateSerialNumber ::= INTEGER
  * ```
  */

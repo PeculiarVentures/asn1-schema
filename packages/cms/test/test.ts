@@ -1,7 +1,7 @@
 import { AsnConvert, AsnParser } from "@peculiar/asn1-schema";
 import * as assert from "assert";
 import { Convert } from "pvtsutils";
-import { ContentInfo, EncapsulatedContentInfo, id_data, id_signedData, SignedData, SignerIdentifier } from "../src";
+import { ContentInfo, EncapsulatedContentInfo, EnvelopedData, id_data, id_envelopedData, id_signedData, SignedData, SignerIdentifier } from "../src";
 
 context("cms", () => {
 
@@ -113,6 +113,88 @@ context("cms", () => {
       assert.ok(sid.subjectKeyIdentifier);
       assert.strictEqual(Convert.ToHex(sid.subjectKeyIdentifier), "448878cf6d19edc9d4f0bd2391441054b9b87047");
     });
+
+  });
+
+  context("EnvelopedData", () => {
+
+    const contentInfoPEMs = [
+      {
+        implicit: false,
+        type: "KeyTransfer",
+        pem: "MIAGCSqGSIb3DQEHA6CAMIACAQIxggFcMIIBWAIBADBAMCsxKTAnBgNVBAMeIAB0" +
+          "AGUAcwB0AEAAZQB4AGEAbQBwAGwAZQAuAGMAbwBtAhEArCY1BXmx0dEycmMiIYRa" +
+          "cDANBgkqhkiG9w0BAQEFAASCAQAfvvx+Gp/pI4NciVPywwu1l3ivfZ1K7s10RTf4" +
+          "jgclZn3ShOvBDsxbnf/KcgpxIeKo3Ik6xHCS9TEu0caVb41VBsKKeHd3vfkeCFjO" +
+          "kctoTiFoi03G5vZqAHBXOsM+9ngl2YYob22Wp9DPh6TuHzmyWNJv6XU86RePEk0m" +
+          "O6bxRucYNyryOSy1tGnw1BksJdsKxJHsM93WpTNfJUPRM5GQpLnL4swE/czubnqL" +
+          "LjeuAmGSWxjMgJCFBhEa1vGI85MlB5HVgMedlu/DlnKdTTKPATEX4HNVlTkxjw4U" +
+          "QFbqLJUkZLYGt+PXMlbpTdC8o3Flh8z7NsbBCtjnCqEqjO+9MIAGCSqGSIb3DQEH" +
+          "ATAdBglghkgBZQMEASoEEApTJq854NYO1bqCHf1wlJuggAQQGlV/5YkunKR5KRYg" +
+          "L36BkQAAAAAAAAAAAAA="
+      },
+      {
+        implicit: true,
+        type: "KeyTransfer",
+        pem: "MIIBtAYJKoZIhvcNAQcDoIIBpTCCAaECAQIxggFcMIIBWAIBADBAMCsxKTAnBgNV" +
+          "BAMeIAB0AGUAcwB0AEAAZQB4AGEAbQBwAGwAZQAuAGMAbwBtAhEArCY1BXmx0dEy" +
+          "cmMiIYRacDANBgkqhkiG9w0BAQEFAASCAQAfvvx+Gp/pI4NciVPywwu1l3ivfZ1K" +
+          "7s10RTf4jgclZn3ShOvBDsxbnf/KcgpxIeKo3Ik6xHCS9TEu0caVb41VBsKKeHd3" +
+          "vfkeCFjOkctoTiFoi03G5vZqAHBXOsM+9ngl2YYob22Wp9DPh6TuHzmyWNJv6XU8" +
+          "6RePEk0mO6bxRucYNyryOSy1tGnw1BksJdsKxJHsM93WpTNfJUPRM5GQpLnL4swE" +
+          "/czubnqLLjeuAmGSWxjMgJCFBhEa1vGI85MlB5HVgMedlu/DlnKdTTKPATEX4HNV" +
+          "lTkxjw4UQFbqLJUkZLYGt+PXMlbpTdC8o3Flh8z7NsbBCtjnCqEqjO+9MDwGCSqG" +
+          "SIb3DQEHATAdBglghkgBZQMEASoEEApTJq854NYO1bqCHf1wlJuAEBpVf+WJLpyk" +
+          "eSkWIC9+gZE="
+      },
+      {
+        implicit: false,
+        type: "KeyAgreement",
+        pem: "MIAGCSqGSIb3DQEHA6CAMIACAQIxggEvoYIBKwIBA6BboVkwEwYHKoZIzj0CAQYI" +
+          "KoZIzj0DAQcDQgAEXYtv0mvYZS9r3T1ACG1snNX6rHze8c9WvN3GCpMECYnTUwk1" +
+          "Oq6WOyZQK5DjOqE9QbvnagIGCeRW1hf0lFUwWqFCBEBicHhjiM0DncuQYs+uleiD" +
+          "XUEusztkUu2KgTkmZe5WUuAiEMZZZEEv7rVOgjjOUJPPKrC3BoGe09AIP18vTwUm" +
+          "MBUGBiuBBAELAzALBglghkgBZQMEAS0wbjBsMEAwKzEpMCcGA1UEAx4gAHQAZQBz" +
+          "AHQAQABlAHgAYQBtAHAAbABlAC4AYwBvAG0CEQDt88GyTDvYPzAPACKBF9GRBCiE" +
+          "/PPO0dDEeSaA+ZsPk5kyseTH+oF/17Vv1OOB/vteBuYOBzGvMU8ZMIAGCSqGSIb3" +
+          "DQEHATAdBglghkgBZQMEASoEEF/kaKixfwI4FlzjI1SkA5mggAQQJB0YtxHaNhef" +
+          "D3JOjs958wAAAAAAAAAAAAA="
+      }
+    ]
+
+    for (const { type, implicit, pem } of contentInfoPEMs) {
+      it(`parse CMS with ${type} EnvelopedData - ${implicit ? "implicit" : "explicit"} EncryptedContent`, () => {
+        // parse contentInfo
+        const contentInfo = AsnParser.parse(Convert.FromBase64(pem), ContentInfo);
+        assert.strictEqual(contentInfo.contentType, id_envelopedData);
+
+        const envelopedData = AsnParser.parse(contentInfo.content, EnvelopedData);
+        assert.strictEqual(!!envelopedData, true);
+
+        const recipientInfo = envelopedData.recipientInfos[0];
+
+        switch (type) {
+          case "KeyTransfer": {
+            assert.strictEqual(!!recipientInfo.ktri, true);
+            assert.ok(recipientInfo?.ktri?.rid?.issuerAndSerialNumber);
+            break;
+          }
+          case "KeyAgreement": {
+            assert.strictEqual(!!recipientInfo.kari, true);
+            break;
+          }
+        }
+
+        const encryptedContentInfo = envelopedData.encryptedContentInfo;
+        assert.strictEqual(!!encryptedContentInfo, true);
+
+        if (implicit) {
+          assert.strictEqual(!!encryptedContentInfo.implicitEncryptedContentInfo?.encryptedContent, true);
+        } else {
+          assert.strictEqual(!!encryptedContentInfo.explicitEncryptedContentInfo?.encryptedContent?.single, true);
+        }
+      })
+    }
 
   });
 

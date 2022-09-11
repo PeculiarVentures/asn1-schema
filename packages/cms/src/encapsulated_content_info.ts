@@ -17,7 +17,7 @@ export class EncapsulatedContent {
 }
 
 /**
- * ```
+ * ```asn
  * EncapsulatedContentInfo ::= SEQUENCE {
  *   eContentType ContentType,
  *   eContent [0] EXPLICIT OCTET STRING OPTIONAL }
