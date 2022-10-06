@@ -205,15 +205,21 @@ context("x509", () => {
   });
 
   it("issue #68", () => {
-    const policyMappings = AsnParser.parse(Convert.FromHex('304e3018060a60864801650302010302060a608648016503020102073018060a60864801650302010303060a608648016503020102083018060a6086480165030201030c060a60864801650302010209'), src.PolicyMappings);
+    const policyMappings = AsnParser.parse(Convert.FromHex("304e3018060a60864801650302010302060a608648016503020102073018060a60864801650302010303060a608648016503020102083018060a6086480165030201030c060a60864801650302010209"), src.PolicyMappings);
     assert.strictEqual(policyMappings.length, 3);
   });
 
   it("subjectInfoAccess", () => {
-    const subjectInfoAccess = AsnParser.parse(Convert.FromBase64Url('MEcwRQYIKwYBBQUHMAWGOWh0dHA6Ly9pcGtpLnVzcHRvLmdvdi9JUEtJL0NlcnRzL0NBY2VydHNJc3N1ZWRCeVVTUFRPLnA3Yw'), src.SubjectInfoAccessSyntax);
+    const subjectInfoAccess = AsnParser.parse(Convert.FromBase64Url("MEcwRQYIKwYBBQUHMAWGOWh0dHA6Ly9pcGtpLnVzcHRvLmdvdi9JUEtJL0NlcnRzL0NBY2VydHNJc3N1ZWRCeVVTUFRPLnA3Yw"), src.SubjectInfoAccessSyntax);
     assert.strictEqual(subjectInfoAccess.length, 1);
     assert.strictEqual(subjectInfoAccess[0].accessMethod, "1.3.6.1.5.5.7.48.5");
     assert.strictEqual(subjectInfoAccess[0].accessLocation.uniformResourceIdentifier, "http://ipki.uspto.gov/IPKI/Certs/CAcertsIssuedByUSPTO.p7c");
+  });
+
+  it("issuer #83, IssuingDistributionPoint", () => {
+    const issuingDistributionPoint = AsnParser.parse(Convert.FromHex("3034a02fa02d862b687474703a2f2f63726c732e706b692e676f6f672f6774733170352f37554375585a754c5549672e63726c8101ff"), src.IssuingDistributionPoint);
+    assert.strictEqual(issuingDistributionPoint.distributionPoint?.fullName?.[0].uniformResourceIdentifier, "http://crls.pki.goog/gts1p5/7UCuXZuLUIg.crl");
+    assert.strictEqual(issuingDistributionPoint.onlyContainsUserCerts, true);
   });
 
 });
