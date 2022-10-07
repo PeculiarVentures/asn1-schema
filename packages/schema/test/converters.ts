@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { AsnAnyConverter, AsnGeneralizedTimeConverter, AsnUTCTimeConverter } from "../src";
+import { AsnAnyConverter, AsnConstructedOctetStringConverter, AsnGeneralizedTimeConverter, AsnUTCTimeConverter, OctetString } from "../src";
 
 context("converters", () => {
 
@@ -53,6 +53,19 @@ context("converters", () => {
 
       const value = AsnUTCTimeConverter.fromASN(asn);
       assert.strictEqual(value.getTime(), dateNum);
+    });
+  });
+
+  context("ConstructedOctetStringConverter", () => {
+    const buffer = Buffer.from("12345", 'ascii');
+    it("correct", () => {
+      const asn = AsnConstructedOctetStringConverter.toASN(new OctetString(buffer));
+
+      const der = asn.toBER();
+      assert.strictEqual(Buffer.from(der).toString("hex"), "04053132333435");
+
+      const value = AsnConstructedOctetStringConverter.fromASN(asn);
+      assert.notStrictEqual(Buffer.from(value.buffer), buffer);
     });
   });
 });
