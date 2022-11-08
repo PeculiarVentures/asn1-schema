@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509",
-  "version": "2.3.3",
+  "version": "2.3.4",
   "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile` (RFC5280)",
   "files": [
     "build",
