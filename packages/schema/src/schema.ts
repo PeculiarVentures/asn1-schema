@@ -193,8 +193,7 @@ export class AsnSchemaStorage {
   }
 
   protected findParentSchema(target: object): IAsnSchema | null {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const parent = (target as any).__proto__;
+    const parent = Object.getPrototypeOf(target);
     if (parent) {
       const schema = this.items.get(parent);
       return schema || this.findParentSchema(parent);
