@@ -1,12 +1,5 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
+import { AsnConstructedOctetStringConverter, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 import { ContentType, ContentEncryptionAlgorithmIdentifier } from "./types";
-
-/**
- * ```asn
- * EncryptedContent ::= OCTET STRING
- * ```
- */
-export type PrimitiveEncryptedContent = OctetString;
 
 /**
  * ```asn
@@ -16,45 +9,15 @@ export type PrimitiveEncryptedContent = OctetString;
 @AsnType({ type: AsnTypeTypes.Choice })
 export class EncryptedContent {
 
-  @AsnProp({ type: OctetString })
-  public single?: OctetString;
+  // primitive OctetString
+  @AsnProp({ type: OctetString, context: 0, implicit: true, optional: true })
+  public value?: OctetString;
 
-  @AsnProp({ type: AsnPropTypes.Any })
-  public any?: ArrayBuffer;
+  // constructed OctetString (custom converter is needed to create new instances inside "repeated")
+  @AsnProp({ type: OctetString, converter: AsnConstructedOctetStringConverter, context: 0, implicit: true, optional: true, repeated: "sequence" })
+  public constructedValue?: OctetString[];
 
   constructor(params: Partial<EncryptedContent> = {}) {
-    Object.assign(this, params);
-  }
-}
-
-export class ImplicitEncryptedContentInfo {
-
-  @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public contentType: ContentType = "";
-
-  @AsnProp({ type: ContentEncryptionAlgorithmIdentifier })
-  public contentEncryptionAlgorithm = new ContentEncryptionAlgorithmIdentifier();
-
-  @AsnProp({ type: OctetString, context: 0, implicit: true, optional: true })
-  public encryptedContent?: PrimitiveEncryptedContent;
-
-  constructor(params: Partial<ImplicitEncryptedContentInfo> = {}) {
-    Object.assign(this, params);
-  }
-}
-
-export class ExplicitEncryptedContentInfo {
-
-  @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-  public contentType: ContentType = "";
-
-  @AsnProp({ type: ContentEncryptionAlgorithmIdentifier })
-  public contentEncryptionAlgorithm = new ContentEncryptionAlgorithmIdentifier();
-
-  @AsnProp({ type: EncryptedContent, context: 0, optional: true })
-  public encryptedContent?: EncryptedContent;
-
-  constructor(params: Partial<ExplicitEncryptedContentInfo> = {}) {
     Object.assign(this, params);
   }
 }
@@ -67,16 +30,16 @@ export class ExplicitEncryptedContentInfo {
  *  encryptedContent [0] IMPLICIT EncryptedContent OPTIONAL }
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Choice })
 export class EncryptedContentInfo {
 
-  // RFC compliant
-  @AsnProp({ type: ImplicitEncryptedContentInfo, optional: true })
-  public implicitEncryptedContentInfo?: ImplicitEncryptedContentInfo;
+  @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
+  public contentType: ContentType = "";
 
-  // !!! Non RFC compliant but used by modern crypto libraries
-  @AsnProp({ type: ExplicitEncryptedContentInfo, optional: true })
-  public explicitEncryptedContentInfo?: ExplicitEncryptedContentInfo;
+  @AsnProp({ type: ContentEncryptionAlgorithmIdentifier })
+  public contentEncryptionAlgorithm = new ContentEncryptionAlgorithmIdentifier();
+
+  @AsnProp({ type: EncryptedContent, optional: true })
+  public encryptedContent?: EncryptedContent;
 
   constructor(params: Partial<EncryptedContentInfo> = {}) {
     Object.assign(this, params);

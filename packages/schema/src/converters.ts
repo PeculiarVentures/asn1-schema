@@ -1,6 +1,7 @@
 import * as asn1js from "asn1js";
 import { AnyConverterType, IAsnConverter, IntegerConverterType } from "./types";
 import { AsnPropTypes } from "./enums";
+import { OctetString } from "./types/index";
 /**
  * NOTE: Converter MUST have name Asn<Asn1PropType.name>Converter.
  * Asn1Prop decorator link custom converters by name of the Asn1PropType
@@ -87,6 +88,14 @@ export const AsnBooleanConverter: IAsnConverter<boolean, asn1js.Boolean> = {
 export const AsnOctetStringConverter: IAsnConverter<ArrayBuffer, asn1js.OctetString> = {
   fromASN: (value: asn1js.OctetString) => value.valueBlock.valueHexView,
   toASN: (value: ArrayBuffer) => new asn1js.OctetString({ valueHex: value }),
+};
+
+/**
+ * ASN.1 OCTET_STRING converter to OctetString class
+ */
+export const AsnConstructedOctetStringConverter: IAsnConverter<OctetString, asn1js.OctetString> = {
+  fromASN: (value: asn1js.OctetString) => new OctetString(value.getValue()),
+  toASN: (value: OctetString) => value.toASN(),
 };
 
 function createStringConverter<T extends asn1js.BaseStringBlock>(Asn1Type: new (params: { value: string; }) => T): IAsnConverter<string> {
