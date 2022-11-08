@@ -21,10 +21,16 @@ export class Time {
 
   constructor(time?: Date | string | number | Partial<Time>) {
     if (time) {
-      if (typeof time === "string" || typeof time === "number") {
-        this.utcTime = new Date(time);
-      } else if (time instanceof Date) {
-        this.utcTime = time;
+      if (typeof time === "string" || typeof time === "number" || time instanceof Date) {
+        // CAs conforming to this profile MUST always encode certificate
+        // validity dates through the year 2049 as UTCTime; certificate validity
+        // dates in 2050 or later MUST be encoded as GeneralizedTime
+        const date = new Date(time);
+        if (date.getUTCFullYear() > 2049) {
+          this.generalTime = date;
+        } else {
+          this.utcTime = date;
+        }
       } else {
         Object.assign(this, time);
       }
@@ -34,7 +40,7 @@ export class Time {
   public getTime(): Date {
     const time = this.utcTime || this.generalTime;
     if (!time) {
-      throw new Error("Cannot get time from CHOICE object")
+      throw new Error("Cannot get time from CHOICE object");
     }
     return time;
   }

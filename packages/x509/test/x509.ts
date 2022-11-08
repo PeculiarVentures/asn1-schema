@@ -222,4 +222,15 @@ context("x509", () => {
     assert.strictEqual(issuingDistributionPoint.onlyContainsUserCerts, true);
   });
 
+  context("validity", () => {
+    it("utc and general time", () => {
+      const validity = new src.Validity({
+        notBefore: new Date("2049-12-31T23:59:59Z"),
+        notAfter: new Date("2050-01-01T00:00:00Z"),
+      });
+      const hex = Buffer.from(AsnConvert.serialize(validity)).toString("hex");
+      assert.strictEqual(hex, "3020170d3439313233313233353935395a180f32303530303130313030303030305a");
+    });
+  });
+
 });
