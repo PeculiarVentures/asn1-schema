@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-pkcs9",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "ASN.1 schema based on PKCS#9 (RFC 2985)",
   "keywords": [
     "asn",
@@ -34,12 +34,12 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-cms": "^2.3.2",
-    "@peculiar/asn1-pfx": "^2.3.2",
-    "@peculiar/asn1-pkcs8": "^2.3.2",
-    "@peculiar/asn1-schema": "^2.3.0",
-    "@peculiar/asn1-x509": "^2.3.2",
-    "@peculiar/asn1-x509-attr": "^2.3.2",
+    "@peculiar/asn1-cms": "^2.3.3",
+    "@peculiar/asn1-pfx": "^2.3.3",
+    "@peculiar/asn1-pkcs8": "^2.3.3",
+    "@peculiar/asn1-schema": "^2.3.3",
+    "@peculiar/asn1-x509": "^2.3.3",
+    "@peculiar/asn1-x509-attr": "^2.3.3",
     "asn1js": "^3.0.5",
     "tslib": "^2.4.0"
   },
