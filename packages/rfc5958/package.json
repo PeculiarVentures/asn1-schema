@@ -1,9 +1,10 @@
 {
   "name": "@peculiar/asn1-rfc5958",
   "version": "2.3.4",
-  "description": "",
+  "description": "Provides ASN.1 schema definitions for the asymmetric key packages format specified in RFC5958. This format is used to encapsulate private and public keys, along with additional parameters and metadata, for a variety of asymmetric key algorithms.",
   "keywords": [
-    "asn"
+    "asn",
+    "rfc5958"
   ],
   "author": "PeculiarVentures, Inc",
   "license": "MIT",

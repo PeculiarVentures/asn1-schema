@@ -1,7 +1,7 @@
 {
   "name": "@peculiar/asn1-x509-pq",
   "version": "2.3.4",
-  "description": "",
+  "description": "Provides ASN.1 schema definitions for composite public and private keys and composite signatures used in Internet Public Key Infrastructure (PKI), as specified in the following IETF drafts: Composite Public and Private Keys For Use In Internet PKI, Composite Signatures For Use In Internet PKI.",
   "keywords": [
     "asn"
   ],
