@@ -482,10 +482,6 @@ context("x509-pq", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
-        for (const key of compositeKeys) {
-          const pem = Buffer.from(AsnConvert.serialize(key)).toString("base64");
-          console.log(pem);
-        }
         assert.strictEqual(compositeKeys.length, 2);
       });
 
