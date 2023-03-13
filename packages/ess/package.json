@@ -9,7 +9,7 @@
     "rfc2634",
     "rfc5035"
   ],
-  "author": "PeculiarVentures, Inc",
+  "author": "PeculiarVentures, LLC",
   "license": "MIT",
   "main": "build/cjs/index.js",
   "files": [

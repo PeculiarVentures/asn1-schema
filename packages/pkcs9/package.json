@@ -7,7 +7,7 @@
     "pkcs9",
     "rfc2985"
   ],
-  "author": "PeculiarVentures, Inc",
+  "author": "PeculiarVentures, LLC",
   "license": "MIT",
   "main": "build/cjs/index.js",
   "files": [

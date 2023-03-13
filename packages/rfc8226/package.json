@@ -7,7 +7,7 @@
     "x509",
     "rfc8226"
   ],
-  "author": "PeculiarVentures, Inc",
+  "author": "PeculiarVentures, LLC",
   "license": "MIT",
   "main": "build/cjs/index.js",
   "files": [

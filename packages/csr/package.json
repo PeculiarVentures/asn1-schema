@@ -14,7 +14,7 @@
   "keywords": [
     "asn"
   ],
-  "author": "PeculiarVentures, Inc",
+  "author": "PeculiarVentures, LLC",
   "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",

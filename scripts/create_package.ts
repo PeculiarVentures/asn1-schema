@@ -27,7 +27,7 @@ async function main(name: string): Promise<void> {
       "LICENSE",
       "README.md"
     ],
-    author: "PeculiarVentures, Inc",
+    author: "PeculiarVentures, LLC",
     license: "MIT",
     main: "build/cjs/index.js",
     module: "build/es2015/index.js",

@@ -7,7 +7,7 @@
     "tsp",
     "rfc3161"
   ],
-  "author": "PeculiarVentures, Inc",
+  "author": "PeculiarVentures, LLC",
   "license": "MIT",
   "main": "build/cjs/index.js",
   "files": [
