@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-csr",
-  "version": "2.3.4",
+  "version": "2.3.5",
   "description": "ASN.1 schema of `PKCS #10: Certification Request Syntax Specification Version 1.7` (RFC2986)",
   "files": [
     "build",
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.3.3",
-    "@peculiar/asn1-x509": "^2.3.4",
+    "@peculiar/asn1-x509": "^2.3.5",
     "asn1js": "^3.0.5",
     "tslib": "^2.4.0"
   }

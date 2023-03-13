@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-asym-key",
-  "version": "2.3.4",
+  "version": "2.3.5",
   "description": "Provides ASN.1 schema definitions for the asymmetric key packages format specified in RFC5958. This format is used to encapsulate private and public keys, along with additional parameters and metadata, for a variety of asymmetric key algorithms.",
   "keywords": [
     "asn",
@@ -33,9 +33,9 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-pkcs8": "^2.3.4",
+    "@peculiar/asn1-pkcs8": "^2.3.5",
     "@peculiar/asn1-schema": "^2.3.3",
-    "@peculiar/asn1-x509": "^2.3.4",
+    "@peculiar/asn1-x509": "^2.3.5",
     "asn1js": "^3.0.5",
     "tslib": "^2.4.0"
   },
