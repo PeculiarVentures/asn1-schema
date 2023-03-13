@@ -79,11 +79,11 @@
       "@peculiar/asn1-ess": [
         "./packages/ess/src"
       ],
-      "@peculiar/asn1-x509-pq": [
-        "./packages/x509-pq/src"
+      "@peculiar/asn1-x509-post-quantum": [
+        "packages/x509-post-quantum/src"
       ],
-      "@peculiar/asn1-rfc5958": [
-        "./packages/rfc5958/src"
+      "@peculiar/asn1-asym-key": [
+        "packages/asym-key/src"
       ]
     }
   },

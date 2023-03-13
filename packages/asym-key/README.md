@@ -1,9 +1,9 @@
-# `@peculiar/asn1-rfc5958`
+# `@peculiar/asn1-asym-key`
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/asn1-schema/master/packages/rfc5958/LICENSE.md)
 [![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-rfc5958.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-rfc5958)
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-rfc5958.png)](https://nodei.co/npm/@peculiar/asn1-rfc5958/)
+[![NPM](https://nodei.co/npm/@peculiar/asn1-asym-key.png)](https://nodei.co/npm/@peculiar/asn1-asym-key/)
 
 This package provides ASN.1 schema definitions for the asymmetric key packages format specified in [RFC5958](https://datatracker.ietf.org/doc/html/rfc5958). This format is used to encapsulate private and public keys, along with additional parameters and metadata, for a variety of asymmetric key algorithms.
 
@@ -14,16 +14,16 @@ The schema definitions are based on `@peculiar/asn1-schema` library and can be u
 You can install the package using npm:
 
 ```sh
-npm install @peculiar/asn1-rfc5958
+npm install @peculiar/asn1-asym-key
 ```
 
 ## Usage
 
-The `@peculiar/asn1-rfc5958` package exports several classes and constants that can be used to encode and decode key packages. Here is an example of decoding a key package for an RSA private key:
+The `@peculiar/asn1-asym-key` package exports several classes and constants that can be used to encode and decode key packages. Here is an example of decoding a key package for an RSA private key:
 
 ```ts
 import * as assert from "node:assert";
-import { OneAsymmetricKey } from "@peculiar/asn1-rfc5958";
+import { OneAsymmetricKey } from "@peculiar/asn1-asym-key";
 import { id_rsaEncryption, RSAPrivateKey } from "@peculiar/asn1-rsa";
 import { AsnConvert } from "@peculiar/asn1-schema";
 

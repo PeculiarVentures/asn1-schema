@@ -1,10 +1,10 @@
 import * as assert from "node:assert";
 import { AsnConvert, BitString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier, SubjectPublicKeyInfo } from "@peculiar/asn1-x509";
-import { CompositeParams, CompositePrivateKey, CompositePublicKey, CompositeSignatureValue, id_alg_composite, id_composite_key } from "@peculiar/asn1-x509-pq";
-import { OneAsymmetricKey, Version } from "@peculiar/asn1-rfc5958";
+import { CompositeParams, CompositePrivateKey, CompositePublicKey, CompositeSignatureValue, id_alg_composite, id_composite_key } from "packages/x509-post-quantum/src";
+import { OneAsymmetricKey, Version } from "@peculiar/asn1-asym-key";
 
-context("x509-pq", () => {
+context("x509-post-quantum", () => {
 
   context("composite keys", () => {
 

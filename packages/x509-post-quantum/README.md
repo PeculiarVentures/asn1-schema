@@ -1,9 +1,9 @@
-# `@peculiar/asn1-x509-pq`
+# `@peculiar/asn1-x509-post-quantum`
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/asn1-schema/master/packages/x509-pq/LICENSE.md)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-pq.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-pq)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/asn1-schema/master/packages/x509-post-quantum/LICENSE.md)
+[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-post-quantum.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-post-quantum)
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-x509-pq.png)](https://nodei.co/npm/@peculiar/asn1-x509-pq/)
+[![NPM](https://nodei.co/npm/@peculiar/asn1-x509-post-quantum.png)](https://nodei.co/npm/@peculiar/asn1-x509-post-quantum/)
 
 This package provides ASN.1 schema definitions for composite public and private keys and composite signatures used in Internet Public Key Infrastructure (PKI), as specified in the following IETF drafts:
 
@@ -17,16 +17,16 @@ The schema definitions are based on the `@peculiar/asn1-schema` library and can 
 To install this module, use the following command:
 
 ```
-npm install @peculiar/asn1-x509-pq
+npm install @peculiar/asn1-x509-post-quantum
 ```
 
 ## Usage
 
-The `@peculiar/asn1-x509-pq` package exports several classes and constants that can be used to encode and decode composite keys and signatures. Here is an example of encoding a composite public key:
+The `@peculiar/asn1-x509-post-quantum` package exports several classes and constants that can be used to encode and decode composite keys and signatures. Here is an example of encoding a composite public key:
 
 ```ts
 import { AsnConvert } from "@peculiar/asn1-schema";
-import { CompositePublicKey, id_composite_key } from "@peculiar/asn1-x509-pq";
+import { CompositePublicKey, id_composite_key } from "@peculiar/asn1-x509-post-quantum";
 
 const pem = [
   "MIIBmDAMBgpghkgBhvprUAQBA4IBhgAwggGBMFkwEwYHKoZIzj0CAQYIKoZIzj0D",
@@ -52,7 +52,7 @@ for (const key of compositeKeys) {
 To use this module, you can import the CompositePublicKey, CompositeSignature, and CompositePrivateKey classes from the module, as follows:
 
 ```ts
-import { CompositePublicKey, CompositePrivateKey, CompositeSignature } from "@peculiar/asn1-x509-pq";
+import { CompositePublicKey, CompositePrivateKey, CompositeSignature } from "@peculiar/asn1-x509-post-quantum";
 ```
 
 You can then use these classes to encode and decode composite public keys, private keys, and signatures using the ASN.1 format specified in the RFC 8391 specification.

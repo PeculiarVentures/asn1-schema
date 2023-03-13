@@ -1,5 +1,5 @@
 {
-  "name": "@peculiar/asn1-x509-pq",
+  "name": "@peculiar/asn1-x509-post-quantum",
   "version": "2.3.4",
   "description": "Provides ASN.1 schema definitions for composite public and private keys and composite signatures used in Internet Public Key Infrastructure (PKI), as specified in the following IETF drafts: Composite Public and Private Keys For Use In Internet PKI, Composite Signatures For Use In Internet PKI.",
   "keywords": [
@@ -32,7 +32,7 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-rfc5958": "^2.3.4",
+    "@peculiar/asn1-asym-key": "^2.3.4",
     "@peculiar/asn1-schema": "^2.3.3",
     "@peculiar/asn1-x509": "^2.3.4",
     "asn1js": "^3.0.5",
