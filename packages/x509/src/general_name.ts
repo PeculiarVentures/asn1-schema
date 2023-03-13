@@ -40,7 +40,7 @@ export class EDIPartyName {
   public nameAssigner?: DirectoryString;
 
   @AsnProp({ type: DirectoryString, context: 1, implicit: true })
-  public partyName: ArrayBuffer = new ArrayBuffer(0);
+  public partyName = new DirectoryString();
 
   constructor(params: Partial<EDIPartyName> = {}) {
     Object.assign(this, params);

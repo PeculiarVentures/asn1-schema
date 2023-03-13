@@ -96,7 +96,7 @@ SOFTWARE.
 
   // Add TS alias
   const globalTsConfig = await import("../tsconfig.json");
-  (globalTsConfig.compilerOptions.paths as Record<string, string[]>)[moduleName] = [`./packages/${name}`];
+  (globalTsConfig.compilerOptions.paths as Record<string, string[]>)[moduleName] = [`./packages/${name}/src`];
   fs.writeFileSync(path.join(projectDir, "tsconfig.json"), `${JSON.stringify(globalTsConfig, null, "  ")}\n`, { flag: "w+" });
 
   console.log(`Package '${moduleName}' created`);

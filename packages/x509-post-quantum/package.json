@@ -1,0 +1,47 @@
+{
+  "name": "@peculiar/asn1-x509-post-quantum",
+  "version": "2.3.4",
+  "description": "Provides ASN.1 schema definitions for composite public and private keys and composite signatures used in Internet Public Key Infrastructure (PKI), as specified in the following IETF drafts: Composite Public and Private Keys For Use In Internet PKI, Composite Signatures For Use In Internet PKI.",
+  "keywords": [
+    "asn"
+  ],
+  "author": "PeculiarVentures, Inc",
+  "license": "MIT",
+  "main": "build/cjs/index.js",
+  "files": [
+    "build",
+    "LICENSE",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PeculiarVentures/asn1-schema.git"
+  },
+  "scripts": {
+    "test": "mocha",
+    "clear": "rimraf build",
+    "build": "npm run build:module && npm run build:types",
+    "build:module": "npm run build:cjs && npm run build:es2015",
+    "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
+    "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+    "prebuild:types": "rimraf build/types",
+    "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
+    "rebuild": "npm run clear && npm run build"
+  },
+  "dependencies": {
+    "@peculiar/asn1-asym-key": "^2.3.4",
+    "@peculiar/asn1-schema": "^2.3.3",
+    "@peculiar/asn1-x509": "^2.3.4",
+    "asn1js": "^3.0.5",
+    "tslib": "^2.4.0"
+  },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema#readme",
+  "module": "build/es2015/index.js",
+  "types": "build/types/index.d.ts"
+}
