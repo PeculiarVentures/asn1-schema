@@ -1,4 +1,4 @@
-import { OneAsymmetricKey } from "@peculiar/asn1-rfc8226";
+import { OneAsymmetricKey } from "@peculiar/asn1-asym-key";
 import { AsnArray, AsnType, AsnTypeTypes, BitString, OctetString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier, SubjectPublicKeyInfo } from "@peculiar/asn1-x509";
 
