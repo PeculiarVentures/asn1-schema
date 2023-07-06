@@ -12,7 +12,10 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-logotype#readme",
   "keywords": [
-    "asn"
+    "asn",
+    "logotype",
+    "rfc3709",
+    "rfc9399"
   ],
   "author": "PeculiarVentures, LLC",
   "license": "MIT",
