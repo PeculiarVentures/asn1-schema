@@ -7,6 +7,8 @@ import { LogotypeImage } from "./logotype_image";
  * LogotypeData ::= SEQUENCE {
  *   image           SEQUENCE OF LogotypeImage OPTIONAL,
  *   audio           [1] SEQUENCE OF LogotypeAudio OPTIONAL }
+ *    -- At least one image component MUST be present
+ *    ( WITH COMPONENTS { ..., image PRESENT } )
  * ```
  */
 export class LogotypeData {

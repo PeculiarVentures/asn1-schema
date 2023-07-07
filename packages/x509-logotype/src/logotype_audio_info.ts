@@ -9,11 +9,11 @@ export enum LogotypeAudioChannels {
 /**
  * ```
  * LogotypeAudioInfo ::= SEQUENCE {
- *   fileSize        INTEGER,  -- In octets
- *   playTime        INTEGER,  -- In milliseconds
- *   channels        INTEGER,  -- 1=mono, 2=stereo, 4=quad
+ *   fileSize        INTEGER,  -- In octets, 0=unspecified
+ *   playTime        INTEGER,  -- In milliseconds, 0=unspecified
+ *   channels        INTEGER,  -- 0=unspecified, 1=mono, 2=stereo, 4=quad
  *   sampleRate      [3] INTEGER OPTIONAL,  -- Samples per second
- *   language        [4] IA5String OPTIONAL }  -- RFC 3066 Language Tag
+ *   language        [4] IA5String OPTIONAL }  -- RFC 5646 Language Tag
  * ```
  */
 export class LogotypeAudioInfo {
@@ -23,7 +23,7 @@ export class LogotypeAudioInfo {
    */
   @AsnProp({ type: AsnPropTypes.Integer })
   public fileSize = 0;
-  
+
   /**
    * In milliseconds
    */
@@ -35,13 +35,13 @@ export class LogotypeAudioInfo {
    */
   @AsnProp({ type: AsnPropTypes.Integer })
   public channels = LogotypeAudioChannels.mono;
-  
+
   /**
    * Samples per second
    */
   @AsnProp({ type: AsnPropTypes.Integer, implicit: true, context: 3, optional: true })
   public sampleRate?: number;
-  
+
   /**
    * RFC 3066 Language Tag
    */

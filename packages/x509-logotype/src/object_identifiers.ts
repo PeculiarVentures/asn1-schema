@@ -32,3 +32,11 @@ export const id_logo_loyalty = `${id_logo}.1`;
  * ```
  */
 export const id_logo_background = `${id_logo}.2`;
+
+/**
+ * Certificate Image Logotype
+ * ```
+ * id-logo-certImage  OBJECT IDENTIFIER  ::= { id-logo 3 }
+ * ```
+ */
+export const id_logo_certImage = `${id_logo}.3`;
