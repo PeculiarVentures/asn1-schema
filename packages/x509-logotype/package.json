@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-logotype",
-  "version": "2.3.6",
+  "version": "2.3.7",
   "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure: Logotypes in X.509 Certificates` (RFC3709)",
   "files": [
     "build",
