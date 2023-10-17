@@ -750,7 +750,7 @@ context("Test", () => {
   });
 
   it("throw error on unsupported type of Asn1Type", () => {
-    @src.AsnType({ type: 5 })
+    @src.AsnType({ type: 5 as unknown as src.AsnTypeTypes })
     class Test {
       @src.AsnProp({ type: src.AsnPropTypes.Integer })
       public value = 1;

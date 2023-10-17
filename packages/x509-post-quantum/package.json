@@ -36,7 +36,7 @@
     "@peculiar/asn1-schema": "^2.3.6",
     "@peculiar/asn1-x509": "^2.3.6",
     "asn1js": "^3.0.5",
-    "tslib": "^2.4.0"
+    "tslib": "^2.6.2"
   },
   "bugs": {
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
