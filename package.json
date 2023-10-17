@@ -60,6 +60,9 @@
       "packages/*/test/**/*.ts"
     ]
   },
+  "resolutions": {
+    "cliui": "^8.0.1"
+  },
   "dependencies": {
     "@types/rimraf": "^4.0.5",
     "rimraf": "^5.0.5"
