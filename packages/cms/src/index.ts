@@ -1,3 +1,4 @@
+export * from "./attributes";
 export * from "./attribute";
 export * from "./certificate_choices";
 export * from "./content_info";
