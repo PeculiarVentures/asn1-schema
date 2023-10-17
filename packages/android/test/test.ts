@@ -108,7 +108,6 @@ context("Android", () => {
         ],
       });
       const raw = AsnConvert.serialize(attestation);
-      console.log(Buffer.from(raw).toString("hex"));
 
       const attestation2 = AsnConvert.parse(raw, android.AttestationApplicationId);
       assert.strictEqual(attestation2.packageInfos.length, 1);
