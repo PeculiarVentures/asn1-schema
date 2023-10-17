@@ -1,9 +1,18 @@
 import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 
+/**
+ * Extension OID for key description.
+ *
+ * ```asn
+ * id-ce-keyDescription OBJECT IDENTIFIER ::= { 1 3 6 1 4 1 11129 2 1 17 }
+ * ```
+ */
 export const id_ce_keyDescription = "1.3.6.1.4.1.11129.2.1.17";
 
 /**
- * ```
+ * Implements ASN.1 structure for attestation package info.
+ *
+ * ```asn
  * VerifiedBootState ::= ENUMERATED {
  *   Verified                   (0),
  *   SelfSigned                 (1),
@@ -20,7 +29,9 @@ export enum VerifiedBootState {
 }
 
 /**
- * ```
+ * Implements ASN.1 structure for root of trust.
+ *
+ * ```asn
  * RootOfTrust ::= SEQUENCE {
  *   verifiedBootKey            OCTET_STRING,
  *   deviceLocked               BOOLEAN,
@@ -51,8 +62,15 @@ export class RootOfTrust {
   }
 }
 
+/**
+ * Implements ASN.1 structure for set of integers.
+ *
+ * ```asn
+ * IntegerSet ::= SET OF INTEGER
+ * ```
+ */
 @AsnType({ type: AsnTypeTypes.Set, itemType: AsnPropTypes.Integer })
-export class IntegerSet extends AsnArray<number> { 
+export class IntegerSet extends AsnArray<number> {
 
   constructor(items?: number[]) {
     super(items);
@@ -64,7 +82,9 @@ export class IntegerSet extends AsnArray<number> {
 }
 
 /**
- * ```
+ * Implements ASN.1 structure for authorization list.
+ *
+ * ```asn
  * AuthorizationList ::= SEQUENCE {
  *   purpose                     [1] EXPLICIT SET OF INTEGER OPTIONAL,
  *   algorithm                   [2] EXPLICIT INTEGER OPTIONAL,
@@ -74,6 +94,7 @@ export class IntegerSet extends AsnArray<number> {
  *   ecCurve                     [10] EXPLICIT INTEGER OPTIONAL,
  *   rsaPublicExponent           [200] EXPLICIT INTEGER OPTIONAL,
  *   rollbackResistance          [303] EXPLICIT NULL OPTIONAL, # KM4
+ *   earlyBootOnly               [305] EXPLICIT NULL OPTIONAL, # version 4
  *   activeDateTime              [400] EXPLICIT INTEGER OPTIONAL
  *   originationExpireDateTime   [401] EXPLICIT INTEGER OPTIONAL
  *   usageExpireDateTime         [402] EXPLICIT INTEGER OPTIONAL
@@ -103,6 +124,7 @@ export class IntegerSet extends AsnArray<number> {
  *   attestationIdModel          [717] EXPLICIT OCTET_STRING OPTIONAL, # KM3
  *   vendorPatchLevel            [718] EXPLICIT INTEGER OPTIONAL, # KM4
  *   bootPatchLevel              [719] EXPLICIT INTEGER OPTIONAL, # KM4
+ *   deviceUniqueAttestation     [720] EXPLICIT NULL OPTIONAL, # version 4
  * }
  * ```
  */
@@ -130,6 +152,9 @@ export class AuthorizationList {
 
   @AsnProp({ context: 303, type: AsnPropTypes.Null, optional: true })
   public rollbackResistance?: null;
+
+  @AsnProp({ context: 305, type: AsnPropTypes.Null, optional: true })
+  public earlyBootOnly?: null;
 
   @AsnProp({ context: 400, type: AsnPropTypes.Integer, optional: true })
   public activeDateTime?: number;
@@ -218,13 +243,18 @@ export class AuthorizationList {
   @AsnProp({ context: 719, type: AsnPropTypes.Integer, optional: true })
   public bootPatchLevel?: number;
 
+  @AsnProp({ context: 720, type: AsnPropTypes.Null, optional: true })
+  public deviceUniqueAttestation?: null;
+
   public constructor(params: Partial<AuthorizationList> = {}) {
     Object.assign(this, params);
   }
 }
 
 /**
- * ```
+ * Implements ASN.1 structure for security level.
+ *
+ * ```asn
  * SecurityLevel ::= ENUMERATED {
  *   Software                   (0),
  *   TrustedEnvironment         (1),
@@ -242,12 +272,17 @@ export enum Version {
   KM2 = 1,
   KM3 = 2,
   KM4 = 3,
+  v4 = 4,
+  v100 = 100,
+  v200 = 200,
 }
 
 /**
- * ```
+ * Implements ASN.1 structure for key description.
+ *
+ * ```asn
  * KeyDescription ::= SEQUENCE {
- *   attestationVersion         INTEGER, # KM2 value is 1. KM3 value is 2. KM4 value is 3.
+ *   attestationVersion         INTEGER, # versions 1, 2, 3, 4, 100, and 200
  *   attestationSecurityLevel   SecurityLevel,
  *   keymasterVersion           INTEGER,
  *   keymasterSecurityLevel     SecurityLevel,
