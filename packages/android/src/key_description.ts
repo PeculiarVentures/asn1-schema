@@ -10,7 +10,7 @@ import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } f
 export const id_ce_keyDescription = "1.3.6.1.4.1.11129.2.1.17";
 
 /**
- * Implements ASN.1 structure for attestation package info.
+ * Implements ASN.1 enumeration for verified boot state.
  *
  * ```asn
  * VerifiedBootState ::= ENUMERATED {
@@ -272,9 +272,9 @@ export enum Version {
   KM2 = 1,
   KM3 = 2,
   KM4 = 3,
-  v4 = 4,
-  v100 = 100,
-  v200 = 200,
+  KM4_1 = 4,
+  keyMint1 = 100,
+  keyMint2 = 200,
 }
 
 /**
@@ -295,7 +295,7 @@ export enum Version {
  */
 export class KeyDescription {
   @AsnProp({ type: AsnPropTypes.Integer })
-  public attestationVersion: Version = Version.KM4;
+  public attestationVersion: number | Version = Version.KM4;
 
   @AsnProp({ type: AsnPropTypes.Enumerated })
   public attestationSecurityLevel: SecurityLevel = SecurityLevel.software;

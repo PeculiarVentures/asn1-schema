@@ -65,7 +65,7 @@ context("Android", () => {
         ],
       });
       const kd = new android.KeyDescription({
-        attestationVersion: android.Version.v200,
+        attestationVersion: android.Version.keyMint2,
         attestationSecurityLevel: android.SecurityLevel.software,
         keymasterVersion: 1,
         keymasterSecurityLevel: android.SecurityLevel.software,

@@ -75,7 +75,7 @@ export class NonStandardAuthorizationList extends AsnArray<NonStandardAuthorizat
  */
 export class NonStandardKeyDescription {
   @AsnProp({ type: AsnPropTypes.Integer })
-  public attestationVersion: Version = Version.KM4;
+  public attestationVersion: number | Version = Version.KM4;
 
   @AsnProp({ type: AsnPropTypes.Enumerated })
   public attestationSecurityLevel: SecurityLevel = SecurityLevel.software;
