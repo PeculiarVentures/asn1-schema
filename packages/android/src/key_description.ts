@@ -93,11 +93,13 @@ export class IntegerSet extends AsnArray<number> {
  *   padding                     [6] EXPLICIT SET OF INTEGER OPTIONAL,
  *   ecCurve                     [10] EXPLICIT INTEGER OPTIONAL,
  *   rsaPublicExponent           [200] EXPLICIT INTEGER OPTIONAL,
+ *   mgfDigest                   [203] EXPLICIT SET OF INTEGER OPTIONAL,
  *   rollbackResistance          [303] EXPLICIT NULL OPTIONAL, # KM4
  *   earlyBootOnly               [305] EXPLICIT NULL OPTIONAL, # version 4
  *   activeDateTime              [400] EXPLICIT INTEGER OPTIONAL
  *   originationExpireDateTime   [401] EXPLICIT INTEGER OPTIONAL
  *   usageExpireDateTime         [402] EXPLICIT INTEGER OPTIONAL
+ *   usageCountLimit             [405] EXPLICIT INTEGER OPTIONAL,
  *   noAuthRequired              [503] EXPLICIT NULL OPTIONAL,
  *   userAuthType                [504] EXPLICIT INTEGER OPTIONAL,
  *   authTimeout                 [505] EXPLICIT INTEGER OPTIONAL,
@@ -150,6 +152,9 @@ export class AuthorizationList {
   @AsnProp({ context: 200, type: AsnPropTypes.Integer, optional: true })
   public rsaPublicExponent?: number;
 
+  @AsnProp({ context: 203, type: IntegerSet, optional: true })
+  public mgfDigest?: IntegerSet;
+
   @AsnProp({ context: 303, type: AsnPropTypes.Null, optional: true })
   public rollbackResistance?: null;
 
@@ -164,6 +169,9 @@ export class AuthorizationList {
 
   @AsnProp({ context: 402, type: AsnPropTypes.Integer, optional: true })
   public usageExpireDateTime?: number;
+
+  @AsnProp({ context: 405, type: AsnPropTypes.Integer, optional: true })
+  public usageCountLimit?: number;
 
   @AsnProp({ context: 503, type: AsnPropTypes.Null, optional: true })
   public noAuthRequired?: null;
