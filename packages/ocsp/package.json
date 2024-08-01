@@ -3,7 +3,7 @@
   "version": "2.3.8",
   "description": "ASN.1 schema of `X.509 Internet Public Key Infrastructure Online Certificate Status Protocol - OCSP` (RFC6990)",
   "files": [
-    "build",
+    "build/**/*.{js,d.ts}",
     "LICENSE",
     "README.md"
   ],

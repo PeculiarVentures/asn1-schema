@@ -3,7 +3,7 @@
   "version": "2.3.8",
   "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure: Logotypes in X.509 Certificates` (RFC3709)",
   "files": [
-    "build",
+    "build/**/*.{js,d.ts}",
     "LICENSE",
     "README.md"
   ],

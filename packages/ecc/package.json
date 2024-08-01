@@ -3,7 +3,7 @@
   "version": "2.3.8",
   "description": "ASN.1 schema of `Elliptic Curve Private Key Structure` (RFC5915)",
   "files": [
-    "build",
+    "build/**/*.{js,d.ts}",
     "LICENSE",
     "README.md"
   ],

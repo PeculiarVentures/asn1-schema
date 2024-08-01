@@ -23,7 +23,7 @@ async function main(name: string): Promise<void> {
   Object.assign(packageJson, {
     description: "",
     files: [
-      "build",
+      "build/**/*.{js,d.ts}",
       "LICENSE",
       "README.md"
     ],

@@ -3,7 +3,7 @@
   "version": "2.3.8",
   "description": "ASN.1 schema of `Public-Key Cryptography Standards (PKCS) #8: Private-Key Information Syntax Specification Version 1.2` (RFC5208)",
   "files": [
-    "build",
+    "build/**/*.{js,d.ts}",
     "LICENSE",
     "README.md"
   ],

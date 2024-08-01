@@ -3,7 +3,7 @@
   "version": "2.3.8",
   "description": "ASN.1 schema of `RSA Cryptography Specifications Version 2.2` (RFC8017)",
   "files": [
-    "build",
+    "build/**/*.{js,d.ts}",
     "LICENSE",
     "README.md"
   ],

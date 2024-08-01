@@ -3,7 +3,7 @@
   "version": "2.3.8",
   "description": "ASN.1 schema of `An Internet Attribute Certificate` (RFC3281)",
   "files": [
-    "build",
+    "build/**/*.{js,d.ts}",
     "LICENSE",
     "README.md"
   ],

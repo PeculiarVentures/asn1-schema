@@ -10,7 +10,7 @@
   "license": "MIT",
   "main": "build/cjs/index.js",
   "files": [
-    "build",
+    "build/**/*.{js,d.ts}",
     "LICENSE",
     "README.md"
   ],

@@ -3,7 +3,7 @@
   "version": "2.3.12",
   "description": "ASN.1 schema of `PKCS #12: Personal Information Exchange Syntax v1.1` (RFC7292)",
   "files": [
-    "build",
+    "build/**/*.{js,d.ts}",
     "LICENSE",
     "README.md"
   ],
