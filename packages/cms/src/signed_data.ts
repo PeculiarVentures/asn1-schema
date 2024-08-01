@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculia
 import { CertificateSet } from "./certificate_choices";
 import { CMSVersion, DigestAlgorithmIdentifier } from "./types";
 import { EncapsulatedContentInfo } from "./encapsulated_content_info";
-import { RevocationInfoChoice, RevocationInfoChoices } from "./revocation_info_choice";
+import { RevocationInfoChoices } from "./revocation_info_choice";
 import { SignerInfos } from "./signer_info";
 
 /**
@@ -47,7 +47,7 @@ export class SignedData {
   @AsnProp({ type: CertificateSet, context: 0, implicit: true, optional: true })
   public certificates?: CertificateSet;
 
-  @AsnProp({ type: RevocationInfoChoice, context: 1, implicit: true, optional: true })
+  @AsnProp({ type: RevocationInfoChoices, context: 1, implicit: true, optional: true })
   public crls?: RevocationInfoChoices;
 
   @AsnProp({ type: SignerInfos })
