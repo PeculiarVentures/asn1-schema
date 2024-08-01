@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-schema",
-  "version": "2.3.8",
+  "version": "2.3.13",
   "description": "Decorators for ASN.1 schemas building",
   "files": [
     "build/**/*.{js,d.ts}",
