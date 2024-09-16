@@ -12,7 +12,11 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/ecc#readme",
   "keywords": [
-    "asn"
+    "asn",
+    "ecc",
+    "rfc5915",
+    "rfc5480",
+    "rfc3279"
   ],
   "author": "PeculiarVentures, LLC",
   "license": "MIT",
