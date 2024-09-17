@@ -61,7 +61,8 @@
     ]
   },
   "resolutions": {
-    "cliui": "^8.0.1"
+    "cliui": "^8.0.1",
+    "path-scurry": "^2.0.0"
   },
   "dependencies": {
     "@types/rimraf": "^4.0.5",
