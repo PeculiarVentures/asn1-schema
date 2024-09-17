@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-ecc",
-  "version": "2.3.13",
+  "version": "2.3.14",
   "description": "ASN.1 schema of `Elliptic Curve Private Key Structure` (RFC5915)",
   "files": [
     "build/**/*.{js,d.ts}",
