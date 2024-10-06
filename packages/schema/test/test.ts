@@ -536,7 +536,6 @@ context("Test", () => {
         const obj = new Test();
         obj.value = new src.OctetString([1, 2, 3, 4, 5]);
         const buf = src.AsnSerializer.serialize(obj);
-        console.log(Buffer.from(buf).toString("hex"))
         assertBuffer(Buffer.from(buf), Buffer.from("30085f21050102030405", "hex"));
       });
 
@@ -565,7 +564,6 @@ context("Test", () => {
 
       it("parse", () => {
         const obj = src.AsnParser.parse(new Uint8Array(Buffer.from("300b7f81180704050102030405", "hex")).buffer, Test);
-        console.log(obj)
         assert.strictEqual(obj.value.byteLength, 5);
       });
 
