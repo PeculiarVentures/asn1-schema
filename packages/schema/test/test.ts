@@ -521,6 +521,57 @@ context("Test", () => {
     });
   });
 
+  context("APPLICATION", ()  => {
+    context("IMPLICIT", () => {
+      class Test {
+        @src.AsnProp({
+          type: src.OctetString,
+          application: 33,
+          implicit: true,
+        })
+        public value = new src.OctetString();
+      }
+
+      it("serialize", () => {
+        const obj = new Test();
+        obj.value = new src.OctetString([1, 2, 3, 4, 5]);
+        const buf = src.AsnSerializer.serialize(obj);
+        console.log(Buffer.from(buf).toString("hex"))
+        assertBuffer(Buffer.from(buf), Buffer.from("30085f21050102030405", "hex"));
+      });
+
+      it("parse", () => {
+        const obj = src.AsnParser.parse(new Uint8Array(Buffer.from("30085f21050102030405", "hex")).buffer, Test);
+        assert.strictEqual(obj.value.byteLength, 5);
+      });
+    })
+
+    context("EXPLICIT", () => {
+
+      class Test {
+        @src.AsnProp({
+          type: src.AsnPropTypes.OctetString,
+          application: 152,
+        })
+        public value!: ArrayBuffer;
+      }
+
+      it("serialize", () => {
+        const obj = new Test();
+        obj.value = new Uint8Array([1, 2, 3, 4, 5]).buffer;
+        const buf = src.AsnSerializer.serialize(obj);
+        assertBuffer(Buffer.from(buf), Buffer.from("300b7f81180704050102030405", "hex"));
+      });
+
+      it("parse", () => {
+        const obj = src.AsnParser.parse(new Uint8Array(Buffer.from("300b7f81180704050102030405", "hex")).buffer, Test);
+        console.log(obj)
+        assert.strictEqual(obj.value.byteLength, 5);
+      });
+
+    });
+  })
+
   context("CONTEXT-SPECIFIC", () => {
 
     context("IMPLICIT", () => {

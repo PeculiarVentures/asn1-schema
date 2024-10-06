@@ -9,6 +9,7 @@ export interface IAsnSchemaItem {
   optional?: boolean;
   defaultValue?: unknown;
   context?: number;
+  application?: number;
   implicit?: boolean;
   converter?: IAsnConverter;
   repeated?: AsnRepeatType;
@@ -168,7 +169,55 @@ export class AsnSchemaStorage {
             value: [asn1Item],
           }));
         }
-      } else {
+      }
+      else if (item.application !== null && item.application !== undefined) {
+        // APPLICATION
+        if(item.implicit) {
+          // IMPLICIT
+          if (typeof item.type === "number" || isConvertible(item.type)) {
+            const Container = item.repeated
+              ? asn1js.Constructed
+              : asn1js.Primitive;
+            asn1Value.push(new Container({
+              name,
+              optional,
+              idBlock: {
+                tagClass:2,
+                tagNumber: item.application,
+              },
+            }));
+          } else {
+            this.cache(item.type);
+            const isRepeated = !!item.repeated;
+            let value = !isRepeated
+              ? this.get(item.type, true).schema
+              : asn1Item;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            value = "valueBlock" in value ? (value as asn1js.Sequence).valueBlock.value : (value as any).value;
+            asn1Value.push(new asn1js.Constructed({
+              name: !isRepeated ? name : "",
+              optional,
+              idBlock: {
+                tagClass: 2,
+                tagNumber: item.application,
+              },
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              value: value as any,
+            }));
+          }
+        } else {
+          // EXPLICIT
+          asn1Value.push(new asn1js.Constructed({
+            optional,
+            idBlock: {
+              tagClass: 2,
+              tagNumber: item.application
+            },
+            value: [asn1Item]
+          }))
+        }
+      }
+      else {
         // UNIVERSAL
         asn1Item.optional = optional;
         asn1Value.push(asn1Item);
