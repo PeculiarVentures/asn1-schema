@@ -107,7 +107,47 @@ export class AsnSerializer {
               value: [asn1Item],
             }));
           }
-        } else if (schemaItem.repeated) {
+        }
+        else if (typeof schemaItem.application === "number") {
+          // APPLICATION
+          if (schemaItem.implicit) {
+            // IMPLICIT
+            if (!schemaItem.repeated
+              && (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))) {
+              const value: { valueHex?: ArrayBuffer, value?: ArrayBuffer; } = {};
+              value.valueHex = asn1Item instanceof asn1js.Null ? asn1Item.valueBeforeDecodeView : asn1Item.valueBlock.toBER();
+              asn1Value.push(new asn1js.Primitive({
+                optional: schemaItem.optional,
+                idBlock: {
+                  tagClass: 2,
+                  tagNumber: schemaItem.application,
+                },
+                ...value,
+              }));
+            } else {
+              asn1Value.push(new asn1js.Constructed({
+                optional: schemaItem.optional,
+                idBlock: {
+                  tagClass: 2,
+                  tagNumber: schemaItem.application,
+                },
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                value: (asn1Item as any).valueBlock.value,
+              }));
+            }
+          } else {
+            // EXPLICIT
+            asn1Value.push(new asn1js.Constructed({
+              optional: schemaItem.optional,
+              idBlock: {
+                tagClass: 2,
+                tagNumber: schemaItem.application,
+              },
+              value: [asn1Item],
+            }));
+          }
+        }
+        else if (schemaItem.repeated) {
           asn1Value = asn1Value.concat(asn1Item);
         } else {
           // UNIVERSAL
