@@ -12,7 +12,6 @@ import { LogotypeImage } from "./logotype_image";
  * ```
  */
 export class LogotypeData {
-
   @AsnProp({ type: LogotypeImage, repeated: "sequence", optional: true })
   public image?: LogotypeImage[];
 

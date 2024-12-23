@@ -13,7 +13,6 @@ export interface IValidityParams {
  * ```
  */
 export class Validity {
-
   @AsnProp({ type: Time })
   public notBefore = new Time(new Date());
 

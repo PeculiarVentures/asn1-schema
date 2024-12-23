@@ -11,14 +11,12 @@ import { PKIStatus } from "./pki_status";
 
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.Utf8String })
 export class PKIFreeText extends AsnArray<string> {
-
   constructor(items?: string[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, PKIFreeText.prototype);
   }
-
 }
 /**
  * ```
@@ -30,7 +28,6 @@ export class PKIFreeText extends AsnArray<string> {
  */
 
 export class PKIStatusInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public status = PKIStatus.granted;
 
@@ -43,5 +40,4 @@ export class PKIStatusInfo {
   constructor(params: Partial<PKIStatusInfo> = {}) {
     Object.assign(this, params);
   }
-
 }

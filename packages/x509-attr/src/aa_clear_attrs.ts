@@ -11,7 +11,6 @@ import { GeneralName, Attribute } from "@peculiar/asn1-x509";
  * ```
  */
 export class ACClearAttrs {
-
   @AsnProp({ type: GeneralName })
   public acIssuer = new GeneralName();
 

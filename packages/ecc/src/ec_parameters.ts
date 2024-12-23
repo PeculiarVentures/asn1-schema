@@ -16,7 +16,6 @@ import { SpecifiedECDomain } from "./rfc3279";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ECParameters {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public namedCurve?: string;
 

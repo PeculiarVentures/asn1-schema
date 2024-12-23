@@ -13,7 +13,6 @@ import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
  * ```
  */
 export class MacData {
-
   @AsnProp({ type: DigestInfo })
   public mac = new DigestInfo();
 

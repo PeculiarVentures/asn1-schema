@@ -21,4 +21,4 @@ export enum ClassListFlags {
  * }
  * ```
  */
-export class ClassList extends BitString<ClassListFlags> { }
+export class ClassList extends BitString<ClassListFlags> {}

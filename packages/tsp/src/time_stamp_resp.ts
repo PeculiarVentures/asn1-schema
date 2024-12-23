@@ -11,7 +11,6 @@ import { TimeStampToken } from "./time_stamp_token";
  */
 
 export class TimeStampResp {
-
   @AsnProp({ type: PKIStatusInfo })
   public status = new PKIStatusInfo();
 
@@ -21,5 +20,4 @@ export class TimeStampResp {
   constructor(params: Partial<TimeStampResp> = {}) {
     Object.assign(this, params);
   }
-
 }

@@ -17,7 +17,6 @@ import { CertStatus } from "./cert_status";
  * ```
  */
 export class SingleResponse {
-
   @AsnProp({ type: CertID })
   public certID = new CertID();
 

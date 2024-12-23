@@ -10,7 +10,6 @@ import { ResponseBytes } from "./response_bytes";
  * ```
  */
 export class OCSPResponse {
-
   @AsnProp({ type: AsnPropTypes.Enumerated })
   public responseStatus = OCSPResponseStatus.successful;
 

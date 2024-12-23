@@ -10,7 +10,6 @@ import { Extensions, Extension } from "@peculiar/asn1-x509";
  * ```
  */
 export class Request {
-
   @AsnProp({ type: CertID })
   public reqCert = new CertID();
 

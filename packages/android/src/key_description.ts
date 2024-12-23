@@ -1,4 +1,11 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnArray,
+  AsnType,
+  AsnTypeTypes,
+  OctetString,
+} from "@peculiar/asn1-schema";
 
 /**
  * Extension OID for key description.
@@ -41,7 +48,6 @@ export enum VerifiedBootState {
  * ```
  */
 export class RootOfTrust {
-
   @AsnProp({ type: OctetString })
   public verifiedBootKey: OctetString = new OctetString();
 
@@ -71,14 +77,12 @@ export class RootOfTrust {
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: AsnPropTypes.Integer })
 export class IntegerSet extends AsnArray<number> {
-
   constructor(items?: number[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, IntegerSet.prototype);
   }
-
 }
 
 /**

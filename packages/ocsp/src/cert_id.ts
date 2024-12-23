@@ -1,5 +1,10 @@
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnIntegerArrayBufferConverter,
+  OctetString,
+} from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -11,7 +16,6 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter, OctetString } fr
  * ```
  */
 export class CertID {
-
   @AsnProp({ type: AlgorithmIdentifier })
   public hashAlgorithm = new AlgorithmIdentifier();
 

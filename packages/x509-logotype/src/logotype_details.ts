@@ -11,7 +11,6 @@ import { HashAlgAndValue } from "./hash_alg_and_value";
  * ```
  */
 export class LogotypeDetails {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public mediaType = "";
 

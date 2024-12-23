@@ -5,7 +5,6 @@ import { IEmptyConstructor } from "./types";
 import { AsnSerializer } from "./serializer";
 
 export class AsnConvert {
-
   public static serialize(obj: unknown): ArrayBuffer {
     return AsnSerializer.serialize(obj);
   }

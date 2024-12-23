@@ -15,40 +15,43 @@ async function main(name: string): Promise<void> {
   }
 
   // Create package
-  execSync(`lerna create ${moduleName} --dependencies @peculiar/asn1-schema asn1js tslib --keywords asn --yes`);
+  execSync(
+    `lerna create ${moduleName} --dependencies @peculiar/asn1-schema asn1js tslib --keywords asn --yes`,
+  );
   fs.renameSync(path.join(projectDir, "packages", `asn1-${name}`), moduleDir);
 
   // Update package.json
   const packageJson = await import(path.join(moduleDir, "package.json"));
   Object.assign(packageJson, {
     description: "",
-    files: [
-      "build/**/*.{js,d.ts}",
-      "LICENSE",
-      "README.md"
-    ],
+    files: ["build/**/*.{js,d.ts}", "LICENSE", "README.md"],
     author: "PeculiarVentures, LLC",
     license: "MIT",
     main: "build/cjs/index.js",
     module: "build/es2015/index.js",
     types: "build/types/index.d.ts",
     publishConfig: {
-      access: "public"
+      access: "public",
     },
     scripts: {
-      "test": "mocha",
-      "clear": "rimraf build",
-      "build": "npm run build:module && npm run build:types",
+      test: "mocha",
+      clear: "rimraf build",
+      build: "npm run build:module && npm run build:types",
       "build:module": "npm run build:cjs && npm run build:es2015",
-      "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
-      "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+      "build:cjs":
+        "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
+      "build:es2015":
+        "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
       "prebuild:types": "rimraf build/types",
-      "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
-      "rebuild": "npm run clear && npm run build"
+      "build:types":
+        "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
+      rebuild: "npm run clear && npm run build",
     },
   });
   delete packageJson.directories;
-  fs.writeFileSync(path.join(moduleDir, "package.json"), JSON.stringify(packageJson, null, "  "), { flag: "w+" });
+  fs.writeFileSync(path.join(moduleDir, "package.json"), JSON.stringify(packageJson, null, "  "), {
+    flag: "w+",
+  });
 
   rimraf.sync(path.join(moduleDir, "__tests__"));
   rimraf.sync(path.join(moduleDir, "lib"));
@@ -92,18 +95,27 @@ SOFTWARE.
     extends: "../../tsconfig.compile.json",
     include: ["src"],
   };
-  fs.writeFileSync(path.join(moduleDir, "tsconfig.compile.json"), JSON.stringify(tsconfig, null, "  ")), { flag: "w+" };
+  fs.writeFileSync(
+    path.join(moduleDir, "tsconfig.compile.json"),
+    JSON.stringify(tsconfig, null, "  "),
+    { flag: "w+" },
+  );
 
   // Add TS alias
   const globalTsConfig = await import("../tsconfig.json");
-  (globalTsConfig.compilerOptions.paths as Record<string, string[]>)[moduleName] = [`./packages/${name}/src`];
-  fs.writeFileSync(path.join(projectDir, "tsconfig.json"), `${JSON.stringify(globalTsConfig, null, "  ")}\n`, { flag: "w+" });
+  (globalTsConfig.compilerOptions.paths as Record<string, string[]>)[moduleName] = [
+    `./packages/${name}/src`,
+  ];
+  fs.writeFileSync(
+    path.join(projectDir, "tsconfig.json"),
+    `${JSON.stringify(globalTsConfig, null, "  ")}\n`,
+    { flag: "w+" },
+  );
 
   console.log(`Package '${moduleName}' created`);
 }
 
-main(process.argv.slice(2)[0])
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+main(process.argv.slice(2)[0]).catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

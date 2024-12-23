@@ -10,7 +10,6 @@ import { GeneralNames } from "@peculiar/asn1-x509";
  * ```
  */
 export class IetfAttrSyntaxValueChoices {
-
   @AsnProp({ type: OctetString })
   public cotets?: OctetString;
 
@@ -38,7 +37,6 @@ export class IetfAttrSyntaxValueChoices {
  * ```
  */
 export class IetfAttrSyntax {
-
   @AsnProp({ type: GeneralNames, implicit: true, context: 0, optional: true })
   public policyAuthority?: GeneralNames;
 

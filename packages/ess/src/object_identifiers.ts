@@ -1,4 +1,4 @@
-import { id_smime } from '@peculiar/asn1-pkcs9';
+import { id_smime } from "@peculiar/asn1-pkcs9";
 
 /**
  * ExtendedSecurityServices

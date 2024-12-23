@@ -15,7 +15,7 @@ export class Iso4217CurrencyCode {
    * alphabetic PrintableString (SIZE (3)), -- Recommended
    * ```
    */
-  @AsnProp({type: AsnPropTypes.PrintableString})
+  @AsnProp({ type: AsnPropTypes.PrintableString })
   public alphabetic?: string;
 
   /**
@@ -23,7 +23,7 @@ export class Iso4217CurrencyCode {
    * numeric INTEGER (1..999)
    * ```
    */
-  @AsnProp({type: AsnPropTypes.PrintableString})
+  @AsnProp({ type: AsnPropTypes.PrintableString })
   public numeric?: number;
 
   /**
@@ -55,7 +55,6 @@ export class Iso4217CurrencyCode {
  * ```
  */
 export class MonetaryValue {
-
   /**
    * ```
    * currency Iso4217CurrencyCode
@@ -104,8 +103,7 @@ export class MonetaryValue {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class QcEuLimitValue extends MonetaryValue {
-}
+export class QcEuLimitValue extends MonetaryValue {}
 
 /**
  * Retention period declaration. Identified by {@link id_etsi_qcs_qcRetentionPeriod}
@@ -115,7 +113,6 @@ export class QcEuLimitValue extends MonetaryValue {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class QcEuRetentionPeriod {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public value: number;
 
@@ -133,7 +130,6 @@ export class QcEuRetentionPeriod {
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class PdsLocation {
-
   /**
    * ```
    * url IA5String
@@ -153,7 +149,6 @@ export class PdsLocation {
   public constructor(params: Partial<PdsLocation> = {}) {
     Object.assign(this, params);
   }
-
 }
 
 /**
@@ -163,14 +158,12 @@ export class PdsLocation {
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: PdsLocation })
 export class PdsLocations extends AsnArray<PdsLocation> {
-
   constructor(items?: PdsLocation[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, PdsLocations.prototype);
   }
-
 }
 
 /**
@@ -185,14 +178,12 @@ export class PdsLocations extends AsnArray<PdsLocation> {
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: PdsLocation })
 export class QcEuPDS extends PdsLocations {
-
   constructor(items?: PdsLocation[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, QcEuPDS.prototype);
   }
-
 }
 
 /**
@@ -204,14 +195,12 @@ export class QcEuPDS extends PdsLocations {
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.ObjectIdentifier })
 export class QcType extends AsnArray<string> {
-
   constructor(items?: string[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, QcType.prototype);
   }
-
 }
 
 /**
@@ -232,7 +221,6 @@ export type CountryName = string;
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.PrintableString })
 export class QcCClegislation extends AsnArray<CountryName> {
-
   /**
    * Create a new insatnce of {@link QcCClegislation}
    * @param items The list of country names. ISO 3166 alpha-2 codes only.
@@ -242,7 +230,6 @@ export class QcCClegislation extends AsnArray<CountryName> {
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, QcCClegislation.prototype);
-
   }
 }
 

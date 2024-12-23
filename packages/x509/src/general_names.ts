@@ -9,12 +9,10 @@ import { AsnArray } from "@peculiar/asn1-schema";
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: GeneralName })
 export class GeneralNames extends AsnArray<GeneralName> {
-
   constructor(items?: GeneralName[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, GeneralNames.prototype);
   }
-
 }

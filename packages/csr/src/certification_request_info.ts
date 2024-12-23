@@ -12,7 +12,6 @@ import { Attributes } from "./attributes";
  * ```
  */
 export class CertificationRequestInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version = 0;
 

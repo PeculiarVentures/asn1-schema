@@ -6,7 +6,7 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
  * EncryptedData ::= OCTET STRING
  * ```
  */
-export class EncryptedData extends OctetString { }
+export class EncryptedData extends OctetString {}
 
 /**
  * ```
@@ -17,7 +17,6 @@ export class EncryptedData extends OctetString { }
  * ```
  */
 export class EncryptedPrivateKeyInfo {
-
   @AsnProp({ type: AlgorithmIdentifier })
   public encryptionAlgorithm = new AlgorithmIdentifier();
 

@@ -42,17 +42,15 @@ export const id_pe_JWTClaimConstraints = `${id_pe}.27`;
  */
 @asn.AsnType({
   type: asn.AsnTypeTypes.Sequence,
-  itemType: asn.AsnPropTypes.IA5String
+  itemType: asn.AsnPropTypes.IA5String,
 })
 export class JWTClaimNames extends asn.AsnArray<JWTClaimName> {
-
   constructor(items?: JWTClaimName[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, JWTClaimNames.prototype);
   }
-
 }
 
 /**
@@ -87,17 +85,15 @@ export class JWTClaimPermittedValues {
  */
 @asn.AsnType({
   type: asn.AsnTypeTypes.Sequence,
-  itemType: JWTClaimPermittedValues
+  itemType: JWTClaimPermittedValues,
 })
 export class JWTClaimPermittedValuesList extends asn.AsnArray<JWTClaimPermittedValues> {
-
   constructor(items?: JWTClaimPermittedValues[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, JWTClaimPermittedValuesList.prototype);
   }
-
 }
 
 /**
@@ -223,15 +219,13 @@ export class TNEntry {
   type: asn.AsnTypeTypes.Sequence,
   itemType: TNEntry,
 })
-export class TNAuthorizationList extends asn.AsnArray<TNEntry>{
-
+export class TNAuthorizationList extends asn.AsnArray<TNEntry> {
   constructor(items?: TNEntry[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, TNAuthorizationList.prototype);
   }
-
 }
 
 // -- SPCs may be OCNs, various SPIDs, or other SP identifiers

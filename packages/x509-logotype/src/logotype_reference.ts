@@ -11,7 +11,6 @@ import { HashAlgAndValue } from "./hash_alg_and_value";
  * ```
  */
 export class LogotypeReference {
-
   @AsnProp({ type: HashAlgAndValue, repeated: "sequence" })
   public refStructHash: HashAlgAndValue[] = [];
 

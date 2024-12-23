@@ -9,7 +9,6 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-sch
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class LogotypeImageResolution {
-
   /**
    * Resolution in bits
    */

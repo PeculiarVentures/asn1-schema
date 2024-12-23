@@ -8,12 +8,10 @@ import { Targets } from "./target";
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: Targets })
 export class ProxyInfo extends AsnArray<Targets> {
+  constructor(items?: Targets[]) {
+    super(items);
 
-    constructor(items?: Targets[]) {
-        super(items);
-
-        // Set the prototype explicitly.
-        Object.setPrototypeOf(this, ProxyInfo.prototype);
-    }
-
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, ProxyInfo.prototype);
+  }
 }

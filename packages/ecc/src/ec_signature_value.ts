@@ -9,7 +9,6 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
  * ```
  */
 export class ECDSASigValue {
-
   @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
   public r = new ArrayBuffer(0);
 

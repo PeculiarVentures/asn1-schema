@@ -18,7 +18,6 @@ export enum CertPolicyFlags {
 }
 
 export class CertPolicy extends BitString<CertPolicyFlags> {
-
   public toJSON(): CertPolicyType[] {
     const res: CertPolicyType[] = [];
     const flags = this.toNumber();
@@ -51,7 +50,6 @@ export class CertPolicy extends BitString<CertPolicyFlags> {
  * ```
  */
 export class CertPathControls {
-
   @AsnProp({ type: Name })
   public taName = new Name();
 

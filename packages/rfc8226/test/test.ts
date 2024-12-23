@@ -3,9 +3,7 @@ import * as assert from "assert";
 import { TNAuthorizationList } from "../src";
 
 context("RFC8266", () => {
-
   context("TNAuthorizationList", () => {
-
     it("spc", () => {
       const hex = "3008a00616043730394a";
 
@@ -16,7 +14,5 @@ context("RFC8266", () => {
       const raw = AsnConvert.serialize(ext);
       assert.strictEqual(Buffer.from(raw).toString("hex"), hex);
     });
-
   });
-
 });

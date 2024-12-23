@@ -1,10 +1,18 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnOctetStringConverter, IAsnConverter } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnType,
+  AsnTypeTypes,
+  AsnOctetStringConverter,
+  IAsnConverter,
+} from "@peculiar/asn1-schema";
 import * as asn1js from "asn1js";
 import { IpConverter } from "./ip_converter";
 import { DirectoryString, Name } from "./name";
 
 export const AsnIpConverter: IAsnConverter<string> = {
-  fromASN: (value: asn1js.OctetString) => IpConverter.toString(AsnOctetStringConverter.fromASN(value)),
+  fromASN: (value: asn1js.OctetString) =>
+    IpConverter.toString(AsnOctetStringConverter.fromASN(value)),
   toASN: (value: string) => AsnOctetStringConverter.toASN(IpConverter.fromString(value)),
 };
 
@@ -35,7 +43,6 @@ export class OtherName {
  * ```
  */
 export class EDIPartyName {
-
   @AsnProp({ type: DirectoryString, optional: true, context: 0, implicit: true })
   public nameAssigner?: DirectoryString;
 
@@ -63,7 +70,6 @@ export class EDIPartyName {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class GeneralName {
-
   @AsnProp({ type: OtherName, context: 0, implicit: true })
   public otherName?: OtherName;
 
@@ -85,7 +91,12 @@ export class GeneralName {
   @AsnProp({ type: AsnPropTypes.IA5String, context: 6, implicit: true })
   public uniformResourceIdentifier?: string;
 
-  @AsnProp({ type: AsnPropTypes.OctetString, context: 7, implicit: true, converter: AsnIpConverter })
+  @AsnProp({
+    type: AsnPropTypes.OctetString,
+    context: 7,
+    implicit: true,
+    converter: AsnIpConverter,
+  })
   public iPAddress?: string;
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier, context: 8, implicit: true })

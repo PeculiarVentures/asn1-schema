@@ -11,12 +11,11 @@ import { LogotypeReference } from "./logotype_reference";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class LogotypeInfo {
-
   @AsnProp({ type: LogotypeData, implicit: true, context: 0 })
   public direct?: LogotypeData;
 
   @AsnProp({ type: LogotypeReference, implicit: true, context: 1 })
-  public indirect?: LogotypeReference
+  public indirect?: LogotypeReference;
 
   constructor(params: Partial<LogotypeInfo> = {}) {
     Object.assign(this, params);

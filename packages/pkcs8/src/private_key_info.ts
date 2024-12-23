@@ -1,4 +1,11 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnArray,
+  AsnType,
+  AsnTypeTypes,
+  OctetString,
+} from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier, Attribute } from "@peculiar/asn1-x509";
 
 /**
@@ -15,7 +22,7 @@ export enum Version {
  * PrivateKey ::= OCTET STRING
  * ```
  */
-export class PrivateKey extends OctetString { }
+export class PrivateKey extends OctetString {}
 
 /**
  * ```
@@ -24,14 +31,12 @@ export class PrivateKey extends OctetString { }
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: Attribute })
 export class Attributes extends AsnArray<Attribute> {
-
   constructor(items?: Attribute[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, Attributes.prototype);
   }
-
 }
 
 /**
@@ -44,7 +49,6 @@ export class Attributes extends AsnArray<Attribute> {
  * ```
  */
 export class PrivateKeyInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version = Version.v1;
 

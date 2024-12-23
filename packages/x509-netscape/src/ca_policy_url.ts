@@ -15,7 +15,6 @@ export const id_netscapeCaPolicyUrl = `${id_netscapeCertExtension}.8`;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class NetscapeCaPolicyUrl {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public value = "";
 
@@ -24,5 +23,4 @@ export class NetscapeCaPolicyUrl {
       this.value = value;
     }
   }
-
 }

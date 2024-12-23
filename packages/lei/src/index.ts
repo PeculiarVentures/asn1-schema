@@ -19,7 +19,6 @@ export const id_lei = "1.3.6.1.4.1.52266.1";
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class Lei {
-
   @AsnProp({ type: asn1js.PrintableString })
   public leiCode = "";
 
@@ -34,8 +33,8 @@ export class Lei {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class BaseLeiChoice {
   /**
-  * @deprecated non-standard
-  */
+   * @deprecated non-standard
+   */
   @AsnProp({ type: AsnPropTypes.IA5String })
   public ia5String?: string;
 
@@ -98,7 +97,6 @@ export class BaseLeiChoice {
 
 @AsnType({ type: AsnTypeTypes.Choice })
 export class LeiChoice extends BaseLeiChoice {
-
   @AsnProp({ type: Lei })
   public struct?: Lei;
 
@@ -128,4 +126,4 @@ export const id_role = "1.3.6.1.4.1.52266.2";
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class LeiRole extends BaseLeiChoice { }
+export class LeiRole extends BaseLeiChoice {}

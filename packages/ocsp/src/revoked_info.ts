@@ -9,7 +9,6 @@ import { CRLReason } from "@peculiar/asn1-x509";
  * ```
  */
 export class RevokedInfo {
-
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public revocationTime = new Date();
 

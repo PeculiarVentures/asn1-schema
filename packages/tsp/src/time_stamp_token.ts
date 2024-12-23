@@ -9,4 +9,4 @@ import { AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class TimeStampToken extends ContentInfo { }
+export class TimeStampToken extends ContentInfo {}

@@ -8,7 +8,6 @@ import { RecipientInfo } from "./recipient_info";
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: RecipientInfo })
 export class RecipientInfos extends AsnArray<RecipientInfo> {
-
   constructor(items?: RecipientInfo[]) {
     super(items);
 

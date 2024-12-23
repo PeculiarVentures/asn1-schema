@@ -12,7 +12,6 @@ import { PasswordRecipientInfo } from "./password_recipient_info";
  * ```
  */
 export class OtherRecipientInfo {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public oriType = "";
 
@@ -36,7 +35,6 @@ export class OtherRecipientInfo {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class RecipientInfo {
-
   @AsnProp({ type: KeyTransRecipientInfo, optional: true })
   public ktri?: KeyTransRecipientInfo;
 

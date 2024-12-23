@@ -10,7 +10,6 @@ import { LogotypeAudioInfo } from "./logotype_audio_info";
  * ```
  */
 export class LogotypeAudio {
-
   @AsnProp({ type: LogotypeDetails })
   public audioDetails = new LogotypeDetails();
 

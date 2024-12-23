@@ -1,5 +1,11 @@
 import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
-import { AlgorithmIdentifier, Attribute, UniqueIdentifier, Extensions, CertificateSerialNumber } from "@peculiar/asn1-x509";
+import {
+  AlgorithmIdentifier,
+  Attribute,
+  UniqueIdentifier,
+  Extensions,
+  CertificateSerialNumber,
+} from "@peculiar/asn1-x509";
 import { Holder } from "./holder";
 import { AttCertIssuer } from "./attr_cert_issuer";
 import { AttCertValidityPeriod } from "./attr_cert_validity_period";
@@ -29,7 +35,6 @@ export enum AttCertVersion {
  * ```
  */
 export class AttributeCertificateInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version = AttCertVersion.v2;
 

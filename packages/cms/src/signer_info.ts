@@ -1,4 +1,11 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnArray,
+  AsnType,
+  AsnTypeTypes,
+  OctetString,
+} from "@peculiar/asn1-schema";
 import { SignerIdentifier } from "./signer_identifier";
 import { CMSVersion, SignatureAlgorithmIdentifier, DigestAlgorithmIdentifier } from "./types";
 import { Attribute } from "./attribute";
@@ -8,14 +15,14 @@ import { Attribute } from "./attribute";
  * SignedAttributes ::= SET SIZE (1..MAX) OF Attribute
  * ```
  */
-export type SignedAttributes = Attribute[]
+export type SignedAttributes = Attribute[];
 
 /**
  * ```asn
  * UnsignedAttributes ::= SET SIZE (1..MAX) OF Attribute
  * ```
  */
-export type UnsignedAttributes = Attribute[]
+export type UnsignedAttributes = Attribute[];
 
 /**
  * ```asn
@@ -23,7 +30,6 @@ export type UnsignedAttributes = Attribute[]
  * ```
  */
 export type SignatureValue = OctetString;
-
 
 /**
  * ```asn
@@ -38,7 +44,6 @@ export type SignatureValue = OctetString;
  * ```
  */
 export class SignerInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: CMSVersion = CMSVersion.v0;
 
@@ -71,13 +76,11 @@ export class SignerInfo {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: SignerInfo })
-export class SignerInfos extends AsnArray<SignerInfo> { 
-
+export class SignerInfos extends AsnArray<SignerInfo> {
   constructor(items?: SignerInfo[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, SignerInfos.prototype);
   }
-
 }

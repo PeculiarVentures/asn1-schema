@@ -23,8 +23,12 @@ export enum LogotypeImageType {
  * ```
  */
 export class LogotypeImageInfo {
-
-  @AsnProp({ type: AsnPropTypes.Integer, context: 0, implicit: true, defaultValue: LogotypeImageType.color })
+  @AsnProp({
+    type: AsnPropTypes.Integer,
+    context: 0,
+    implicit: true,
+    defaultValue: LogotypeImageType.color,
+  })
   public type: LogotypeImageType = LogotypeImageType.color;
 
   /**

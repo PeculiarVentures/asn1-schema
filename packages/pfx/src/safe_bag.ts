@@ -11,7 +11,6 @@ import { PKCS12Attribute } from "./attribute";
  * ```
  */
 export class SafeBag {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public bagId = "";
 
@@ -32,13 +31,11 @@ export class SafeBag {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: SafeBag })
-export class SafeContents extends AsnArray<SafeBag> { 
-
+export class SafeContents extends AsnArray<SafeBag> {
   constructor(items?: SafeBag[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, SafeContents.prototype);
   }
-
 }

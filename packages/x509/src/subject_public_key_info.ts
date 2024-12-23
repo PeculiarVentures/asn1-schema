@@ -9,7 +9,6 @@ import { AlgorithmIdentifier } from "./algorithm_identifier";
  * ```
  */
 export class SubjectPublicKeyInfo {
-
   @AsnProp({ type: AlgorithmIdentifier })
   public algorithm = new AlgorithmIdentifier();
 

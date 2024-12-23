@@ -2,7 +2,6 @@ import * as ip from "ipaddr.js";
 import { Convert } from "pvtsutils";
 
 export class IpConverter {
-
   private static decodeIP(value: string): string {
     if (value.length === 64 && parseInt(value, 16) === 0) {
       return "::/0";
@@ -14,10 +13,9 @@ export class IpConverter {
 
     const mask = parseInt(value.slice(8), 16)
       .toString(2)
-      .split('')
-      .reduce((a, k) => a + (+k), 0);
-    let ip = value.slice(0, 8)
-      .replace(/(.{2})/g, match => `${parseInt(match, 16)}.`);
+      .split("")
+      .reduce((a, k) => a + +k, 0);
+    let ip = value.slice(0, 8).replace(/(.{2})/g, (match) => `${parseInt(match, 16)}.`);
 
     ip = ip.slice(0, -1);
 

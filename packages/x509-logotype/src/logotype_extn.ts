@@ -12,7 +12,6 @@ import { OtherLogotypeInfo } from "./other_logotype_info";
  * ```
  */
 export class LogotypeExtn {
-
   @AsnProp({ type: LogotypeInfo, context: 0, repeated: "sequence", optional: true })
   public communityLogos?: LogotypeInfo[];
 

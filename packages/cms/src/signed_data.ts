@@ -11,15 +11,13 @@ import { SignerInfos } from "./signer_info";
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: DigestAlgorithmIdentifier })
-export class DigestAlgorithmIdentifiers extends AsnArray<DigestAlgorithmIdentifier> { 
-
+export class DigestAlgorithmIdentifiers extends AsnArray<DigestAlgorithmIdentifier> {
   constructor(items?: DigestAlgorithmIdentifier[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, DigestAlgorithmIdentifiers.prototype);
   }
-
 }
 
 /**
@@ -34,7 +32,6 @@ export class DigestAlgorithmIdentifiers extends AsnArray<DigestAlgorithmIdentifi
  * ```
  */
 export class SignedData {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: CMSVersion = CMSVersion.v0;
 

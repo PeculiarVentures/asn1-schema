@@ -12,7 +12,6 @@ import { AsnSchemaType } from "./schema";
  * Deserializes objects from ASN.1 encoded data
  */
 export class AsnParser {
-
   /**
    * Deserializes an object from the ASN.1 encoded buffer
    * @param data ASN.1 encoded buffer
@@ -68,7 +67,9 @@ export class AsnParser {
         targetSchema,
       );
       if (!asn1ComparedSchema.verified) {
-        throw new AsnSchemaValidationError(`Data does not match to ${target.name} ASN1 schema. ${asn1ComparedSchema.result.error}`);
+        throw new AsnSchemaValidationError(
+          `Data does not match to ${target.name} ASN1 schema. ${asn1ComparedSchema.result.error}`,
+        );
       }
       //#endregion
 
@@ -77,17 +78,25 @@ export class AsnParser {
       if (isTypeOfArray(target)) {
         // TODO convert
         if (!("value" in asn1Schema.valueBlock && Array.isArray(asn1Schema.valueBlock.value))) {
-          throw new Error(`Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.`);
+          throw new Error(
+            `Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.`,
+          );
         }
         const itemType = schema.itemType;
         if (typeof itemType === "number") {
           const converter = converters.defaultConverter(itemType);
           if (!converter) {
-            throw new Error(`Cannot get default converter for array item of ${target.name} ASN1 schema`);
+            throw new Error(
+              `Cannot get default converter for array item of ${target.name} ASN1 schema`,
+            );
           }
-          return target.from(asn1Schema.valueBlock.value as asn1js.AsnType[], (element) => converter.fromASN(element));
+          return target.from(asn1Schema.valueBlock.value as asn1js.AsnType[], (element) =>
+            converter.fromASN(element),
+          );
         } else {
-          return target.from(asn1Schema.valueBlock.value as asn1js.AsnType[], (element) => this.fromASN(element, itemType));
+          return target.from(asn1Schema.valueBlock.value as asn1js.AsnType[], (element) =>
+            this.fromASN(element, itemType),
+          );
         }
       }
 
@@ -103,8 +112,9 @@ export class AsnParser {
         if (typeof schemaItemType === "number" || isConvertible(schemaItemType)) {
           // PRIMITIVE
           // we MUST to use Converters
-          const converter: IAsnConverter | null = schemaItem.converter
-            ?? (isConvertible(schemaItemType)
+          const converter: IAsnConverter | null =
+            schemaItem.converter ??
+            (isConvertible(schemaItemType)
               ? new (schemaItemType as IAsnConvertibleConstructor)()
               : null);
           if (!converter) {
@@ -112,9 +122,7 @@ export class AsnParser {
           }
           if (schemaItem.repeated) {
             if (schemaItem.implicit) {
-              const Container = schemaItem.repeated === "sequence"
-                ? asn1js.Sequence
-                : asn1js.Set;
+              const Container = schemaItem.repeated === "sequence" ? asn1js.Sequence : asn1js.Set;
               const newItem = new Container();
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               newItem.valueBlock = asn1SchemaValue.valueBlock as any;
@@ -122,13 +130,22 @@ export class AsnParser {
               if (newItemAsn.offset === -1) {
                 throw new Error(`Cannot parse the child item. ${newItemAsn.result.error}`);
               }
-              if (!("value" in newItemAsn.result.valueBlock && Array.isArray(newItemAsn.result.valueBlock.value))) {
-                throw new Error("Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.");
+              if (
+                !(
+                  "value" in newItemAsn.result.valueBlock &&
+                  Array.isArray(newItemAsn.result.valueBlock.value)
+                )
+              ) {
+                throw new Error(
+                  "Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.",
+                );
               }
               const value = newItemAsn.result.valueBlock.value as asn1js.AsnType[];
               res[key] = Array.from(value, (element) => converter.fromASN(element));
             } else {
-              res[key] = Array.from(asn1SchemaValue as unknown as asn1js.AsnType[], (element) => converter.fromASN(element));
+              res[key] = Array.from(asn1SchemaValue as unknown as asn1js.AsnType[], (element) =>
+                converter.fromASN(element),
+              );
             }
           } else {
             let value = asn1SchemaValue;
@@ -138,7 +155,9 @@ export class AsnParser {
                 newItem = new (schemaItemType as IAsnConvertibleConstructor)().toSchema("");
               } else {
                 const Asn1TypeName = AsnPropTypes[schemaItemType as number];
-                const Asn1Type = (asn1js as unknown as Record<string, (new () => asn1js.AsnType) | undefined>)[Asn1TypeName];
+                const Asn1Type = (
+                  asn1js as unknown as Record<string, (new () => asn1js.AsnType) | undefined>
+                )[Asn1TypeName];
                 if (!Asn1Type) {
                   throw new Error(`Cannot get '${Asn1TypeName}' class from asn1js module`);
                 }
@@ -154,10 +173,13 @@ export class AsnParser {
           // use ASN1 schema
           if (schemaItem.repeated) {
             if (!Array.isArray(asn1SchemaValue)) {
-              throw new Error("Cannot get list of items from the ASN.1 parsed value. ASN.1 value should be iterable.");
+              throw new Error(
+                "Cannot get list of items from the ASN.1 parsed value. ASN.1 value should be iterable.",
+              );
             }
             res[key] = Array.from(asn1SchemaValue, (element: asn1js.AsnType) =>
-              this.fromASN(element, schemaItemType));
+              this.fromASN(element, schemaItemType),
+            );
           } else {
             res[key] = this.fromASN(asn1SchemaValue, schemaItemType);
           }

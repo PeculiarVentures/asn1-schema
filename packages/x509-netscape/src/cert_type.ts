@@ -8,8 +8,14 @@ import { BitString } from "@peculiar/asn1-schema";
  */
 export const id_netscapeCertType = `${id_netscapeCertExtension}.1`;
 
-export type NetscapeCertTypeString = "sslClient" | "sslServer" | "sMime" | "objectSigning"
-  | "sslCa" | "sMimeCa" | "objectSigningCa";
+export type NetscapeCertTypeString =
+  | "sslClient"
+  | "sslServer"
+  | "sMime"
+  | "objectSigning"
+  | "sslCa"
+  | "sMimeCa"
+  | "objectSigningCa";
 
 export type NetscapeCertTypes = NetscapeCertTypeString[];
 
@@ -46,7 +52,6 @@ export enum NetscapeCertTypeFlags {
 }
 
 export class NetscapeCertType extends BitString {
-
   public toJSON(): NetscapeCertTypes {
     const flag = this.toNumber();
     const res: NetscapeCertTypes = [];
@@ -77,5 +82,4 @@ export class NetscapeCertType extends BitString {
   public override toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
-
 }

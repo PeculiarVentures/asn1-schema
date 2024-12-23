@@ -26,7 +26,6 @@ export type Version = number;
  * ```
  */
 export class RSAPrivateKey {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: Version = 0;
 
@@ -53,7 +52,7 @@ export class RSAPrivateKey {
 
   @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
   public coefficient = new ArrayBuffer(0);
-  
+
   @AsnProp({ type: OtherPrimeInfos, optional: true })
   public otherPrimeInfos?: OtherPrimeInfos;
 

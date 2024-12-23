@@ -3,7 +3,6 @@ import { ContentType } from "./types";
 
 @AsnType({ type: AsnTypeTypes.Choice })
 export class EncapsulatedContent {
-
   @AsnProp({ type: OctetString })
   public single?: OctetString;
 
@@ -13,7 +12,6 @@ export class EncapsulatedContent {
   constructor(params: Partial<EncapsulatedContent> = {}) {
     Object.assign(this, params);
   }
-
 }
 
 /**
@@ -24,7 +22,6 @@ export class EncapsulatedContent {
  * ```
  */
 export class EncapsulatedContentInfo {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public eContentType: ContentType = "";
 

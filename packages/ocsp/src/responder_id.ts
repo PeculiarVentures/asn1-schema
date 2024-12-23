@@ -7,18 +7,17 @@ import { Name } from "@peculiar/asn1-x509";
  *   -- (excluding the tag and length fields)
  * ```
  */
-export class KeyHash extends OctetString { }
+export class KeyHash extends OctetString {}
 
 /**
-* ```
-* ResponderID ::= CHOICE {
-*   byName   [1] Name,
-*   byKey    [2] KeyHash }
-* ```
-*/
+ * ```
+ * ResponderID ::= CHOICE {
+ *   byName   [1] Name,
+ *   byKey    [2] KeyHash }
+ * ```
+ */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ResponderID {
-
   @AsnProp({ type: Name, context: 1 })
   public byName?: Name;
 

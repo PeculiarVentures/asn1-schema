@@ -15,7 +15,6 @@ export const id_netscapeCertRenewUrl = `${id_netscapeCertExtension}.7`;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class NetscapeCertRenewUrl {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public value = "";
 
@@ -24,5 +23,4 @@ export class NetscapeCertRenewUrl {
       this.value = value;
     }
   }
-
 }

@@ -17,14 +17,12 @@ export const id_alg_composite = "1.3.6.1.4.1.18227.2.1";
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: AlgorithmIdentifier })
 export class CompositeParams extends AsnArray<AlgorithmIdentifier> {
-
   constructor(items?: AlgorithmIdentifier[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, CompositeParams.prototype);
   }
-
 }
 
 /**
@@ -33,13 +31,11 @@ export class CompositeParams extends AsnArray<AlgorithmIdentifier> {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.BitString })
-export class CompositeSignatureValue extends AsnArray<ArrayBuffer>{
-
+export class CompositeSignatureValue extends AsnArray<ArrayBuffer> {
   constructor(items?: ArrayBuffer[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, CompositeSignatureValue.prototype);
   }
-
 }

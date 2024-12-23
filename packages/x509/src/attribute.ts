@@ -9,7 +9,6 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
  * ```
  */
 export class Attribute {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public type = "";
 

@@ -15,7 +15,6 @@ export const id_netscapeComment = `${id_netscapeCertExtension}.13`;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class NetscapeComment {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public value = "";
 
@@ -24,5 +23,4 @@ export class NetscapeComment {
       this.value = value;
     }
   }
-
 }

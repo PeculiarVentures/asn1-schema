@@ -28,7 +28,6 @@ export type TSAPolicyId = string;
  */
 
 export class TimeStampReq {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version = TimeStampReqVersion.v1;
 
@@ -38,7 +37,11 @@ export class TimeStampReq {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier, optional: true })
   public reqPolicy?: TSAPolicyId;
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
+    optional: true,
+  })
   public nonce?: ArrayBuffer;
 
   @AsnProp({ type: AsnPropTypes.Boolean, defaultValue: false })
@@ -50,5 +53,4 @@ export class TimeStampReq {
   constructor(params: Partial<TimeStampReq> = {}) {
     Object.assign(this, params);
   }
-
 }

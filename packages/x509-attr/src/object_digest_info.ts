@@ -23,7 +23,6 @@ export enum DigestedObjectType {
  * ```
  */
 export class ObjectDigestInfo {
-
   @AsnProp({ type: AsnPropTypes.Enumerated })
   public digestedObjectType = DigestedObjectType.publicKey;
 

@@ -11,7 +11,6 @@ import { TBSCertList } from "./tbs_cert_list";
  * ```
  */
 export class CertificateList {
-
   @AsnProp({ type: TBSCertList })
   public tbsCertList = new TBSCertList();
 

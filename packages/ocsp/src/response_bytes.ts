@@ -8,7 +8,6 @@ import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
  * ```
  */
 export class ResponseBytes {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public responseType = "";
 

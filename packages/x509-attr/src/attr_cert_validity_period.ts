@@ -9,7 +9,6 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
  * ```
  */
 export class AttCertValidityPeriod {
-
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public notBeforeTime = new Date();
 

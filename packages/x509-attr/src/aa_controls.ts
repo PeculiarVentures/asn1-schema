@@ -12,7 +12,6 @@ import { AttrSpec } from "./attr_spec";
  * ```
  */
 export class AAControls {
-
   @AsnProp({ type: AsnPropTypes.Integer, optional: true })
   public pathLenConstraint?: number;
 

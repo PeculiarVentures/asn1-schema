@@ -15,7 +15,6 @@ import { ResponseData } from "./response_data";
  * ```
  */
 export class BasicOCSPResponse {
-
   @AsnProp({ type: ResponseData })
   public tbsResponseData = new ResponseData();
 
@@ -26,7 +25,7 @@ export class BasicOCSPResponse {
   public signature = new ArrayBuffer(0);
 
   @AsnProp({ type: Certificate, repeated: "sequence", optional: true, context: 0 })
-  public certs?: Certificate[]
+  public certs?: Certificate[];
 
   constructor(params: Partial<BasicOCSPResponse> = {}) {
     Object.assign(this, params);

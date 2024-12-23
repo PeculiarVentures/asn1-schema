@@ -3,11 +3,8 @@ import { BitString, AsnConvert } from "../src";
 import { Convert } from "pvtsutils";
 
 context("asn1-schema", () => {
-
   context("BitString", () => {
-
-    context(("ArrayBuffer"), () => {
-
+    context("ArrayBuffer", () => {
       const hex = "030403010203";
 
       it("serialize", () => {
@@ -23,11 +20,9 @@ context("asn1-schema", () => {
         assert.strictEqual(obj.unusedBits, 3);
         assert.strictEqual(Convert.ToHex(obj.value), "010203");
       });
-
     });
 
-    context(("Number"), () => {
-
+    context("Number", () => {
       const hex = "0303074080";
       const num = 256 | 2;
 
@@ -51,9 +46,6 @@ context("asn1-schema", () => {
         assert.strictEqual(obj.unusedBits, 7);
         assert.strictEqual(obj.toNumber(), num);
       });
-
     });
-
   });
-
 });

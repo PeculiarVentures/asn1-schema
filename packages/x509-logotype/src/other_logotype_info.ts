@@ -9,10 +9,9 @@ import { LogotypeInfo } from "./logotype_info";
  * ```
  */
 export class OtherLogotypeInfo {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public logotypeType = "";
-  
+
   @AsnProp({ type: LogotypeInfo })
   public info = new LogotypeInfo();
 

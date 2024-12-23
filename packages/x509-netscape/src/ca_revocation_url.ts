@@ -15,7 +15,6 @@ export const id_netscapeCaRevocationUrl = `${id_netscapeCertExtension}.4`;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class NetscapeCaRevocationUrl {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public value = "";
 
@@ -24,5 +23,4 @@ export class NetscapeCaRevocationUrl {
       this.value = value;
     }
   }
-
 }

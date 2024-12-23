@@ -35,5 +35,5 @@ export enum PKIStatus {
   /**
    * notification that a revocation has occurred
    */
-  revocationNotification = 5
+  revocationNotification = 5,
 }

@@ -11,7 +11,6 @@ import { GeneralName } from "@peculiar/asn1-x509";
  * ```
  */
 export class SvceAuthInfo {
-
   @AsnProp({ type: GeneralName })
   public service = new GeneralName();
 

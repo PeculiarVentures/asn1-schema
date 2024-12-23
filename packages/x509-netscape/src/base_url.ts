@@ -15,7 +15,6 @@ export const id_netscapeBaseUrl = `${id_netscapeCertExtension}.2`;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class NetscapeBaseUrl {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public value = "";
 
@@ -24,5 +23,4 @@ export class NetscapeBaseUrl {
       this.value = value;
     }
   }
-
 }

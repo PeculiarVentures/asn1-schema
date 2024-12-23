@@ -17,7 +17,6 @@ export enum LogotypeAudioChannels {
  * ```
  */
 export class LogotypeAudioInfo {
-
   /**
    * In octets
    */

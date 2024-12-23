@@ -1,6 +1,6 @@
-import { ContentType } from '@peculiar/asn1-cms';
-import { AsnProp, AsnPropTypes, OctetString } from '@peculiar/asn1-schema';
-import { ContentIdentifier } from './types';
+import { ContentType } from "@peculiar/asn1-cms";
+import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import { ContentIdentifier } from "./types";
 
 /**
  * ```
@@ -11,16 +11,16 @@ import { ContentIdentifier } from './types';
  * ```
  */
 export class ContentReference {
-    @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
-    public contentType: ContentType = '';
+  @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
+  public contentType: ContentType = "";
 
-    @AsnProp({ type: OctetString })
-    public signedContentIdentifier: ContentIdentifier = new OctetString();
+  @AsnProp({ type: OctetString })
+  public signedContentIdentifier: ContentIdentifier = new OctetString();
 
-    @AsnProp({ type: OctetString })
-    public originatorSignatureValue: OctetString = new OctetString();
+  @AsnProp({ type: OctetString })
+  public originatorSignatureValue: OctetString = new OctetString();
 
-    constructor(params: Partial<ContentReference> = {}) {
-        Object.assign(this, params);
-    }
+  constructor(params: Partial<ContentReference> = {}) {
+    Object.assign(this, params);
+  }
 }

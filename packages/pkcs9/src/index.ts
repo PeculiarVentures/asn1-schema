@@ -1,4 +1,11 @@
-import { AsnType, AsnTypeTypes, AsnPropTypes, AsnProp, OctetString, AsnArray } from "@peculiar/asn1-schema";
+import {
+  AsnType,
+  AsnTypeTypes,
+  AsnPropTypes,
+  AsnProp,
+  OctetString,
+  AsnArray,
+} from "@peculiar/asn1-schema";
 import * as cms from "@peculiar/asn1-cms";
 import * as pfx from "@peculiar/asn1-pfx";
 import * as pkcs8 from "@peculiar/asn1-pkcs8";
@@ -350,7 +357,6 @@ export const id_at_pseudonym = `${attr.id_at}.65`;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class PKCS9String extends x509.DirectoryString {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public ia5String?: string;
 
@@ -363,7 +369,6 @@ export class PKCS9String extends x509.DirectoryString {
     o.toString();
     return this.ia5String || super.toString();
   }
-
 }
 
 /**
@@ -418,7 +423,7 @@ export class PKCS9String extends x509.DirectoryString {
  * }
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class Pkcs7PDU extends cms.ContentInfo { }
+export class Pkcs7PDU extends cms.ContentInfo {}
 /**
  * userPKCS12 ATTRIBUTE ::= {
  *         WITH SYNTAX PFX
@@ -426,7 +431,7 @@ export class Pkcs7PDU extends cms.ContentInfo { }
  * }
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class UserPKCS12 extends pfx.PFX { }
+export class UserPKCS12 extends pfx.PFX {}
 
 /**
  * pKCS15Token ATTRIBUTE ::= {
@@ -445,7 +450,7 @@ export class UserPKCS12 extends pfx.PFX { }
  * }
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class EncryptedPrivateKeyInfo extends pkcs8.EncryptedPrivateKeyInfo { }
+export class EncryptedPrivateKeyInfo extends pkcs8.EncryptedPrivateKeyInfo {}
 
 /**
  * emailAddress ATTRIBUTE ::= {
@@ -456,7 +461,6 @@ export class EncryptedPrivateKeyInfo extends pkcs8.EncryptedPrivateKeyInfo { }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class EmailAddress {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public value: string;
 
@@ -480,7 +484,7 @@ export class EmailAddress {
  * }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class UnstructuredName extends PKCS9String { }
+export class UnstructuredName extends PKCS9String {}
 
 /**
  * unstructuredAddress ATTRIBUTE ::= {
@@ -490,7 +494,7 @@ export class UnstructuredName extends PKCS9String { }
  * }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class UnstructuredAddress extends x509.DirectoryString { }
+export class UnstructuredAddress extends x509.DirectoryString {}
 
 /**
  * dateOfBirth ATTRIBUTE ::= {
@@ -502,14 +506,12 @@ export class UnstructuredAddress extends x509.DirectoryString { }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class DateOfBirth {
-
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public value: Date;
 
   public constructor(value = new Date()) {
     this.value = value;
   }
-
 }
 
 /**
@@ -521,7 +523,7 @@ export class DateOfBirth {
  * }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class PlaceOfBirth extends x509.DirectoryString { }
+export class PlaceOfBirth extends x509.DirectoryString {}
 
 export type GenderType = "M" | "F" | "m" | "f";
 
@@ -536,7 +538,6 @@ export type GenderType = "M" | "F" | "m" | "f";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class Gender {
-
   @AsnProp({ type: AsnPropTypes.PrintableString })
   public value: GenderType;
 
@@ -554,7 +555,6 @@ export class Gender {
   public toString(): string {
     return this.value;
   }
-
 }
 
 /**
@@ -568,7 +568,6 @@ export class Gender {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class CountryOfCitizenship {
-
   /**
    * Country name. Must be a two-letter country acronym in accordance with ISO/IEC 3166
    */
@@ -585,7 +584,6 @@ export class CountryOfCitizenship {
   public toString(): string {
     return this.value;
   }
-
 }
 
 /**
@@ -598,7 +596,7 @@ export class CountryOfCitizenship {
  * }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class CountryOfResidence extends CountryOfCitizenship { }
+export class CountryOfResidence extends CountryOfCitizenship {}
 
 /**
  * pseudonym ATTRIBUTE ::= {
@@ -608,7 +606,7 @@ export class CountryOfResidence extends CountryOfCitizenship { }
  * }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class Pseudonym extends x509.DirectoryString { }
+export class Pseudonym extends x509.DirectoryString {}
 
 /**
  * contentType ATTRIBUTE ::= {
@@ -620,7 +618,6 @@ export class Pseudonym extends x509.DirectoryString { }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ContentType {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public value: string;
 
@@ -634,7 +631,6 @@ export class ContentType {
   public toString(): string {
     return this.value;
   }
-
 }
 
 /**
@@ -647,7 +643,7 @@ export class ContentType {
  *         ID pkcs-9-at-messageDigest
  * }
  */
-export class MessageDigest extends OctetString { }
+export class MessageDigest extends OctetString {}
 
 /**
  * SigningTime ::= Time -- imported from ISO/IEC 9594-8
@@ -660,7 +656,7 @@ export class MessageDigest extends OctetString { }
  * }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class SigningTime extends x509.Time { }
+export class SigningTime extends x509.Time {}
 
 /**
  * RandomNonce ::= OCTET STRING (SIZE(4..MAX))
@@ -673,7 +669,7 @@ export class SigningTime extends x509.Time { }
  *         ID pkcs-9-at-randomNonce
  * }
  */
-export class RandomNonce extends OctetString { }
+export class RandomNonce extends OctetString {}
 
 /**
  * SequenceNumber ::= INTEGER (1..MAX)
@@ -687,7 +683,6 @@ export class RandomNonce extends OctetString { }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class SequenceNumber {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public value: number;
 
@@ -710,7 +705,7 @@ export class SequenceNumber {
  * }
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class CounterSignature extends cms.SignerInfo { }
+export class CounterSignature extends cms.SignerInfo {}
 
 /**
  * challengePassword ATTRIBUTE ::= {
@@ -721,7 +716,7 @@ export class CounterSignature extends cms.SignerInfo { }
  * }
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class ChallengePassword extends x509.DirectoryString { }
+export class ChallengePassword extends x509.DirectoryString {}
 
 /**
  * ExtensionRequest ::= Extensions
@@ -734,14 +729,12 @@ export class ChallengePassword extends x509.DirectoryString { }
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class ExtensionRequest extends x509.Extensions {
-
   constructor(items?: x509.Extension[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, ExtensionRequest.prototype);
   }
-
 }
 /**
  * extendedCertificateAttributes ATTRIBUTE ::= {
@@ -752,14 +745,12 @@ export class ExtensionRequest extends x509.Extensions {
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: cms.Attribute })
 export class ExtendedCertificateAttributes extends AsnArray<cms.Attribute> {
-
   constructor(items?: cms.Attribute[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, ExtendedCertificateAttributes.prototype);
   }
-
 }
 
 /**
@@ -772,7 +763,6 @@ export class ExtendedCertificateAttributes extends AsnArray<cms.Attribute> {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class FriendlyName {
-
   @AsnProp({ type: AsnPropTypes.BmpString })
   public value: string;
 
@@ -786,7 +776,6 @@ export class FriendlyName {
   public toString(): string {
     return this.value;
   }
-
 }
 
 /**
@@ -797,7 +786,7 @@ export class FriendlyName {
  *         ID pkcs-9-at-localKeyId
  * }
  */
-export class LocalKeyId extends OctetString { }
+export class LocalKeyId extends OctetString {}
 
 /**
  * signingDescription ATTRIBUTE ::= {
@@ -807,7 +796,7 @@ export class LocalKeyId extends OctetString { }
  *         ID pkcs-9-at-signingDescription
  * }
  */
-export class SigningDescription extends x509.DirectoryString { }
+export class SigningDescription extends x509.DirectoryString {}
 
 /**
  * SMIMECapability ::= SEQUENCE {
@@ -818,7 +807,7 @@ export class SigningDescription extends x509.DirectoryString { }
  * SMIMEv3Algorithms ALGORITHM ::= {...-- See RFC 2633 --}
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class SMIMECapability extends x509.AlgorithmIdentifier { }
+export class SMIMECapability extends x509.AlgorithmIdentifier {}
 
 /**
  * SMIMECapabilities ::= SEQUENCE OF SMIMECapability
@@ -831,14 +820,12 @@ export class SMIMECapability extends x509.AlgorithmIdentifier { }
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: SMIMECapability })
 export class SMIMECapabilities extends AsnArray<SMIMECapability> {
-
   constructor(items?: SMIMECapability[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, SMIMECapabilities.prototype);
   }
-
 }
 
 /**

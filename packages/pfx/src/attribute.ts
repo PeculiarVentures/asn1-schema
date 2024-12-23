@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema"
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -9,7 +9,6 @@ import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculia
  * ```
  */
 export class PKCS12Attribute {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public attrId = "";
 
@@ -32,12 +31,10 @@ export class PKCS12Attribute {
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: PKCS12Attribute })
 export class PKCS12AttrSet extends AsnArray<PKCS12Attribute> {
-
   constructor(items?: PKCS12Attribute[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, PKCS12AttrSet.prototype);
   }
-
 }

@@ -9,7 +9,6 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
  * ```
  */
 export class HashAlgAndValue {
-
   @AsnProp({ type: AlgorithmIdentifier })
   public hashAlg = new AlgorithmIdentifier();
 

@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from '@peculiar/asn1-schema';
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -9,15 +9,15 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from '@peculia
  * ```
  */
 export class SecurityCategory {
-    @AsnProp({ type: AsnPropTypes.ObjectIdentifier, context: 0, implicit: true })
-    public type = '';
+  @AsnProp({ type: AsnPropTypes.ObjectIdentifier, context: 0, implicit: true })
+  public type = "";
 
-    @AsnProp({ type: AsnPropTypes.Any, context: 1, implicit: true })
-    public value: ArrayBuffer = new ArrayBuffer(0);
+  @AsnProp({ type: AsnPropTypes.Any, context: 1, implicit: true })
+  public value: ArrayBuffer = new ArrayBuffer(0);
 
-    constructor(params: Partial<SecurityCategory> = {}) {
-        Object.assign(this, params);
-    }
+  constructor(params: Partial<SecurityCategory> = {}) {
+    Object.assign(this, params);
+  }
 }
 
 /**
@@ -29,10 +29,10 @@ export class SecurityCategory {
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: SecurityCategory })
 export class SecurityCategories extends AsnArray<SecurityCategory> {
-    constructor(items?: SecurityCategory[]) {
-        super(items);
+  constructor(items?: SecurityCategory[]) {
+    super(items);
 
-        // Set the prototype explicitly.
-        Object.setPrototypeOf(this, SecurityCategories.prototype);
-    }
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, SecurityCategories.prototype);
+  }
 }

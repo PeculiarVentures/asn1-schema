@@ -11,11 +11,11 @@ import { id_pda } from "./object_identifiers";
  */
 export const id_pds_dateOfBirth = `${id_pda}.1`;
 
- /**
-  * ```
-  * DateOfBirth ::=             GeneralizedTime
-  * ```
-  */
+/**
+ * ```
+ * DateOfBirth ::=             GeneralizedTime
+ * ```
+ */
 export type DateOfBirth = Date;
 
 /**

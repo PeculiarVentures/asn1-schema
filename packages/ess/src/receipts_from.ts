@@ -1,6 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from '@peculiar/asn1-schema';
-import { AllOrFirstTier } from './types';
-import { GeneralNames } from '@peculiar/asn1-x509';
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AllOrFirstTier } from "./types";
+import { GeneralNames } from "@peculiar/asn1-x509";
 
 /**
  * ```
@@ -12,13 +12,13 @@ import { GeneralNames } from '@peculiar/asn1-x509';
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ReceiptsFrom {
-    @AsnProp({ type: AsnPropTypes.Integer, context: 0, implicit: true })
-    public allOrFirstTier: AllOrFirstTier = AllOrFirstTier.allReceipts;
+  @AsnProp({ type: AsnPropTypes.Integer, context: 0, implicit: true })
+  public allOrFirstTier: AllOrFirstTier = AllOrFirstTier.allReceipts;
 
-    @AsnProp({ type: GeneralNames, repeated: "sequence", context: 1, implicit: true })
-    public receiptList: GeneralNames[] = [];
+  @AsnProp({ type: GeneralNames, repeated: "sequence", context: 1, implicit: true })
+  public receiptList: GeneralNames[] = [];
 
-    constructor(params: Partial<ReceiptsFrom> = {}) {
-        Object.assign(this, params);
-    }
+  constructor(params: Partial<ReceiptsFrom> = {}) {
+    Object.assign(this, params);
+  }
 }

@@ -9,7 +9,6 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
  * ```
  */
 export class Accuracy {
-
   @AsnProp({ type: AsnPropTypes.Integer, optional: true })
   public seconds = 0;
 
@@ -22,5 +21,4 @@ export class Accuracy {
   constructor(params: Partial<Accuracy> = {}) {
     Object.assign(this, params);
   }
-
 }

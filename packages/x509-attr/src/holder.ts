@@ -18,7 +18,6 @@ import { ObjectDigestInfo } from "./object_digest_info";
  * ```
  */
 export class Holder {
-
   @AsnProp({ type: IssuerSerial, implicit: true, context: 0, optional: true })
   public baseCertificateID?: IssuerSerial;
 

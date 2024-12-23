@@ -25,7 +25,6 @@ import { Version, CertificateSerialNumber, UniqueIdentifier } from "./types";
  * ```
  */
 export class TBSCertificate {
-
   @AsnProp({
     type: AsnPropTypes.Integer,
     context: 0,

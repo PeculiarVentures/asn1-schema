@@ -1,15 +1,19 @@
 import * as assert from "node:assert";
 import { AsnConvert, BitString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier, SubjectPublicKeyInfo } from "@peculiar/asn1-x509";
-import { CompositeParams, CompositePrivateKey, CompositePublicKey, CompositeSignatureValue, id_alg_composite, id_composite_key } from "packages/x509-post-quantum/src";
+import {
+  CompositeParams,
+  CompositePrivateKey,
+  CompositePublicKey,
+  CompositeSignatureValue,
+  id_alg_composite,
+  id_composite_key,
+} from "packages/x509-post-quantum/src";
 import { OneAsymmetricKey, Version } from "@peculiar/asn1-asym-key";
 
 context("x509-post-quantum", () => {
-
   context("composite keys", () => {
-
     context("generic", () => {
-
       it("public key", () => {
         const pem = [
           "MIIBmDAMBgpghkgBhvprUAQBA4IBhgAwggGBMFkwEwYHKoZIzj0CAQYIKoZIzj0D",
@@ -293,7 +297,6 @@ context("x509-post-quantum", () => {
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
         assert.strictEqual(compositeKeys.length, 2);
       });
-
     });
 
     context("id-Dilithium3-RSA", () => {
@@ -484,7 +487,6 @@ context("x509-post-quantum", () => {
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
         assert.strictEqual(compositeKeys.length, 2);
       });
-
     });
 
     context("id-Falcon512-ECDSA-P256", () => {
@@ -565,11 +567,9 @@ context("x509-post-quantum", () => {
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
         assert.strictEqual(compositeKeys.length, 2);
       });
-
     });
 
     context("id-SPHINCSsha256256frobust-ECDSA-P256", () => {
-
       it("public key", () => {
         const pem = [
           "MIG/MAwGCmCGSAGG+mtQBQcDga4AMIGqME0wCAYGK84PBgYBA0EA6HRU4f2vmr2LV5vZVlaniti",
@@ -597,11 +597,9 @@ context("x509-post-quantum", () => {
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
         assert.strictEqual(compositeKeys.length, 2);
       });
-
     });
 
     context("id-Dilithium5-Falcon1024-ECDSA-P521", () => {
-
       it("public key", () => {
         const pem = [
           "MIISADAMBgpghkgBhvprUAUFA4IR7gAwghHpMIIKNDANBgsrBgEEAQKCCwsIBwOCCiEAk2cZjM7",
@@ -911,11 +909,9 @@ context("x509-post-quantum", () => {
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
         assert.strictEqual(compositeKeys.length, 3);
       });
-
     });
 
     context("id-Dilithium5-Falcon1024-RSA", () => {
-
       it("public key", () => {
         const pem = [
           "MIITCDAMBgpghkgBhvprUAUGA4IS9gAwghLxMIIKNDANBgsrBgEEAQKCCwsIBwOCCiEAe917+DD",
@@ -1259,13 +1255,10 @@ context("x509-post-quantum", () => {
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
         assert.strictEqual(compositeKeys.length, 3);
       });
-
     });
-
   });
 
   context("composite signatures", () => {
-
     it("signature algorithm", () => {
       const pem = "MCkGCisGAQQBgY4zAgEwGzANBgsrBgEEAQKCCwcGBTAKBggqhkjOPQQDAg==";
 
@@ -1356,7 +1349,5 @@ context("x509-post-quantum", () => {
       const composote = AsnConvert.parse(signatureValue.value, CompositeSignatureValue);
       assert.strictEqual(composote.length, 2);
     });
-
   });
-
 });

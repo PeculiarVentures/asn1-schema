@@ -1,4 +1,11 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnArray,
+  AsnType,
+  AsnTypeTypes,
+  OctetString,
+} from "@peculiar/asn1-schema";
 
 /**
  * ```
@@ -13,7 +20,6 @@ import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } f
  * ```
  */
 export class Extension {
-
   public static CRITICAL = false;
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
@@ -31,7 +37,6 @@ export class Extension {
   constructor(params: Partial<Extension> = {}) {
     Object.assign(this, params);
   }
-
 }
 
 /**
@@ -40,13 +45,11 @@ export class Extension {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: Extension })
-export class Extensions extends AsnArray<Extension>{
-
+export class Extensions extends AsnArray<Extension> {
   constructor(items?: Extension[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, Extensions.prototype);
   }
-
 }

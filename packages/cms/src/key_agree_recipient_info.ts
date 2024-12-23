@@ -1,4 +1,11 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnArray,
+  AsnType,
+  AsnTypeTypes,
+  OctetString,
+} from "@peculiar/asn1-schema";
 import { CMSVersion, KeyEncryptionAlgorithmIdentifier, EncryptedKey } from "./types";
 import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 import { AlgorithmIdentifier, SubjectKeyIdentifier } from "@peculiar/asn1-x509";
@@ -20,7 +27,6 @@ export type UserKeyingMaterial = OctetString;
  * ```
  */
 export class RecipientKeyIdentifier {
-
   @AsnProp({ type: SubjectKeyIdentifier })
   public subjectKeyIdentifier = new SubjectKeyIdentifier();
 
@@ -44,7 +50,6 @@ export class RecipientKeyIdentifier {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class KeyAgreeRecipientIdentifier {
-
   // * Declare rKeyId before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
   @AsnProp({ type: RecipientKeyIdentifier, context: 0, implicit: true, optional: true })
   public rKeyId?: RecipientKeyIdentifier;
@@ -65,7 +70,6 @@ export class KeyAgreeRecipientIdentifier {
  * ```
  */
 export class RecipientEncryptedKey {
-
   @AsnProp({ type: KeyAgreeRecipientIdentifier })
   public rid = new KeyAgreeRecipientIdentifier();
 
@@ -84,7 +88,6 @@ export class RecipientEncryptedKey {
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: RecipientEncryptedKey })
 export class RecipientEncryptedKeys extends AsnArray<RecipientEncryptedKey> {
-
   constructor(items?: RecipientEncryptedKey[]) {
     super(items);
 
@@ -101,7 +104,6 @@ export class RecipientEncryptedKeys extends AsnArray<RecipientEncryptedKey> {
  * ```
  */
 export class OriginatorPublicKey {
-
   @AsnProp({ type: AlgorithmIdentifier })
   public algorithm = new AlgorithmIdentifier();
 
@@ -123,7 +125,6 @@ export class OriginatorPublicKey {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class OriginatorIdentifierOrKey {
-
   // * Declare subjectKeyIdentifier before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
   @AsnProp({ type: SubjectKeyIdentifier, context: 0, implicit: true, optional: true })
   public subjectKeyIdentifier?: SubjectKeyIdentifier;
@@ -150,8 +151,7 @@ export class OriginatorIdentifierOrKey {
  *  recipientEncryptedKeys RecipientEncryptedKeys }
  * ```
  */
- export class KeyAgreeRecipientInfo {
-
+export class KeyAgreeRecipientInfo {
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: CMSVersion = CMSVersion.v3;
 

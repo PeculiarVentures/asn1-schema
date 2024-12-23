@@ -11,7 +11,6 @@ import { ECParameters } from "./ec_parameters";
  * ```
  */
 export class ECPrivateKey {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version = 1;
 

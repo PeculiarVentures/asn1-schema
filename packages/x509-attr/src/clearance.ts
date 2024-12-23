@@ -12,7 +12,6 @@ import { SecurityCategory } from "./security_category";
  * ```
  */
 export class Clearance {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public policyId = "";
 

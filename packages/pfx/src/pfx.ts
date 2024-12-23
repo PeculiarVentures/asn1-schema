@@ -12,7 +12,6 @@ import { MacData } from "./mac_data";
  * ```
  */
 export class PFX {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version = 3;
 
@@ -25,4 +24,4 @@ export class PFX {
   constructor(params: Partial<PFX> = {}) {
     Object.assign(this, params);
   }
-} 
+}

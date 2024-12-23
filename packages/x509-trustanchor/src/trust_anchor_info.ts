@@ -31,7 +31,6 @@ export enum TrustAnchorInfoVersion {
  * ```
  */
 export class TrustAnchorInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer, defaultValue: TrustAnchorInfoVersion.v1 })
   public version = TrustAnchorInfoVersion.v1;
 

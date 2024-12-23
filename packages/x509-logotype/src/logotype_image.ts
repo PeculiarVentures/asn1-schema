@@ -10,7 +10,6 @@ import { LogotypeImageInfo } from "./logotype_image_info";
  * ```
  */
 export class LogotypeImage {
-
   @AsnProp({ type: LogotypeDetails })
   public imageDetails = new LogotypeDetails();
 

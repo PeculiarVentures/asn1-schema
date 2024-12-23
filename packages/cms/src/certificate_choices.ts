@@ -1,6 +1,6 @@
 import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, AsnArray } from "@peculiar/asn1-schema";
 import { Certificate } from "@peculiar/asn1-x509";
-import { AttributeCertificate } from '@peculiar/asn1-x509-attr';
+import { AttributeCertificate } from "@peculiar/asn1-x509-attr";
 /**
  * ```asn
  * OtherCertificateFormat ::= SEQUENCE {
@@ -9,7 +9,6 @@ import { AttributeCertificate } from '@peculiar/asn1-x509-attr';
  * ```
  */
 export class OtherCertificateFormat {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public otherCertFormat = "";
 
@@ -33,7 +32,6 @@ export class OtherCertificateFormat {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class CertificateChoices {
-
   @AsnProp({ type: Certificate })
   public certificate?: Certificate;
 
@@ -61,14 +59,12 @@ export class CertificateChoices {
  * CertificateSet ::= SET OF CertificateChoices
  * ```
  */
-@AsnType({type: AsnTypeTypes.Set, itemType: CertificateChoices})
-export class CertificateSet extends AsnArray<CertificateChoices> { 
-
+@AsnType({ type: AsnTypeTypes.Set, itemType: CertificateChoices })
+export class CertificateSet extends AsnArray<CertificateChoices> {
   constructor(items?: CertificateChoices[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, CertificateSet.prototype);
   }
-
 }

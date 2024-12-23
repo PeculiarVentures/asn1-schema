@@ -11,7 +11,6 @@ import { GeneralNames, CertificateSerialNumber, UniqueIdentifier } from "@peculi
  * ```
  */
 export class IssuerSerial {
-
   @AsnProp({ type: GeneralNames })
   public issuer = new GeneralNames();
 

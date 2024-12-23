@@ -14,7 +14,7 @@ export const id_rsadsi = "1.2.840.113549";
 export const id_pkcs = `${id_rsadsi}.1`;
 
 /**
- * 
+ *
  * ```
  * pkcs-12 OBJECT IDENTIFIER ::= {pkcs 12}
  * ```

@@ -12,7 +12,6 @@ import { AttributeCertificateInfo } from "./attribute_certificate_info";
  * ```
  */
 export class AttributeCertificate {
-
   @AsnProp({ type: AttributeCertificateInfo })
   public acinfo = new AttributeCertificateInfo();
 

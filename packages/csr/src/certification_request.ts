@@ -12,7 +12,6 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
  * ```
  */
 export class CertificationRequest {
-
   @AsnProp({ type: CertificationRequestInfo })
   public certificationRequestInfo = new CertificationRequestInfo();
 

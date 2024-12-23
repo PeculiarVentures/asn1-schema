@@ -31,7 +31,6 @@ context("Schema", () => {
 
     @AsnType({ type: AsnTypeTypes.Choice })
     class CertStatus {
-
       @AsnProp({
         type: AsnPropTypes.Null,
         context: 0,
@@ -67,12 +66,11 @@ context("Schema", () => {
 
   it.skip("empty sequence", () => {
     class Test {
-      @AsnProp({ type: AsnPropTypes.Boolean, repeated: "sequence", optional: true, })
+      @AsnProp({ type: AsnPropTypes.Boolean, repeated: "sequence", optional: true })
       public items?: boolean[];
     }
 
     const asn = AsnConvert.parse(Buffer.from("30023000", "hex"), Test);
     assert.ok(asn.items); // TODO It throws exception. Looks like asn1js doesn't assign empty structures to schema
   });
-
 });

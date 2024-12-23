@@ -57,7 +57,6 @@ export class RevokedCertificate {
  * ```
  */
 export class TBSCertList {
-
   @AsnProp({ type: AsnPropTypes.Integer, optional: true })
   public version?: Version;
 

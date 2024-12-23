@@ -24,10 +24,10 @@ export class Timestamp {
   public version: Version = Version.v1;
 
   @AsnProp({ type: GeneralName })
-  public location: GeneralName = new GeneralName()
+  public location: GeneralName = new GeneralName();
 
   @AsnProp({ type: AsnPropTypes.Boolean, defaultValue: false, optional: true })
-  public requiresAuth = false
+  public requiresAuth = false;
 
   public constructor(params: Partial<Timestamp> = {}) {
     Object.assign(this, params);

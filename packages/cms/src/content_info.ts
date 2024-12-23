@@ -9,7 +9,6 @@ import { ContentType } from "./types";
  * ```
  */
 export class ContentInfo {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public contentType: ContentType = "";
 

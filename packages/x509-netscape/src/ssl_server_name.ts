@@ -15,7 +15,6 @@ export const id_netscapeSSLServerName = `${id_netscapeCertExtension}.12`;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class NetscapeSSLServerName {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public value = "";
 
@@ -24,5 +23,4 @@ export class NetscapeSSLServerName {
       this.value = value;
     }
   }
-
 }

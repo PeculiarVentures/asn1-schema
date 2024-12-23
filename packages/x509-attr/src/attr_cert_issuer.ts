@@ -13,7 +13,6 @@ import { V2Form } from "./v2_form";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class AttCertIssuer {
-
   @AsnProp({ type: GeneralName, repeated: "sequence" })
   public v1Form?: GeneralName[];
 

@@ -15,7 +15,6 @@ import { Version } from "./types";
  * ```
  */
 export class ResponseData {
-
   @AsnProp({ type: AsnPropTypes.Integer, context: 0, defaultValue: Version.v1 })
   public version = Version.v1;
 

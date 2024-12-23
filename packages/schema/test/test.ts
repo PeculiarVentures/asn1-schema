@@ -3,12 +3,14 @@ import * as assert from "assert";
 import * as src from "../src";
 
 function assertBuffer(actual: Buffer, expected: Buffer): void {
-  assert.strictEqual(Buffer.compare(actual, expected), 0,
-    `Buffers are not equal.\n\tActual:   ${actual.toString("hex")}\n\tExpected: ${expected.toString("hex")}`);
+  assert.strictEqual(
+    Buffer.compare(actual, expected),
+    0,
+    `Buffers are not equal.\n\tActual:   ${actual.toString("hex")}\n\tExpected: ${expected.toString("hex")}`,
+  );
 }
 
 context("Test", () => {
-
   context("Default value", () => {
     class Test {
       @src.AsnProp({ type: src.AsnPropTypes.Integer, defaultValue: 0 })
@@ -33,9 +35,7 @@ context("Test", () => {
   });
 
   context("CHOICE", () => {
-
     context("CONTEXT-SPECIFIC", () => {
-
       class Child {
         @src.AsnProp({ type: src.AsnPropTypes.Integer })
         public value = 2;
@@ -75,15 +75,22 @@ context("Test", () => {
             assertBuffer(Buffer.from(buf), Buffer.from("80050102030405", "hex"));
           });
           it("parse", () => {
-            const obj = src.AsnParser.parse(new Uint8Array(Buffer.from("80050102030405", "hex")).buffer, Test);
+            const obj = src.AsnParser.parse(
+              new Uint8Array(Buffer.from("80050102030405", "hex")).buffer,
+              Test,
+            );
             assert.ok(obj.select1);
             assert.strictEqual(obj.select1.byteLength, 5);
           });
         });
         context("Repeated SET", () => {
-
           class Test2 {
-            @src.AsnProp({ type: src.AsnPropTypes.Integer, repeated: "set", implicit: true, context: 1 })
+            @src.AsnProp({
+              type: src.AsnPropTypes.Integer,
+              repeated: "set",
+              implicit: true,
+              context: 1,
+            })
             public items: number[] = [];
           }
           const testHex = "3011a10f020101020102020103020104020105";
@@ -95,14 +102,21 @@ context("Test", () => {
             assertBuffer(Buffer.from(buf), Buffer.from(testHex, "hex"));
           });
           it("parse", () => {
-            const obj = src.AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test2);
+            const obj = src.AsnParser.parse(
+              new Uint8Array(Buffer.from(testHex, "hex")).buffer,
+              Test2,
+            );
             assert.strictEqual(obj.items.join(""), "12345");
           });
         });
         context("Repeated SEQUENCE", () => {
-
           class Test2 {
-            @src.AsnProp({ type: src.AsnPropTypes.Integer, repeated: "sequence", implicit: true, context: 1 })
+            @src.AsnProp({
+              type: src.AsnPropTypes.Integer,
+              repeated: "sequence",
+              implicit: true,
+              context: 1,
+            })
             public items: number[] = [];
           }
           const testHex = "3011a10f020101020102020103020104020105";
@@ -114,7 +128,10 @@ context("Test", () => {
             assertBuffer(Buffer.from(buf), Buffer.from(testHex, "hex"));
           });
           it("parse", () => {
-            const obj = src.AsnParser.parse(new Uint8Array(Buffer.from(testHex, "hex")).buffer, Test2);
+            const obj = src.AsnParser.parse(
+              new Uint8Array(Buffer.from(testHex, "hex")).buffer,
+              Test2,
+            );
             assert.strictEqual(obj.items.join(""), "12345");
           });
         });
@@ -156,7 +173,10 @@ context("Test", () => {
         assertBuffer(res, Buffer.from("06022a03", "hex"));
       });
       it("parse", () => {
-        const obj = src.AsnParser.parse(new Uint8Array(Buffer.from("06022a03", "hex")).buffer, Choice);
+        const obj = src.AsnParser.parse(
+          new Uint8Array(Buffer.from("06022a03", "hex")).buffer,
+          Choice,
+        );
         assert.strictEqual(obj.oidValue, "1.2.3");
       });
     });
@@ -178,7 +198,12 @@ context("Test", () => {
   });
 
   context("Converter", () => {
-    function test<T>(cls: new () => { value: T; }, hex: string, expected: T, assertCb?: (value: T, excepted: T) => void): void {
+    function test<T>(
+      cls: new () => { value: T },
+      hex: string,
+      expected: T,
+      assertCb?: (value: T, excepted: T) => void,
+    ): void {
       it("serialize", () => {
         const obj = new cls();
         obj.value = expected;
@@ -186,10 +211,7 @@ context("Test", () => {
         assertBuffer(res, Buffer.from(hex, "hex"));
       });
       it("parse", () => {
-        const obj = src.AsnParser.parse(
-          new Uint8Array(Buffer.from(hex, "hex")).buffer,
-          cls,
-        );
+        const obj = src.AsnParser.parse(new Uint8Array(Buffer.from(hex, "hex")).buffer, cls);
         // console.log(obj);
         if (assertCb) {
           assertCb(obj.value, expected);
@@ -250,9 +272,14 @@ context("Test", () => {
          * SEQUENCE (1 elem)
          *   OCTET STRING (5 byte) 0102030405
          */
-        test(Test, "300704050102030405", new Uint8Array([1, 2, 3, 4, 5]).buffer, (value, expected) => {
-          assertBuffer(Buffer.from(value), Buffer.from(expected));
-        });
+        test(
+          Test,
+          "300704050102030405",
+          new Uint8Array([1, 2, 3, 4, 5]).buffer,
+          (value, expected) => {
+            assertBuffer(Buffer.from(value), Buffer.from(expected));
+          },
+        );
       });
       context("AnyConverter", () => {
         class Test {
@@ -312,7 +339,11 @@ context("Test", () => {
          *   Universal My test text
          */
         // tslint:disable-next-line:max-line-length
-        test(Test, "30321c300000004d0000007900000020000000740000006500000073000000740000002000000074000000650000007800000074", "My test text");
+        test(
+          Test,
+          "30321c300000004d0000007900000020000000740000006500000073000000740000002000000074000000650000007800000074",
+          "My test text",
+        );
       });
       context("NumericStringConverter", () => {
         class Test {
@@ -417,7 +448,10 @@ context("Test", () => {
     context("Custom", () => {
       context("IntegerArrayBufferConverter", () => {
         class Test {
-          @src.AsnProp({ type: src.AsnPropTypes.Integer, converter: src.AsnIntegerArrayBufferConverter })
+          @src.AsnProp({
+            type: src.AsnPropTypes.Integer,
+            converter: src.AsnIntegerArrayBufferConverter,
+          })
           public value!: ArrayBuffer;
         }
         /**
@@ -435,7 +469,6 @@ context("Test", () => {
       });
     });
     context("BigInt", () => {
-
       @src.AsnChoiceType()
       class Test {
         @src.AsnProp({ type: src.AsnPropTypes.Integer, converter: src.AsnIntegerBigIntConverter })
@@ -522,9 +555,7 @@ context("Test", () => {
   });
 
   context("CONTEXT-SPECIFIC", () => {
-
     context("IMPLICIT", () => {
-
       class Test {
         @src.AsnProp({
           type: src.OctetString,
@@ -542,14 +573,15 @@ context("Test", () => {
       });
 
       it("parse", () => {
-        const obj = src.AsnParser.parse(new Uint8Array(Buffer.from("300780050102030405", "hex")).buffer, Test);
+        const obj = src.AsnParser.parse(
+          new Uint8Array(Buffer.from("300780050102030405", "hex")).buffer,
+          Test,
+        );
         assert.strictEqual(obj.value.byteLength, 5);
       });
-
     });
 
     context("EXPLICIT", () => {
-
       class Test {
         @src.AsnProp({
           type: src.AsnPropTypes.OctetString,
@@ -566,12 +598,13 @@ context("Test", () => {
       });
 
       it("parse", () => {
-        const obj = src.AsnParser.parse(new Uint8Array(Buffer.from("3009a00704050102030405", "hex")).buffer, Test);
+        const obj = src.AsnParser.parse(
+          new Uint8Array(Buffer.from("3009a00704050102030405", "hex")).buffer,
+          Test,
+        );
         assert.strictEqual(obj.value.byteLength, 5);
       });
-
     });
-
   });
 
   context("BitString", () => {
@@ -606,7 +639,6 @@ context("Test", () => {
   context("IA5String", () => {
     it("IMPLICIT", () => {
       class Test {
-
         @src.AsnProp({ type: src.AsnPropTypes.IA5String, context: 2, implicit: true })
         public value = "test";
       }
@@ -674,7 +706,10 @@ context("Test", () => {
 
         const obj1 = new Test();
         const der = src.AsnSerializer.serialize(obj1);
-        assert.strictEqual(Buffer.from(der).toString("hex"), "3011310f020101020102020103020104020105");
+        assert.strictEqual(
+          Buffer.from(der).toString("hex"),
+          "3011310f020101020102020103020104020105",
+        );
 
         const obj2 = src.AsnParser.parse(der, Test);
         assert.strictEqual(obj2.values.join(""), "12345");
@@ -687,7 +722,10 @@ context("Test", () => {
 
         const obj1 = new Test();
         const der = src.AsnSerializer.serialize(obj1);
-        assert.strictEqual(Buffer.from(der).toString("hex"), "3011300f020101020102020103020104020105");
+        assert.strictEqual(
+          Buffer.from(der).toString("hex"),
+          "3011300f020101020102020103020104020105",
+        );
 
         const obj2 = src.AsnParser.parse(der, Test);
         assert.strictEqual(obj2.values.join(""), "12345");
@@ -763,7 +801,6 @@ context("Test", () => {
   });
 
   context("Parse", () => {
-
     context("incoming buffers", () => {
       class Test {
         @src.AsnProp({ type: src.AsnPropTypes.Integer })
@@ -811,9 +848,8 @@ context("Test", () => {
   });
 
   context("Repeated SET using AsnType decorator", () => {
-
     @src.AsnType({ type: src.AsnTypeTypes.Set, itemType: src.AsnPropTypes.ObjectIdentifier })
-    class Test extends src.AsnArray<string> { }
+    class Test extends src.AsnArray<string> {}
 
     const testHex = "310c06042a030405060453040506";
 
@@ -831,7 +867,6 @@ context("Test", () => {
 
   // https://github.com/PeculiarVentures/asn1-schema/issues/75
   context("issue #75", () => {
-
     it("parse 3 bytes INTEGER", () => {
       @src.AsnType({ type: src.AsnTypeTypes.Choice })
       class Test {
@@ -870,7 +905,5 @@ context("Test", () => {
 
       assert.strictEqual(test.value, "5233100606242806050955395731361295");
     });
-
   });
-
 });

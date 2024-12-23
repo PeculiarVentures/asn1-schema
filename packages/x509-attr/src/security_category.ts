@@ -9,7 +9,6 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
  * ```
  */
 export class SecurityCategory {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier, implicit: true, context: 0 })
   public type = "";
 
