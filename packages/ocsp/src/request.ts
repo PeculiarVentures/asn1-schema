@@ -3,7 +3,7 @@ import { CertID } from "./cert_id";
 import { Extensions, Extension } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * Request         ::=     SEQUENCE {
  *   reqCert                     CertID,
  *   singleRequestExtensions     [0] EXPLICIT Extensions OPTIONAL }

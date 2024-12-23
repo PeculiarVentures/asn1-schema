@@ -4,7 +4,7 @@ import { AsnProp, AsnPropTypes, BitString } from "@peculiar/asn1-schema";
 export type CertPolicyType = "inhibitPolicyMapping" | "requireExplicitPolicy" | "inhibitAnyPolicy";
 
 /**
- * ```
+ * ```asn1
  * CertPolicyFlags ::= BIT STRING {
  *   inhibitPolicyMapping    (0),
  *   requireExplicitPolicy   (1),
@@ -39,7 +39,7 @@ export class CertPolicy extends BitString<CertPolicyFlags> {
 }
 
 /**
- * ```
+ * ```asn1
  * CertPathControls ::= SEQUENCE {
  *   taName           Name,
  *   certificate      [0] Certificate OPTIONAL,

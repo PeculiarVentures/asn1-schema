@@ -5,7 +5,6 @@ import { IAsnConvertible } from "../types";
 // Implement ArrayBufferView, cause ES5 doesn't allow to extend ArrayBuffer class
 
 export class OctetString implements IAsnConvertible, ArrayBufferView {
-
   public buffer: ArrayBuffer;
   public get byteLength(): number {
     return this.buffer.byteLength;
@@ -47,5 +46,4 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
   public toSchema(name: string): asn1js.OctetString {
     return new asn1js.OctetString({ name });
   }
-
 }

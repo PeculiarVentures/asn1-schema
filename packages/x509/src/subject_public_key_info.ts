@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "./algorithm_identifier";
 
 /**
- * ```
+ * ```asn1
  * SubjectPublicKeyInfo  ::=  SEQUENCE  {
  *   algorithm            AlgorithmIdentifier,
  *   subjectPublicKey     BIT STRING  }

@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { LogotypeInfo } from "./logotype_info";
 
 /**
- * ```
+ * ```asn1
  * OtherLogotypeInfo ::= SEQUENCE {
  *   logotypeType    OBJECT IDENTIFIER,
  *   info            LogotypeInfo }

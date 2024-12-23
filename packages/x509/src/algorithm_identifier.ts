@@ -4,7 +4,7 @@ import * as pvtsutils from "pvtsutils";
 export type ParametersType = ArrayBuffer | null;
 
 /**
- * ```
+ * ```asn1
  * AlgorithmIdentifier  ::=  SEQUENCE  {
  *   algorithm               OBJECT IDENTIFIER,
  *   parameters              ANY DEFINED BY algorithm OPTIONAL  }

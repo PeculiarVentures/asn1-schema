@@ -17,7 +17,7 @@ export const AsnIpConverter: IAsnConverter<string> = {
 };
 
 /**
- * ```
+ * ```asn1
  * OtherName ::= SEQUENCE {
  *   type-id    OBJECT IDENTIFIER,
  *   value      [0] EXPLICIT ANY DEFINED BY type-id }
@@ -36,7 +36,7 @@ export class OtherName {
 }
 
 /**
- * ```
+ * ```asn1
  * EDIPartyName ::= SEQUENCE {
  *   nameAssigner            [0]     DirectoryString OPTIONAL,
  *   partyName               [1]     DirectoryString }
@@ -55,7 +55,7 @@ export class EDIPartyName {
 }
 
 /**
- * ```
+ * ```asn1
  * GeneralName ::= CHOICE {
  *   otherName                       [0]     OtherName,
  *   rfc822Name                      [1]     IA5String,

@@ -11,7 +11,7 @@ import { AttCertIssuer } from "./attr_cert_issuer";
 import { AttCertValidityPeriod } from "./attr_cert_validity_period";
 
 /**
- * ```
+ * ```asn1
  * AttCertVersion ::= INTEGER { v2(1) }
  * ```
  */
@@ -20,7 +20,7 @@ export enum AttCertVersion {
 }
 
 /**
- * ```
+ * ```asn1
  * AttributeCertificateInfo ::= SEQUENCE {
  *   version        AttCertVersion  -- version is v2,
  *   holder         Holder,

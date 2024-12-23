@@ -5,13 +5,12 @@ import { AsnProp, AsnType, AsnTypeTypes, AsnPropTypes } from "@peculiar/asn1-sch
 //                                        id-pkix-ocsp-archive-cutoff }
 
 /**
- * ```
+ * ```asn1
  * ArchiveCutoff ::= GeneralizedTime
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ArchiveCutoff {
-
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public value: Date;
 

@@ -3,7 +3,7 @@ import { OCSPResponseStatus } from "./ocsp_response_status";
 import { ResponseBytes } from "./response_bytes";
 
 /**
- * ```
+ * ```asn1
  * OCSPResponse ::= SEQUENCE {
  *   responseStatus          OCSPResponseStatus,
  *   responseBytes       [0] EXPLICIT ResponseBytes OPTIONAL }

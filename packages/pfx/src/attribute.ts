@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * PKCS12Attribute ::= SEQUENCE {
  *   attrId      ATTRIBUTE.&id ({PKCS12AttrSet}),
  *   attrValues  SET OF ATTRIBUTE.&Type ({PKCS12AttrSet}{@attrId})
@@ -21,7 +21,7 @@ export class PKCS12Attribute {
 }
 
 /**
- * ```
+ * ```asn1
  * PKCS12AttrSet ATTRIBUTE ::= {
  *   friendlyName |
  *   localKeyId,

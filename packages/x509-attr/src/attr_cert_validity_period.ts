@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * AttCertValidityPeriod  ::= SEQUENCE {
  *      notBeforeTime  GeneralizedTime,
  *      notAfterTime   GeneralizedTime

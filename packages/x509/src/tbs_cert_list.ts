@@ -7,7 +7,7 @@ import { Version } from "./types";
 
 /**
  * Revoked certificate
- * ```
+ * ```asn1
  * SEQUENCE  {
  *   userCertificate         CertificateSerialNumber,
  *   revocationDate          Time,
@@ -38,7 +38,7 @@ export class RevokedCertificate {
 }
 
 /**
- * ```
+ * ```asn1
  * TBSCertList  ::=  SEQUENCE  {
  *   version                 Version OPTIONAL,
  *                                 -- if present, MUST be v2

@@ -4,7 +4,7 @@ import { Request } from "./request";
 import { Version } from "./types";
 
 /**
- * ```
+ * ```asn1
  * TBSRequest      ::=     SEQUENCE {
  *   version             [0]     EXPLICIT Version DEFAULT v1,
  *   requestorName       [1]     EXPLICIT GeneralName OPTIONAL,

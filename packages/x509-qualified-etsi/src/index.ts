@@ -2,7 +2,7 @@ import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculia
 
 /**
  * Alphabetic or numeric currency code as defined in ISO 4217. It is recommended that the Alphabetic form is used
- * ```
+ * ```asn1
  * Iso4217CurrencyCode ::= CHOICE {
  *   alphabetic PrintableString (SIZE (3)), -- Recommended
  *   numeric INTEGER (1..999) }
@@ -11,7 +11,7 @@ import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculia
 @AsnType({ type: AsnTypeTypes.Choice })
 export class Iso4217CurrencyCode {
   /**
-   * ```
+   * ```asn1
    * alphabetic PrintableString (SIZE (3)), -- Recommended
    * ```
    */
@@ -19,7 +19,7 @@ export class Iso4217CurrencyCode {
   public alphabetic?: string;
 
   /**
-   * ```
+   * ```asn1
    * numeric INTEGER (1..999)
    * ```
    */
@@ -46,7 +46,7 @@ export class Iso4217CurrencyCode {
 }
 
 /**
- * ```
+ * ```asn1
  * MonetaryValue::= SEQUENCE {
  *   currency Iso4217CurrencyCode,
  *   amount INTEGER,
@@ -56,7 +56,7 @@ export class Iso4217CurrencyCode {
  */
 export class MonetaryValue {
   /**
-   * ```
+   * ```asn1
    * currency Iso4217CurrencyCode
    * ```
    */
@@ -64,7 +64,7 @@ export class MonetaryValue {
   public currency = new Iso4217CurrencyCode();
 
   /**
-   * ```
+   * ```asn1
    * amount INTEGER
    * ```
    */
@@ -72,7 +72,7 @@ export class MonetaryValue {
   public amount = 0;
 
   /**
-   * ```
+   * ```asn1
    * exponent INTEGER
    * ```
    */
@@ -86,7 +86,7 @@ export class MonetaryValue {
 
 /**
  * Declaration of limit value. Identified by {@link id_etsi_qcs_qcLimitValue}
- * ```
+ * ```asn1
  * QcEuLimitValue ::= MonetaryValue
  *
  *   MonetaryValue::= SEQUENCE {
@@ -107,7 +107,7 @@ export class QcEuLimitValue extends MonetaryValue {}
 
 /**
  * Retention period declaration. Identified by {@link id_etsi_qcs_qcRetentionPeriod}
- * ```
+ * ```asn1
  * QcEuRetentionPeriod ::= INTEGER
  * ```
  */
@@ -122,7 +122,7 @@ export class QcEuRetentionPeriod {
 }
 
 /**
- * ```
+ * ```asn1
  * PdsLocation::= SEQUENCE {
  *   url IA5String,
  *   language PrintableString (SIZE(2))} --ISO 639-1 language code
@@ -131,7 +131,7 @@ export class QcEuRetentionPeriod {
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class PdsLocation {
   /**
-   * ```
+   * ```asn1
    * url IA5String
    * ```
    */
@@ -139,7 +139,7 @@ export class PdsLocation {
   public url = "";
 
   /**
-   * ```
+   * ```asn1
    * language PrintableString (SIZE(2))} --ISO 639-1 language code
    * ```
    */
@@ -152,7 +152,7 @@ export class PdsLocation {
 }
 
 /**
- * ```
+ * ```asn1
  * PdsLocations ::= SEQUENCE SIZE (1..MAX) OF PdsLocation
  * ```
  */
@@ -168,7 +168,7 @@ export class PdsLocations extends AsnArray<PdsLocation> {
 
 /**
  * PKI Disclosure statements. Identified by {@link id_etsi_qcs_qcPDS}
- * ```
+ * ```asn1
  * QcEuPDS ::= PdsLocations
  *   PdsLocations ::= SEQUENCE SIZE (1..MAX) OF PdsLocation
  *   PdsLocation::= SEQUENCE {
@@ -188,7 +188,7 @@ export class QcEuPDS extends PdsLocations {
 
 /**
  * Certificate type. Identified by {@link id_etsi_qcs_qcType}
- * ```
+ * ```asn1
  * QcType::= SEQUENCE OF OBJECT IDENTIFIER (id-etsi-qct-esign | id-etsi-qct-eseal |
  *                                         id-etsi-qct-web, ...)
  * ```
@@ -204,7 +204,7 @@ export class QcType extends AsnArray<string> {
 }
 
 /**
- * ```
+ * ```asn1
  * CountryName ::= PrintableString (SIZE (2)) (export constRAINED BY { -- ISO 3166 alpha-2 codes only -- })
  * ```
  */
@@ -213,7 +213,7 @@ export type CountryName = string;
 /**
  * Country or set of countries under the legislation of which the certificate is issued as a
  * qualified certificate. Identified by {@link id_etsi_qcs_qcCClegislation}
- * ```
+ * ```asn1
  * QcCClegislation ::= SEQUENCE OF CountryName
  *
  *   CountryName ::= PrintableString (SIZE (2)) (export constRAINED BY { -- ISO 3166 alpha-2 codes only -- })
@@ -236,55 +236,56 @@ export class QcCClegislation extends AsnArray<CountryName> {
 //#region object identifiers
 
 /**
- * ```
+ * ```asn1
  * id-etsi-qcs OBJECT IDENTIFIER ::= { itu-t(0) identified-organization(4) etsi(0) id-qc-profile(1862) 1 }
  * ```
  */
 export const id_etsi_qcs = "0.4.0.1862.1";
 
 /**
- * ```
+ * ```asn1
  * id-etsi-qcs-QcCompliance OBJECT IDENTIFIER ::= { id-etsi-qcs 1 }
+ * ```
  */
 export const id_etsi_qcs_qcCompliance = `${id_etsi_qcs}.1`;
 
 /**
- * ```
+ * ```asn1
  * id-etsi-qcs-QcLimitValue OBJECT IDENTIFIER ::= { id-etsi-qcs 2 }
  * ```
  */
 export const id_etsi_qcs_qcLimitValue = `${id_etsi_qcs}.2`;
 
 /**
- * ```
+ * ```asn1
  * id-etsi-qcs-QcRetentionPeriod OBJECT IDENTIFIER ::= { id-etsi-qcs 3 }
  * ```
  */
 export const id_etsi_qcs_qcRetentionPeriod = `${id_etsi_qcs}.3`;
 
 /**
- * ```
+ * ```asn1
  * id-etsi-qcs-QcSSCD OBJECT IDENTIFIER ::= { id-etsi-qcs 4 }
  * ```
  */
 export const id_etsi_qcs_qcSSCD = `${id_etsi_qcs}.4`;
 
 /**
- * ```
+ * ```asn1
  * id-etsi-qcs-QcPDS OBJECT IDENTIFIER ::= { id-etsi-qcs 5 }
  * ```
  */
 export const id_etsi_qcs_qcPDS = `${id_etsi_qcs}.5`;
 
 /**
- * ```
+ * ```asn1
  * id-etsi-qcs-QcType OBJECT IDENTIFIER ::= { id-etsi-qcs 6 }
  * ```
  */
 export const id_etsi_qcs_qcType = `${id_etsi_qcs}.6`;
 
 /**
- * ```
+ * ```asn1
  * id-etsi-qcs-QcCClegislation OBJECT IDENTIFIER ::= { id-etsi-qcs 7 }
  * ```
  */
@@ -295,15 +296,15 @@ export const id_etsi_qcs_qcCClegislation = `${id_etsi_qcs}.7`;
 //#region QC type identifiers
 /**
  * Certificate for electronic signatures as defined in Regulation (EU) No 910/2014
- * ```
+ * ```asn1
  * id-etsi-qct-esign OBJECT IDENTIFIER ::= { id-etsi-qcs-QcType 1 }
  * ```
  */
 export const id_etsi_qct_esign = `${id_etsi_qcs_qcType}.1`;
 
-/**
+/**asn1
  * Certificate for electronic seals as defined in Regulation (EU) No 910/2014
- * ```
+ * ```asn1
  * id-etsi-qct-eseal OBJECT IDENTIFIER ::= { id-etsi-qcs-QcType 2 }
  * ```
  */
@@ -311,7 +312,7 @@ export const id_etsi_qct_eseal = `${id_etsi_qcs_qcType}.2`;
 
 /**
  * Certificate for website authentication defined in Regulation (EU) No 910/2014
- * ```
+ * ```asn1
  * id-etsi-qct-web OBJECT IDENTIFIER ::= { id-etsi-qcs-QcType 3 }
  * ```
  */

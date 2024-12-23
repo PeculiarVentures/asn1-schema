@@ -3,7 +3,7 @@ import { LogotypeAudio } from "./logotype_audio";
 import { LogotypeImage } from "./logotype_image";
 
 /**
- * ```
+ * ```asn1
  * LogotypeData ::= SEQUENCE {
  *   image           SEQUENCE OF LogotypeImage OPTIONAL,
  *   audio           [1] SEQUENCE OF LogotypeAudio OPTIONAL }

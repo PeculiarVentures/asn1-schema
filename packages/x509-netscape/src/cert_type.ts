@@ -2,7 +2,7 @@ import { id_netscapeCertExtension } from "./object_identifiers";
 import { BitString } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * netscape-cert-type OBJECT IDENTIFIER ::= { netscape-cert-extension 1 }
  * ```
  */

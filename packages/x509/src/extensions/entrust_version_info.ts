@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes, BitString } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * id-entrust-entrustVersInfo      OBJECT IDENTIFIER ::= {iso(1)
  *   member-body(2) us(840) nortelnetworks(113533) entrust(7)
  *   nsn-ce(65) 0}
@@ -18,7 +18,7 @@ export enum EntrustInfoFlags {
 }
 
 /**
- * ```
+ * ```asn1
  * EntrustInfoFlags ::= BIT STRING {
  *   keyUpdateAllowed        (0),
  *   newExtensions           (1),  -- not used
@@ -47,16 +47,15 @@ export class EntrustInfo extends BitString {
 }
 
 /**
- * ```
+ * ```asn1
  * EntrustVersionInfo ::= SEQUENCE {
  *     entrustVers	GeneralString,
  *     entrustInfoFlags	EntrustInfoFlags }
  * ```
  */
 export class EntrustVersionInfo {
-
   @AsnProp({ type: AsnPropTypes.GeneralString })
-  public entrustVers = '';
+  public entrustVers = "";
 
   @AsnProp({ type: EntrustInfo })
   public entrustInfoFlags = new EntrustInfo();

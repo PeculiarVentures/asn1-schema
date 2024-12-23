@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * LogotypeImageResolution ::= CHOICE {
  *   numBits         [1] INTEGER,   -- Resolution in bits
  *   tableSize       [2] INTEGER }  -- Number of colors or grey tones

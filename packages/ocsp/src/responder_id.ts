@@ -2,7 +2,7 @@ import { AsnProp, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-sche
 import { Name } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * KeyHash ::= OCTET STRING -- SHA-1 hash of responder's public key
  *   -- (excluding the tag and length fields)
  * ```
@@ -10,7 +10,7 @@ import { Name } from "@peculiar/asn1-x509";
 export class KeyHash extends OctetString {}
 
 /**
- * ```
+ * ```asn1
  * ResponderID ::= CHOICE {
  *   byName   [1] Name,
  *   byKey    [2] KeyHash }

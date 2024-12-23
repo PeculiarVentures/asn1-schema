@@ -15,4 +15,4 @@ export const id_counterSignature = "1.2.840.113549.1.9.6";
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class CounterSignature extends SignerInfo { }
+export class CounterSignature extends SignerInfo {}

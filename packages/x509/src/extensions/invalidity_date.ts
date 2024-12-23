@@ -2,20 +2,19 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-sch
 import { id_ce } from "../object_identifiers";
 
 /**
- * ```
+ * ```asn1
  * id-ce-invalidityDate OBJECT IDENTIFIER ::= { id-ce 24 }
  * ```
  */
 export const id_ce_invalidityDate = `${id_ce}.24`;
 
 /**
- * ```
+ * ```asn1
  * InvalidityDate ::=  GeneralizedTime
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class InvalidityDate {
-
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public value = new Date();
 

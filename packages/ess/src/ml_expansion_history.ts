@@ -3,7 +3,7 @@ import { SubjectKeyIdentifier, GeneralNames } from "@peculiar/asn1-x509";
 import { IssuerAndSerialNumber } from "@peculiar/asn1-cms";
 
 /**
- * ```
+ * ```asn1
  * EntityIdentifier ::= CHOICE {
  *   issuerAndSerialNumber IssuerAndSerialNumber,
  *   subjectKeyIdentifier SubjectKeyIdentifier }
@@ -31,7 +31,7 @@ export class EntityIdentifier {
 }
 
 /**
- * ```
+ * ```asn1
  * MLReceiptPolicy ::= CHOICE {
  *   none [0] NULL,
  *   insteadOf [1] SEQUENCE SIZE (1..MAX) OF GeneralNames,
@@ -56,7 +56,7 @@ export class MLReceiptPolicy {
 }
 
 /**
- * ```
+ * ```asn1
  * MLData ::= SEQUENCE {
  *   mailListIdentifier EntityIdentifier,
  *   expansionTime GeneralizedTime,
@@ -79,7 +79,7 @@ export class MLData {
 }
 
 /**
- * ```
+ * ```asn1
  * MLExpansionHistory ::= SEQUENCE
  *         SIZE (1..ub-ml-expansion-history) OF MLData
  * ```

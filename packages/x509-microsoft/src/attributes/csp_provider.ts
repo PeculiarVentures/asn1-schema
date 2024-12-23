@@ -3,7 +3,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 export const id_enrollmentCSPProvider = "1.3.6.1.4.1.311.13.2.2";
 
 /**
- * ```
+ * ```asn1
  * CSPProvider ::= SEQUENCE {
  *   keySpec_INTEGER,
  *   cspName_BMPSTRING,
@@ -12,7 +12,6 @@ export const id_enrollmentCSPProvider = "1.3.6.1.4.1.311.13.2.2";
  * ```
  */
 export class CSPProvider {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public keySpec = 0;
 

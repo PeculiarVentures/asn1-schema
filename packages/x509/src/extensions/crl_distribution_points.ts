@@ -4,14 +4,22 @@ import { GeneralName } from "../general_name";
 import { id_ce } from "../object_identifiers";
 
 /**
- * ```
+ * ```asn1
  * id-ce-cRLDistributionPoints OBJECT IDENTIFIER ::=  { id-ce 31 }
  * ```
  */
 export const id_ce_cRLDistributionPoints = `${id_ce}.31`;
 
-export type ReasonType = "unused" | "keyCompromise" | "cACompromise" | "affiliationChanged" | "superseded"
-  | "cessationOfOperation" | "certificateHold" | "privilegeWithdrawn" | "aACompromise";
+export type ReasonType =
+  | "unused"
+  | "keyCompromise"
+  | "cACompromise"
+  | "affiliationChanged"
+  | "superseded"
+  | "cessationOfOperation"
+  | "certificateHold"
+  | "privilegeWithdrawn"
+  | "aACompromise";
 
 export enum ReasonFlags {
   unused = 0x0001,
@@ -26,7 +34,7 @@ export enum ReasonFlags {
 }
 
 /**
- * ```
+ * ```asn1
  * ReasonFlags ::= BIT STRING {
  *   unused                  (0),
  *   keyCompromise           (1),
@@ -40,7 +48,6 @@ export enum ReasonFlags {
  * ```
  */
 export class Reason extends BitString {
-
   public toJSON(): ReasonType[] {
     const res: ReasonType[] = [];
     const flags = this.toNumber();
@@ -80,7 +87,7 @@ export class Reason extends BitString {
 }
 
 /**
- * ```
+ * ```asn1
  * DistributionPointName ::= CHOICE {
  *   fullName                [0]     GeneralNames,
  *   nameRelativeToCRLIssuer [1]     RelativeDistinguishedName }
@@ -88,7 +95,6 @@ export class Reason extends BitString {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class DistributionPointName {
-
   @AsnProp({ type: GeneralName, context: 0, repeated: "sequence", implicit: true })
   public fullName?: GeneralName[];
 
@@ -101,7 +107,7 @@ export class DistributionPointName {
 }
 
 /**
- * ```
+ * ```asn1
  * DistributionPoint ::= SEQUENCE {
  *   distributionPoint       [0]     DistributionPointName OPTIONAL,
  *   reasons                 [1]     ReasonFlags OPTIONAL,
@@ -109,7 +115,6 @@ export class DistributionPointName {
  * ```
  */
 export class DistributionPoint {
-
   @AsnProp({ type: DistributionPointName, context: 0, optional: true })
   public distributionPoint?: DistributionPointName;
 
@@ -125,18 +130,16 @@ export class DistributionPoint {
 }
 
 /**
- * ```
+ * ```asn1
  * CRLDistributionPoints ::= SEQUENCE SIZE (1..MAX) OF DistributionPoint
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: DistributionPoint })
 export class CRLDistributionPoints extends AsnArray<DistributionPoint> {
-
   constructor(items?: DistributionPoint[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, CRLDistributionPoints.prototype);
   }
-
 }

@@ -2,7 +2,7 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 import { AsnProp, OctetString } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * DigestInfo ::= SEQUENCE {
  *   digestAlgorithm DigestAlgorithm,
  *   digest OCTET STRING
@@ -10,7 +10,6 @@ import { AsnProp, OctetString } from "@peculiar/asn1-schema";
  * ```
  */
 export class DigestInfo {
-
   @AsnProp({ type: AlgorithmIdentifier })
   public digestAlgorithm = new AlgorithmIdentifier();
 

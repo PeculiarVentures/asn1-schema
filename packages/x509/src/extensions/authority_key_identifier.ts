@@ -1,24 +1,29 @@
-import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnIntegerArrayBufferConverter,
+  OctetString,
+} from "@peculiar/asn1-schema";
 import { GeneralName } from "../general_name";
 import { id_ce } from "../object_identifiers";
 import { CertificateSerialNumber } from "../types";
 
 /**
- * ```
+ * ```asn1
  * id-ce-authorityKeyIdentifier OBJECT IDENTIFIER ::=  { id-ce 35 }
  * ```
  */
 export const id_ce_authorityKeyIdentifier = `${id_ce}.35`;
 
 /**
- * ```
+ * ```asn1
  * KeyIdentifier ::= OCTET STRING
  * ```
  */
-export class KeyIdentifier extends OctetString { }
+export class KeyIdentifier extends OctetString {}
 
 /**
- * ```
+ * ```asn1
  * AuthorityKeyIdentifier ::= SEQUENCE {
  *   keyIdentifier             [0] KeyIdentifier           OPTIONAL,
  *   authorityCertIssuer       [1] GeneralNames            OPTIONAL,
@@ -27,7 +32,6 @@ export class KeyIdentifier extends OctetString { }
  */
 
 export class AuthorityKeyIdentifier {
-
   @AsnProp({ type: KeyIdentifier, context: 0, optional: true, implicit: true })
   public keyIdentifier?: KeyIdentifier;
 
@@ -48,5 +52,4 @@ export class AuthorityKeyIdentifier {
       Object.assign(this, params);
     }
   }
-
 }

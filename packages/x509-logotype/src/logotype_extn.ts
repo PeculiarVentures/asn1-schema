@@ -3,7 +3,7 @@ import { LogotypeInfo } from "./logotype_info";
 import { OtherLogotypeInfo } from "./other_logotype_info";
 
 /**
- * ```
+ * ```asn1
  * LogotypeExtn ::= SEQUENCE {
  *   communityLogos  [0] EXPLICIT SEQUENCE OF LogotypeInfo OPTIONAL,
  *   issuerLogo      [1] EXPLICIT LogotypeInfo OPTIONAL,

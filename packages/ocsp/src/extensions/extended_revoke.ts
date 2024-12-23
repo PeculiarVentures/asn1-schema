@@ -4,13 +4,12 @@ import { AsnProp, AsnType, AsnTypeTypes, AsnPropTypes } from "@peculiar/asn1-sch
 //                                         id-pkix-ocsp-extended-revoke }
 
 /**
- * ```
+ * ```asn1
  * ExtendedRevoke ::= NULL
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ExtendedRevoke {
-
   @AsnProp({ type: AsnPropTypes.Null })
   public value: null;
 

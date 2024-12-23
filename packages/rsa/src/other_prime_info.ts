@@ -8,7 +8,7 @@ import {
 } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * OtherPrimeInfo ::= SEQUENCE {
  *     prime             INTEGER,  -- ri
  *     exponent          INTEGER,  -- di
@@ -32,7 +32,7 @@ export class OtherPrimeInfo {
 }
 
 /**
- * ```
+ * ```asn1
  * OtherPrimeInfos ::= SEQUENCE SIZE(1..MAX) OF OtherPrimeInfo
  * ```
  */

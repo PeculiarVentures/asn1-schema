@@ -7,7 +7,7 @@ import {
 } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * CertID          ::=     SEQUENCE {
  *   hashAlgorithm       AlgorithmIdentifier,
  *   issuerNameHash      OCTET STRING, -- Hash of issuer's DN

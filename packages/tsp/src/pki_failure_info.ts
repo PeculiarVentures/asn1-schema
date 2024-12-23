@@ -40,7 +40,7 @@ export type PKIFailureInfoType = keyof typeof PKIFailureInfoFlags;
 export type PKIFailureInfoJson = PKIFailureInfoType[];
 
 /**
- * ```
+ * ```asn1
  * PKIFailureInfo ::= BIT STRING {
  *  badAlg               (0),
  *    -- unrecognized or unsupported Algorithm Identifier

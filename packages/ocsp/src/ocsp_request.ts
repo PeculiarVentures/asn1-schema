@@ -3,7 +3,7 @@ import { Signature } from "./signature";
 import { TBSRequest } from "./tbs_request";
 
 /**
- * ```
+ * ```asn1
  * OCSPRequest     ::=     SEQUENCE {
  *   tbsRequest                  TBSRequest,
  *   optionalSignature   [0]     EXPLICIT Signature OPTIONAL }

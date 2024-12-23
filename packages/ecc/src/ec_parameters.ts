@@ -2,7 +2,7 @@ import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculiar/asn1-sch
 import { SpecifiedECDomain } from "./rfc3279";
 
 /**
- * ```
+ * ```asn1
  * ECParameters ::= CHOICE {
  *   namedCurve         OBJECT IDENTIFIER
  *   implicitCurve   NULL

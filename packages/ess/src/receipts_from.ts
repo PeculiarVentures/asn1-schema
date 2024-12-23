@@ -3,7 +3,7 @@ import { AllOrFirstTier } from "./types";
 import { GeneralNames } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * ReceiptsFrom ::= CHOICE {
  *   allOrFirstTier [0] AllOrFirstTier,
  *   -- formerly "allOrNone [0]AllOrNone"

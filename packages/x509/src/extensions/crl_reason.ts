@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-sch
 import { id_ce } from "../object_identifiers";
 
 /**
- * ```
+ * ```asn1
  * id-ce-cRLReasons OBJECT IDENTIFIER ::= { id-ce 21 }
  * ```
  */
@@ -22,7 +22,7 @@ export enum CRLReasons {
 }
 
 /**
- * ```
+ * ```asn1
  * CRLReason ::= ENUMERATED {
  *   unspecified             (0),
  *   keyCompromise           (1),
@@ -39,7 +39,6 @@ export enum CRLReasons {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class CRLReason {
-
   @AsnProp({ type: AsnPropTypes.Enumerated })
   public reason: CRLReasons = CRLReasons.unspecified;
 

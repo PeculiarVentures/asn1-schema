@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * SecurityCategory ::= SEQUENCE {
  *      type      [0]  IMPLICIT OBJECT IDENTIFIER,
  *      value     [1]  ANY DEFINED BY type

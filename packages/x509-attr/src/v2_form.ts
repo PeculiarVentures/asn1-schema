@@ -4,7 +4,7 @@ import { IssuerSerial } from "./issuer_serial";
 import { ObjectDigestInfo } from "./object_digest_info";
 
 /**
- * ```
+ * ```asn1
  * V2Form ::= SEQUENCE {
  *      issuerName            GeneralNames  OPTIONAL,
  *      baseCertificateID     [0] IssuerSerial  OPTIONAL,

@@ -3,7 +3,7 @@ import { LogotypeData } from "./logotype_data";
 import { LogotypeReference } from "./logotype_reference";
 
 /**
- * ```
+ * ```asn1
  * LogotypeInfo ::= CHOICE {
  *   direct          [0] LogotypeData,
  *   indirect        [1] LogotypeReference }

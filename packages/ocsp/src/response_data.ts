@@ -5,7 +5,7 @@ import { SingleResponse } from "./single_response";
 import { Version } from "./types";
 
 /**
- * ```
+ * ```asn1
  * ResponseData ::= SEQUENCE {
  *   version             [0] EXPLICIT Version DEFAULT v1,
  *   responderID             ResponderID,

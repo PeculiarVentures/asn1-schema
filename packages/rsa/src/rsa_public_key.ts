@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * RSAPublicKey ::= SEQUENCE {
  *   modulus           INTEGER,  -- n
  *   publicExponent    INTEGER   -- e

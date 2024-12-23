@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * ECDSA-Sig-Value ::= SEQUENCE {
  *   r  INTEGER,
  *   s  INTEGER

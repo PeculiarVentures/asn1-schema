@@ -4,7 +4,6 @@ import { AsnConvert } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 context("RSASSA-PSS params", () => {
-
   it("serialize default", () => {
     const params = new RsaSaPssParams();
 
@@ -20,10 +19,12 @@ context("RSASSA-PSS params", () => {
       }),
       maskGenAlgorithm: new AlgorithmIdentifier({
         algorithm: id_sha1,
-        parameters: AsnConvert.serialize(new AlgorithmIdentifier({
-          algorithm: id_sha1,
-          parameters: null
-        })),
+        parameters: AsnConvert.serialize(
+          new AlgorithmIdentifier({
+            algorithm: id_sha1,
+            parameters: null,
+          }),
+        ),
       }),
       saltLength: 1000,
       trailerField: 2,
@@ -45,7 +46,9 @@ context("RSASSA-PSS params", () => {
     //     INTEGER 1000
     //   [3] (1 elem)
     //     INTEGER 2
-    assert.strictEqual(Buffer.from(der).toString("hex"), "3031a00e300c06082a864886f70d02050500a114301206052b0e03021a300906052b0e03021a0500a204020203e8a303020102");
+    assert.strictEqual(
+      Buffer.from(der).toString("hex"),
+      "3031a00e300c06082a864886f70d02050500a114301206052b0e03021a300906052b0e03021a0500a204020203e8a303020102",
+    );
   });
-
 });

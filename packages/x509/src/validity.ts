@@ -6,7 +6,7 @@ export interface IValidityParams {
   notAfter: Date;
 }
 /**
- * ```
+ * ```asn1
  * Validity ::= SEQUENCE {
  *   notBefore      Time,
  *   notAfter       Time  }

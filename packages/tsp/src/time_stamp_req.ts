@@ -7,14 +7,14 @@ export enum TimeStampReqVersion {
 }
 
 /**
- * ```
+ * ```asn1
  * TSAPolicyId ::= OBJECT IDENTIFIER
  * ```
  */
 
 export type TSAPolicyId = string;
 /**
- * ```
+ * ```asn1
  * TimeStampReq ::= SEQUENCE  {
  *   version                  INTEGER  { v1(1) },
  *   messageImprint           MessageImprint,

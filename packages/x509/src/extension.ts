@@ -8,7 +8,7 @@ import {
 } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * Extension  ::=  SEQUENCE  {
  *   extnID      OBJECT IDENTIFIER,
  *   critical    BOOLEAN DEFAULT FALSE,
@@ -40,7 +40,7 @@ export class Extension {
 }
 
 /**
- * ```
+ * ```asn1
  * Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
  * ```
  */

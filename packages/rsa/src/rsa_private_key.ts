@@ -2,15 +2,16 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
 import { OtherPrimeInfos } from "./other_prime_info";
 
 /**
- * ```
+ * ```asn1
  * Version ::= INTEGER { two-prime(0), multi(1) }
  *     (CONSTRAINED BY
  *       {-- version MUST
  *  be multi if otherPrimeInfos present --})
+ * ```
  */
 export type Version = number;
 /**
- * ```
+ * ```asn1
  * RSAPrivateKey ::= SEQUENCE {
  *   version           Version,
  *   modulus           INTEGER,  -- n

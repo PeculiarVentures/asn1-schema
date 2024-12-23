@@ -1,17 +1,24 @@
 // -- Biometric info extension
 
 import { id_pe, AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnType,
+  AsnTypeTypes,
+  AsnArray,
+  OctetString,
+} from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * id-pe-biometricInfo OBJECT IDENTIFIER  ::= {id-pe 2}
  * ```
  */
 export const id_pe_biometricInfo = `${id_pe}.2`;
 
 /**
- * ```
+ * ```asn1
  * PredefinedBiometricType ::= INTEGER {
  *   picture(0), handwritten-signature(1)}
  *   (picture|handwritten-signature)
@@ -23,7 +30,7 @@ export enum PredefinedBiometricType {
 }
 
 /**
- * ```
+ * ```asn1
  * TypeOfBiometricData ::= CHOICE {
  *     predefinedBiometricType   PredefinedBiometricType,
  *     biometricDataOid          OBJECT IDENTIFIER }
@@ -31,7 +38,6 @@ export enum PredefinedBiometricType {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class TypeOfBiometricData {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public predefinedBiometricType?: PredefinedBiometricType;
 
@@ -44,7 +50,7 @@ export class TypeOfBiometricData {
 }
 
 /**
- * ```
+ * ```asn1
  * BiometricData ::= SEQUENCE {
  *   typeOfBiometricData  TypeOfBiometricData,
  *   hashAlgorithm        AlgorithmIdentifier,
@@ -53,7 +59,6 @@ export class TypeOfBiometricData {
  * ```
  */
 export class BiometricData {
-
   @AsnProp({ type: TypeOfBiometricData })
   public typeOfBiometricData = new TypeOfBiometricData();
 
@@ -72,18 +77,16 @@ export class BiometricData {
 }
 
 /**
- * ```
+ * ```asn1
  * BiometricSyntax ::= SEQUENCE OF BiometricData
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: BiometricData })
 export class BiometricSyntax extends AsnArray<BiometricData> {
-
   constructor(items?: BiometricData[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, BiometricSyntax.prototype);
   }
-
 }

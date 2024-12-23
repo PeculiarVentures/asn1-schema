@@ -2,14 +2,14 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculia
 import { Convert } from "pvtsutils";
 
 /**
- * ```
+ * ```asn1
  * AttributeType ::= OBJECT IDENTIFIER
  * ```
  */
 export type AttributeType = string;
 
 /**
- * ```
+ * ```asn1
  * DirectoryString ::= CHOICE {
  *       teletexString           TeletexString (SIZE (1..MAX)),
  *       printableString         PrintableString (SIZE (1..MAX)),
@@ -55,7 +55,7 @@ export class DirectoryString {
 }
 
 /**
- * ```
+ * ```asn1
  * AttributeValue ::= ANY -- DEFINED BY AttributeType
  * in general it will be a DirectoryString
  * ```
@@ -79,7 +79,7 @@ export class AttributeValue extends DirectoryString {
 }
 
 /**
- * ```
+ * ```asn1
  * AttributeTypeAndValue ::= SEQUENCE {
  *   type     AttributeType,
  *   value    AttributeValue }
@@ -98,7 +98,7 @@ export class AttributeTypeAndValue {
 }
 
 /**
- * ```
+ * ```asn1
  * RelativeDistinguishedName ::= SET SIZE (1..MAX) OF AttributeTypeAndValue
  * ```
  */
@@ -113,7 +113,7 @@ export class RelativeDistinguishedName extends AsnArray<AttributeTypeAndValue> {
 }
 
 /**
- * ```
+ * ```asn1
  * RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
  * ```
  */
@@ -128,7 +128,7 @@ export class RDNSequence extends AsnArray<RelativeDistinguishedName> {
 }
 
 /**
- * ```
+ * ```asn1
  * Name ::= CHOICE { -- only one possibility for now --
  *   rdnSequence  RDNSequence }
  * ```

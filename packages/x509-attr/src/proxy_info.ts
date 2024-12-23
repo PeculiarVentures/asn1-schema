@@ -2,7 +2,7 @@ import { AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 import { Targets } from "./target";
 
 /**
- * ```
+ * ```asn1
  * ProxyInfo ::= SEQUENCE OF Targets
  * ```
  */

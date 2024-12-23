@@ -15,4 +15,4 @@ export const id_signingTime = "1.2.840.113549.1.9.5";
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class SigningTime extends Time { }
+export class SigningTime extends Time {}

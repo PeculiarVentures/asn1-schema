@@ -2,14 +2,14 @@ import { AsnProp, AsnType, AsnTypeTypes, AsnPropTypes } from "@peculiar/asn1-sch
 import { RevokedInfo } from "./revoked_info";
 
 /**
- * ```
+ * ```asn1
  * UnknownInfo ::= NULL
  * ```
  */
 export type UnknownInfo = null;
 
 /**
- * ```
+ * ```asn1
  * CertStatus ::= CHOICE {
  *   good                [0]     IMPLICIT NULL,
  *   revoked             [1]     IMPLICIT RevokedInfo,

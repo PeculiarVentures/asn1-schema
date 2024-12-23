@@ -5,7 +5,7 @@ import type * as asn1js from "asn1js";
 
 export const id_certificateTransparency = "1.3.6.1.4.1.11129.2.4.2";
 /**
- * ```
+ * ```asn1
  * CertificateTransparency ::= OCTET STRING
  * ```
  */

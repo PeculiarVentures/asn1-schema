@@ -2,7 +2,7 @@ import { AsnArray, AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculia
 import { PKCS12Attribute } from "./attribute";
 
 /**
- * ```
+ * ```asn1
  * SafeBag ::= SEQUENCE {
  *   bagId         BAG-TYPE.&id ({PKCS12BagSet}),
  *   bagValue      [0] EXPLICIT BAG-TYPE.&Type({PKCS12BagSet}{@bagId}),
@@ -26,7 +26,7 @@ export class SafeBag {
 }
 
 /**
- * ```
+ * ```asn1
  * SafeContents ::= SEQUENCE OF SafeBag
  * ```
  */

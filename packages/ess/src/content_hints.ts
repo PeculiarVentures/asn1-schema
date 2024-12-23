@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { ContentType } from "@peculiar/asn1-cms";
 
 /**
- * ```
+ * ```asn1
  * ContentHints ::= SEQUENCE {
  *   contentDescription UTF8String (SIZE (1..MAX)) OPTIONAL,
  *   contentType ContentType }

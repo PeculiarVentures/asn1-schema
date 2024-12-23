@@ -2,7 +2,7 @@ import { AsnProp, OctetString, AsnPropTypes } from "@peculiar/asn1-schema";
 import { GeneralNames } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * CHOICE {
  *                    octets    OCTET STRING,
  *                    oid       OBJECT IDENTIFIER,
@@ -25,7 +25,7 @@ export class IetfAttrSyntaxValueChoices {
 }
 
 /**
- * ```
+ * ```asn1
  * IetfAttrSyntax ::= SEQUENCE {
  *     policyAuthority[0] GeneralNames    OPTIONAL,
  *     values         SEQUENCE OF CHOICE {

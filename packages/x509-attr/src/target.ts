@@ -4,7 +4,7 @@ import { IssuerSerial } from "./issuer_serial";
 import { ObjectDigestInfo } from "./object_digest_info";
 
 /**
- * ```
+ * ```asn1
  * TargetCert  ::= SEQUENCE {
  *      targetCertificate  IssuerSerial,
  *      targetName         GeneralName OPTIONAL,
@@ -28,7 +28,7 @@ export class TargetCert {
 }
 
 /**
- * ```
+ * ```asn1
  * Target  ::= CHOICE {
  *      targetName     [0] GeneralName,
  *      targetGroup    [1] GeneralName,
@@ -53,7 +53,7 @@ export class Target {
 }
 
 /**
- * ```
+ * ```asn1
  * Targets ::= SEQUENCE OF Target
  * ```
  */

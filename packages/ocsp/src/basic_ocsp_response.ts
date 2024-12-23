@@ -6,7 +6,7 @@ import { ResponseData } from "./response_data";
 //  { BasicOCSPResponse IDENTIFIED BY id-pkix-ocsp-basic }
 
 /**
- * ```
+ * ```asn1
  * BasicOCSPResponse ::= SEQUENCE {
  *   tbsResponseData          ResponseData,
  *   signatureAlgorithm       AlgorithmIdentifier,

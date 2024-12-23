@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * SecurityCategory ::= SEQUENCE {
  *   type  [0] OBJECT IDENTIFIER,
  *   value [1] ANY DEFINED BY type -- defined by type
@@ -21,7 +21,7 @@ export class SecurityCategory {
 }
 
 /**
- * ```
+ * ```asn1
  * SecurityCategories ::= SET SIZE (1..ub-security-categories) OF
  *         SecurityCategory
  * ```

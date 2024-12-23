@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { HashAlgAndValue } from "./hash_alg_and_value";
 
 /**
- * ```
+ * ```asn1
  * LogotypeDetails ::= SEQUENCE {
  *   mediaType       IA5String, -- MIME media type name and optional
  *                              -- parameters

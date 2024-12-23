@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
 import { GeneralNames, CertificateSerialNumber, UniqueIdentifier } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * IssuerSerial  ::=  SEQUENCE {
  *      issuer         GeneralNames,
  *      serial         CertificateSerialNumber,

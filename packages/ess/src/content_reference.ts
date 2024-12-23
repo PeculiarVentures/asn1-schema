@@ -3,7 +3,7 @@ import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
 import { ContentIdentifier } from "./types";
 
 /**
- * ```
+ * ```asn1
  * ContentReference ::= SEQUENCE {
  *   contentType ContentType,
  *   signedContentIdentifier ContentIdentifier,

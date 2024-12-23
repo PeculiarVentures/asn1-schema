@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * SecretBag ::= SEQUENCE {
  *   secretTypeId  BAG-TYPE.&id ({SecretTypes}),
  *   secretValue   [0] EXPLICIT BAG-TYPE.&Type ({SecretTypes}
@@ -10,7 +10,6 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
  * ```
  */
 export class SecretBag {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public secretTypeId = "";
 

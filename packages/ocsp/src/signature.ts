@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier, Certificate } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * Signature       ::=     SEQUENCE {
  *   signatureAlgorithm      AlgorithmIdentifier,
  *   signature               BIT STRING,

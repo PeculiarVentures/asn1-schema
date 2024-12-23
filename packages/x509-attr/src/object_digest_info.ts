@@ -8,7 +8,7 @@ export enum DigestedObjectType {
 }
 
 /**
- * ```
+ * ```asn1
  * ObjectDigestInfo    ::= SEQUENCE {
  *      digestedObjectType  ENUMERATED {
  *           publicKey            (0),

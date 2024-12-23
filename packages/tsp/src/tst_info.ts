@@ -8,7 +8,7 @@ export enum TSTInfoVersion {
 }
 
 /**
- * ```
+ * ```asn1
  * TSTInfo ::= SEQUENCE  {
  *   version                      INTEGER  { v1(1) },
  *   policy                       TSAPolicyId,

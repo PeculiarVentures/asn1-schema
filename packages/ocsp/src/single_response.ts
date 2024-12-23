@@ -4,7 +4,7 @@ import { Extension } from "@peculiar/asn1-x509";
 import { CertStatus } from "./cert_status";
 
 /**
- * ```
+ * ```asn1
  * SingleResponse ::= SEQUENCE {
  *   certID                       CertID,
  *   certStatus                   CertStatus,

@@ -3,7 +3,7 @@ import { ContentType } from "@peculiar/asn1-cms";
 import { ContentIdentifier, ESSVersion } from "./types";
 
 /**
- * ```
+ * ```asn1
  * Receipt ::= SEQUENCE {
  *   version ESSVersion,
  *   contentType ContentType,

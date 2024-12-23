@@ -9,7 +9,7 @@ import {
 import { AlgorithmIdentifier, Attribute } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * Version ::= INTEGER {v1(0)} (v1,...)
  * ```
  */
@@ -18,14 +18,14 @@ export enum Version {
 }
 
 /**
- * ```
+ * ```asn1
  * PrivateKey ::= OCTET STRING
  * ```
  */
 export class PrivateKey extends OctetString {}
 
 /**
- * ```
+ * ```asn1
  * Attributes ::= SET OF Attribute
  * ```
  */
@@ -40,7 +40,7 @@ export class Attributes extends AsnArray<Attribute> {
 }
 
 /**
- * ```
+ * ```asn1
  * PrivateKeyInfo ::= SEQUENCE {
  *   version Version,
  *   privateKeyAlgorithm AlgorithmIdentifier {{PrivateKeyAlgorithms}},

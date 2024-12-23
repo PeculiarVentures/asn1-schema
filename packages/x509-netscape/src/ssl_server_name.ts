@@ -2,14 +2,14 @@ import { id_netscapeCertExtension } from "./object_identifiers";
 import { AsnType, AsnTypeTypes, AsnPropTypes, AsnProp } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * netscape-ssl-server-name OBJECT IDENTIFIER ::= { netscape-cert-extension 12 }
  * ```
  */
 export const id_netscapeSSLServerName = `${id_netscapeCertExtension}.12`;
 
 /**
- * ```
+ * ```asn1
  * NetscapeSSLServerName ::= IA5String
  * ```
  */

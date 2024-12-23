@@ -3,7 +3,7 @@ import { PKIFailureInfo } from "./pki_failure_info";
 import { PKIStatus } from "./pki_status";
 
 /**
- * ```
+ * ```asn1
  * PKIFreeText ::= SEQUENCE SIZE (1..MAX) OF UTF8String
  * ```
  * @see https://github.com/erlang/otp/blob/master/lib/asn1/test/asn1_SUITE_data/rfcs/PKIXCMP-2009.asn1
@@ -19,7 +19,7 @@ export class PKIFreeText extends AsnArray<string> {
   }
 }
 /**
- * ```
+ * ```asn1
  * PKIStatusInfo ::= SEQUENCE {
  *  status        PKIStatus,
  *  statusString  PKIFreeText     OPTIONAL,

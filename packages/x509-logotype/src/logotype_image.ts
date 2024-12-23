@@ -3,7 +3,7 @@ import { LogotypeDetails } from "./logotype_details";
 import { LogotypeImageInfo } from "./logotype_image_info";
 
 /**
- * ```
+ * ```asn1
  * LogotypeImage ::= SEQUENCE {
  *   imageDetails    LogotypeDetails,
  *   imageInfo       LogotypeImageInfo OPTIONAL }

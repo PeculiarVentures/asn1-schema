@@ -3,7 +3,7 @@ import { PKIStatusInfo } from "./pki_status_info";
 import { TimeStampToken } from "./time_stamp_token";
 
 /**
- * ```
+ * ```asn1
  * TimeStampResp ::= SEQUENCE  {
  *   status                  PKIStatusInfo,
  *   timeStampToken          TimeStampToken     OPTIONAL  }

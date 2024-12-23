@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { HashAlgAndValue } from "./hash_alg_and_value";
 
 /**
- * ```
+ * ```asn1
  * LogotypeReference ::= SEQUENCE {
  *   refStructHash   SEQUENCE SIZE (1..MAX) OF HashAlgAndValue,
  *   refStructURI    SEQUENCE SIZE (1..MAX) OF IA5String }

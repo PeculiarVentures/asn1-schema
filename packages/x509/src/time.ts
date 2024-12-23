@@ -1,6 +1,6 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 /**
- * ```
+ * ```asn1
  * Time ::= CHOICE {
  *   utcTime        UTCTime,
  *   generalTime    GeneralizedTime }

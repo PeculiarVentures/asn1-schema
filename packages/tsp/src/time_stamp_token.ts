@@ -2,7 +2,7 @@ import { ContentInfo } from "@peculiar/asn1-cms";
 import { AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * TimeStampToken ::= ContentInfo
  *      -- contentType is id-signedData ([CMS])
  *      -- content is SignedData ([CMS])

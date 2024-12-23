@@ -6,7 +6,7 @@ import { ReceiptsFrom } from "./receipts_from";
 export const ub_receiptsTo = 16;
 
 /**
- * ```
+ * ```asn1
  * ReceiptRequest ::= SEQUENCE {
  *   signedContentIdentifier ContentIdentifier,
  *   receiptsFrom ReceiptsFrom,

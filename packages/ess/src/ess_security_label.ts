@@ -3,7 +3,7 @@ import { SecurityClassification } from "./types";
 import { SecurityCategories } from "./security_category";
 
 /**
- * ```
+ * ```asn1
  * ESSPrivacyMark ::= CHOICE {
  *     pString      PrintableString (SIZE (1..ub-privacy-mark-length)),
  *     utf8String   UTF8String (SIZE (1..MAX))
@@ -27,7 +27,7 @@ export class ESSPrivacyMark {
 }
 
 /**
- * ```
+ * ```asn1
  * ESSSecurityLabel ::= SET {
  *   security-policy-identifier SecurityPolicyIdentifier,
  *   security-classification SecurityClassification OPTIONAL,
@@ -55,7 +55,7 @@ export class ESSSecurityLabel {
 }
 
 /**
- * ```
+ * ```asn1
  * EquivalentLabels ::= SEQUENCE OF ESSSecurityLabel
  * ```
  */

@@ -2,7 +2,7 @@ import { DigestInfo } from "@peculiar/asn1-rsa";
 import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * MacData ::= SEQUENCE {
  *   mac        DigestInfo,
  *   macSalt    OCTET STRING,

@@ -4,7 +4,7 @@ import { id_mgf1, id_RSAES_OAEP } from "../object_identifiers";
 import { sha1, mgf1SHA1, pSpecifiedEmpty } from "../algorithms";
 
 /**
- * ```
+ * ```asn1
  * RSAES-OAEP-params ::= SEQUENCE {
  *   hashAlgorithm      [0] HashAlgorithm     DEFAULT sha1,
  *   maskGenAlgorithm   [1] MaskGenAlgorithm  DEFAULT mgf1SHA1,
@@ -13,7 +13,6 @@ import { sha1, mgf1SHA1, pSpecifiedEmpty } from "../algorithms";
  * ```
  */
 export class RsaEsOaepParams {
-
   @AsnProp({ type: AlgorithmIdentifier, context: 0, defaultValue: sha1 })
   public hashAlgorithm = new AlgorithmIdentifier(sha1);
 
@@ -32,7 +31,7 @@ export class RsaEsOaepParams {
 }
 
 /**
- * ```
+ * ```asn1
  * { OID id-RSAES-OAEP   PARAMETERS RSAES-OAEP-params } |
  * ```
  */

@@ -3,7 +3,7 @@ import { AlgorithmIdentifier } from "./algorithm_identifier";
 import { TBSCertificate } from "./tbs_certificate";
 
 /**
- * ```
+ * ```asn1
  * Certificate  ::=  SEQUENCE  {
  *   tbsCertificate       TBSCertificate,
  *   signatureAlgorithm   AlgorithmIdentifier,

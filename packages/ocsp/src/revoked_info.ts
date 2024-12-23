@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { CRLReason } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * RevokedInfo ::= SEQUENCE {
  *   revocationTime              GeneralizedTime,
  *   revocationReason    [0]     EXPLICIT CRLReason OPTIONAL }

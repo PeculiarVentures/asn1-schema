@@ -9,7 +9,7 @@ import { Hash } from "./types";
 import { id_sha256 } from "@peculiar/asn1-rsa";
 
 /**
- * ```
+ * ```asn1
  * IssuerSerial ::= SEQUENCE {
  *      issuer                   GeneralNames,
  *      serialNumber             CertificateSerialNumber
@@ -29,7 +29,7 @@ export class IssuerSerial {
 }
 
 /**
- * ```
+ * ```asn1
  * ESSCertID ::=  SEQUENCE {
  *      certHash                 Hash,
  *      issuerSerial             IssuerSerial OPTIONAL
@@ -49,7 +49,7 @@ export class ESSCertID {
 }
 
 /**
- * ```
+ * ```asn1
  * SigningCertificate ::=  SEQUENCE {
  *     certs        SEQUENCE OF ESSCertID,
  *     policies     SEQUENCE OF PolicyInformation OPTIONAL
@@ -69,7 +69,7 @@ export class SigningCertificate {
 }
 
 /**
- * ```
+ * ```asn1
  * ESSCertIDv2 ::=  SEQUENCE {
  *     hashAlgorithm           AlgorithmIdentifier
  *            DEFAULT {algorithm id-sha256},
@@ -94,7 +94,7 @@ export class ESSCertIDv2 {
 }
 
 /**
- * ```
+ * ```asn1
  * SigningCertificateV2 ::=  SEQUENCE {
  *     certs        SEQUENCE OF ESSCertIDv2,
  *     policies     SEQUENCE OF PolicyInformation OPTIONAL

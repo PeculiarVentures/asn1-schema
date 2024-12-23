@@ -3,7 +3,7 @@ import { ClassList, ClassListFlags } from "./class_list";
 import { SecurityCategory } from "./security_category";
 
 /**
- * ```
+ * ```asn1
  * Clearance  ::=  SEQUENCE {
  *      policyId       OBJECT IDENTIFIER,
  *      classList      ClassList DEFAULT {unclassified},

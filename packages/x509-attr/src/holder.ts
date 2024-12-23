@@ -4,7 +4,7 @@ import { GeneralNames } from "@peculiar/asn1-x509";
 import { ObjectDigestInfo } from "./object_digest_info";
 
 /**
- * ```
+ * ```asn1
  * Holder ::= SEQUENCE {
  *      baseCertificateID   [0] IssuerSerial OPTIONAL,
  *                -- the issuer and serial number of

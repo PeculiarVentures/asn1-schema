@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * Accuracy ::= SEQUENCE {
  *   seconds        INTEGER           OPTIONAL,
  *   millis     [0] INTEGER  (1..999) OPTIONAL,

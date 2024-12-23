@@ -1,5 +1,5 @@
 /**
- * ```
+ * ```asn1
  * PKIStatus ::= INTEGER {
  *   granted                (0),
  *   -- when the PKIStatus contains the value zero a TimeStampToken, as

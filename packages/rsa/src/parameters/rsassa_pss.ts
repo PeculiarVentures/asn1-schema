@@ -4,26 +4,27 @@ import { id_mgf1, id_RSASSA_PSS } from "../object_identifiers";
 import { sha1, mgf1SHA1 } from "../algorithms";
 
 /**
- * ```
+ * ```asn1
  * TrailerField ::= INTEGER { trailerFieldBC(1) }
  * ```
  */
 export type TrailerField = number;
 
 /**
+ * ```asn1
  * RSASSA-PSS-params ::= SEQUENCE {
  *   hashAlgorithm      [0] HashAlgorithm      DEFAULT sha1,
  *   maskGenAlgorithm   [1] MaskGenAlgorithm   DEFAULT mgf1SHA1,
  *   saltLength         [2] INTEGER            DEFAULT 20,
  *   trailerField       [3] TrailerField       DEFAULT trailerFieldBC
  * }
+ * ```
  */
 export class RsaSaPssParams {
-
   @AsnProp({ type: AlgorithmIdentifier, context: 0, defaultValue: sha1 })
   public hashAlgorithm = new AlgorithmIdentifier(sha1);
 
-  @AsnProp({type: AlgorithmIdentifier, context: 1, defaultValue: mgf1SHA1})
+  @AsnProp({ type: AlgorithmIdentifier, context: 1, defaultValue: mgf1SHA1 })
   public maskGenAlgorithm = new AlgorithmIdentifier({
     algorithm: id_mgf1,
     parameters: AsnConvert.serialize(sha1),
@@ -41,7 +42,7 @@ export class RsaSaPssParams {
 }
 
 /**
- * ```
+ * ```asn1
  * { OID id-RSASSA-PSS   PARAMETERS RSASSA-PSS-params }
  * ```
  */

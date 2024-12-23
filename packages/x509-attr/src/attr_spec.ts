@@ -1,7 +1,7 @@
 import { AsnType, AsnTypeTypes, AsnPropTypes, AsnArray } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * AttrSpec ::= SEQUENCE OF OBJECT IDENTIFIER
  * ```
  */
