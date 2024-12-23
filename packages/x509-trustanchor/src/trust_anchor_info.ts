@@ -3,14 +3,14 @@ import { SubjectPublicKeyInfo, KeyIdentifier, Extensions } from "@peculiar/asn1-
 import { CertPathControls } from "./cert_path_controls";
 
 /**
- * ```
+ * ```asn1
  * TrustAnchorTitle ::= UTF8String (SIZE (1..64))
  * ```
  */
 export type TrustAnchorTitle = string;
 
 /**
- * ```
+ * ```asn1
  * TrustAnchorInfoVersion ::= INTEGER { v1(1) }
  * ```
  */
@@ -19,7 +19,7 @@ export enum TrustAnchorInfoVersion {
 }
 
 /**
- * ```
+ * ```asn1
  * TrustAnchorInfo ::= SEQUENCE {
  *   version   TrustAnchorInfoVersion DEFAULT v1,
  *   pubKey    SubjectPublicKeyInfo,
@@ -31,7 +31,6 @@ export enum TrustAnchorInfoVersion {
  * ```
  */
 export class TrustAnchorInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer, defaultValue: TrustAnchorInfoVersion.v1 })
   public version = TrustAnchorInfoVersion.v1;
 

@@ -4,7 +4,7 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
 //                                 id-pkix-ocsp-crl }
 
 /**
- * ```
+ * ```asn1
  * CrlID ::= SEQUENCE {
  *     crlUrl               [0]     EXPLICIT IA5String OPTIONAL,
  *     crlNum               [1]     EXPLICIT INTEGER OPTIONAL,
@@ -12,12 +12,13 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
  * ```
  */
 export class CrlID {
-
   @AsnProp({ type: AsnPropTypes.IA5String, context: 0, optional: true })
   public crlUrl?: string;
 
   @AsnProp({
-    type: AsnPropTypes.Integer, context: 1, optional: true,
+    type: AsnPropTypes.Integer,
+    context: 1,
+    optional: true,
     converter: AsnIntegerArrayBufferConverter,
   })
   public crlNum?: ArrayBuffer;

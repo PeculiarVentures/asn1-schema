@@ -15,7 +15,6 @@ export type AttributeValue = ArrayBuffer;
  * ```
  */
 export class Attribute {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public attrType = "";
 

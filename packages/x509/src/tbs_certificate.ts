@@ -7,7 +7,7 @@ import { Extensions } from "./extension";
 import { Version, CertificateSerialNumber, UniqueIdentifier } from "./types";
 
 /**
- * ```
+ * ```asn1
  * TBSCertificate  ::=  SEQUENCE  {
  *   version         [0]  Version DEFAULT v1,
  *   serialNumber         CertificateSerialNumber,
@@ -25,7 +25,6 @@ import { Version, CertificateSerialNumber, UniqueIdentifier } from "./types";
  * ```
  */
 export class TBSCertificate {
-
   @AsnProp({
     type: AsnPropTypes.Integer,
     context: 0,

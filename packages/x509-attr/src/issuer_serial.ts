@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
 import { GeneralNames, CertificateSerialNumber, UniqueIdentifier } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * IssuerSerial  ::=  SEQUENCE {
  *      issuer         GeneralNames,
  *      serial         CertificateSerialNumber,
@@ -11,7 +11,6 @@ import { GeneralNames, CertificateSerialNumber, UniqueIdentifier } from "@peculi
  * ```
  */
 export class IssuerSerial {
-
   @AsnProp({ type: GeneralNames })
   public issuer = new GeneralNames();
 

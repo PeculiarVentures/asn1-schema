@@ -1,4 +1,10 @@
-import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
+import {
+  AsnType,
+  AsnTypeTypes,
+  AsnProp,
+  AsnPropTypes,
+  AsnIntegerArrayBufferConverter,
+} from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 
 export const id_caVersion = "1.3.6.1.4.1.311.21.1";
@@ -14,7 +20,6 @@ export interface ICaVersion {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class CaVersion {
-
   @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
   public value = new ArrayBuffer(0);
 
@@ -35,5 +40,4 @@ export class CaVersion {
       certificateIndex: parseInt(Convert.ToHex(data.slice(2)), 16),
     } as ICaVersion;
   }
-
 }

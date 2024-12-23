@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { Name, SubjectPublicKeyInfo } from "@peculiar/asn1-x509";
 import { Attributes } from "./attributes";
 /**
- * ```
+ * ```asn1
  * CertificationRequestInfo ::= SEQUENCE {
  *   version       INTEGER { v1(0) } (v1,...),
  *   subject       Name,
@@ -12,7 +12,6 @@ import { Attributes } from "./attributes";
  * ```
  */
 export class CertificationRequestInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version = 0;
 

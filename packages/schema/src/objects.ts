@@ -8,7 +8,7 @@ export abstract class AsnArray<T> extends Array<T> {
         this.push(item);
       }
     }
-    
+
     // Set the prototype explicitly.
     // Object.setPrototypeOf(this, AsnArray.prototype);
   }

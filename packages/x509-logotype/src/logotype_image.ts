@@ -3,14 +3,13 @@ import { LogotypeDetails } from "./logotype_details";
 import { LogotypeImageInfo } from "./logotype_image_info";
 
 /**
- * ```
+ * ```asn1
  * LogotypeImage ::= SEQUENCE {
  *   imageDetails    LogotypeDetails,
  *   imageInfo       LogotypeImageInfo OPTIONAL }
  * ```
  */
 export class LogotypeImage {
-
   @AsnProp({ type: LogotypeDetails })
   public imageDetails = new LogotypeDetails();
 

@@ -2,14 +2,14 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculia
 import { Convert } from "pvtsutils";
 
 /**
- * ```
+ * ```asn1
  * AttributeType ::= OBJECT IDENTIFIER
  * ```
  */
 export type AttributeType = string;
 
 /**
- * ```
+ * ```asn1
  * DirectoryString ::= CHOICE {
  *       teletexString           TeletexString (SIZE (1..MAX)),
  *       printableString         PrintableString (SIZE (1..MAX)),
@@ -20,7 +20,6 @@ export type AttributeType = string;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class DirectoryString {
-
   @AsnProp({ type: AsnPropTypes.TeletexString })
   public teletexString?: string;
 
@@ -44,20 +43,25 @@ export class DirectoryString {
    * Returns a string representation of an object.
    */
   public toString(): string {
-    return this.bmpString || this.printableString || this.teletexString || this.universalString
-      || this.utf8String || "";
+    return (
+      this.bmpString ||
+      this.printableString ||
+      this.teletexString ||
+      this.universalString ||
+      this.utf8String ||
+      ""
+    );
   }
 }
 
 /**
- * ```
+ * ```asn1
  * AttributeValue ::= ANY -- DEFINED BY AttributeType
  * in general it will be a DirectoryString
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class AttributeValue extends DirectoryString {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public ia5String?: string;
 
@@ -75,14 +79,13 @@ export class AttributeValue extends DirectoryString {
 }
 
 /**
- * ```
+ * ```asn1
  * AttributeTypeAndValue ::= SEQUENCE {
  *   type     AttributeType,
  *   value    AttributeValue }
  * ```
  */
 export class AttributeTypeAndValue {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public type = "";
 
@@ -95,55 +98,49 @@ export class AttributeTypeAndValue {
 }
 
 /**
- * ```
+ * ```asn1
  * RelativeDistinguishedName ::= SET SIZE (1..MAX) OF AttributeTypeAndValue
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: AttributeTypeAndValue })
 export class RelativeDistinguishedName extends AsnArray<AttributeTypeAndValue> {
-
   constructor(items?: AttributeTypeAndValue[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, RelativeDistinguishedName.prototype);
   }
-
 }
 
 /**
- * ```
+ * ```asn1
  * RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: RelativeDistinguishedName })
 export class RDNSequence extends AsnArray<RelativeDistinguishedName> {
-
   constructor(items?: RelativeDistinguishedName[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, RDNSequence.prototype);
   }
-
 }
 
 /**
- * ```
+ * ```asn1
  * Name ::= CHOICE { -- only one possibility for now --
  *   rdnSequence  RDNSequence }
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class Name extends RDNSequence {
-
   constructor(items?: RelativeDistinguishedName[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, Name.prototype);
   }
-
 }
 
 // NOTE: Using CHOICE with only one item looks odd

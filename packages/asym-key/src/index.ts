@@ -1,5 +1,13 @@
 import { Attributes } from "@peculiar/asn1-pkcs8";
-import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, BitString, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnArray,
+  AsnProp,
+  AsnPropTypes,
+  AsnType,
+  AsnTypeTypes,
+  BitString,
+  OctetString,
+} from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 /**
@@ -31,7 +39,7 @@ export enum Version {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class PrivateKeyAlgorithmIdentifier extends AlgorithmIdentifier { }
+export class PrivateKeyAlgorithmIdentifier extends AlgorithmIdentifier {}
 
 /**
  * ```asn
@@ -41,7 +49,7 @@ export class PrivateKeyAlgorithmIdentifier extends AlgorithmIdentifier { }
  *   -- the key.
  * ```
  */
-export class PrivateKey extends OctetString { }
+export class PrivateKey extends OctetString {}
 
 /**
  * ```asn
@@ -51,7 +59,7 @@ export class PrivateKey extends OctetString { }
  *   -- the key.
  * ```
  */
-export class PublicKey extends BitString { }
+export class PublicKey extends BitString {}
 
 /**
  * ```asn
@@ -68,7 +76,6 @@ export class PublicKey extends BitString { }
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class OneAsymmetricKey {
-
   /**
    * Identifies the version of the OneAsymmetricKey.
    *
@@ -128,7 +135,6 @@ export class OneAsymmetricKey {
    */
   @AsnProp({ type: AsnPropTypes.BitString, context: 1, implicit: true, optional: true })
   public publicKey?: ArrayBuffer;
-
 }
 
 /**
@@ -137,7 +143,7 @@ export class OneAsymmetricKey {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class PrivateKeyInfo extends OneAsymmetricKey { }
+export class PrivateKeyInfo extends OneAsymmetricKey {}
 
 /**
  * ```asn
@@ -145,15 +151,13 @@ export class PrivateKeyInfo extends OneAsymmetricKey { }
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: OneAsymmetricKey })
-export class AsymmetricKeyPackage extends AsnArray<OneAsymmetricKey>{
-
+export class AsymmetricKeyPackage extends AsnArray<OneAsymmetricKey> {
   constructor(items?: OneAsymmetricKey[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, AsymmetricKeyPackage.prototype);
   }
-
 }
 
 export { EncryptedPrivateKeyInfo, EncryptedData } from "@peculiar/asn1-pkcs8";

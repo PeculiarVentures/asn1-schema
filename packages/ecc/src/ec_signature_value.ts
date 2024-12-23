@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * ECDSA-Sig-Value ::= SEQUENCE {
  *   r  INTEGER,
  *   s  INTEGER
@@ -9,7 +9,6 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
  * ```
  */
 export class ECDSASigValue {
-
   @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
   public r = new ArrayBuffer(0);
 

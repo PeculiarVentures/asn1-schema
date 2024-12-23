@@ -3,7 +3,6 @@ import { BufferSource, BufferSourceConverter } from "pvtsutils";
 import { IAsnConvertible } from "../types";
 
 export class BitString<T extends number = number> implements IAsnConvertible {
-
   public unusedBits = 0;
 
   public value = new ArrayBuffer(0);
@@ -63,7 +62,11 @@ export class BitString<T extends number = number> implements IAsnConvertible {
     this.unusedBits = (octetSize << 3) - bits.length;
     const octets = new Uint8Array(octetSize);
 
-    bits = bits.padStart(octetSize << 3, "0").split("").reverse().join("");
+    bits = bits
+      .padStart(octetSize << 3, "0")
+      .split("")
+      .reverse()
+      .join("");
     let index = 0;
     while (index < octetSize) {
       octets[index] = parseInt(bits.slice(index << 3, (index << 3) + 8), 2);
@@ -72,5 +75,4 @@ export class BitString<T extends number = number> implements IAsnConvertible {
 
     this.value = octets.buffer;
   }
-
 }

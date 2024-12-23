@@ -1,9 +1,9 @@
-import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from '@peculiar/asn1-schema';
-import { SubjectKeyIdentifier, GeneralNames } from '@peculiar/asn1-x509';
-import { IssuerAndSerialNumber } from '@peculiar/asn1-cms';
+import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { SubjectKeyIdentifier, GeneralNames } from "@peculiar/asn1-x509";
+import { IssuerAndSerialNumber } from "@peculiar/asn1-cms";
 
 /**
- * ```
+ * ```asn1
  * EntityIdentifier ::= CHOICE {
  *   issuerAndSerialNumber IssuerAndSerialNumber,
  *   subjectKeyIdentifier SubjectKeyIdentifier }
@@ -11,27 +11,27 @@ import { IssuerAndSerialNumber } from '@peculiar/asn1-cms';
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class EntityIdentifier {
-    @AsnProp({ type: IssuerAndSerialNumber })
-    public issuerAndSerialNumber?: IssuerAndSerialNumber;
+  @AsnProp({ type: IssuerAndSerialNumber })
+  public issuerAndSerialNumber?: IssuerAndSerialNumber;
 
-    @AsnProp({ type: SubjectKeyIdentifier })
-    public subjectKeyIdentifier?: SubjectKeyIdentifier;
+  @AsnProp({ type: SubjectKeyIdentifier })
+  public subjectKeyIdentifier?: SubjectKeyIdentifier;
 
-    constructor(params?: IssuerAndSerialNumber | SubjectKeyIdentifier) {
-        if (params) {
-            if (params instanceof IssuerAndSerialNumber) {
-                this.issuerAndSerialNumber = params;
-            } else if (params instanceof SubjectKeyIdentifier) {
-                this.subjectKeyIdentifier = params;
-            } else {
-                throw new Error("Unsupported params for EntityIdentifier");
-            }
-        }
+  constructor(params?: IssuerAndSerialNumber | SubjectKeyIdentifier) {
+    if (params) {
+      if (params instanceof IssuerAndSerialNumber) {
+        this.issuerAndSerialNumber = params;
+      } else if (params instanceof SubjectKeyIdentifier) {
+        this.subjectKeyIdentifier = params;
+      } else {
+        throw new Error("Unsupported params for EntityIdentifier");
+      }
     }
+  }
 }
 
 /**
- * ```
+ * ```asn1
  * MLReceiptPolicy ::= CHOICE {
  *   none [0] NULL,
  *   insteadOf [1] SEQUENCE SIZE (1..MAX) OF GeneralNames,
@@ -41,22 +41,22 @@ export class EntityIdentifier {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class MLReceiptPolicy {
-    @AsnProp({ type: AsnPropTypes.Null, context: 0, implicit: true })
-    public none?: AsnPropTypes.Null;
+  @AsnProp({ type: AsnPropTypes.Null, context: 0, implicit: true })
+  public none?: AsnPropTypes.Null;
 
-    @AsnProp({ type: GeneralNames, repeated: "sequence", context: 1 , implicit: true })
-    public insteadOf?: GeneralNames[];
+  @AsnProp({ type: GeneralNames, repeated: "sequence", context: 1, implicit: true })
+  public insteadOf?: GeneralNames[];
 
-    @AsnProp({ type: GeneralNames, repeated: "sequence", context: 2, implicit: true })
-    public inAdditionTo?: GeneralNames[];
+  @AsnProp({ type: GeneralNames, repeated: "sequence", context: 2, implicit: true })
+  public inAdditionTo?: GeneralNames[];
 
-    constructor(params: Partial<MLReceiptPolicy> = {}) {
-        Object.assign(this, params);
-    }
+  constructor(params: Partial<MLReceiptPolicy> = {}) {
+    Object.assign(this, params);
+  }
 }
 
 /**
- * ```
+ * ```asn1
  * MLData ::= SEQUENCE {
  *   mailListIdentifier EntityIdentifier,
  *   expansionTime GeneralizedTime,
@@ -64,22 +64,22 @@ export class MLReceiptPolicy {
  * ```
  */
 export class MLData {
-    @AsnProp({ type: EntityIdentifier })
-    public mailListIdentifier: EntityIdentifier = new EntityIdentifier();
+  @AsnProp({ type: EntityIdentifier })
+  public mailListIdentifier: EntityIdentifier = new EntityIdentifier();
 
-    @AsnProp({ type: AsnPropTypes.GeneralizedTime })
-    public expansionTime = new Date();
+  @AsnProp({ type: AsnPropTypes.GeneralizedTime })
+  public expansionTime = new Date();
 
-    @AsnProp({ type: MLReceiptPolicy, optional: true })
-    public mlReceiptPolicy?: MLReceiptPolicy;
+  @AsnProp({ type: MLReceiptPolicy, optional: true })
+  public mlReceiptPolicy?: MLReceiptPolicy;
 
-    constructor(params: Partial<MLData> = {}) {
-        Object.assign(this, params);
-    }
+  constructor(params: Partial<MLData> = {}) {
+    Object.assign(this, params);
+  }
 }
 
 /**
- * ```
+ * ```asn1
  * MLExpansionHistory ::= SEQUENCE
  *         SIZE (1..ub-ml-expansion-history) OF MLData
  * ```
@@ -87,10 +87,10 @@ export class MLData {
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: MLData })
 export class MLExpansionHistory extends AsnArray<MLData> {
-    constructor(items?: MLData[]) {
-        super(items);
+  constructor(items?: MLData[]) {
+    super(items);
 
-        // Set the prototype explicitly.
-        Object.setPrototypeOf(this, MLExpansionHistory.prototype);
-    }
+    // Set the prototype explicitly.
+    Object.setPrototypeOf(this, MLExpansionHistory.prototype);
+  }
 }

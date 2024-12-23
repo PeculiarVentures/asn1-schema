@@ -1,9 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { ECParameters, id_secp256r1, ECPrivateKey } from "../src";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 
-context("EC Private Key", () => {
-
+describe("EC Private Key", () => {
   const privateKeyHex = "301f020101040400800001a00a06082a8648ce3d030107a1080306000080000002";
 
   it("serialize", () => {
@@ -11,7 +10,7 @@ context("EC Private Key", () => {
       privateKey: new OctetString([0, 128, 0, 1]),
       parameters: new ECParameters({ namedCurve: id_secp256r1 }),
       publicKey: new Uint8Array([0, 128, 0, 0, 2]).buffer,
-    })
+    });
     const der = AsnConvert.serialize(privateKey);
     assert.strictEqual(Buffer.from(der).toString("hex"), privateKeyHex);
   });
@@ -23,5 +22,4 @@ context("EC Private Key", () => {
     assert.strictEqual(privateKey.parameters?.namedCurve, id_secp256r1);
     assert.strictEqual(privateKey.publicKey?.byteLength, 5);
   });
-
 });

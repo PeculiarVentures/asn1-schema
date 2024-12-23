@@ -4,7 +4,7 @@ import { IssuerSerial } from "./issuer_serial";
 import { ObjectDigestInfo } from "./object_digest_info";
 
 /**
- * ```
+ * ```asn1
  * TargetCert  ::= SEQUENCE {
  *      targetCertificate  IssuerSerial,
  *      targetName         GeneralName OPTIONAL,
@@ -13,7 +13,6 @@ import { ObjectDigestInfo } from "./object_digest_info";
  * ```
  */
 export class TargetCert {
-
   @AsnProp({ type: IssuerSerial })
   public targetCertificate = new IssuerSerial();
 
@@ -28,8 +27,8 @@ export class TargetCert {
   }
 }
 
-/** 
- * ```
+/**
+ * ```asn1
  * Target  ::= CHOICE {
  *      targetName     [0] GeneralName,
  *      targetGroup    [1] GeneralName,
@@ -39,7 +38,6 @@ export class TargetCert {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class Target {
-
   @AsnProp({ type: GeneralName, context: 0, implicit: true })
   public targetName?: GeneralName;
 
@@ -55,18 +53,16 @@ export class Target {
 }
 
 /**
- * ```
+ * ```asn1
  * Targets ::= SEQUENCE OF Target
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: Target })
 export class Targets extends AsnArray<Target> {
-
   constructor(items?: Target[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, Targets.prototype);
   }
-
 }

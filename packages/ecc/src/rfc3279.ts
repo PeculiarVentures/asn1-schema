@@ -1,4 +1,11 @@
-import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, OctetString, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
+import {
+  AsnType,
+  AsnTypeTypes,
+  AsnProp,
+  AsnPropTypes,
+  OctetString,
+  AsnIntegerArrayBufferConverter,
+} from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -25,14 +32,14 @@ export class FieldID {
  *  ECPoint ::= OCTET STRING
  * ```
  */
-export class ECPoint extends OctetString { }
+export class ECPoint extends OctetString {}
 
 /**
  * ```asn1
  *  FieldElement ::= OCTET STRING
  * ```
  */
-export class FieldElement extends OctetString { }
+export class FieldElement extends OctetString {}
 
 /**
  * ```asn1

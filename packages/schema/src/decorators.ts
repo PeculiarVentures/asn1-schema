@@ -26,7 +26,8 @@ export interface IAsn1PropOptions {
 
 export type AsnTypeDecorator = (target: IEmptyConstructor) => void;
 
-export const AsnType = (options: IAsn1TypeOptions): AsnTypeDecorator =>
+export const AsnType =
+  (options: IAsn1TypeOptions): AsnTypeDecorator =>
   (target: IEmptyConstructor): void => {
     let schema: IAsnSchema;
     if (!schemaStorage.has(target)) {
@@ -38,8 +39,7 @@ export const AsnType = (options: IAsn1TypeOptions): AsnTypeDecorator =>
     Object.assign(schema, options);
   };
 
-export const AsnChoiceType = (): AsnTypeDecorator =>
-  AsnType({ type: AsnTypeTypes.Choice });
+export const AsnChoiceType = (): AsnTypeDecorator => AsnType({ type: AsnTypeTypes.Choice });
 
 export interface IAsn1SetOptions {
   itemType: AsnItemType;
@@ -56,7 +56,8 @@ export const AsnSequenceType = (options: IAsn1SequenceOptions): AsnTypeDecorator
   AsnType({ type: AsnTypeTypes.Sequence, ...options });
 
 export type AsnPropDecorator = (target: object, propertyKey: string) => void;
-export const AsnProp = (options: IAsn1PropOptions): AsnPropDecorator =>
+export const AsnProp =
+  (options: IAsn1PropOptions): AsnPropDecorator =>
   (target: object, propertyKey: string) => {
     let schema: IAsnSchema;
     if (!schemaStorage.has(target.constructor)) {
@@ -72,7 +73,9 @@ export const AsnProp = (options: IAsn1PropOptions): AsnPropDecorator =>
       // Set default converters
       const defaultConverter = converters.defaultConverter(options.type as AsnPropTypes);
       if (!defaultConverter) {
-        throw new Error(`Cannot get default converter for property '${propertyKey}' of ${target.constructor.name}`);
+        throw new Error(
+          `Cannot get default converter for property '${propertyKey}' of ${target.constructor.name}`,
+        );
       }
       copyOptions.converter = defaultConverter;
     }

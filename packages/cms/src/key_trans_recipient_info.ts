@@ -12,7 +12,6 @@ import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class RecipientIdentifier {
-
   // * Declare subjectKeyIdentifier before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
   @AsnProp({ type: SubjectKeyIdentifier, context: 0, implicit: true })
   public subjectKeyIdentifier?: SubjectKeyIdentifier;
@@ -34,8 +33,7 @@ export class RecipientIdentifier {
  *  encryptedKey EncryptedKey }
  * ```
  */
- export class KeyTransRecipientInfo {
-
+export class KeyTransRecipientInfo {
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: CMSVersion = CMSVersion.v0;
 

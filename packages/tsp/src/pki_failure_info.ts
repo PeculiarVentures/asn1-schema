@@ -1,6 +1,5 @@
 import { BitString } from "@peculiar/asn1-schema";
 
-
 export enum PKIFailureInfoFlags {
   /**
    * unrecognized or unsupported Algorithm Identifier
@@ -34,14 +33,14 @@ export enum PKIFailureInfoFlags {
   /**
    * the request cannot be handled due to system failure
    */
-  systemFailure = 0x01000000
+  systemFailure = 0x01000000,
 }
 
 export type PKIFailureInfoType = keyof typeof PKIFailureInfoFlags;
 export type PKIFailureInfoJson = PKIFailureInfoType[];
 
 /**
- * ```
+ * ```asn1
  * PKIFailureInfo ::= BIT STRING {
  *  badAlg               (0),
  *    -- unrecognized or unsupported Algorithm Identifier
@@ -64,7 +63,6 @@ export type PKIFailureInfoJson = PKIFailureInfoType[];
  */
 
 export class PKIFailureInfo extends BitString {
-
   public toJSON(): PKIFailureInfoJson {
     const flag = this.toNumber();
     const res: PKIFailureInfoType[] = [];
@@ -102,5 +100,4 @@ export class PKIFailureInfo extends BitString {
   public override toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
-
 }

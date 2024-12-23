@@ -1,9 +1,14 @@
-import * as assert from "assert";
-import { AsnAnyConverter, AsnConstructedOctetStringConverter, AsnGeneralizedTimeConverter, AsnUTCTimeConverter, OctetString } from "../src";
+import * as assert from "node:assert";
+import {
+  AsnAnyConverter,
+  AsnConstructedOctetStringConverter,
+  AsnGeneralizedTimeConverter,
+  AsnUTCTimeConverter,
+  OctetString,
+} from "../src";
 
-context("converters", () => {
-
-  context("Any", () => {
+describe("converters", () => {
+  describe("Any", () => {
     it("null", () => {
       const asn = AsnAnyConverter.toASN(null);
 
@@ -30,20 +35,23 @@ context("converters", () => {
     });
   });
 
-  context("GeneralizedTime", () => {
+  describe("GeneralizedTime", () => {
     const dateNum = 1537560204455;
     it("correct", () => {
       const asn = AsnGeneralizedTimeConverter.toASN(new Date(dateNum));
 
       const der = asn.toBER();
-      assert.strictEqual(Buffer.from(der).toString("hex"), "181332303138303932313230303332342e3435355a");
+      assert.strictEqual(
+        Buffer.from(der).toString("hex"),
+        "181332303138303932313230303332342e3435355a",
+      );
 
       const value = AsnGeneralizedTimeConverter.fromASN(asn);
       assert.strictEqual(value.getTime(), dateNum);
     });
   });
 
-  context("UTCTime", () => {
+  describe("UTCTime", () => {
     const dateNum = 1537560204000;
     it("correct", () => {
       const asn = AsnUTCTimeConverter.toASN(new Date(dateNum));
@@ -56,8 +64,8 @@ context("converters", () => {
     });
   });
 
-  context("ConstructedOctetStringConverter", () => {
-    const buffer = Buffer.from("12345", 'ascii');
+  describe("ConstructedOctetStringConverter", () => {
+    const buffer = Buffer.from("12345", "ascii");
     it("correct", () => {
       const asn = AsnConstructedOctetStringConverter.toASN(new OctetString(buffer));
 

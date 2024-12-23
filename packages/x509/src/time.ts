@@ -1,6 +1,6 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 /**
- * ```
+ * ```asn1
  * Time ::= CHOICE {
  *   utcTime        UTCTime,
  *   generalTime    GeneralizedTime }
@@ -8,7 +8,6 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-sch
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class Time {
-
   @AsnProp({
     type: AsnPropTypes.UTCTime,
   })
@@ -44,5 +43,4 @@ export class Time {
     }
     return time;
   }
-
 }

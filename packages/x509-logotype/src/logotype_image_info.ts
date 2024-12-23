@@ -2,7 +2,7 @@ import { AsnPropTypes, AsnProp } from "@peculiar/asn1-schema";
 import { LogotypeImageResolution } from "./logotype_image_resolution";
 
 /**
- * ```
+ * ```asn1
  * LogotypeImageType ::= INTEGER { grayScale(0), color(1) }
  * ```
  */
@@ -12,7 +12,7 @@ export enum LogotypeImageType {
 }
 
 /**
- * ```
+ * ```asn1
  * LogotypeImageInfo ::= SEQUENCE {
  *   type            [0] LogotypeImageType DEFAULT color,
  *   fileSize        INTEGER,  -- In octets
@@ -23,8 +23,12 @@ export enum LogotypeImageType {
  * ```
  */
 export class LogotypeImageInfo {
-
-  @AsnProp({ type: AsnPropTypes.Integer, context: 0, implicit: true, defaultValue: LogotypeImageType.color })
+  @AsnProp({
+    type: AsnPropTypes.Integer,
+    context: 0,
+    implicit: true,
+    defaultValue: LogotypeImageType.color,
+  })
   public type: LogotypeImageType = LogotypeImageType.color;
 
   /**

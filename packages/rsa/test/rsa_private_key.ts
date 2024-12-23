@@ -1,13 +1,14 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { RSAPrivateKey, OtherPrimeInfos, OtherPrimeInfo } from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
 
-context("RSA Private Key", () => {
+describe("RSA Private Key", () => {
+  const privateKeyWithoutPrimeInfoHex =
+    "304f020100020400800001020500800000020206008000000003020700800000000004020800800000000000050209008000000000000006020a00800000000000000007020b0080000000000000000008";
+  const privateKeyWithPrimeInfoHex =
+    "3068020101020400800001020500800000020206008000000003020700800000000004020800800000000000050209008000000000000006020a00800000000000000007020b008000000000000000000830173015020600800000000302050080000002020400800001";
 
-  const privateKeyWithoutPrimeInfoHex = "304f020100020400800001020500800000020206008000000003020700800000000004020800800000000000050209008000000000000006020a00800000000000000007020b0080000000000000000008";
-  const privateKeyWithPrimeInfoHex = "3068020101020400800001020500800000020206008000000003020700800000000004020800800000000000050209008000000000000006020a00800000000000000007020b008000000000000000000830173015020600800000000302050080000002020400800001";
-
-  context("without PrimeInfo", () => {
+  describe("without PrimeInfo", () => {
     it("serialize", () => {
       const privateKey = new RSAPrivateKey({
         modulus: new Uint8Array([0, 128, 0, 1]).buffer,
@@ -52,7 +53,7 @@ context("RSA Private Key", () => {
     });
   });
 
-  context("with PrimeInfo", () => {
+  describe("with PrimeInfo", () => {
     it("serialize", () => {
       const privateKey = new RSAPrivateKey({
         version: 1,

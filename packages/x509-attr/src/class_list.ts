@@ -10,7 +10,7 @@ export enum ClassListFlags {
 }
 
 /**
- * ```
+ * ```asn1
  * ClassList  ::=  BIT STRING {
  *      unmarked       (0),
  *      unclassified   (1),
@@ -21,4 +21,4 @@ export enum ClassListFlags {
  * }
  * ```
  */
-export class ClassList extends BitString<ClassListFlags> { }
+export class ClassList extends BitString<ClassListFlags> {}

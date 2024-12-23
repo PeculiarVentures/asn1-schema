@@ -8,7 +8,7 @@ export enum DigestedObjectType {
 }
 
 /**
- * ```
+ * ```asn1
  * ObjectDigestInfo    ::= SEQUENCE {
  *      digestedObjectType  ENUMERATED {
  *           publicKey            (0),
@@ -23,7 +23,6 @@ export enum DigestedObjectType {
  * ```
  */
 export class ObjectDigestInfo {
-
   @AsnProp({ type: AsnPropTypes.Enumerated })
   public digestedObjectType = DigestedObjectType.publicKey;
 

@@ -8,7 +8,7 @@ export enum TSTInfoVersion {
 }
 
 /**
- * ```
+ * ```asn1
  * TSTInfo ::= SEQUENCE  {
  *   version                      INTEGER  { v1(1) },
  *   policy                       TSAPolicyId,
@@ -30,7 +30,6 @@ export enum TSTInfoVersion {
  */
 
 export class TSTInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version = TSTInfoVersion.v1;
 
@@ -62,7 +61,11 @@ export class TSTInfo {
    * MUST be present if the similar field was present in TimeStampReq.
    * In that case it MUST have the same value
    */
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
+    optional: true,
+  })
   public nonce?: ArrayBuffer;
 
   @AsnProp({ type: GeneralName, context: 0, optional: true })
@@ -74,5 +77,4 @@ export class TSTInfo {
   constructor(params: Partial<TSTInfo> = {}) {
     Object.assign(this, params);
   }
-
 }

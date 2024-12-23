@@ -2,7 +2,7 @@ import { AsnArray, AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculia
 import { PKCS12Attribute } from "./attribute";
 
 /**
- * ```
+ * ```asn1
  * SafeBag ::= SEQUENCE {
  *   bagId         BAG-TYPE.&id ({PKCS12BagSet}),
  *   bagValue      [0] EXPLICIT BAG-TYPE.&Type({PKCS12BagSet}{@bagId}),
@@ -11,7 +11,6 @@ import { PKCS12Attribute } from "./attribute";
  * ```
  */
 export class SafeBag {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public bagId = "";
 
@@ -27,18 +26,16 @@ export class SafeBag {
 }
 
 /**
- * ```
+ * ```asn1
  * SafeContents ::= SEQUENCE OF SafeBag
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: SafeBag })
-export class SafeContents extends AsnArray<SafeBag> { 
-
+export class SafeContents extends AsnArray<SafeBag> {
   constructor(items?: SafeBag[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, SafeContents.prototype);
   }
-
 }

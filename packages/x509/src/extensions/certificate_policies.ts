@@ -2,21 +2,21 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculia
 import { id_ce } from "../object_identifiers";
 
 /**
- * ```
+ * ```asn1
  * id-ce-certificatePolicies OBJECT IDENTIFIER ::=  { id-ce 32 }
  * ```
  */
 export const id_ce_certificatePolicies = `${id_ce}.32`;
 
 /**
- * ```
+ * ```asn1
  * anyPolicy OBJECT IDENTIFIER ::= { id-ce-certificatePolicies 0 }
  * ```
  */
 export const id_ce_certificatePolicies_anyPolicy = `${id_ce_certificatePolicies}.0`;
 
 /**
- * ```
+ * ```asn1
  * DisplayText ::= CHOICE {
  *      ia5String        IA5String      (SIZE (1..200)),
  *      visibleString    VisibleString  (SIZE (1..200)),
@@ -26,7 +26,6 @@ export const id_ce_certificatePolicies_anyPolicy = `${id_ce_certificatePolicies}
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class DisplayText {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public ia5String?: string;
 
@@ -49,14 +48,13 @@ export class DisplayText {
 }
 
 /**
- * ```
+ * ```asn1
  * NoticeReference ::= SEQUENCE {
  *      organization     DisplayText,
  *      noticeNumbers    SEQUENCE OF INTEGER }
  * ```
  */
 export class NoticeReference {
-
   @AsnProp({ type: DisplayText })
   public organization = new DisplayText();
 
@@ -69,14 +67,13 @@ export class NoticeReference {
 }
 
 /**
- * ```
+ * ```asn1
  * UserNotice ::= SEQUENCE {
  *      noticeRef        NoticeReference OPTIONAL,
  *      explicitText     DisplayText OPTIONAL }
  * ```
  */
 export class UserNotice {
-
   @AsnProp({ type: NoticeReference, optional: true })
   public noticeRef?: NoticeReference;
 
@@ -89,14 +86,14 @@ export class UserNotice {
 }
 
 /**
- * ```
+ * ```asn1
  * CPSuri ::= IA5String
  * ```
  */
 export type CPSuri = string;
 
 /**
- * ```
+ * ```asn1
  * Qualifier ::= CHOICE {
  *      cPSuri           CPSuri,
  *      userNotice       UserNotice }
@@ -104,7 +101,6 @@ export type CPSuri = string;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class Qualifier {
-
   @AsnProp({ type: AsnPropTypes.IA5String })
   public cPSuri?: CPSuri;
 
@@ -117,21 +113,20 @@ export class Qualifier {
 }
 
 /**
- * ```
+ * ```asn1
  * PolicyQualifierId ::= OBJECT IDENTIFIER ( id-qt-cps | id-qt-unotice )
  * ```
  */
 export type PolicyQualifierId = string;
 
 /**
- * ```
+ * ```asn1
  * PolicyQualifierInfo ::= SEQUENCE {
  *      policyQualifierId  PolicyQualifierId,
  *      qualifier          ANY DEFINED BY policyQualifierId }
  * ```
  */
 export class PolicyQualifierInfo {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public policyQualifierId: PolicyQualifierId = "";
 
@@ -144,14 +139,14 @@ export class PolicyQualifierInfo {
 }
 
 /**
- * ```
+ * ```asn1
  * CertPolicyId ::= OBJECT IDENTIFIER
  * ```
  */
 export type CertPolicyId = string;
 
 /**
- * ```
+ * ```asn1
  * PolicyInformation ::= SEQUENCE {
  *      policyIdentifier   CertPolicyId,
  *      policyQualifiers   SEQUENCE SIZE (1..MAX) OF
@@ -171,18 +166,16 @@ export class PolicyInformation {
 }
 
 /**
- * ```
+ * ```asn1
  * CertificatePolicies ::= SEQUENCE SIZE (1..MAX) OF PolicyInformation
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: PolicyInformation })
 export class CertificatePolicies extends AsnArray<PolicyInformation> {
-
   constructor(items?: PolicyInformation[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, CertificatePolicies.prototype);
   }
-
 }

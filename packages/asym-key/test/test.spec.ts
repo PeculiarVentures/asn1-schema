@@ -3,8 +3,7 @@ import { OneAsymmetricKey } from "@peculiar/asn1-asym-key";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { id_rsaEncryption } from "@peculiar/asn1-rsa";
 
-context("RFC5958", () => {
-
+describe("RFC5958", () => {
   it("RSA private key", () => {
     const pem = [
       "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+G9YX1BboIIty",
@@ -38,5 +37,4 @@ context("RFC5958", () => {
     const key = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
     assert.strictEqual(key.privateKeyAlgorithm.algorithm, id_rsaEncryption);
   });
-
 });

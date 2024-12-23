@@ -6,14 +6,13 @@ export interface IValidityParams {
   notAfter: Date;
 }
 /**
- * ```
+ * ```asn1
  * Validity ::= SEQUENCE {
  *   notBefore      Time,
  *   notAfter       Time  }
  * ```
  */
 export class Validity {
-
   @AsnProp({ type: Time })
   public notBefore = new Time(new Date());
 

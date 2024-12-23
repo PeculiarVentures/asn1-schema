@@ -3,14 +3,13 @@ import { LogotypeDetails } from "./logotype_details";
 import { LogotypeAudioInfo } from "./logotype_audio_info";
 
 /**
- * ```
+ * ```asn1
  * LogotypeAudio ::= SEQUENCE {
  *   audioDetails    LogotypeDetails,
  *   audioInfo       LogotypeAudioInfo OPTIONAL }
  * ```
  */
 export class LogotypeAudio {
-
   @AsnProp({ type: LogotypeDetails })
   public audioDetails = new LogotypeDetails();
 

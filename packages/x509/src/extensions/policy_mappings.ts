@@ -3,21 +3,20 @@ import { id_ce } from "../object_identifiers";
 import { CertPolicyId } from "./certificate_policies";
 
 /**
- * ```
+ * ```asn1
  * id-ce-policyMappings OBJECT IDENTIFIER ::=  { id-ce 33 }
  * ```
  */
 export const id_ce_policyMappings = `${id_ce}.33`;
 
 /**
- * ```
+ * ```asn1
  * PolicyMapping ::= SEQUENCE {
  *   issuerDomainPolicy      CertPolicyId,
  *   subjectDomainPolicy     CertPolicyId }
  * ```
  */
 export class PolicyMapping {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public issuerDomainPolicy: CertPolicyId = "";
 
@@ -30,18 +29,16 @@ export class PolicyMapping {
 }
 
 /**
- * ```
+ * ```asn1
  * PolicyMappings ::= SEQUENCE SIZE (1..MAX) OF PolicyMapping
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: PolicyMapping })
-export class PolicyMappings extends AsnArray<PolicyMapping>{
-
+export class PolicyMappings extends AsnArray<PolicyMapping> {
   constructor(items?: PolicyMapping[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, PolicyMappings.prototype);
   }
-
 }

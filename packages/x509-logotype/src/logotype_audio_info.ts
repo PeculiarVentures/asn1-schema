@@ -7,7 +7,7 @@ export enum LogotypeAudioChannels {
 }
 
 /**
- * ```
+ * ```asn1
  * LogotypeAudioInfo ::= SEQUENCE {
  *   fileSize        INTEGER,  -- In octets, 0=unspecified
  *   playTime        INTEGER,  -- In milliseconds, 0=unspecified
@@ -17,7 +17,6 @@ export enum LogotypeAudioChannels {
  * ```
  */
 export class LogotypeAudioInfo {
-
   /**
    * In octets
    */

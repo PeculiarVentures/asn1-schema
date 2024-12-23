@@ -3,18 +3,17 @@ import { Signature } from "./signature";
 import { TBSRequest } from "./tbs_request";
 
 /**
- * ```
+ * ```asn1
  * OCSPRequest     ::=     SEQUENCE {
  *   tbsRequest                  TBSRequest,
  *   optionalSignature   [0]     EXPLICIT Signature OPTIONAL }
  * ```
  */
 export class OCSPRequest {
-
-  @AsnProp({type: TBSRequest})
+  @AsnProp({ type: TBSRequest })
   public tbsRequest = new TBSRequest();
 
-  @AsnProp({type: Signature, optional: true, context: 0})
+  @AsnProp({ type: Signature, optional: true, context: 0 })
   public optionalSignature?: Signature;
 
   constructor(params: Partial<OCSPRequest> = {}) {

@@ -3,7 +3,7 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 import { AttributeCertificateInfo } from "./attribute_certificate_info";
 
 /**
- * ```
+ * ```asn1
  * AttributeCertificate ::= SEQUENCE {
  *      acinfo               AttributeCertificateInfo,
  *      signatureAlgorithm   AlgorithmIdentifier,
@@ -12,7 +12,6 @@ import { AttributeCertificateInfo } from "./attribute_certificate_info";
  * ```
  */
 export class AttributeCertificate {
-
   @AsnProp({ type: AttributeCertificateInfo })
   public acinfo = new AttributeCertificateInfo();
 

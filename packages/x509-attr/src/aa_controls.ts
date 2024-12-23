@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { AttrSpec } from "./attr_spec";
 
 /**
- * ```
+ * ```asn1
  * AAControls ::= SEQUENCE {
  *      pathLenConstraint INTEGER (0..MAX) OPTIONAL,
  *      permittedAttrs    [0] AttrSpec OPTIONAL,
@@ -12,7 +12,6 @@ import { AttrSpec } from "./attr_spec";
  * ```
  */
 export class AAControls {
-
   @AsnProp({ type: AsnPropTypes.Integer, optional: true })
   public pathLenConstraint?: number;
 

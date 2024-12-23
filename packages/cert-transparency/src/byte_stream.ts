@@ -1,4 +1,3 @@
-
 import { BufferSource, BufferSourceConverter, Convert } from "pvtsutils";
 
 export class ByteStream {

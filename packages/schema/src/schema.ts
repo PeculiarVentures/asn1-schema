@@ -17,7 +17,7 @@ export interface IAsnSchemaItem {
 export interface IAsnSchema {
   type: AsnTypeTypes;
   itemType: AsnPropTypes | IEmptyConstructor;
-  items: { [key: string]: IAsnSchemaItem; };
+  items: { [key: string]: IAsnSchemaItem };
   schema?: AsnSchemaType;
 }
 
@@ -30,7 +30,10 @@ export class AsnSchemaStorage {
     return this.items.has(target);
   }
 
-  public get(target: IEmptyConstructor, checkSchema: true): IAsnSchema & Required<Pick<IAsnSchema, "schema">>;
+  public get(
+    target: IEmptyConstructor,
+    checkSchema: true,
+  ): IAsnSchema & Required<Pick<IAsnSchema, "schema">>;
   public get(target: IEmptyConstructor, checkSchema?: false): IAsnSchema;
   public get(target: IEmptyConstructor, checkSchema = false): IAsnSchema {
     const schema = this.items.get(target);
@@ -38,7 +41,9 @@ export class AsnSchemaStorage {
       throw new Error(`Cannot get schema for '${target.prototype.constructor.name}' target`);
     }
     if (checkSchema && !schema.schema) {
-      throw new Error(`Schema '${target.prototype.constructor.name}' doesn't contain ASN.1 schema. Call 'AsnSchemaStorage.cache'.`);
+      throw new Error(
+        `Schema '${target.prototype.constructor.name}' doesn't contain ASN.1 schema. Call 'AsnSchemaStorage.cache'.`,
+      );
     }
     return schema;
   }
@@ -75,10 +80,12 @@ export class AsnSchemaStorage {
       const item = schema.items[key];
       const name = useNames ? key : "";
       let asn1Item: asn1js.AsnSchemaType;
-      if (typeof (item.type) === "number") {
+      if (typeof item.type === "number") {
         // type is AsnPropType Enum
         const Asn1TypeName = AsnPropTypes[item.type];
-        const Asn1Type = (asn1js as unknown as Record<string, typeof asn1js.BaseBlock>)[Asn1TypeName];
+        const Asn1Type = (asn1js as unknown as Record<string, typeof asn1js.BaseBlock>)[
+          Asn1TypeName
+        ];
         if (!Asn1Type) {
           throw new Error(`Cannot get ASN1 class by name '${Asn1TypeName}'`);
         }
@@ -109,9 +116,7 @@ export class AsnSchemaStorage {
       const optional = !!item.optional || item.defaultValue !== undefined;
       if (item.repeated) {
         asn1Item.name = ""; // erase name for repeated items
-        const Container = item.repeated === "set"
-          ? asn1js.Set
-          : asn1js.Sequence;
+        const Container = item.repeated === "set" ? asn1js.Set : asn1js.Sequence;
         asn1Item = new Container({
           name: "",
           value: [
@@ -127,46 +132,51 @@ export class AsnSchemaStorage {
         if (item.implicit) {
           // IMPLICIT
           if (typeof item.type === "number" || isConvertible(item.type)) {
-            const Container = item.repeated
-              ? asn1js.Constructed
-              : asn1js.Primitive;
-            asn1Value.push(new Container({
-              name,
-              optional,
-              idBlock: {
-                tagClass: 3,
-                tagNumber: item.context,
-              },
-            }));
+            const Container = item.repeated ? asn1js.Constructed : asn1js.Primitive;
+            asn1Value.push(
+              new Container({
+                name,
+                optional,
+                idBlock: {
+                  tagClass: 3,
+                  tagNumber: item.context,
+                },
+              }),
+            );
           } else {
             this.cache(item.type);
             const isRepeated = !!item.repeated;
-            let value = !isRepeated
-              ? this.get(item.type, true).schema
-              : asn1Item;
+            let value = !isRepeated ? this.get(item.type, true).schema : asn1Item;
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            value = "valueBlock" in value ? (value as asn1js.Sequence).valueBlock.value : (value as any).value;
-            asn1Value.push(new asn1js.Constructed({
-              name: !isRepeated ? name : "",
+            value =
+              "valueBlock" in value
+                ? (value as asn1js.Sequence).valueBlock.value
+                : (value as any).value;
+            asn1Value.push(
+              new asn1js.Constructed({
+                name: !isRepeated ? name : "",
+                optional,
+                idBlock: {
+                  tagClass: 3,
+                  tagNumber: item.context,
+                },
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                value: value as any,
+              }),
+            );
+          }
+        } else {
+          // EXPLICIT
+          asn1Value.push(
+            new asn1js.Constructed({
               optional,
               idBlock: {
                 tagClass: 3,
                 tagNumber: item.context,
               },
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              value: value as any,
-            }));
-          }
-        } else {
-          // EXPLICIT
-          asn1Value.push(new asn1js.Constructed({
-            optional,
-            idBlock: {
-              tagClass: 3,
-              tagNumber: item.context,
-            },
-            value: [asn1Item],
-          }));
+              value: [asn1Item],
+            }),
+          );
         }
       } else {
         // UNIVERSAL
@@ -200,5 +210,4 @@ export class AsnSchemaStorage {
     }
     return null;
   }
-
 }

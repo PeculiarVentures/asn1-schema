@@ -2,7 +2,7 @@ import { AsnProp, OctetString } from "@peculiar/asn1-schema";
 import { GeneralName } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * SvceAuthInfo ::=    SEQUENCE {
  *      service       GeneralName,
  *      ident         GeneralName,
@@ -11,7 +11,6 @@ import { GeneralName } from "@peculiar/asn1-x509";
  * ```
  */
 export class SvceAuthInfo {
-
   @AsnProp({ type: GeneralName })
   public service = new GeneralName();
 

@@ -2,14 +2,14 @@ import { AsnPropTypes, AsnProp } from "@peculiar/asn1-schema";
 import { Version } from "./version";
 
 /**
- * ```
+ * ```asn1
  * adbe-archiveRevInfo OBJECT IDENTIFIER ::=  { adbe(1.2.840.113583) acrobat(1) security(1) x509Ext(9) 2 }
  * ```
  */
 export const id_adbe_archiveRevInfo = "1.2.840.113583.1.1.9.2";
 
 /**
- * ```
+ * ```asn1
  * ArchiveRevInfo ::= SEQUENCE {
  *     version             INTEGER  { v1(1) }, -- extension version
  * }

@@ -1,10 +1,9 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { PrivateKeyInfo, Attributes } from "../src";
 import { AlgorithmIdentifier, Attribute } from "@peculiar/asn1-x509";
 import { AsnConvert, AsnOctetStringConverter, OctetString } from "@peculiar/asn1-schema";
 
-context("PrivateKeyInfo", () => {
-
+describe("PrivateKeyInfo", () => {
   const hex = "3022020100300806042a03040505000403800001a00e300c060353040531050403800002";
 
   it("serialize", () => {
@@ -34,6 +33,5 @@ context("PrivateKeyInfo", () => {
     assert.strictEqual(obj.privateKeyAlgorithm.algorithm, "1.2.3.4.5");
     assert.strictEqual(obj.privateKey.byteLength, 3);
     assert.strictEqual(obj.attributes?.length, 1);
-  })
-
+  });
 });

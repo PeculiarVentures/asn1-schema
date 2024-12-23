@@ -3,7 +3,7 @@ import { Certificate, TBSCertificate } from "@peculiar/asn1-x509";
 import { TrustAnchorInfo } from "./trust_anchor_info";
 
 /**
- * ```
+ * ```asn1
  * TrustAnchorChoice ::= CHOICE {
  *   certificate  Certificate,
  *   tbsCert      [1] EXPLICIT TBSCertificate,
@@ -12,7 +12,6 @@ import { TrustAnchorInfo } from "./trust_anchor_info";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class TrustAnchorChoice {
-
   @AsnProp({ type: Certificate })
   public certificate?: Certificate;
 

@@ -2,23 +2,22 @@ import { AsnProp, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-sche
 import { Name } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * KeyHash ::= OCTET STRING -- SHA-1 hash of responder's public key
  *   -- (excluding the tag and length fields)
  * ```
  */
-export class KeyHash extends OctetString { }
+export class KeyHash extends OctetString {}
 
 /**
-* ```
-* ResponderID ::= CHOICE {
-*   byName   [1] Name,
-*   byKey    [2] KeyHash }
-* ```
-*/
+ * ```asn1
+ * ResponderID ::= CHOICE {
+ *   byName   [1] Name,
+ *   byKey    [2] KeyHash }
+ * ```
+ */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ResponderID {
-
   @AsnProp({ type: Name, context: 1 })
   public byName?: Name;
 

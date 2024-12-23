@@ -7,7 +7,6 @@ export const id_archivedKey = "1.3.6.1.4.1.311.21.13";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ArchivedKey {
-
   @AsnProp({ type: AsnPropTypes.Any })
   public value: ArrayBuffer;
 

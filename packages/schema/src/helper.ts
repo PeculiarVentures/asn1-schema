@@ -1,6 +1,6 @@
 import { IAsnConvertible, IEmptyConstructor } from "./types";
 
-export function isConvertible(target: IEmptyConstructor): target is (new () => IAsnConvertible);
+export function isConvertible(target: IEmptyConstructor): target is new () => IAsnConvertible;
 export function isConvertible(target: unknown): target is IAsnConvertible;
 export function isConvertible(target: unknown): target is IAsnConvertible {
   if (typeof target === "function" && target.prototype) {
@@ -26,13 +26,19 @@ export function isTypeOfArray(target: unknown): target is typeof Array {
 }
 
 export function isArrayEqual(bytes1: ArrayBuffer, bytes2: ArrayBuffer): boolean {
-  if (!(bytes1 && bytes2)) { return false; }
-  if (bytes1.byteLength !== bytes2.byteLength) { return false; }
+  if (!(bytes1 && bytes2)) {
+    return false;
+  }
+  if (bytes1.byteLength !== bytes2.byteLength) {
+    return false;
+  }
 
   const b1 = new Uint8Array(bytes1);
   const b2 = new Uint8Array(bytes2);
   for (let i = 0; i < bytes1.byteLength; i++) {
-    if (b1[i] !== b2[i]) { return false; }
+    if (b1[i] !== b2[i]) {
+      return false;
+    }
   }
   return true;
 }

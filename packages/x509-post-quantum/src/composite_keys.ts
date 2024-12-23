@@ -30,10 +30,8 @@ export const id_Dilithium3_ECDSA_P256 = "2.16.840.1.114027.80.5.1";
  */
 export const id_Dilithium3_RSA = "2.16.840.1.114027.80.5.2";
 
-
-
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class CompositeAlgorithmIdentifier extends AlgorithmIdentifier { }
+export class CompositeAlgorithmIdentifier extends AlgorithmIdentifier {}
 
 /**
  * ```asn
@@ -42,14 +40,12 @@ export class CompositeAlgorithmIdentifier extends AlgorithmIdentifier { }
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: SubjectPublicKeyInfo })
 export class CompositePublicKey extends AsnArray<SubjectPublicKeyInfo> {
-
   constructor(items?: SubjectPublicKeyInfo[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, CompositePublicKey.prototype);
   }
-
 }
 
 /**
@@ -57,14 +53,14 @@ export class CompositePublicKey extends AsnArray<SubjectPublicKeyInfo> {
  * CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey ENCODED BY der)
  * ```
  */
-export class CompositePublicKeyOs extends OctetString { }
+export class CompositePublicKeyOs extends OctetString {}
 
 /**
  * ```asn
  * CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey ENCODED BY der)
  * ```
  */
-export class CompositePublicKeyBs extends BitString { }
+export class CompositePublicKeyBs extends BitString {}
 
 /**
  * ```asn
@@ -73,12 +69,10 @@ export class CompositePublicKeyBs extends BitString { }
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: OneAsymmetricKey })
 export class CompositePrivateKey extends AsnArray<OneAsymmetricKey> {
-
   constructor(items?: OneAsymmetricKey[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, CompositePrivateKey.prototype);
   }
-
 }

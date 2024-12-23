@@ -1,5 +1,5 @@
 /**
- * ```
+ * ```asn1
  * OCSPResponseStatus ::= ENUMERATED {
  *   successful          (0),  -- Response has valid confirmations
  *   malformedRequest    (1),  -- Illegal confirmation request

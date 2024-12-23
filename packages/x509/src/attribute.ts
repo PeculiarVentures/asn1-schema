@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * Attribute   ::= SEQUENCE {
  *      type             AttributeType,
  *      values    SET OF AttributeValue }
@@ -9,7 +9,6 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
  * ```
  */
 export class Attribute {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public type = "";
 

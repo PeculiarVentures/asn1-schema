@@ -2,14 +2,14 @@ import { AsnProp, OctetString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * EncryptedData ::= OCTET STRING
  * ```
  */
-export class EncryptedData extends OctetString { }
+export class EncryptedData extends OctetString {}
 
 /**
- * ```
+ * ```asn1
  * EncryptedPrivateKeyInfo ::= SEQUENCE {
  *   encryptionAlgorithm AlgorithmIdentifier {{KeyEncryptionAlgorithms}},
  *   encryptedData EncryptedData
@@ -17,7 +17,6 @@ export class EncryptedData extends OctetString { }
  * ```
  */
 export class EncryptedPrivateKeyInfo {
-
   @AsnProp({ type: AlgorithmIdentifier })
   public encryptionAlgorithm = new AlgorithmIdentifier();
 

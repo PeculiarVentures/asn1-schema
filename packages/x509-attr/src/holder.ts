@@ -4,7 +4,7 @@ import { GeneralNames } from "@peculiar/asn1-x509";
 import { ObjectDigestInfo } from "./object_digest_info";
 
 /**
- * ```
+ * ```asn1
  * Holder ::= SEQUENCE {
  *      baseCertificateID   [0] IssuerSerial OPTIONAL,
  *                -- the issuer and serial number of
@@ -18,7 +18,6 @@ import { ObjectDigestInfo } from "./object_digest_info";
  * ```
  */
 export class Holder {
-
   @AsnProp({ type: IssuerSerial, implicit: true, context: 0, optional: true })
   public baseCertificateID?: IssuerSerial;
 

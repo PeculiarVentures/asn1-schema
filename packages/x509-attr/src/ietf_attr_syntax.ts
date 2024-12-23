@@ -2,7 +2,7 @@ import { AsnProp, OctetString, AsnPropTypes } from "@peculiar/asn1-schema";
 import { GeneralNames } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * CHOICE {
  *                    octets    OCTET STRING,
  *                    oid       OBJECT IDENTIFIER,
@@ -10,7 +10,6 @@ import { GeneralNames } from "@peculiar/asn1-x509";
  * ```
  */
 export class IetfAttrSyntaxValueChoices {
-
   @AsnProp({ type: OctetString })
   public cotets?: OctetString;
 
@@ -26,7 +25,7 @@ export class IetfAttrSyntaxValueChoices {
 }
 
 /**
- * ```
+ * ```asn1
  * IetfAttrSyntax ::= SEQUENCE {
  *     policyAuthority[0] GeneralNames    OPTIONAL,
  *     values         SEQUENCE OF CHOICE {
@@ -38,7 +37,6 @@ export class IetfAttrSyntaxValueChoices {
  * ```
  */
 export class IetfAttrSyntax {
-
   @AsnProp({ type: GeneralNames, implicit: true, context: 0, optional: true })
   public policyAuthority?: GeneralNames;
 

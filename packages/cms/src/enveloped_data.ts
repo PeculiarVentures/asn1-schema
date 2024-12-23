@@ -12,7 +12,6 @@ import { EncryptedContentInfo } from "./encrypted_content_info";
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: Attribute })
 export class UnprotectedAttributes extends AsnArray<Attribute> {
-
   constructor(items?: Attribute[]) {
     super(items);
 
@@ -32,7 +31,6 @@ export class UnprotectedAttributes extends AsnArray<Attribute> {
  * ```
  */
 export class EnvelopedData {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: CMSVersion = CMSVersion.v0;
 

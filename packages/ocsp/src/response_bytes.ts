@@ -1,14 +1,13 @@
 import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * ResponseBytes ::= SEQUENCE {
  *   responseType            OBJECT IDENTIFIER,
  *   response                OCTET STRING }
  * ```
  */
 export class ResponseBytes {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public responseType = "";
 

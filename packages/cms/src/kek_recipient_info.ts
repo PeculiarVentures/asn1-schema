@@ -11,7 +11,6 @@ import { CMSVersion, EncryptedKey, KeyEncryptionAlgorithmIdentifier } from "./ty
  * ```
  */
 export class KEKIdentifier {
-
   @AsnProp({ type: OctetString })
   public keyIdentifier = new OctetString();
 
@@ -36,7 +35,6 @@ export class KEKIdentifier {
  * ```
  */
 export class KEKRecipientInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: CMSVersion = CMSVersion.v4;
 

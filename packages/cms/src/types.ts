@@ -27,7 +27,7 @@ export enum CMSVersion {
  * EncryptedKey ::= OCTET STRING
  * ```
  */
- export type EncryptedKey = OctetString;
+export type EncryptedKey = OctetString;
 
 /**
  * ```asn
@@ -35,7 +35,7 @@ export enum CMSVersion {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class DigestAlgorithmIdentifier extends AlgorithmIdentifier { }
+export class DigestAlgorithmIdentifier extends AlgorithmIdentifier {}
 
 /**
  * ```asn
@@ -43,7 +43,7 @@ export class DigestAlgorithmIdentifier extends AlgorithmIdentifier { }
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class SignatureAlgorithmIdentifier extends AlgorithmIdentifier { }
+export class SignatureAlgorithmIdentifier extends AlgorithmIdentifier {}
 
 /**
  * ```asn
@@ -51,7 +51,7 @@ export class SignatureAlgorithmIdentifier extends AlgorithmIdentifier { }
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class KeyEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { }
+export class KeyEncryptionAlgorithmIdentifier extends AlgorithmIdentifier {}
 
 /**
  * ```asn
@@ -59,7 +59,7 @@ export class KeyEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { }
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class ContentEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { }
+export class ContentEncryptionAlgorithmIdentifier extends AlgorithmIdentifier {}
 
 /**
  * ```asn
@@ -67,7 +67,7 @@ export class ContentEncryptionAlgorithmIdentifier extends AlgorithmIdentifier { 
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class MessageAuthenticationCodeAlgorithm extends AlgorithmIdentifier { }
+export class MessageAuthenticationCodeAlgorithm extends AlgorithmIdentifier {}
 
 /**
  * ```asn
@@ -75,4 +75,4 @@ export class MessageAuthenticationCodeAlgorithm extends AlgorithmIdentifier { }
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
-export class KeyDerivationAlgorithmIdentifier extends AlgorithmIdentifier { }
+export class KeyDerivationAlgorithmIdentifier extends AlgorithmIdentifier {}

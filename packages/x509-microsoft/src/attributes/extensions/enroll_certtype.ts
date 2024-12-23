@@ -4,14 +4,13 @@ import { DirectoryString } from "@peculiar/asn1-x509";
 export const id_enrollCertType = "1.3.6.1.4.1.311.20.2";
 
 /**
- * ```
+ * ```asn1
  * CertificateTemplateName ::= SEQUENCE {
  *   Name            UTF8String
  * }
  * ```
  */
 export class EnrollCertType {
-
   @AsnProp({ type: AsnPropTypes.Utf8String })
   public name = "";
 
@@ -21,7 +20,7 @@ export class EnrollCertType {
 }
 
 /**
- * ```
+ * ```asn1
  * CertificateTemplateNameChoice ::= CHOICE {
  *   name            BMPString
  *   spec            CertificateTemplateName
@@ -31,9 +30,8 @@ export class EnrollCertType {
  * NOTE:
  * BMPString is used in practice
  */
-@AsnType({type: AsnTypeTypes.Choice})
+@AsnType({ type: AsnTypeTypes.Choice })
 export class EnrollCertTypeChoice {
-
   @AsnProp({ type: DirectoryString })
   public name?: DirectoryString;
 
@@ -50,5 +48,4 @@ export class EnrollCertTypeChoice {
   public toString(): string {
     return this.name?.toString() || this.spec?.name || "";
   }
-
 }

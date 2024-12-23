@@ -3,7 +3,7 @@ import { GeneralName } from "@peculiar/asn1-x509";
 import { V2Form } from "./v2_form";
 
 /**
- * ```
+ * ```asn1
  * AttCertIssuer ::= CHOICE {
  *      v1Form   GeneralNames,  -- MUST NOT be used in this
  *                              -- profile
@@ -13,7 +13,6 @@ import { V2Form } from "./v2_form";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class AttCertIssuer {
-
   @AsnProp({ type: GeneralName, repeated: "sequence" })
   public v1Form?: GeneralName[];
 

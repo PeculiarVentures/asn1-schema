@@ -2,7 +2,7 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { GeneralName, Attribute } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * ACClearAttrs ::= SEQUENCE {
  *      acIssuer          GeneralName,
  *      acSerial          INTEGER,
@@ -11,7 +11,6 @@ import { GeneralName, Attribute } from "@peculiar/asn1-x509";
  * ```
  */
 export class ACClearAttrs {
-
   @AsnProp({ type: GeneralName })
   public acIssuer = new GeneralName();
 

@@ -3,7 +3,7 @@ import { LogotypeInfo } from "./logotype_info";
 import { OtherLogotypeInfo } from "./other_logotype_info";
 
 /**
- * ```
+ * ```asn1
  * LogotypeExtn ::= SEQUENCE {
  *   communityLogos  [0] EXPLICIT SEQUENCE OF LogotypeInfo OPTIONAL,
  *   issuerLogo      [1] EXPLICIT LogotypeInfo OPTIONAL,
@@ -12,7 +12,6 @@ import { OtherLogotypeInfo } from "./other_logotype_info";
  * ```
  */
 export class LogotypeExtn {
-
   @AsnProp({ type: LogotypeInfo, context: 0, repeated: "sequence", optional: true })
   public communityLogos?: LogotypeInfo[];
 

@@ -3,7 +3,7 @@ import { ContentInfo } from "@peculiar/asn1-cms";
 import { MacData } from "./mac_data";
 
 /**
- * ```
+ * ```asn1
  * PFX ::= SEQUENCE {
  *   version    INTEGER {v3(3)}(v3,...),
  *   authSafe   ContentInfo,
@@ -12,7 +12,6 @@ import { MacData } from "./mac_data";
  * ```
  */
 export class PFX {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public version = 3;
 
@@ -25,4 +24,4 @@ export class PFX {
   constructor(params: Partial<PFX> = {}) {
     Object.assign(this, params);
   }
-} 
+}

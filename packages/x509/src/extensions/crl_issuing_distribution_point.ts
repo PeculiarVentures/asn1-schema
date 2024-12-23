@@ -4,14 +4,14 @@ import { id_ce } from "../object_identifiers";
 import { AsnPropTypes } from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * id-ce-issuingDistributionPoint OBJECT IDENTIFIER ::= { id-ce 28 }
  * ```
  */
 export const id_ce_issuingDistributionPoint = `${id_ce}.28`;
 
 /**
- * ```
+ * ```asn1
  * IssuingDistributionPoint ::= SEQUENCE {
  *      distributionPoint          [0] DistributionPointName OPTIONAL,
  *      onlyContainsUserCerts      [1] BOOLEAN DEFAULT FALSE,
@@ -25,29 +25,47 @@ export const id_ce_issuingDistributionPoint = `${id_ce}.28`;
  * ```
  */
 export class IssuingDistributionPoint {
-
   public static readonly ONLY = false;
 
   @AsnProp({ type: DistributionPointName, context: 0, optional: true })
   public distributionPoint?: DistributionPointName;
 
-  @AsnProp({ type: AsnPropTypes.Boolean, context: 1, defaultValue: IssuingDistributionPoint.ONLY, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.Boolean,
+    context: 1,
+    defaultValue: IssuingDistributionPoint.ONLY,
+    implicit: true,
+  })
   public onlyContainsUserCerts = IssuingDistributionPoint.ONLY;
 
-  @AsnProp({ type: AsnPropTypes.Boolean, context: 2, defaultValue: IssuingDistributionPoint.ONLY, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.Boolean,
+    context: 2,
+    defaultValue: IssuingDistributionPoint.ONLY,
+    implicit: true,
+  })
   public onlyContainsCACerts = IssuingDistributionPoint.ONLY;
 
   @AsnProp({ type: Reason, context: 3, optional: true, implicit: true })
   public onlySomeReasons?: Reason;
 
-  @AsnProp({ type: AsnPropTypes.Boolean, context: 4, defaultValue: IssuingDistributionPoint.ONLY, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.Boolean,
+    context: 4,
+    defaultValue: IssuingDistributionPoint.ONLY,
+    implicit: true,
+  })
   public indirectCRL = IssuingDistributionPoint.ONLY;
 
-  @AsnProp({ type: AsnPropTypes.Boolean, context: 5, defaultValue: IssuingDistributionPoint.ONLY, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.Boolean,
+    context: 5,
+    defaultValue: IssuingDistributionPoint.ONLY,
+    implicit: true,
+  })
   public onlyContainsAttributeCerts = IssuingDistributionPoint.ONLY;
 
   public constructor(params: Partial<IssuingDistributionPoint> = {}) {
     Object.assign(this, params);
   }
-
 }

@@ -2,7 +2,7 @@ import { AsnProp, OctetString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 /**
- * ```
+ * ```asn1
  * MessageImprint ::= SEQUENCE  {
  *  hashAlgorithm                AlgorithmIdentifier,
  *  hashedMessage                OCTET STRING  }
@@ -10,7 +10,6 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
  */
 
 export class MessageImprint {
-
   @AsnProp({ type: AlgorithmIdentifier })
   public hashAlgorithm = new AlgorithmIdentifier();
 

@@ -1,5 +1,5 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
-import { id_pkix } from "@peculiar/asn1-x509"
+import { id_pkix } from "@peculiar/asn1-x509";
 
 /**
  * ```asn
@@ -32,7 +32,6 @@ export const id_ri_scvp = `${id_ri}.4`;
  * ```
  */
 export class OtherRevocationInfoFormat {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public otherRevInfoFormat = "";
 
@@ -53,7 +52,6 @@ export class OtherRevocationInfoFormat {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class RevocationInfoChoice {
-
   @AsnProp({ type: OtherRevocationInfoFormat, context: 1, implicit: true })
   public other = new OtherRevocationInfoFormat();
 
@@ -67,13 +65,11 @@ export class RevocationInfoChoice {
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Set, itemType: RevocationInfoChoice })
-export class RevocationInfoChoices extends AsnArray<RevocationInfoChoice> { 
-
+export class RevocationInfoChoices extends AsnArray<RevocationInfoChoice> {
   constructor(items?: RevocationInfoChoice[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, RevocationInfoChoices.prototype);
   }
-
 }

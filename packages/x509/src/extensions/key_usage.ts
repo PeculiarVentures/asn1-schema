@@ -2,14 +2,22 @@ import { BitString } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
 
 /**
- * ```
+ * ```asn1
  * id-ce-keyUsage OBJECT IDENTIFIER ::=  { id-ce 15 }
  * ```
  */
 export const id_ce_keyUsage = `${id_ce}.15`;
 
-export type KeyUsageType = "digitalSignature" | "nonRepudiation" | "keyEncipherment" | "dataEncipherment"
-  | "keyAgreement" | "keyCertSign" | "crlSign" | "encipherOnly" | "decipherOnly";
+export type KeyUsageType =
+  | "digitalSignature"
+  | "nonRepudiation"
+  | "keyEncipherment"
+  | "dataEncipherment"
+  | "keyAgreement"
+  | "keyCertSign"
+  | "crlSign"
+  | "encipherOnly"
+  | "decipherOnly";
 
 export enum KeyUsageFlags {
   digitalSignature = 0x0001,
@@ -24,7 +32,7 @@ export enum KeyUsageFlags {
 }
 
 /**
- * ```
+ * ```asn1
  * KeyUsage ::= BIT STRING {
  *   digitalSignature        (0),
  *   nonRepudiation          (1), -- recent editions of X.509 have
@@ -39,7 +47,6 @@ export enum KeyUsageFlags {
  * ```
  */
 export class KeyUsage extends BitString {
-
   public toJSON(): KeyUsageType[] {
     const flag = this.toNumber();
     const res: KeyUsageType[] = [];
@@ -76,5 +83,4 @@ export class KeyUsage extends BitString {
   public override toString(): string {
     return `[${this.toJSON().join(", ")}]`;
   }
-
 }

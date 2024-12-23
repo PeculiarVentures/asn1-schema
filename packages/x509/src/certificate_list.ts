@@ -3,7 +3,7 @@ import { AlgorithmIdentifier } from "./algorithm_identifier";
 import { TBSCertList } from "./tbs_cert_list";
 
 /**
- * ```
+ * ```asn1
  * CertificateList  ::=  SEQUENCE  {
  *   tbsCertList          TBSCertList,
  *   signatureAlgorithm   AlgorithmIdentifier,
@@ -11,7 +11,6 @@ import { TBSCertList } from "./tbs_cert_list";
  * ```
  */
 export class CertificateList {
-
   @AsnProp({ type: TBSCertList })
   public tbsCertList = new TBSCertList();
 

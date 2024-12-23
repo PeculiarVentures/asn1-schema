@@ -4,7 +4,7 @@ import { AsnProp, AsnPropTypes, BitString } from "@peculiar/asn1-schema";
 export type CertPolicyType = "inhibitPolicyMapping" | "requireExplicitPolicy" | "inhibitAnyPolicy";
 
 /**
- * ```
+ * ```asn1
  * CertPolicyFlags ::= BIT STRING {
  *   inhibitPolicyMapping    (0),
  *   requireExplicitPolicy   (1),
@@ -18,7 +18,6 @@ export enum CertPolicyFlags {
 }
 
 export class CertPolicy extends BitString<CertPolicyFlags> {
-
   public toJSON(): CertPolicyType[] {
     const res: CertPolicyType[] = [];
     const flags = this.toNumber();
@@ -40,7 +39,7 @@ export class CertPolicy extends BitString<CertPolicyFlags> {
 }
 
 /**
- * ```
+ * ```asn1
  * CertPathControls ::= SEQUENCE {
  *   taName           Name,
  *   certificate      [0] Certificate OPTIONAL,
@@ -51,7 +50,6 @@ export class CertPolicy extends BitString<CertPolicyFlags> {
  * ```
  */
 export class CertPathControls {
-
   @AsnProp({ type: Name })
   public taName = new Name();
 

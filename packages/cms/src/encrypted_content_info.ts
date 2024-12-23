@@ -1,4 +1,11 @@
-import { AsnConstructedOctetStringConverter, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnConstructedOctetStringConverter,
+  AsnProp,
+  AsnPropTypes,
+  AsnType,
+  AsnTypeTypes,
+  OctetString,
+} from "@peculiar/asn1-schema";
 import { ContentType, ContentEncryptionAlgorithmIdentifier } from "./types";
 
 /**
@@ -8,13 +15,19 @@ import { ContentType, ContentEncryptionAlgorithmIdentifier } from "./types";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class EncryptedContent {
-
   // primitive OctetString
   @AsnProp({ type: OctetString, context: 0, implicit: true, optional: true })
   public value?: OctetString;
 
   // constructed OctetString (custom converter is needed to create new instances inside "repeated")
-  @AsnProp({ type: OctetString, converter: AsnConstructedOctetStringConverter, context: 0, implicit: true, optional: true, repeated: "sequence" })
+  @AsnProp({
+    type: OctetString,
+    converter: AsnConstructedOctetStringConverter,
+    context: 0,
+    implicit: true,
+    optional: true,
+    repeated: "sequence",
+  })
   public constructedValue?: OctetString[];
 
   constructor(params: Partial<EncryptedContent> = {}) {
@@ -31,7 +44,6 @@ export class EncryptedContent {
  * ```
  */
 export class EncryptedContentInfo {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public contentType: ContentType = "";
 

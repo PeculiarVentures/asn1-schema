@@ -1,7 +1,14 @@
-import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnIntegerArrayBufferConverter,
+  AsnArray,
+  AsnType,
+  AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 
 /**
- * ```
+ * ```asn1
  * OtherPrimeInfo ::= SEQUENCE {
  *     prime             INTEGER,  -- ri
  *     exponent          INTEGER,  -- di
@@ -10,7 +17,6 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter, AsnArray, AsnTyp
  * ```
  */
 export class OtherPrimeInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
   public prime = new ArrayBuffer(0);
 
@@ -26,18 +32,16 @@ export class OtherPrimeInfo {
 }
 
 /**
- * ```
+ * ```asn1
  * OtherPrimeInfos ::= SEQUENCE SIZE(1..MAX) OF OtherPrimeInfo
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: OtherPrimeInfo })
 export class OtherPrimeInfos extends AsnArray<OtherPrimeInfo> {
-
   constructor(items?: OtherPrimeInfo[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, OtherPrimeInfos.prototype);
   }
-
 }

@@ -3,7 +3,7 @@ import { PKIFailureInfo } from "./pki_failure_info";
 import { PKIStatus } from "./pki_status";
 
 /**
- * ```
+ * ```asn1
  * PKIFreeText ::= SEQUENCE SIZE (1..MAX) OF UTF8String
  * ```
  * @see https://github.com/erlang/otp/blob/master/lib/asn1/test/asn1_SUITE_data/rfcs/PKIXCMP-2009.asn1
@@ -11,17 +11,15 @@ import { PKIStatus } from "./pki_status";
 
 @AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.Utf8String })
 export class PKIFreeText extends AsnArray<string> {
-
   constructor(items?: string[]) {
     super(items);
 
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, PKIFreeText.prototype);
   }
-
 }
 /**
- * ```
+ * ```asn1
  * PKIStatusInfo ::= SEQUENCE {
  *  status        PKIStatus,
  *  statusString  PKIFreeText     OPTIONAL,
@@ -30,7 +28,6 @@ export class PKIFreeText extends AsnArray<string> {
  */
 
 export class PKIStatusInfo {
-
   @AsnProp({ type: AsnPropTypes.Integer })
   public status = PKIStatus.granted;
 
@@ -43,5 +40,4 @@ export class PKIStatusInfo {
   constructor(params: Partial<PKIStatusInfo> = {}) {
     Object.assign(this, params);
   }
-
 }

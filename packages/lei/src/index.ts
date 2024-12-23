@@ -2,14 +2,14 @@ import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculiar/asn1-sch
 import * as asn1js from "asn1js";
 
 /**
- * ```
+ * ```asn1
  * Lei     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 52266 1}
  * ```
  */
 export const id_lei = "1.3.6.1.4.1.52266.1";
 
 /**
- * ```
+ * ```asn1
  * Lei     ::= SEQUENCE {
  *   leiCode         PrintableString(SIZE(20)),
  *   leiRole [0]     EXPLICIT PrintableString(SIZE(1..ub-leiRole-length))
@@ -19,7 +19,6 @@ export const id_lei = "1.3.6.1.4.1.52266.1";
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class Lei {
-
   @AsnProp({ type: asn1js.PrintableString })
   public leiCode = "";
 
@@ -34,8 +33,8 @@ export class Lei {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class BaseLeiChoice {
   /**
-  * @deprecated non-standard
-  */
+   * @deprecated non-standard
+   */
   @AsnProp({ type: AsnPropTypes.IA5String })
   public ia5String?: string;
 
@@ -58,7 +57,7 @@ export class BaseLeiChoice {
   public utf8String?: string;
 
   /**
-   * ```
+   * ```asn1
    * PrintableString(SIZE(20))
    * ```
    */
@@ -98,7 +97,6 @@ export class BaseLeiChoice {
 
 @AsnType({ type: AsnTypeTypes.Choice })
 export class LeiChoice extends BaseLeiChoice {
-
   @AsnProp({ type: Lei })
   public struct?: Lei;
 
@@ -114,18 +112,18 @@ export class LeiChoice extends BaseLeiChoice {
 }
 
 /**
- * ```
+ * ```asn1
  * Role     OBJECT IDENTIFIER ::= {1 3 6 1 4 1 52266 2}
  * ```
  */
 export const id_role = "1.3.6.1.4.1.52266.2";
 
 /**
- * ```
+ * ```asn1
  * roleExtension EXTENSION ::= {
  *   SYNTAX PrintableString(SIZE(1.. ub-leiRole-length))
  *   IDENTIFIED BY role}
  * ```
  */
 @AsnType({ type: AsnTypeTypes.Choice })
-export class LeiRole extends BaseLeiChoice { }
+export class LeiRole extends BaseLeiChoice {}

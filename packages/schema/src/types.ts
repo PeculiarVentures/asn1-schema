@@ -5,7 +5,7 @@
 import * as asn1js from "asn1js";
 
 export interface IEmptyConstructor<T = unknown> {
-  new(): T;
+  new (): T;
 }
 
 /**
@@ -37,5 +37,5 @@ export interface IAsnConvertible<T = asn1js.AsnType> {
 }
 
 export interface IAsnConvertibleConstructor {
-  new(): IAsnConvertible;
+  new (): IAsnConvertible;
 }

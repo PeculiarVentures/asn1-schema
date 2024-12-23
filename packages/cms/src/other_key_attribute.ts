@@ -8,7 +8,6 @@ import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
  * ```
  */
 export class OtherKeyAttribute {
-
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public keyAttrId = "";
 
