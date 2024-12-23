@@ -5,25 +5,26 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@types/mocha": "^10.0.2",
-    "@types/node": "^20.8.6",
-    "@typescript-eslint/eslint-plugin": "^6.7.5",
-    "@typescript-eslint/parser": "^6.7.5",
-    "eslint": "^8.51.0",
-    "lerna": "^7.3.1",
-    "mocha": "^10.2.0",
-    "nyc": "^15.1.0",
+    "@eslint/js": "^9.17.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.17.0",
+    "lerna": "^8.1.9",
+    "mocha": "^11.0.1",
+    "nyc": "^17.1.0",
+    "prettier": "^3.4.2",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1"
   },
   "scripts": {
     "test": "mocha",
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "clear": "lerna run --parallel clear",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint --fix . --ext .ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "create": "ts-node scripts/create_package.ts",
     "prepub": "yarn run build",
     "pub": "lerna publish",
@@ -66,6 +67,6 @@
   },
   "dependencies": {
     "@types/rimraf": "^4.0.5",
-    "rimraf": "^5.0.5"
+    "rimraf": "^6.0.1"
   }
 }
