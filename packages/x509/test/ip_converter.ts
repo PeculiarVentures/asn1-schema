@@ -27,7 +27,7 @@ describe("IpConverter", () => {
         255,
         0, // Mask
       ]).buffer;
-      assert.strictEqual(IpConverter.toString(input), "192.168.0.0/24 (mask 255.255.255.0)");
+      assert.strictEqual(IpConverter.toString(input), "192.168.0.0/24");
     });
 
     it("converts IPv4 with different netmask", () => {
@@ -41,7 +41,7 @@ describe("IpConverter", () => {
         248,
         0, // Mask
       ]).buffer;
-      assert.strictEqual(IpConverter.toString(input), "10.24.0.0/21 (mask 255.255.248.0)");
+      assert.strictEqual(IpConverter.toString(input), "10.24.0.0/21");
     });
 
     it("converts IPv6 with netmask", () => {
@@ -103,8 +103,8 @@ describe("IpConverter", () => {
       assert.deepStrictEqual(Array.from(new Uint8Array(result)), Array.from(expected));
     });
 
-    it("parses IPv4 with mask string notation", () => {
-      const result = IpConverter.fromString("192.168.0.0/24 (mask 255.255.255.0)");
+    it("parses IPv4 with CIDR notation", () => {
+      const result = IpConverter.fromString("192.168.0.0/24");
       assert.deepStrictEqual(Array.from(new Uint8Array(result)), [
         192,
         168,
@@ -117,8 +117,8 @@ describe("IpConverter", () => {
       ]);
     });
 
-    it("parses complex IPv4 with mask string notation", () => {
-      const result = IpConverter.fromString("10.24.0.0/21 (mask 255.255.248.0)");
+    it("parses IPv4 with non-standard CIDR", () => {
+      const result = IpConverter.fromString("10.24.0.0/21");
       assert.deepStrictEqual(Array.from(new Uint8Array(result)), [
         10,
         24,

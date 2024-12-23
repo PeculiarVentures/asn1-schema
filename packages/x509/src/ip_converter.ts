@@ -170,8 +170,7 @@ export class IpConverter {
 
       if (uint8.length === 8) {
         const addrStr = Array.from(addrBytes).join(".");
-        const maskStr = Array.from(maskBytes).join(".");
-        return `${addrStr}/${prefixLen} (mask ${maskStr})`;
+        return `${addrStr}/${prefixLen}`;
       } else {
         const addrStr = this.formatIPv6(addrBytes);
         return `${addrStr}/${prefixLen}`;
@@ -182,10 +181,8 @@ export class IpConverter {
   }
 
   public static fromString(text: string): ArrayBuffer {
-    const ipText = text.split(" (mask ")[0];
-
-    if (ipText.includes("/")) {
-      const [addr, prefix] = this.parseCIDR(ipText);
+    if (text.includes("/")) {
+      const [addr, prefix] = this.parseCIDR(text);
       const maskBytes = new Uint8Array(addr.length);
 
       let bitsLeft = prefix;
@@ -205,8 +202,7 @@ export class IpConverter {
       return out.buffer;
     }
 
-    // Parse single IP address
-    const bytes = this.isIPv4(ipText) ? this.parseIPv4(ipText) : this.parseIPv6(ipText);
+    const bytes = this.isIPv4(text) ? this.parseIPv4(text) : this.parseIPv6(text);
     return new Uint8Array(bytes).buffer;
   }
 }
