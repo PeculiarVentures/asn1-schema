@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import {
   AsnAnyConverter,
   AsnConstructedOctetStringConverter,
@@ -7,8 +7,8 @@ import {
   OctetString,
 } from "../src";
 
-context("converters", () => {
-  context("Any", () => {
+describe("converters", () => {
+  describe("Any", () => {
     it("null", () => {
       const asn = AsnAnyConverter.toASN(null);
 
@@ -35,7 +35,7 @@ context("converters", () => {
     });
   });
 
-  context("GeneralizedTime", () => {
+  describe("GeneralizedTime", () => {
     const dateNum = 1537560204455;
     it("correct", () => {
       const asn = AsnGeneralizedTimeConverter.toASN(new Date(dateNum));
@@ -51,7 +51,7 @@ context("converters", () => {
     });
   });
 
-  context("UTCTime", () => {
+  describe("UTCTime", () => {
     const dateNum = 1537560204000;
     it("correct", () => {
       const asn = AsnUTCTimeConverter.toASN(new Date(dateNum));
@@ -64,7 +64,7 @@ context("converters", () => {
     });
   });
 
-  context("ConstructedOctetStringConverter", () => {
+  describe("ConstructedOctetStringConverter", () => {
     const buffer = Buffer.from("12345", "ascii");
     it("correct", () => {
       const asn = AsnConstructedOctetStringConverter.toASN(new OctetString(buffer));

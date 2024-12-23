@@ -1,8 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { AsnConvert, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "../src";
 import { schemaStorage } from "../src/storage";
 
-context("Schema", () => {
+describe("Schema", () => {
   it("extending", () => {
     class Parent {
       @AsnProp({ type: AsnPropTypes.Integer })

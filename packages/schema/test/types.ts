@@ -1,10 +1,10 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { BitString, AsnConvert } from "../src";
 import { Convert } from "pvtsutils";
 
-context("asn1-schema", () => {
-  context("BitString", () => {
-    context("ArrayBuffer", () => {
+describe("asn1-schema", () => {
+  describe("BitString", () => {
+    describe("ArrayBuffer", () => {
       const hex = "030403010203";
 
       it("serialize", () => {
@@ -22,7 +22,7 @@ context("asn1-schema", () => {
       });
     });
 
-    context("Number", () => {
+    describe("Number", () => {
       const hex = "0303074080";
       const num = 256 | 2;
 

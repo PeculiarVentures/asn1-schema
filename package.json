@@ -6,20 +6,20 @@
   ],
   "devDependencies": {
     "@eslint/js": "^9.17.0",
-    "@types/mocha": "^10.0.10",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.10.2",
     "eslint": "^9.17.0",
+    "jest": "^29.7.0",
     "lerna": "^8.1.9",
-    "mocha": "^11.0.1",
-    "nyc": "^17.1.0",
     "prettier": "^3.4.2",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.1"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "jest",
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "clear": "lerna run --parallel clear",
@@ -31,35 +31,7 @@
     "bootstrap": "yarn",
     "bootstrap:upgrade": "yarn upgrade-interactive --latest",
     "upgrade": "yarn upgrade-interactive --latest",
-    "coverage": "nyc npm test"
-  },
-  "nyc": {
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "include": [
-      "packages/*/src/**/*.ts"
-    ],
-    "exclude": [
-      "**/*.d.ts"
-    ],
-    "reporter": [
-      "lcov",
-      "text-summary"
-    ]
-  },
-  "mocha": {
-    "require": [
-      "tsconfig-paths/register",
-      "ts-node/register"
-    ],
-    "extension": [
-      "ts"
-    ],
-    "spec": [
-      "packages/*/test/**/*.ts"
-    ]
+    "coverage": "jest --coverage"
   },
   "resolutions": {
     "cliui": "^8.0.1",

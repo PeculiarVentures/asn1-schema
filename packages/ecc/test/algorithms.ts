@@ -1,8 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import * as src from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
 
-context("ECC algorithms", () => {
+describe("ECC algorithms", () => {
   it("ECDSA with SHA-1", () => {
     const raw = AsnConvert.serialize(src.ecdsaWithSHA1);
 

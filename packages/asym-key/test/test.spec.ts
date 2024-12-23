@@ -3,7 +3,7 @@ import { OneAsymmetricKey } from "@peculiar/asn1-asym-key";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { id_rsaEncryption } from "@peculiar/asn1-rsa";
 
-context("RFC5958", () => {
+describe("RFC5958", () => {
   it("RSA private key", () => {
     const pem = [
       "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+G9YX1BboIIty",

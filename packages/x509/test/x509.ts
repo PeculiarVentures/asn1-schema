@@ -1,10 +1,10 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { AsnParser, AsnConvert, OctetString } from "@peculiar/asn1-schema";
+import { CertificateTemplate } from "@peculiar/asn1-x509-microsoft";
 import { Convert } from "pvtsutils";
 import * as src from "../src";
-import { CertificateTemplate } from "@peculiar/asn1-x509-microsoft";
 
-context("x509", () => {
+describe("x509", () => {
   it("cert #1", () => {
     const pem =
       "MIIDljCCAn6gAwIBAgIOSETcxtRwD/qzf0FjVvEwDQYJKoZIhvcNAQELBQAwZjELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExGjAYBgNVBAsTEUZvciBEZW1vIFVzZSBPbmx5MSAwHgYDVQQDExdHbG9iYWxTaWduIERlbW8gUm9vdCBDQTAeFw0xNjA3MjAwMDAwMDBaFw0zNjA3MjAwMDAwMDBaMGYxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMRowGAYDVQQLExFGb3IgRGVtbyBVc2UgT25seTEgMB4GA1UEAxMXR2xvYmFsU2lnbiBEZW1vIFJvb3QgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC1i9RNgrJ4YAATN0J4KVGZjFGQVGFdcbKvfxrt0Bfusq2g81iVrZZjqTJnPSx4g6TdVcsEXU9GWlkFXKEtZzYM4ycbwLAeJQxQDEqkV03GV8ks2Jq/6jIm2DbByPiS5fvRQFQJLYuQHqXpjpOpmPiostUsg9ydMEqcacYV22a6A6Nrb1c1B6OL+X0u9bo30K+YYSw2Ngp3Tuuj9PDk6JS/0CPLcLo8JIFFc8t78lPDquNAOqTDwY/HTw4751iqLVem9q3EDKEeUS+x4gqsCD2pENA7PlQBza55BGOi/A+UAsmfee1oq2Glo9buXBgX+oJ3HnyelzJU9Ej4+yfH7rcvAgMBAAGjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTqD8ID9OxgG83HZJVtOQMmftrrLzANBgkqhkiG9w0BAQsFAAOCAQEAAECKKpL0A2I+hsY881tIz7WqkLDuLh/ISzRVdsALYAxLhVDUHPckh5XyVRkpbTmirn+b5MpuwAI2R8A7Ld6aWWiibc7zGEZNvEKsUEYoJoYR0fuQs2cF7egiYjhFwFMX75w+kuI0Yelm3/3+BiJVtAXqmnQ4yRpGXqNJ4mQC8yWgQbZCLUpH/nqeQANeoaDr5Yg8IOuHRQzG6YNt/Cl9CetDd8WPrAkGm3T2iG0dXQ48VgkkXcNDtY+55nYjIO+N7i+WTh1fe3ArGxHBR3E44+WoA8ntfI1g65+GR0s6G8M7oS+kAFXIwugUGYEnTWp0m5bAn5NlD314IEOg4mnS8Q==";
@@ -134,8 +134,8 @@ context("x509", () => {
     assert.strictEqual(entrustVersionInfo.entrustInfoFlags.toString(), "[keyUpdateAllowed]");
   });
 
-  context("AlgorithmIdentifier", () => {
-    context("isEqual", () => {
+  describe("AlgorithmIdentifier", () => {
+    describe("isEqual", () => {
       it("algorithm: equal, parameters: equal(default)", () => {
         const alg1 = new src.AlgorithmIdentifier({
           algorithm: "1.2.3",
@@ -256,7 +256,7 @@ context("x509", () => {
     assert.strictEqual(issuingDistributionPoint.onlyContainsUserCerts, true);
   });
 
-  context("validity", () => {
+  describe("validity", () => {
     it("utc and general time", () => {
       const validity = new src.Validity({
         notBefore: new Date("2049-12-31T23:59:59Z"),

@@ -1,5 +1,5 @@
+import * as assert from "node:assert";
 import * as asn1js from "asn1js";
-import * as assert from "assert";
 import * as src from "../src";
 
 function assertBuffer(actual: Buffer, expected: Buffer): void {
@@ -10,13 +10,13 @@ function assertBuffer(actual: Buffer, expected: Buffer): void {
   );
 }
 
-context("Test", () => {
-  context("Default value", () => {
+describe("Test", () => {
+  describe("Default value", () => {
     class Test {
       @src.AsnProp({ type: src.AsnPropTypes.Integer, defaultValue: 0 })
       public version = 0;
     }
-    context("serialize", () => {
+    describe("serialize", () => {
       it("not equal to default", () => {
         const obj = new Test();
         obj.version = 1;
@@ -34,8 +34,8 @@ context("Test", () => {
     });
   });
 
-  context("CHOICE", () => {
-    context("CONTEXT-SPECIFIC", () => {
+  describe("CHOICE", () => {
+    describe("CONTEXT-SPECIFIC", () => {
       class Child {
         @src.AsnProp({ type: src.AsnPropTypes.Integer })
         public value = 2;
@@ -54,7 +54,7 @@ context("Test", () => {
         @src.AsnProp({ type: Child, context: 3, implicit: true })
         public select4?: Child;
       }
-      context("EXPLICIT", () => {
+      describe("EXPLICIT", () => {
         it("serialize", () => {
           const obj = new Test();
           obj.select2 = "test";
@@ -66,8 +66,8 @@ context("Test", () => {
           assert.strictEqual(obj.select2, "test");
         });
       });
-      context("IMPLICIT", () => {
-        context("Primitive", () => {
+      describe("IMPLICIT", () => {
+        describe("Primitive", () => {
           it("serialize", () => {
             const obj = new Test();
             obj.select1 = new Uint8Array([1, 2, 3, 4, 5]).buffer;
@@ -83,7 +83,7 @@ context("Test", () => {
             assert.strictEqual(obj.select1.byteLength, 5);
           });
         });
-        context("Repeated SET", () => {
+        describe("Repeated SET", () => {
           class Test2 {
             @src.AsnProp({
               type: src.AsnPropTypes.Integer,
@@ -109,7 +109,7 @@ context("Test", () => {
             assert.strictEqual(obj.items.join(""), "12345");
           });
         });
-        context("Repeated SEQUENCE", () => {
+        describe("Repeated SEQUENCE", () => {
           class Test2 {
             @src.AsnProp({
               type: src.AsnPropTypes.Integer,
@@ -135,7 +135,7 @@ context("Test", () => {
             assert.strictEqual(obj.items.join(""), "12345");
           });
         });
-        context("Constructed", () => {
+        describe("Constructed", () => {
           const der = Buffer.from("a3090201020c0474657374", "hex");
           it("stringify", () => {
             const obj = new Test();
@@ -155,7 +155,7 @@ context("Test", () => {
       });
     });
 
-    context("PRIMITIVES", () => {
+    describe("PRIMITIVES", () => {
       @src.AsnType({ type: src.AsnTypeTypes.Choice })
       class Choice {
         @src.AsnProp({ type: src.AsnPropTypes.Integer })
@@ -197,7 +197,7 @@ context("Test", () => {
     });
   });
 
-  context("Converter", () => {
+  describe("Converter", () => {
     function test<T>(
       cls: new () => { value: T },
       hex: string,
@@ -220,20 +220,20 @@ context("Test", () => {
         }
       });
     }
-    context("Default", () => {
-      context("IntegerConverter", () => {
+    describe("Default", () => {
+      describe("IntegerConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.Integer })
           public value!: string | number;
         }
-        context("Short number", () => {
+        describe("Short number", () => {
           /**
            * SEQUENCE (1 elem)
            *   INTEGER 10
            */
           test(Test, "300302010a", 10);
         });
-        context("Big number", () => {
+        describe("Big number", () => {
           /**
            * SEQUENCE (1 elem)
            *   INTEGER (47 bit) 123456789012345
@@ -241,7 +241,7 @@ context("Test", () => {
           test(Test, "300802067048860ddf79", "123456789012345");
         });
       });
-      context("BooleanConverter", () => {
+      describe("BooleanConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.Boolean })
           public value!: boolean;
@@ -252,7 +252,7 @@ context("Test", () => {
          */
         test(Test, "30030101ff", true);
       });
-      context("ObjectIdentifierConverter", () => {
+      describe("ObjectIdentifierConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.ObjectIdentifier })
           public value!: string;
@@ -263,7 +263,7 @@ context("Test", () => {
          */
         test(Test, "300606042a030405", "1.2.3.4.5");
       });
-      context("OctetStringConverter", () => {
+      describe("OctetStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.OctetString })
           public value!: ArrayBuffer;
@@ -281,7 +281,7 @@ context("Test", () => {
           },
         );
       });
-      context("AnyConverter", () => {
+      describe("AnyConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.Any })
           public value!: ArrayBuffer;
@@ -296,7 +296,7 @@ context("Test", () => {
           assertBuffer(Buffer.from(value2), Buffer.from(expected));
         });
       });
-      context("EnumeratedConverter", () => {
+      describe("EnumeratedConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.Enumerated })
           public value!: number;
@@ -307,7 +307,7 @@ context("Test", () => {
          */
         test(Test, "30030a0101", 1);
       });
-      context("Utf8StringConverter", () => {
+      describe("Utf8StringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.Utf8String })
           public value!: string;
@@ -318,7 +318,7 @@ context("Test", () => {
          */
         test(Test, "300e0c0c4d7920746573742074657874", "My test text");
       });
-      context("BmpStringConverter", () => {
+      describe("BmpStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.BmpString })
           public value!: string;
@@ -329,7 +329,7 @@ context("Test", () => {
          */
         test(Test, "301a1e18004d00790020007400650073007400200074006500780074", "My test text");
       });
-      context("UniversalStringConverter", () => {
+      describe("UniversalStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.UniversalString })
           public value!: string;
@@ -345,7 +345,7 @@ context("Test", () => {
           "My test text",
         );
       });
-      context("NumericStringConverter", () => {
+      describe("NumericStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.NumericString })
           public value!: string;
@@ -356,7 +356,7 @@ context("Test", () => {
          */
         test(Test, "300712053132333435", "12345");
       });
-      context("PrintableStringConverter", () => {
+      describe("PrintableStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.PrintableString })
           public value!: string;
@@ -367,7 +367,7 @@ context("Test", () => {
          */
         test(Test, "300e130c4d7920746573742074657874", "My test text");
       });
-      context("TeletexStringConverter", () => {
+      describe("TeletexStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.TeletexString })
           public value!: string;
@@ -378,7 +378,7 @@ context("Test", () => {
          */
         test(Test, "300e140c4d7920746573742074657874", "My test text");
       });
-      context("VideotexStringConverter", () => {
+      describe("VideotexStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.VideotexString })
           public value!: string;
@@ -389,7 +389,7 @@ context("Test", () => {
          */
         test(Test, "300e150c4d7920746573742074657874", "My test text");
       });
-      context("IA5StringConverter", () => {
+      describe("IA5StringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.IA5String })
           public value!: string;
@@ -400,7 +400,7 @@ context("Test", () => {
          */
         test(Test, "300e160c4d7920746573742074657874", "My test text");
       });
-      context("GraphicStringConverter", () => {
+      describe("GraphicStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.GraphicString })
           public value!: string;
@@ -411,7 +411,7 @@ context("Test", () => {
          */
         test(Test, "300e190c4d7920746573742074657874", "My test text");
       });
-      context("VisibleStringConverter", () => {
+      describe("VisibleStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.VisibleString })
           public value!: string;
@@ -422,7 +422,7 @@ context("Test", () => {
          */
         test(Test, "300e1a0c4d7920746573742074657874", "My test text");
       });
-      context("GeneralStringConverter", () => {
+      describe("GeneralStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.GeneralString })
           public value!: string;
@@ -433,7 +433,7 @@ context("Test", () => {
          */
         test(Test, "300e1b0c4d7920746573742074657874", "My test text");
       });
-      context("CharacterStringConverter", () => {
+      describe("CharacterStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.CharacterString })
           public value!: string;
@@ -445,8 +445,8 @@ context("Test", () => {
         test(Test, "300e1d0c4d7920746573742074657874", "My test text");
       });
     });
-    context("Custom", () => {
-      context("IntegerArrayBufferConverter", () => {
+    describe("Custom", () => {
+      describe("IntegerArrayBufferConverter", () => {
         class Test {
           @src.AsnProp({
             type: src.AsnPropTypes.Integer,
@@ -468,7 +468,7 @@ context("Test", () => {
         );
       });
     });
-    context("BigInt", () => {
+    describe("BigInt", () => {
       @src.AsnChoiceType()
       class Test {
         @src.AsnProp({ type: src.AsnPropTypes.Integer, converter: src.AsnIntegerBigIntConverter })
@@ -497,7 +497,7 @@ context("Test", () => {
     });
   });
 
-  context("Constructed type", () => {
+  describe("Constructed type", () => {
     it("SEQUENCE ", () => {
       class Test {
         @src.AsnProp({ type: src.AsnPropTypes.Integer })
@@ -554,8 +554,8 @@ context("Test", () => {
     });
   });
 
-  context("CONTEXT-SPECIFIC", () => {
-    context("IMPLICIT", () => {
+  describe("CONTEXT-SPECIFIC", () => {
+    describe("IMPLICIT", () => {
       class Test {
         @src.AsnProp({
           type: src.OctetString,
@@ -581,7 +581,7 @@ context("Test", () => {
       });
     });
 
-    context("EXPLICIT", () => {
+    describe("EXPLICIT", () => {
       class Test {
         @src.AsnProp({
           type: src.AsnPropTypes.OctetString,
@@ -607,8 +607,8 @@ context("Test", () => {
     });
   });
 
-  context("BitString", () => {
-    context("EXPLICIT", () => {
+  describe("BitString", () => {
+    describe("EXPLICIT", () => {
       it("unused bits 0", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.BitString })
@@ -621,7 +621,7 @@ context("Test", () => {
         assert.strictEqual(obj.value.byteLength, 2);
       });
     });
-    context("IMPLICIT", () => {
+    describe("IMPLICIT", () => {
       it("unused bits 0", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.BitString, context: 0, implicit: true })
@@ -636,7 +636,7 @@ context("Test", () => {
     });
   });
 
-  context("IA5String", () => {
+  describe("IA5String", () => {
     it("IMPLICIT", () => {
       class Test {
         @src.AsnProp({ type: src.AsnPropTypes.IA5String, context: 2, implicit: true })
@@ -651,7 +651,7 @@ context("Test", () => {
     });
   });
 
-  context("Convertible", () => {
+  describe("Convertible", () => {
     it("correct", () => {
       class Test implements src.IAsnConvertible {
         public value = "";
@@ -696,8 +696,8 @@ context("Test", () => {
     assert.strictEqual(obj2.value, 1);
   });
 
-  context("REPEATED", () => {
-    context("PRIMITIVE", () => {
+  describe("REPEATED", () => {
+    describe("PRIMITIVE", () => {
       it("SET", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.Integer, repeated: "set" })
@@ -731,7 +731,7 @@ context("Test", () => {
         assert.strictEqual(obj2.values.join(""), "12345");
       });
     });
-    context("CONSTRUCTED", () => {
+    describe("CONSTRUCTED", () => {
       it("SET", () => {
         class Child {
           @src.AsnProp({ type: src.AsnPropTypes.Integer })
@@ -800,8 +800,8 @@ context("Test", () => {
     });
   });
 
-  context("Parse", () => {
-    context("incoming buffers", () => {
+  describe("Parse", () => {
+    describe("incoming buffers", () => {
       class Test {
         @src.AsnProp({ type: src.AsnPropTypes.Integer })
         public value = 1;
@@ -847,7 +847,7 @@ context("Test", () => {
     });
   });
 
-  context("Repeated SET using AsnType decorator", () => {
+  describe("Repeated SET using AsnType decorator", () => {
     @src.AsnType({ type: src.AsnTypeTypes.Set, itemType: src.AsnPropTypes.ObjectIdentifier })
     class Test extends src.AsnArray<string> {}
 
@@ -866,7 +866,7 @@ context("Test", () => {
   });
 
   // https://github.com/PeculiarVentures/asn1-schema/issues/75
-  context("issue #75", () => {
+  describe("issue #75", () => {
     it("parse 3 bytes INTEGER", () => {
       @src.AsnType({ type: src.AsnTypeTypes.Choice })
       class Test {

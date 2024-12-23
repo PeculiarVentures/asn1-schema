@@ -1,11 +1,11 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { CaVersion } from "../src/attributes/extensions/ca_version";
 import { EnrollCertTypeChoice } from "../src/attributes";
 
-context("Microsoft X509", () => {
-  context("CaVersion", () => {
-    context("parse", () => {
+describe("Microsoft X509", () => {
+  describe("CaVersion", () => {
+    describe("parse", () => {
       const vectors: { [key: string]: Uint8Array } = {
         "V0.0": new Uint8Array([0x02, 0x01, 0x00]),
         "V2.0": new Uint8Array([0x02, 0x01, 0x02]),
@@ -29,7 +29,7 @@ context("Microsoft X509", () => {
     });
   });
 
-  context("EnrollCertType", () => {
+  describe("EnrollCertType", () => {
     it("BMPString", () => {
       const hex = `1E0A00530075006200430041`;
       const enrollCertType = AsnConvert.parse(Buffer.from(hex, "hex"), EnrollCertTypeChoice);

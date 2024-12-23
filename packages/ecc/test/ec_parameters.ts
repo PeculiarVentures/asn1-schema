@@ -1,9 +1,9 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { ECParameters, id_secp256r1 } from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
 
-context("EC parameters", () => {
-  context("Named curve", () => {
+describe("EC parameters", () => {
+  describe("Named curve", () => {
     const ecParamsHex = "06082a8648ce3d030107";
 
     it("serialize", () => {
@@ -20,7 +20,7 @@ context("EC parameters", () => {
     });
   });
 
-  context("Specified curve", () => {
+  describe("Specified curve", () => {
     // Reference: https://github.com/PeculiarVentures/asn1-schema/issues/102
 
     const ecParamsEnc = Buffer.from(

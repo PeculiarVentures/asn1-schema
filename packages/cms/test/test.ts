@@ -1,5 +1,5 @@
 import { AsnConvert } from "@peculiar/asn1-schema";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { Convert } from "pvtsutils";
 import {
   ContentInfo,
@@ -12,7 +12,7 @@ import {
   SignerIdentifier,
 } from "../src";
 
-context("cms", () => {
+describe("cms", () => {
   it("parse CMS with SignerInfo version 1", () => {
     const pem =
       "MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0B" +
@@ -97,7 +97,7 @@ context("cms", () => {
     assert.ok(signer.sid.subjectKeyIdentifier);
   });
 
-  context("EncapsulatedContentInfo", () => {
+  describe("EncapsulatedContentInfo", () => {
     it("parse constructed OCTET STREAM", () => {
       const pem = "MIAGCSqGSIb3DQEHAaCAJIAAAAAAAAA=";
 
@@ -126,7 +126,7 @@ context("cms", () => {
     });
   });
 
-  context("EnvelopedData", () => {
+  describe("EnvelopedData", () => {
     const contentInfoPEMs = [
       {
         constructed: false,

@@ -1,9 +1,9 @@
 import { AsnConvert } from "@peculiar/asn1-schema";
 import * as asn1X509 from "@peculiar/asn1-x509";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { Convert } from "pvtsutils";
 
-context("crl", () => {
+describe("crl", () => {
   /**
    * Certs: 0
    * Extensions: authorityKeyIdentifier, cRLNumber, issuingDistributionPoint, freshestCRL
@@ -26,10 +26,10 @@ context("crl", () => {
     "MIICZzCCAU8CAQEwDQYJKoZIhvcNAQELBQAwfjELMAkGA1UEBhMCUEwxIjAgBgNVBAoTGVVuaXpldG8gVGVjaG5vbG9naWVzIFMuQS4xJzAlBgNVBAsTHkNlcnR1bSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEiMCAGA1UEAxMZQ2VydHVtIFRydXN0ZWQgTmV0d29yayBDQRcNMjEwOTMwMDYzNDEwWhcNMjIwOTI5MDYzNDEwWjBsMCICAwR6WBcNMTkxMTI3MDk1MjM4WjAMMAoGA1UdFQQDCgEFMCICAwSScRcNMTkxMTI3MDk1MjQwWjAMMAoGA1UdFQQDCgEFMCICAwbW7hcNMTkxMTI3MDk1MjQyWjAMMAoGA1UdFQQDCgEFoC8wLTAfBgNVHSMEGDAWgBQIds3LB_8k9sXN7buQvOKEN0Z19zAKBgNVHRQEAwIBGDANBgkqhkiG9w0BAQsFAAOCAQEAL5oGWj50cZJZqFiM-gFHj8ateiML6DXuz49SppaM4_z6JUHPMw1q-5Ty1wb7aJmlnaYsaRA43o5BxlAVr3bLmCgNQcQvGrNQd5bMHhpecPUXCimEezCTLGiftHzUigssVGUeas2iE7-jB3AXyMZExe4D22eokFLJMKbW4s15GB1Lsk94UKxikgkzfxdNWPvk0pjhjQ4z4NgLQ1zqcdLk6NCi57mK5oUq2Or9mbr6w2kTuSXiKQ3l8X8pz_gdPz4WxFEc4YAH4IWeDSmEw1KjLhDYd_LxnP4jFGxnEijQgE46y0FMNPEKLSdtM8AGxvEmmmH2j8YKUj1qxRGibrO7ww",
   );
 
-  context("parse extensions", () => {
+  describe("parse extensions", () => {
     let crl: asn1X509.CertificateList;
 
-    before(() => {
+    beforeAll(() => {
       crl = AsnConvert.parse(crlExtRaw, asn1X509.CertificateList);
     });
 

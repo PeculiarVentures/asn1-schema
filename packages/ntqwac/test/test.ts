@@ -1,4 +1,4 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { AsnParser } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 import {
@@ -10,7 +10,7 @@ import {
   ValuationRanking,
 } from "../src";
 
-context("ntQWAC", () => {
+describe("ntQWAC", () => {
   const id_0_4_0_9496_1 =
     "MIHwMQ8wDQYDVQQDDAZOb3dpbmExGTAXBgNVBAoMEE5vd2luYSBTb2x1dGlvbnMxCzAJBgNVBAYTAkxVMQ8wDQYDVQQHDAZLZWhsZW4xDTALBgNVBBEMBDgyODcxHTAbBgNVBAkMFFpvbmUgaW5kdXN0cmllbGxlIDE1MRkwFwYDVQQUExArMzUyLTY2MS0yMzEtOTE0MR0wGwYJKoZIhvcNAQkBFg5pbmZvQG5vd2luYS5sdTEXMBUGA1UEYQwOVkFUTFUtMjY4NTA2ODIxIzAhBgNVBGEMGkxFSVhHLTIyMjEwMDJRUUo2SzhZUVlRRDA4";
   const id_0_4_0_9496_2 =

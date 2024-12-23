@@ -1,9 +1,9 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import * as android from "@peculiar/asn1-android";
 
-context("Android", () => {
-  context("KeyDescription", () => {
+describe("Android", () => {
+  describe("KeyDescription", () => {
     it("parse", () => {
       // https://github.com/PeculiarVentures/asn1-schema/issues/23#issuecomment-656408096
       const hex =
@@ -35,7 +35,7 @@ context("Android", () => {
     });
   });
 
-  context("NonStandardKeyDescription", () => {
+  describe("NonStandardKeyDescription", () => {
     it("parse", () => {
       const hex =
         "308201820201640A01010201640A01010420316231616461333561633432366562316638343563383765653239663065633304003057BF8545530451304F312930270421636F6D2E7469636B7069636B6C6C632E63656F627269656E2E7469636B7069636B0202012931220420CE016851B704DA76FDEDDE34AB314A155CA5A5DB31266D2685FCBF281AB510283081F6A1083106020103020102A203020103A30402020100A5053103020104AA03020101BF8377020500BF853E03020100BF85404C304A04209FB52F0954613F221AF4F4070C31415ED44C1A81D51889DB0946632599B3E9460101FF0A01000420FFAEEC3477824DD82E09B6400602DCB274EB4E89DCB6093AD1F6EDE964ED73C3BF854105020301D4C0BF8542050203031644BF854D1604146D6F746F726F6C61206564676520283230323229BF854C0A04086D6F746F726F6C61BF85480D040B7465736C615F675F737973BF85470704057465736C61BF85460A04086D6F746F726F6C61BF854E0602040134B291BF854F0602040134B291";
@@ -94,7 +94,7 @@ context("Android", () => {
     });
   });
 
-  context("AttestationApplicationId", () => {
+  describe("AttestationApplicationId", () => {
     it("serialize/parse", () => {
       const attestation = new android.AttestationApplicationId({
         packageInfos: [

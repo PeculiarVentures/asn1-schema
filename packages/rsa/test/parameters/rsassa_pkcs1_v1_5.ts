@@ -1,9 +1,9 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import { DigestInfo, sha1, id_sha1 } from "../../src";
 
-context("RSASSA PKCS v1.5", () => {
-  context("DigestInfo", () => {
+describe("RSASSA PKCS v1.5", () => {
+  describe("DigestInfo", () => {
     const digestInfoHex = "3021300906052b0e03021a05000414da39a3ee5e6b4b0d3255bfef95601890afd80709";
 
     it("serialize", () => {

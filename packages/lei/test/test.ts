@@ -1,8 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { LeiChoice, LeiRole } from "../src";
 
-context("lei", () => {
+describe("lei", () => {
   it("LeiChoice", () => {
     const hex = "0C143530363730304745314732393332355158333633";
 

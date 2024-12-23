@@ -1,9 +1,9 @@
 import { AsnConvert } from "@peculiar/asn1-schema";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import * as etsi from "../src";
 
-context("x509-qualified-etsi", () => {
-  context("QcCClegislation", () => {
+describe("x509-qualified-etsi", () => {
+  describe("QcCClegislation", () => {
     it("serialize/parse", () => {
       const qc = new etsi.QcCClegislation(["UK", "GR"]);
       const raw = AsnConvert.serialize(qc);
@@ -19,7 +19,7 @@ context("x509-qualified-etsi", () => {
     });
   });
 
-  context("QcEuLimitValue", () => {
+  describe("QcEuLimitValue", () => {
     it("serialize/parse", () => {
       const qc = new etsi.QcEuLimitValue({
         amount: 1,
@@ -40,7 +40,7 @@ context("x509-qualified-etsi", () => {
     });
   });
 
-  context("QcEuPDS", () => {
+  describe("QcEuPDS", () => {
     it("serialize/parse", () => {
       const qc = new etsi.QcEuPDS([
         new etsi.PdsLocation({
@@ -65,7 +65,7 @@ context("x509-qualified-etsi", () => {
     });
   });
 
-  context("QcEuRetentionPeriod", () => {
+  describe("QcEuRetentionPeriod", () => {
     it("serialize/parse", () => {
       const qc = new etsi.QcEuRetentionPeriod(1);
       const raw = AsnConvert.serialize(qc);
@@ -79,7 +79,7 @@ context("x509-qualified-etsi", () => {
     });
   });
 
-  context("QcType", () => {
+  describe("QcType", () => {
     it("serialize/parse", () => {
       const qc = new etsi.QcType([
         etsi.id_etsi_qct_esign,

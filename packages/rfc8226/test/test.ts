@@ -1,9 +1,9 @@
 import { AsnConvert } from "@peculiar/asn1-schema";
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { TNAuthorizationList } from "../src";
 
-context("RFC8266", () => {
-  context("TNAuthorizationList", () => {
+describe("RFC8266", () => {
+  describe("TNAuthorizationList", () => {
     it("spc", () => {
       const hex = "3008a00616043730394a";
 

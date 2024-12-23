@@ -1,8 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { RSAPublicKey } from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
 
-context("RSA Public Key", () => {
+describe("RSA Public Key", () => {
   it("serialize", () => {
     const publicKey = new RSAPublicKey({
       publicExponent: new Uint8Array([1, 0, 1]).buffer,

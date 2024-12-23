@@ -2,7 +2,7 @@ import * as assert from "node:assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { ECDSASigValue } from "../src/ec_signature_value";
 
-context("EcDsaSignatureValue", () => {
+describe("EcDsaSignatureValue", () => {
   it("parse", () => {
     const raw = Buffer.from(
       "3046022100984a8a53f4f540950423bdf0d3ad12f413f41bef65c672ff76fa74c8d71d11ff022100954d2a9f138ae22c12467cccb12b7e4b2380c70ad515710f747aaeea1c8cd647",

@@ -1,10 +1,10 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { AsnParser, AsnSerializer, OctetString } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 import { OCSPRequest, TBSRequest, CertID, Request } from "../src";
 import { GeneralName, AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
-context("ocsp", () => {
+describe("ocsp", () => {
   it("request", () => {
     const hex =
       "3060305ea122a420301e311c3009060355040613025255300f06035504031e080054006500730074301f301d301b300706052b0e03021a04047f01020304047f01020302047f010203a2173015301306092b0601050507300102040604047f010203";

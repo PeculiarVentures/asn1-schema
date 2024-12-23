@@ -1,8 +1,8 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { ECParameters, id_secp256r1, ECPrivateKey } from "../src";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 
-context("EC Private Key", () => {
+describe("EC Private Key", () => {
   const privateKeyHex = "301f020101040400800001a00a06082a8648ce3d030107a1080306000080000002";
 
   it("serialize", () => {

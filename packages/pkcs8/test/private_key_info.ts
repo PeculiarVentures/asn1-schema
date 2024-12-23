@@ -1,9 +1,9 @@
-import * as assert from "assert";
+import * as assert from "node:assert";
 import { PrivateKeyInfo, Attributes } from "../src";
 import { AlgorithmIdentifier, Attribute } from "@peculiar/asn1-x509";
 import { AsnConvert, AsnOctetStringConverter, OctetString } from "@peculiar/asn1-schema";
 
-context("PrivateKeyInfo", () => {
+describe("PrivateKeyInfo", () => {
   const hex = "3022020100300806042a03040505000403800001a00e300c060353040531050403800002";
 
   it("serialize", () => {
