@@ -159,3 +159,27 @@ export class NonStandardKeyMintKeyDescription extends NonStandardKeyDescription 
     super(params);
   }
 }
+
+/**
+ * New class for v300 Keymint non-standard key description.
+ * This uses the same underlying structure as NonStandardKeyDescription,
+ * but with renamed properties to match the updated specification.
+ */
+@AsnType({ type: AsnTypeTypes.Sequence })
+export class NonStandardKeyMint300KeyDescription extends NonStandardKeyDescription {
+  // Override constructor to use the correct property names
+  public constructor(params: Partial<NonStandardKeyDescription> = {}) {
+    // Translate between old and new property names if needed
+    if ("keymasterVersion" in params && !("keyMintVersion" in params)) {
+      params.keyMintVersion = params.keymasterVersion;
+    }
+    if ("keymasterSecurityLevel" in params && !("keyMintSecurityLevel" in params)) {
+      params.keyMintSecurityLevel = params.keymasterSecurityLevel;
+    }
+    if ("teeEnforced" in params && !("hardwareEnforced" in params)) {
+      params.hardwareEnforced = params.teeEnforced;
+    }
+
+    super(params);
+  }
+}

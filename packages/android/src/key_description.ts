@@ -295,7 +295,8 @@ export enum Version {
   KM4_1 = 4,
   keyMint1 = 100,
   keyMint2 = 200,
-  keyMint4 = 400, // Added new version 400
+  keyMint3 = 300,
+  keyMint4 = 400,
 }
 
 /**
@@ -410,6 +411,84 @@ export class KeyMintKeyDescription {
    */
   public static fromLegacyKeyDescription(keyDesc: KeyDescription): KeyMintKeyDescription {
     return new KeyMintKeyDescription({
+      attestationVersion: keyDesc.attestationVersion,
+      attestationSecurityLevel: keyDesc.attestationSecurityLevel,
+      keyMintVersion: keyDesc.keymasterVersion,
+      keyMintSecurityLevel: keyDesc.keymasterSecurityLevel,
+      attestationChallenge: keyDesc.attestationChallenge,
+      uniqueId: keyDesc.uniqueId,
+      softwareEnforced: keyDesc.softwareEnforced,
+      hardwareEnforced: keyDesc.teeEnforced,
+    });
+  }
+}
+
+/**
+ * Implements ASN.1 structure for KeyMint key description (v300).
+ *
+ * ```asn
+ * KeyDescription ::= SEQUENCE {
+ *   attestationVersion         INTEGER, # version 300
+ *   attestationSecurityLevel   SecurityLevel,
+ *   keyMintVersion             INTEGER,
+ *   keyMintSecurityLevel       SecurityLevel,
+ *   attestationChallenge       OCTET_STRING,
+ *   uniqueId                   OCTET_STRING,
+ *   softwareEnforced           AuthorizationList,
+ *   hardwareEnforced           AuthorizationList,
+ * }
+ * ```
+ */
+export class KeyMint300KeyDescription {
+  @AsnProp({ type: AsnPropTypes.Integer })
+  public attestationVersion: number | Version = Version.keyMint3;
+
+  @AsnProp({ type: AsnPropTypes.Enumerated })
+  public attestationSecurityLevel: SecurityLevel = SecurityLevel.software;
+
+  @AsnProp({ type: AsnPropTypes.Integer })
+  public keyMintVersion = 0;
+
+  @AsnProp({ type: AsnPropTypes.Enumerated })
+  public keyMintSecurityLevel: SecurityLevel = SecurityLevel.software;
+
+  @AsnProp({ type: OctetString })
+  public attestationChallenge = new OctetString();
+
+  @AsnProp({ type: OctetString })
+  public uniqueId = new OctetString();
+
+  @AsnProp({ type: AuthorizationList })
+  public softwareEnforced = new AuthorizationList();
+
+  @AsnProp({ type: AuthorizationList })
+  public hardwareEnforced = new AuthorizationList();
+
+  public constructor(params: Partial<KeyMint300KeyDescription> = {}) {
+    Object.assign(this, params);
+  }
+
+  /**
+   * Convert to legacy KeyDescription for backwards compatibility
+   */
+  public toLegacyKeyDescription(): KeyDescription {
+    return new KeyDescription({
+      attestationVersion: this.attestationVersion,
+      attestationSecurityLevel: this.attestationSecurityLevel,
+      keymasterVersion: this.keyMintVersion,
+      keymasterSecurityLevel: this.keyMintSecurityLevel,
+      attestationChallenge: this.attestationChallenge,
+      uniqueId: this.uniqueId,
+      softwareEnforced: this.softwareEnforced,
+      teeEnforced: this.hardwareEnforced,
+    });
+  }
+
+  /**
+   * Create from legacy KeyDescription for backwards compatibility
+   */
+  public static fromLegacyKeyDescription(keyDesc: KeyDescription): KeyMint300KeyDescription {
+    return new KeyMint300KeyDescription({
       attestationVersion: keyDesc.attestationVersion,
       attestationSecurityLevel: keyDesc.attestationSecurityLevel,
       keyMintVersion: keyDesc.keymasterVersion,
