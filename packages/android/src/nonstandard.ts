@@ -62,21 +62,21 @@ export class NonStandardAuthorizationList extends AsnArray<NonStandardAuthorizat
 
 /**
  * The AuthorizationList class allows for non-strict ordering of fields in the
- * softwareEnforced and teeEnforced fields.
+ * softwareEnforced and teeEnforced/hardwareEnforced fields.
  *
  * This behavior is due to an issue with the asn1-schema library, which is
  * documented here: https://github.com/PeculiarVentures/asn1-schema/issues/98#issuecomment-1764345351
  *
  * ```asn
  * KeyDescription ::= SEQUENCE {
- *   attestationVersion         INTEGER, # versions 1, 2, 3, 4, 100, and 200
+ *   attestationVersion         INTEGER, # versions 1, 2, 3, 4, 100, 200, and 400
  *   attestationSecurityLevel   SecurityLevel,
- *   keymasterVersion           INTEGER,
- *   keymasterSecurityLevel     SecurityLevel,
+ *   keymasterVersion/keyMintVersion INTEGER,
+ *   keymasterSecurityLevel/keyMintSecurityLevel SecurityLevel,
  *   attestationChallenge       OCTET_STRING,
  *   uniqueId                   OCTET_STRING,
  *   softwareEnforced           NonStandardAuthorizationList,
- *   teeEnforced                NonStandardAuthorizationList,
+ *   teeEnforced/hardwareEnforced NonStandardAuthorizationList,
  * }
  * ```
  */
@@ -105,7 +105,57 @@ export class NonStandardKeyDescription {
   @AsnProp({ type: NonStandardAuthorizationList })
   public teeEnforced = new NonStandardAuthorizationList();
 
+  // KeyMint v400 compatibility properties - not directly decoded from ASN.1
+  // but accessed via getters/setters to maintain backwards compatibility
+  public get keyMintVersion(): number {
+    return this.keymasterVersion;
+  }
+
+  public set keyMintVersion(value: number) {
+    this.keymasterVersion = value;
+  }
+
+  public get keyMintSecurityLevel(): SecurityLevel {
+    return this.keymasterSecurityLevel;
+  }
+
+  public set keyMintSecurityLevel(value: SecurityLevel) {
+    this.keymasterSecurityLevel = value;
+  }
+
+  public get hardwareEnforced(): NonStandardAuthorizationList {
+    return this.teeEnforced;
+  }
+
+  public set hardwareEnforced(value: NonStandardAuthorizationList) {
+    this.teeEnforced = value;
+  }
+
   public constructor(params: Partial<NonStandardKeyDescription> = {}) {
     Object.assign(this, params);
+  }
+}
+
+/**
+ * New class for v400 Keymint non-standard key description.
+ * This uses the same underlying structure as NonStandardKeyDescription,
+ * but with renamed properties to match the updated specification.
+ */
+@AsnType({ type: AsnTypeTypes.Sequence })
+export class NonStandardKeyMintKeyDescription extends NonStandardKeyDescription {
+  // Override constructor to use the correct property names
+  public constructor(params: Partial<NonStandardKeyDescription> = {}) {
+    // Translate between old and new property names if needed
+    if ("keymasterVersion" in params && !("keyMintVersion" in params)) {
+      params.keyMintVersion = params.keymasterVersion;
+    }
+    if ("keymasterSecurityLevel" in params && !("keyMintSecurityLevel" in params)) {
+      params.keyMintSecurityLevel = params.keymasterSecurityLevel;
+    }
+    if ("teeEnforced" in params && !("hardwareEnforced" in params)) {
+      params.hardwareEnforced = params.teeEnforced;
+    }
+
+    super(params);
   }
 }
