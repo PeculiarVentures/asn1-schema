@@ -1,6 +1,7 @@
 import * as assert from "node:assert";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import * as android from "@peculiar/asn1-android";
+import { Convert } from "pvtsutils";
 
 describe("Android", () => {
   describe("KeyDescription", () => {
@@ -113,6 +114,290 @@ describe("Android", () => {
       assert.strictEqual(attestation2.packageInfos[0].version, 1);
       assert.strictEqual(attestation2.signatureDigests.length, 1);
       assert.strictEqual(attestation2.signatureDigests[0].byteLength, 3);
+    });
+  });
+
+  // https://github.com/PeculiarVentures/asn1-schema/issues/107
+  describe("KeyMint v300 and v400", () => {
+    it("should create and serialize KeyMintKeyDescription for v300", () => {
+      const attestation = new android.AttestationApplicationId({
+        packageInfos: [
+          new android.AttestationPackageInfo({
+            packageName: new OctetString(Buffer.from("com.example.app", "utf8")),
+            version: 1,
+          }),
+        ],
+        signatureDigests: [new OctetString(Buffer.from("0123456789abcdef", "hex"))],
+      });
+
+      const keyMintDesc = new android.KeyMintKeyDescription({
+        attestationVersion: android.Version.keyMint3,
+        attestationSecurityLevel: android.SecurityLevel.software,
+        keyMintVersion: 1,
+        keyMintSecurityLevel: android.SecurityLevel.trustedEnvironment,
+        attestationChallenge: new OctetString(Buffer.from("challenge-data", "utf8")),
+        uniqueId: new OctetString(Buffer.from("unique-id-data", "utf8")),
+        softwareEnforced: new android.AuthorizationList({
+          creationDateTime: 1684321765000, // May 17, 2023
+          attestationApplicationId: new OctetString(AsnConvert.serialize(attestation)),
+        }),
+        hardwareEnforced: new android.AuthorizationList({
+          purpose: new android.IntegerSet([1, 2]),
+          algorithm: 3, // EC
+          keySize: 256,
+          digest: new android.IntegerSet([4]), // SHA-256
+          ecCurve: 1, // P-256
+          userAuthType: 2,
+          origin: 1,
+          attestationIdSecondImei: new OctetString(Buffer.from("second-imei", "utf8")),
+          rootOfTrust: new android.RootOfTrust({
+            verifiedBootKey: new OctetString(Buffer.from("boot-key-data", "utf8")),
+            deviceLocked: true,
+            verifiedBootState: android.VerifiedBootState.verified,
+            verifiedBootHash: new OctetString(Buffer.from("boot-hash-data", "utf8")),
+          }),
+        }),
+      });
+
+      const raw = AsnConvert.serialize(keyMintDesc);
+      assert.ok(raw);
+      assert.ok(raw.byteLength > 0);
+
+      // Verify we can parse it back
+      const parsed = AsnConvert.parse(raw, android.KeyMintKeyDescription);
+      assert.strictEqual(parsed.attestationVersion, android.Version.keyMint3);
+      assert.strictEqual(parsed.keyMintVersion, 1);
+      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
+      assert.ok(parsed.hardwareEnforced.attestationIdSecondImei);
+      assert.strictEqual(
+        Convert.ToUtf8String(parsed.hardwareEnforced.attestationIdSecondImei),
+        "second-imei",
+      );
+
+      // Check RootOfTrust's verifiedBootHash
+      assert.ok(parsed.hardwareEnforced.rootOfTrust);
+      assert.ok(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash);
+      assert.strictEqual(
+        Convert.ToUtf8String(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash),
+        "boot-hash-data",
+      );
+
+      // Test conversion to legacy format
+      const legacy = parsed.toLegacyKeyDescription();
+      assert.strictEqual(legacy.keymasterVersion, parsed.keyMintVersion);
+      assert.strictEqual(legacy.teeEnforced, parsed.hardwareEnforced);
+    });
+
+    it("should parse v300 with NonStandardKeyMintKeyDescription", () => {
+      const keyMintDesc = new android.KeyMintKeyDescription({
+        attestationVersion: android.Version.keyMint3,
+        attestationSecurityLevel: android.SecurityLevel.software,
+        keyMintVersion: 1,
+        keyMintSecurityLevel: android.SecurityLevel.trustedEnvironment,
+        attestationChallenge: new OctetString(Buffer.from("challenge-data", "utf8")),
+        uniqueId: new OctetString(Buffer.from("unique-id-data", "utf8")),
+        softwareEnforced: new android.AuthorizationList({
+          creationDateTime: 1684321765000,
+        }),
+        hardwareEnforced: new android.AuthorizationList({
+          purpose: new android.IntegerSet([1, 2]),
+          algorithm: 3,
+          attestationIdSecondImei: new OctetString(Buffer.from("second-imei", "utf8")),
+        }),
+      });
+
+      const raw = AsnConvert.serialize(keyMintDesc);
+
+      // Parse with non-standard parser
+      const parsed = AsnConvert.parse(raw, android.NonStandardKeyMintKeyDescription);
+
+      // Verify fields
+      assert.strictEqual(parsed.attestationVersion, android.Version.keyMint3);
+      assert.strictEqual(parsed.keyMintVersion, 1);
+      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
+
+      // Check fields using the findProperty method
+      const secondImei = parsed.hardwareEnforced.findProperty("attestationIdSecondImei");
+      assert.ok(secondImei);
+      assert.strictEqual(Convert.ToUtf8String(secondImei), "second-imei");
+    });
+
+    it("should create and serialize KeyMintKeyDescription", () => {
+      const attestation = new android.AttestationApplicationId({
+        packageInfos: [
+          new android.AttestationPackageInfo({
+            packageName: new OctetString(Buffer.from("com.example.app", "utf8")),
+            version: 1,
+          }),
+        ],
+        signatureDigests: [new OctetString(Buffer.from("0123456789abcdef", "hex"))],
+      });
+
+      const keyMintDesc = new android.KeyMintKeyDescription({
+        attestationVersion: android.Version.keyMint4,
+        attestationSecurityLevel: android.SecurityLevel.software,
+        keyMintVersion: 1,
+        keyMintSecurityLevel: android.SecurityLevel.trustedEnvironment,
+        attestationChallenge: new OctetString(Buffer.from("challenge-data", "utf8")),
+        uniqueId: new OctetString(Buffer.from("unique-id-data", "utf8")),
+        softwareEnforced: new android.AuthorizationList({
+          creationDateTime: 1684321765000, // May 17, 2023
+          attestationApplicationId: new OctetString(AsnConvert.serialize(attestation)),
+        }),
+        hardwareEnforced: new android.AuthorizationList({
+          purpose: new android.IntegerSet([1, 2]),
+          algorithm: 3, // EC
+          keySize: 256,
+          digest: new android.IntegerSet([4]), // SHA-256
+          ecCurve: 1, // P-256
+          userAuthType: 2,
+          origin: 1,
+          attestationIdSecondImei: new OctetString(Buffer.from("second-imei", "utf8")),
+          moduleHash: new OctetString(Buffer.from("module-hash-value", "utf8")),
+          rootOfTrust: new android.RootOfTrust({
+            verifiedBootKey: new OctetString(Buffer.from("boot-key-data", "utf8")),
+            deviceLocked: true,
+            verifiedBootState: android.VerifiedBootState.verified,
+            verifiedBootHash: new OctetString(Buffer.from("boot-hash-data", "utf8")), // Required in v400
+          }),
+        }),
+      });
+
+      const raw = AsnConvert.serialize(keyMintDesc);
+      assert.ok(raw);
+      assert.ok(raw.byteLength > 0);
+
+      // Verify we can parse it back
+      const parsed = AsnConvert.parse(raw, android.KeyMintKeyDescription);
+      assert.strictEqual(parsed.attestationVersion, android.Version.keyMint4);
+      assert.strictEqual(parsed.keyMintVersion, 1);
+      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
+      assert.ok(parsed.hardwareEnforced.moduleHash);
+      assert.strictEqual(
+        Convert.ToUtf8String(parsed.hardwareEnforced.moduleHash),
+        "module-hash-value",
+      );
+      assert.ok(parsed.hardwareEnforced.attestationIdSecondImei);
+      assert.strictEqual(
+        Convert.ToUtf8String(parsed.hardwareEnforced.attestationIdSecondImei),
+        "second-imei",
+      );
+
+      // Check RootOfTrust's verifiedBootHash
+      assert.ok(parsed.hardwareEnforced.rootOfTrust);
+      assert.ok(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash);
+      assert.strictEqual(
+        Convert.ToUtf8String(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash),
+        "boot-hash-data",
+      );
+    });
+
+    it("should parse v400 with NonStandardKeyMintKeyDescription", () => {
+      const keyMintDesc = new android.KeyMintKeyDescription({
+        attestationVersion: android.Version.keyMint4,
+        attestationSecurityLevel: android.SecurityLevel.software,
+        keyMintVersion: 1,
+        keyMintSecurityLevel: android.SecurityLevel.trustedEnvironment,
+        attestationChallenge: new OctetString(Buffer.from("challenge-data", "utf8")),
+        uniqueId: new OctetString(Buffer.from("unique-id-data", "utf8")),
+        softwareEnforced: new android.AuthorizationList({
+          creationDateTime: 1684321765000,
+        }),
+        hardwareEnforced: new android.AuthorizationList({
+          purpose: new android.IntegerSet([1, 2]),
+          algorithm: 3,
+          attestationIdSecondImei: new OctetString(Buffer.from("second-imei", "utf8")),
+          moduleHash: new OctetString(Buffer.from("module-hash-value", "utf8")),
+        }),
+      });
+
+      const raw = AsnConvert.serialize(keyMintDesc);
+
+      // Parse with non-standard parser
+      const parsed = AsnConvert.parse(raw, android.NonStandardKeyMintKeyDescription);
+
+      // Verify fields
+      assert.strictEqual(parsed.attestationVersion, android.Version.keyMint4);
+      assert.strictEqual(parsed.keyMintVersion, 1);
+      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
+
+      // Check the new fields using the findProperty method
+      const moduleHash = parsed.hardwareEnforced.findProperty("moduleHash");
+      assert.ok(moduleHash);
+      assert.strictEqual(Convert.ToUtf8String(moduleHash), "module-hash-value");
+
+      const secondImei = parsed.hardwareEnforced.findProperty("attestationIdSecondImei");
+      assert.ok(secondImei);
+      assert.strictEqual(Convert.ToUtf8String(secondImei), "second-imei");
+    });
+
+    it("should convert between KeyDescription and KeyMintKeyDescription", () => {
+      // Create a legacy KeyDescription
+      const legacy = new android.KeyDescription({
+        attestationVersion: android.Version.KM4,
+        attestationSecurityLevel: android.SecurityLevel.software,
+        keymasterVersion: 1,
+        keymasterSecurityLevel: android.SecurityLevel.trustedEnvironment,
+        attestationChallenge: new OctetString(Buffer.from("challenge", "utf8")),
+        uniqueId: new OctetString(Buffer.from("uniqueid", "utf8")),
+        softwareEnforced: new android.AuthorizationList({
+          creationDateTime: 1506793476000,
+        }),
+        teeEnforced: new android.AuthorizationList({
+          purpose: new android.IntegerSet([1, 2]),
+          algorithm: 1,
+          keySize: 2048,
+        }),
+      });
+
+      // Convert to KeyMintKeyDescription
+      const keyMint = android.KeyMintKeyDescription.fromLegacyKeyDescription(legacy);
+
+      // Verify conversion
+      assert.strictEqual(keyMint.attestationVersion, legacy.attestationVersion);
+      assert.strictEqual(keyMint.keyMintVersion, legacy.keymasterVersion);
+      assert.strictEqual(keyMint.keyMintSecurityLevel, legacy.keymasterSecurityLevel);
+      assert.deepStrictEqual(keyMint.hardwareEnforced, legacy.teeEnforced);
+
+      // Convert back to legacy
+      const convertedBack = keyMint.toLegacyKeyDescription();
+
+      // Verify conversion back
+      assert.strictEqual(convertedBack.attestationVersion, legacy.attestationVersion);
+      assert.strictEqual(convertedBack.keymasterVersion, legacy.keymasterVersion);
+      assert.strictEqual(convertedBack.keymasterSecurityLevel, legacy.keymasterSecurityLevel);
+      assert.deepStrictEqual(convertedBack.teeEnforced, legacy.teeEnforced);
+    });
+
+    it("should access v400 fields via original NonStandardKeyDescription", () => {
+      // Create KeyMintKeyDescription
+      const keyMintDesc = new android.KeyMintKeyDescription({
+        attestationVersion: android.Version.keyMint4,
+        keyMintVersion: 1,
+        keyMintSecurityLevel: android.SecurityLevel.trustedEnvironment,
+        hardwareEnforced: new android.AuthorizationList({
+          moduleHash: new OctetString(Buffer.from("module-hash", "utf8")),
+          attestationIdSecondImei: new OctetString(Buffer.from("second-imei", "utf8")),
+        }),
+      });
+
+      const raw = AsnConvert.serialize(keyMintDesc);
+
+      // Parse with original NonStandardKeyDescription
+      const parsed = AsnConvert.parse(raw, android.NonStandardKeyDescription);
+
+      // Should access v400 fields via accessors
+      assert.strictEqual(parsed.keyMintVersion, 1);
+      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
+
+      // Check module hash and second IMEI with hardwareEnforced getter
+      const moduleHash = parsed.hardwareEnforced.findProperty("moduleHash");
+      assert.ok(moduleHash);
+      assert.strictEqual(Convert.ToUtf8String(moduleHash), "module-hash");
+
+      const secondImei = parsed.hardwareEnforced.findProperty("attestationIdSecondImei");
+      assert.ok(secondImei);
+      assert.strictEqual(Convert.ToUtf8String(secondImei), "second-imei");
     });
   });
 });
