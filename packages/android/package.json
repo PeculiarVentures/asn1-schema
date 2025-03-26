@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-android",
-  "version": "2.3.15",
+  "version": "2.3.16",
   "description": "",
   "files": [
     "build/**/*.{js,d.ts}",
