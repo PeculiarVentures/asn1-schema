@@ -69,7 +69,7 @@ export class NonStandardAuthorizationList extends AsnArray<NonStandardAuthorizat
  *
  * ```asn
  * KeyDescription ::= SEQUENCE {
- *   attestationVersion         INTEGER, # versions 1, 2, 3, 4, 100, 200, and 400
+ *   attestationVersion         INTEGER, # versions 1, 2, 3, 4, 100, 200, 300, and 400
  *   attestationSecurityLevel   SecurityLevel,
  *   keymasterVersion/keyMintVersion INTEGER,
  *   keymasterSecurityLevel/keyMintSecurityLevel SecurityLevel,
