@@ -34,7 +34,6 @@ async function main(name: string): Promise<void> {
       access: "public",
     },
     scripts: {
-      test: "mocha",
       clear: "rimraf build",
       build: "npm run build:module && npm run build:types",
       "build:module": "npm run build:cjs && npm run build:es2015",

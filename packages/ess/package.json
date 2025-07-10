@@ -25,7 +25,6 @@
     "url": "git+https://github.com/PeculiarVentures/asn1-schema.git"
   },
   "scripts": {
-    "test": "mocha",
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",
     "build:module": "npm run build:cjs && npm run build:es2015",
