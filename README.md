@@ -21,6 +21,7 @@
 - [pfx](packages/pfx/README.md) (RFC 7292)
 - [pkcs8](packages/pkcs8/README.md) (RFC 5208)
 - [pkcs9](packages/pkcs9/README.md) (RFC 2985)
+- [private key stmt](packages/private-key-stmt/README.md) ([IETF LAMPS Private Key Statement Attribute](https://datatracker.ietf.org/doc/draft-ietf-lamps-private-key-stmt-attr/09/))
 - [rfc8226](packages/rfc8226/README.md) (RFC 8226)
 - [rsa](packages/rsa/README.md) (RFC 8017)
 - [tsp](packages/tsp/README.md) (RFC 3161)

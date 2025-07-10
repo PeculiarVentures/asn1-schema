@@ -87,6 +87,9 @@
       ],
       "@peculiar/asn1-crmf": [
         "./packages/crmf/src"
+      ],
+      "@peculiar/asn1-private-key-stmt": [
+        "./packages/private-key-stmt/src"
       ]
     }
   },
