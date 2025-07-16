@@ -13,6 +13,7 @@
 - [cert transparency](packages/cert-transparency/README.md) (RFC 6962)
 - [cms](packages/cms/README.md) (RFC 5652)
 - [csr](packages/csr/README.md) (RFC 2986)
+- [crmf](packages/crmf/README.md) (RFC 4211)
 - [ecc](packages/ecc/README.md) (RFC 5915, RFC 5480)
 - [lei](packages/lei/README.md)
 - [ntqwac](packages/ntqwac/README.md)
@@ -20,6 +21,7 @@
 - [pfx](packages/pfx/README.md) (RFC 7292)
 - [pkcs8](packages/pkcs8/README.md) (RFC 5208)
 - [pkcs9](packages/pkcs9/README.md) (RFC 2985)
+- [private key stmt](packages/private-key-stmt/README.md) ([IETF LAMPS Private Key Statement Attribute](https://datatracker.ietf.org/doc/draft-ietf-lamps-private-key-stmt-attr/09/))
 - [rfc8226](packages/rfc8226/README.md) (RFC 8226)
 - [rsa](packages/rsa/README.md) (RFC 8017)
 - [tsp](packages/tsp/README.md) (RFC 3161)
@@ -43,7 +45,8 @@ const cert = AsnParser.parse(Buffer.from(pem, "base64"), Certificate);
 console.log(cert);
 ```
 
-__Output__
+**Output**
+
 ```
 Certificate {
   tbsCertificate: TBSCertificate {

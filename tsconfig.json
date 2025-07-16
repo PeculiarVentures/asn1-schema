@@ -84,6 +84,12 @@
       ],
       "@peculiar/asn1-asym-key": [
         "packages/asym-key/src"
+      ],
+      "@peculiar/asn1-crmf": [
+        "./packages/crmf/src"
+      ],
+      "@peculiar/asn1-private-key-stmt": [
+        "./packages/private-key-stmt/src"
       ]
     }
   },
