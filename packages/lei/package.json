@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-lei",
-  "version": "2.3.15",
+  "version": "2.4.0",
   "description": "",
   "files": [
     "build/**/*.{js,d.ts}",
@@ -33,7 +33,7 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.3.15",
+    "@peculiar/asn1-schema": "^2.4.0",
     "asn1js": "^3.0.6",
     "tslib": "^2.8.1"
   }
