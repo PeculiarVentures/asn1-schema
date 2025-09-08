@@ -194,7 +194,7 @@ export class AsnParser {
 
       if (!asn1ComparedSchema.verified) {
         throw new AsnSchemaValidationError(
-          `Data does not match to ${target.name} ASN1 schema. ${asn1ComparedSchema.result.error}`,
+          `Data does not match to ${target.name} ASN1 schema.${asn1ComparedSchema.result.error ? ` ${asn1ComparedSchema.result.error}` : ""}`,
         );
       }
 
@@ -208,7 +208,7 @@ export class AsnParser {
       );
       if (!asn1ComparedSchema.verified) {
         throw new AsnSchemaValidationError(
-          `Data does not match to ${target.name} ASN1 schema. ${asn1ComparedSchema.result.error}`,
+          `Data does not match to ${target.name} ASN1 schema.${asn1ComparedSchema.result.error ? ` ${asn1ComparedSchema.result.error}` : ""}`,
         );
       }
       return asn1ComparedSchema;
@@ -414,10 +414,26 @@ export class AsnParser {
       const schemaItem = schema.items[key];
       const schemaItemType = schemaItem.type;
 
+      let parsedValue: unknown;
       if (typeof schemaItemType === "number" || isConvertible(schemaItemType)) {
-        res[key] = this.processPrimitiveSchemaItem(asn1SchemaValue, schemaItem, schemaItemType);
+        parsedValue = this.processPrimitiveSchemaItem(asn1SchemaValue, schemaItem, schemaItemType);
       } else {
-        res[key] = this.processComplexSchemaItem(asn1SchemaValue, schemaItem, schemaItemType);
+        parsedValue = this.processComplexSchemaItem(asn1SchemaValue, schemaItem, schemaItemType);
+      }
+
+      // Handle raw data if returned as object
+      if (
+        parsedValue &&
+        typeof parsedValue === "object" &&
+        "value" in parsedValue &&
+        "raw" in parsedValue
+      ) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        res[key] = (parsedValue as any).value;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        res[`${key}Raw`] = (parsedValue as any).raw;
+      } else {
+        res[key] = parsedValue;
       }
     }
   }
@@ -562,7 +578,15 @@ export class AsnParser {
           throw err;
         }
       } else {
-        return this.fromASN(valueToProcess, schemaItemType);
+        const parsedValue = this.fromASN(valueToProcess, schemaItemType);
+        // If raw is requested, return an object with value and raw
+        if (schemaItem.raw) {
+          return {
+            value: parsedValue,
+            raw: asn1SchemaValue.valueBeforeDecodeView,
+          };
+        }
+        return parsedValue;
       }
     }
   }
