@@ -15,8 +15,10 @@ import { ResponseData } from "./response_data";
  * ```
  */
 export class BasicOCSPResponse {
-  @AsnProp({ type: ResponseData })
+  @AsnProp({ type: ResponseData, raw: true })
   public tbsResponseData = new ResponseData();
+
+  public tbsResponseDataRaw?: ArrayBuffer;
 
   @AsnProp({ type: AlgorithmIdentifier })
   public signatureAlgorithm = new AlgorithmIdentifier();

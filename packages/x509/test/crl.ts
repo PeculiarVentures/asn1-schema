@@ -86,6 +86,11 @@ describe("crl", () => {
     });
   });
 
+  it("get tbs raw", () => {
+    const crl = AsnConvert.parse(crlExtRaw, asn1X509.CertificateList);
+    assert.ok(crl.tbsCertListRaw);
+  });
+
   it("parse delta extension", () => {
     const crl = AsnConvert.parse(crlExtDeltaRaw, asn1X509.CertificateList);
     assert.ok(crl.tbsCertList.crlExtensions);

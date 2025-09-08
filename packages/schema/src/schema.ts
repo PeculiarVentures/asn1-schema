@@ -12,6 +12,7 @@ export interface IAsnSchemaItem {
   implicit?: boolean;
   converter?: IAsnConverter;
   repeated?: AsnRepeatType;
+  raw?: boolean;
 }
 
 export interface IAsnSchema {

@@ -22,6 +22,11 @@ export interface IAsn1PropOptions {
   implicit?: boolean;
   converter?: IAsnConverter;
   repeated?: AsnRepeatType;
+  /**
+   * If true, the raw ASN.1 encoded bytes of the property will be stored in a separate property
+   * with 'Raw' suffix.
+   */
+  raw?: boolean;
 }
 
 export type AsnTypeDecorator = (target: IEmptyConstructor) => void;
@@ -80,5 +85,6 @@ export const AsnProp =
       copyOptions.converter = defaultConverter;
     }
 
+    copyOptions.raw = options.raw;
     schema.items[propertyKey] = copyOptions;
   };

@@ -11,8 +11,10 @@ import { TBSCertList } from "./tbs_cert_list";
  * ```
  */
 export class CertificateList {
-  @AsnProp({ type: TBSCertList })
+  @AsnProp({ type: TBSCertList, raw: true })
   public tbsCertList = new TBSCertList();
+
+  public tbsCertListRaw?: ArrayBuffer;
 
   @AsnProp({ type: AlgorithmIdentifier })
   public signatureAlgorithm = new AlgorithmIdentifier();
