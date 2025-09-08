@@ -55,15 +55,6 @@ export class AsnParser {
 
       // Handle SEQUENCE types with special logic
       const sequenceResult = this.handleSequenceTypes(asn1Schema, schema, target, targetSchema);
-
-      // If manual mapping was used, return the result directly
-      if (sequenceResult && "isManualMapping" in sequenceResult) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        return (sequenceResult as any).result;
-      }
-
-      const asn1ComparedSchema = sequenceResult;
-
       const res = new target() as unknown as Record<string, unknown>;
 
       // Handle array types
@@ -72,7 +63,7 @@ export class AsnParser {
       }
 
       // Process schema items
-      this.processSchemaItems(schema, asn1ComparedSchema, res);
+      this.processSchemaItems(schema, sequenceResult, res);
 
       return res;
     } catch (error) {
@@ -164,27 +155,6 @@ export class AsnParser {
     targetSchema: AsnSchemaType,
   ): asn1js.CompareSchemaResult {
     if (schema.type === AsnTypeTypes.Sequence) {
-      // Check for optional CHOICE fields
-      const optionalChoiceFields = Object.keys(schema.items).filter((key) => {
-        const item = schema.items[key];
-        return (
-          item.optional &&
-          typeof item.type === "function" &&
-          schemaStorage.has(item.type as IEmptyConstructor) &&
-          schemaStorage.get(item.type as IEmptyConstructor).type === AsnTypeTypes.Choice
-        );
-      });
-
-      // Use manual mapping for specific problematic cases
-      if (
-        optionalChoiceFields.length > 0 &&
-        "value" in asn1Schema.valueBlock &&
-        Array.isArray(asn1Schema.valueBlock.value) &&
-        target.name === "CertReqMsg"
-      ) {
-        return this.handleManualMapping(asn1Schema, schema, target);
-      }
-
       // Try normal schema comparison
       const asn1ComparedSchema = asn1js.compareSchema(
         {} as unknown as asn1js.AsnType,
@@ -213,52 +183,6 @@ export class AsnParser {
       }
       return asn1ComparedSchema;
     }
-  }
-
-  /**
-   * Handles manual mapping for SEQUENCE with optional CHOICE fields
-   */
-  private static handleManualMapping(
-    asn1Schema: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    schema: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    target: IEmptyConstructor<any>,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): any {
-    const res = new target() as unknown as Record<string, unknown>;
-    const asn1Elements = (asn1Schema.valueBlock as { value: asn1js.AsnType[] }).value;
-    const schemaKeys = Object.keys(schema.items);
-    let asn1Index = 0;
-
-    for (let i = 0; i < schemaKeys.length; i++) {
-      const key = schemaKeys[i];
-      const schemaItem = schema.items[key];
-
-      if (asn1Index >= asn1Elements.length) break;
-
-      if (schemaItem.repeated) {
-        res[key] = this.processRepeatedField(asn1Elements, asn1Index, schemaItem);
-        break; // After repeated field, we're done
-      } else if (typeof schemaItem.type === "number") {
-        res[key] = this.processPrimitiveField(asn1Elements[asn1Index], schemaItem);
-        asn1Index++;
-      } else if (this.isOptionalChoiceField(schemaItem)) {
-        const result = this.processOptionalChoiceField(asn1Elements[asn1Index], schemaItem);
-        if (result.processed) {
-          res[key] = result.value;
-          asn1Index++;
-        }
-        // If not processed, skip this field and continue
-      } else {
-        res[key] = this.fromASN(asn1Elements[asn1Index], schemaItem.type as IEmptyConstructor);
-        asn1Index++;
-      }
-    }
-
-    // Return a special result that indicates manual mapping was used
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return { result: res, verified: true, isManualMapping: true } as any;
   }
 
   /**
