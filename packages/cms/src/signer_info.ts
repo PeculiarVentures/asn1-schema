@@ -53,8 +53,17 @@ export class SignerInfo {
   @AsnProp({ type: DigestAlgorithmIdentifier })
   public digestAlgorithm = new DigestAlgorithmIdentifier();
 
-  @AsnProp({ type: Attribute, repeated: "set", context: 0, implicit: true, optional: true })
+  @AsnProp({
+    type: Attribute,
+    repeated: "set",
+    context: 0,
+    implicit: true,
+    optional: true,
+    raw: true,
+  })
   public signedAttrs?: SignedAttributes;
+
+  public signedAttrsRaw?: ArrayBuffer;
 
   @AsnProp({ type: SignatureAlgorithmIdentifier })
   public signatureAlgorithm = new SignatureAlgorithmIdentifier();

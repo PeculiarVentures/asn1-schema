@@ -12,5 +12,6 @@ describe("csr", () => {
     assert.strictEqual(csr.certificationRequestInfo.version, 0);
     assert.strictEqual(csr.certificationRequestInfo.attributes.length, 0);
     assert.strictEqual(csr.signature.byteLength, 256);
+    assert.ok(csr.certificationRequestInfoRaw);
   });
 });
