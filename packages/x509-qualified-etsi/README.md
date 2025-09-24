@@ -9,7 +9,7 @@
 
 ## Installation
 
-```
+```shell
 npm install @peculiar/asn1-x509-qualified-etsi
 ```
 
