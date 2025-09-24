@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
 import { OneAsymmetricKey } from "@peculiar/asn1-asym-key";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { id_rsaEncryption } from "@peculiar/asn1-rsa";
