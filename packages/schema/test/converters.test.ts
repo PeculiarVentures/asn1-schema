@@ -1,4 +1,5 @@
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
+import { AsnSerializer, ParseContextImpl } from "@peculiar/asn1-codec";
 import {
   AsnAnyConverter,
   AsnConstructedOctetStringConverter,
@@ -10,21 +11,23 @@ import {
 describe("converters", () => {
   describe("Any", () => {
     it("null", () => {
-      const asn = AsnAnyConverter.toASN(null);
+      const node = AsnAnyConverter.toASN(null);
 
-      const der = asn.toBER();
+      const der = AsnSerializer.nodeToBytes(node);
       assert.strictEqual(Buffer.from(der).toString("hex"), "0500");
 
-      const value = AsnAnyConverter.fromASN(asn);
+      const context = new ParseContextImpl(der, null);
+      const value = AsnAnyConverter.fromASN({ node, context });
       assert.strictEqual(value, null);
     });
     it("Integer", () => {
-      const asn = AsnAnyConverter.toASN(new Uint8Array([2, 1, 1]).buffer);
+      const node = AsnAnyConverter.toASN(new Uint8Array([2, 1, 1]).buffer);
 
-      const der = asn.toBER();
+      const der = AsnSerializer.nodeToBytes(node);
       assert.strictEqual(Buffer.from(der).toString("hex"), "020101");
 
-      const value = AsnAnyConverter.fromASN(asn);
+      const context = new ParseContextImpl(der, null);
+      const value = AsnAnyConverter.fromASN({ node, context });
       assert.ok(value);
       assert.strictEqual(value.byteLength, 3);
     });
@@ -38,15 +41,16 @@ describe("converters", () => {
   describe("GeneralizedTime", () => {
     const dateNum = 1537560204455;
     it("correct", () => {
-      const asn = AsnGeneralizedTimeConverter.toASN(new Date(dateNum));
+      const node = AsnGeneralizedTimeConverter.toASN(new Date(dateNum));
 
-      const der = asn.toBER();
+      const der = AsnSerializer.nodeToBytes(node);
       assert.strictEqual(
         Buffer.from(der).toString("hex"),
         "181332303138303932313230303332342e3435355a",
       );
 
-      const value = AsnGeneralizedTimeConverter.fromASN(asn);
+      const context = new ParseContextImpl(der, null);
+      const value = AsnGeneralizedTimeConverter.fromASN({ node, context });
       assert.strictEqual(value.getTime(), dateNum);
     });
   });
@@ -54,12 +58,13 @@ describe("converters", () => {
   describe("UTCTime", () => {
     const dateNum = 1537560204000;
     it("correct", () => {
-      const asn = AsnUTCTimeConverter.toASN(new Date(dateNum));
+      const node = AsnUTCTimeConverter.toASN(new Date(dateNum));
 
-      const der = asn.toBER();
+      const der = AsnSerializer.nodeToBytes(node);
       assert.strictEqual(Buffer.from(der).toString("hex"), "170d3138303932313230303332345a");
 
-      const value = AsnUTCTimeConverter.fromASN(asn);
+      const context = new ParseContextImpl(der, null);
+      const value = AsnUTCTimeConverter.fromASN({ node, context });
       assert.strictEqual(value.getTime(), dateNum);
     });
   });
@@ -69,10 +74,11 @@ describe("converters", () => {
     it("correct", () => {
       const asn = AsnConstructedOctetStringConverter.toASN(new OctetString(buffer));
 
-      const der = asn.toBER();
+      const der = AsnSerializer.nodeToBytes(asn);
       assert.strictEqual(Buffer.from(der).toString("hex"), "04053132333435");
 
-      const value = AsnConstructedOctetStringConverter.fromASN(asn);
+      const context = new ParseContextImpl(der, null);
+      const value = AsnConstructedOctetStringConverter.fromASN({ node: asn, context });
       assert.notStrictEqual(Buffer.from(value.buffer), buffer);
     });
   });
