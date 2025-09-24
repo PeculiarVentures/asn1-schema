@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
 import { RSAPrivateKey, OtherPrimeInfos, OtherPrimeInfo } from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
 
