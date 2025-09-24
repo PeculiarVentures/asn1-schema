@@ -207,7 +207,7 @@ export class AuthorizationList {
   public applicationId?: OctetString;
 
   @AsnProp({ context: 701, type: AsnPropTypes.Integer, optional: true })
-  public creationDateTime?: number;
+  public creationDateTime?: number | string;
 
   @AsnProp({ context: 702, type: AsnPropTypes.Integer, optional: true })
   public origin?: number;
