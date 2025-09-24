@@ -1,7 +1,7 @@
 {
   "name": "@peculiar/asn1-x509-netscape",
   "version": "2.5.0",
-  "description": "",
+  "description": "ASN.1 schema of `Netscape Certificate Extensions` (Netscape)",
   "files": [
     "build/**/*.{js,d.ts}",
     "LICENSE",
@@ -34,7 +34,6 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.5.0",
-    "asn1js": "^3.0.6",
     "tslib": "^2.8.1"
   }
 }

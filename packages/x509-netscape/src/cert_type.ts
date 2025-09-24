@@ -1,5 +1,5 @@
-import { id_netscapeCertExtension } from "./object_identifiers";
 import { BitString } from "@peculiar/asn1-schema";
+import { id_netscapeCertExtension } from "./object_identifiers";
 
 /**
  * ```asn1
