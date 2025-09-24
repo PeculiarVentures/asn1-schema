@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
 import { ECParameters, id_secp256r1, ECPrivateKey } from "../src";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 
