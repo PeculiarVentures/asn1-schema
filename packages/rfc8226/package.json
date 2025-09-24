@@ -23,7 +23,6 @@
     "url": "git+https://github.com/PeculiarVentures/asn1-schema.git"
   },
   "scripts": {
-    "test": "mocha",
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",
     "build:module": "npm run build:cjs && npm run build:es2015",
@@ -35,7 +34,6 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.5.0",
-    "asn1js": "^3.0.6",
     "tslib": "^2.8.1"
   },
   "bugs": {
