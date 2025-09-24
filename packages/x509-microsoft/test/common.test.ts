@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { CaVersion } from "../src/attributes/extensions/ca_version";
 import { EnrollCertTypeChoice } from "../src/attributes";
