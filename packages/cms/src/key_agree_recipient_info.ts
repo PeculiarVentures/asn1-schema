@@ -6,9 +6,9 @@ import {
   AsnTypeTypes,
   OctetString,
 } from "@peculiar/asn1-schema";
+import { AlgorithmIdentifier, SubjectKeyIdentifier } from "@peculiar/asn1-x509";
 import { CMSVersion, KeyEncryptionAlgorithmIdentifier, EncryptedKey } from "./types";
 import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
-import { AlgorithmIdentifier, SubjectKeyIdentifier } from "@peculiar/asn1-x509";
 import { OtherKeyAttribute } from "./other_key_attribute";
 
 /**

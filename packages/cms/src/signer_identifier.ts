@@ -1,6 +1,6 @@
 import { AsnProp, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
-import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
+import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 
 /**
  * ```asn
