@@ -1,5 +1,5 @@
+import { describe, it, assert } from "vitest";
 import { IpConverter } from "../src/ip_converter";
-import * as assert from "assert";
 
 describe("IpConverter", () => {
   describe("toString", () => {

@@ -1,7 +1,6 @@
-import { AsnProp } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { DistributionPointName, Reason } from "./crl_distribution_points";
 import { id_ce } from "../object_identifiers";
-import { AsnPropTypes } from "@peculiar/asn1-schema";
 
 /**
  * ```asn1

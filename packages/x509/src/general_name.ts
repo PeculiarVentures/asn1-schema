@@ -5,13 +5,13 @@ import {
   AsnTypeTypes,
   AsnOctetStringConverter,
   IAsnConverter,
+  AsnNodeType,
 } from "@peculiar/asn1-schema";
-import { AsnType as IAsnType } from "@peculiar/asn1-codec";
 import { IpConverter } from "./ip_converter";
 import { DirectoryString, Name } from "./name";
 
 export const AsnIpConverter: IAsnConverter<string> = {
-  fromASN: (value: IAsnType) => IpConverter.toString(AsnOctetStringConverter.fromASN(value)),
+  fromASN: (value: AsnNodeType) => IpConverter.toString(AsnOctetStringConverter.fromASN(value)),
   toASN: (value: string) => AsnOctetStringConverter.toASN(IpConverter.fromString(value)),
 };
 

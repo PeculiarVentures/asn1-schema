@@ -1,6 +1,5 @@
-import { AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 import { GeneralName } from "./general_name";
-import { AsnArray } from "@peculiar/asn1-schema";
 
 /**
  * ```asn1

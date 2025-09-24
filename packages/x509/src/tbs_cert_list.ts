@@ -1,5 +1,9 @@
-import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
-import { AsnNode } from "@peculiar/asn1-codec";
+import {
+  AsnProp,
+  AsnPropTypes,
+  AsnIntegerArrayBufferConverter,
+  AsnNode,
+} from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "./algorithm_identifier";
 import { Name } from "./name";
 import { Time } from "./time";
