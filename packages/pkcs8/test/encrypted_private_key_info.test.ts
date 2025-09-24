@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
 import { EncryptedPrivateKeyInfo } from "../src";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
