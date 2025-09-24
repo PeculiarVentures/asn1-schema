@@ -1,6 +1,6 @@
-import * as asn1js from "asn1js";
+import { AsnNode, AsnNodeUtils, CompiledSchema } from "@peculiar/asn1-codec";
 import { BufferSource, BufferSourceConverter } from "pvtsutils";
-import { IAsnConvertible } from "../types";
+import { AsnNodeType, IAsnConvertible } from "../types";
 
 // Implement ArrayBufferView, cause ES5 doesn't allow to extend ArrayBuffer class
 
@@ -31,19 +31,39 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
     }
   }
 
-  public fromASN(asn: asn1js.OctetString): this {
-    if (!(asn instanceof asn1js.OctetString)) {
-      throw new TypeError("Argument 'asn' is not instance of ASN.1 OctetString");
+  public fromASN(asn: AsnNodeType): this {
+    // Accept both universal OCTET STRING and context-specific IMPLICIT tagging
+    const isUniversalOctetString = asn.node.tagClass === 0 && asn.node.type === 4;
+    const isContextImplicit = asn.node.tagClass === 2; // context-specific, IMPLICIT assumed by schema
+    if (!isUniversalOctetString && !isContextImplicit) {
+      throw new Error("Object's ASN.1 structure doesn't match OCTET STRING");
     }
-    this.buffer = asn.valueBlock.valueHex;
+    // Slice raw value regardless of constructed flag (parser handles constructed/primitive)
+    const bytes = asn.context.sliceValueRaw(asn.node);
+    // Persist as ArrayBuffer for API compatibility
+    this.buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
     return this;
   }
 
-  public toASN(): asn1js.OctetString {
-    return new asn1js.OctetString({ valueHex: this.buffer });
+  public toASN(): AsnNode {
+    const node = AsnNodeUtils.makeNode();
+    node.tagClass = 0; // UNIVERSAL
+    node.type = 4; // OCTET STRING
+    node.constructed = false;
+    node.valueRaw = new Uint8Array(this.buffer);
+    node.end = node.valueRaw.length;
+    return node;
   }
 
-  public toSchema(name: string): asn1js.OctetString {
-    return new asn1js.OctetString({ name });
+  public toSchema(name: string): CompiledSchema {
+    return {
+      root: {
+        id: -1,
+        name,
+        typeName: "OCTET STRING",
+        expectedTag: { cls: 0, tag: 4, constructed: false },
+      },
+      nodes: new Map(),
+    };
   }
 }

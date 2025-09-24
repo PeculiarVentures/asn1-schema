@@ -27,6 +27,16 @@ export interface IAsn1PropOptions {
    * with 'Raw' suffix.
    */
   raw?: boolean;
+  /**
+   * If true, the property materialization will be deferred. The parser will define
+   * a getter/setter for the property that decodes the underlying ASN.1 only when accessed.
+   */
+  lazy?: boolean;
+  /**
+   * If true, the original ASN.1 node of the property will be stored in a separate property
+   * with 'Node' suffix.
+   */
+  node?: boolean;
 }
 
 export type AsnTypeDecorator = (target: IEmptyConstructor) => void;
@@ -83,8 +93,13 @@ export const AsnProp =
         );
       }
       copyOptions.converter = defaultConverter;
+      copyOptions.hasExplicitConverter = false;
+    } else if (copyOptions.converter) {
+      copyOptions.hasExplicitConverter = true;
     }
 
     copyOptions.raw = options.raw;
+    copyOptions.lazy = options.lazy;
+    copyOptions.node = options.node;
     schema.items[propertyKey] = copyOptions;
   };

@@ -1,6 +1,6 @@
-import * as asn1js from "asn1js";
+import { AsnNode, AsnNodeUtils, CompiledSchema } from "@peculiar/asn1-codec";
 import { BufferSource, BufferSourceConverter } from "pvtsutils";
-import { IAsnConvertible } from "../types";
+import { AsnNodeType, IAsnConvertible } from "../types";
 
 export class BitString<T extends number = number> implements IAsnConvertible {
   public unusedBits = 0;
@@ -23,23 +23,46 @@ export class BitString<T extends number = number> implements IAsnConvertible {
     }
   }
 
-  public fromASN(asn: asn1js.BitString): this {
-    if (!(asn instanceof asn1js.BitString)) {
-      throw new TypeError("Argument 'asn' is not instance of ASN.1 BitString");
+  public fromASN(asn: AsnNodeType): this {
+    // Expect UNIVERSAL BIT STRING (class = 0, tag = 3)
+    if (asn.node.tagClass !== 0 || asn.node.type !== 3) {
+      throw new Error("Object's ASN.1 structure doesn't match BIT STRING");
     }
 
-    this.unusedBits = asn.valueBlock.unusedBits;
-    this.value = asn.valueBlock.valueHex;
+    const raw = asn.context.sliceValueRaw(asn.node);
+    this.unusedBits = raw[0];
+    this.value = raw.subarray(1);
 
     return this;
   }
 
-  public toASN(): asn1js.BitString {
-    return new asn1js.BitString({ unusedBits: this.unusedBits, valueHex: this.value });
+  public toASN(): AsnNode {
+    const node = AsnNodeUtils.makeNode();
+    node.tagClass = 0; // UNIVERSAL
+    node.type = 3; // BIT STRING
+    node.constructed = false;
+
+    // BIT STRING format: first byte is unused bits count, followed by data
+    const data = new Uint8Array(this.value.byteLength + 1);
+    data[0] = this.unusedBits; // unused bits count
+    data.set(new Uint8Array(this.value), 1); // copy the actual data
+
+    node.valueRaw = data;
+    node.end = data.length;
+
+    return node;
   }
 
-  public toSchema(name: string): asn1js.BitString {
-    return new asn1js.BitString({ name });
+  public toSchema(name: string): CompiledSchema {
+    return {
+      root: {
+        id: -1,
+        name,
+        typeName: "BIT STRING",
+        expectedTag: { cls: 0, tag: 3, constructed: false },
+      },
+      nodes: new Map(),
+    };
   }
 
   public toNumber(): T {

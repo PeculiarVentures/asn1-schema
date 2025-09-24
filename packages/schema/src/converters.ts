@@ -1,7 +1,16 @@
-import * as asn1js from "asn1js";
-import { AnyConverterType, IAsnConverter, IntegerConverterType } from "./types";
+import {
+  AsnNode,
+  AsnNodeUtils,
+  AsnParser,
+  AsnSerializer,
+  CompiledSchema,
+  AsnDecoders,
+  ParseContext,
+} from "@peculiar/asn1-codec";
+import { AnyConverterType, AsnNodeType, IAsnConverter, IntegerConverterType } from "./types";
 import { AsnPropTypes } from "./enums";
 import { OctetString } from "./types/index";
+
 /**
  * NOTE: Converter MUST have name Asn<Asn1PropType.name>Converter.
  * Asn1Prop decorator link custom converters by name of the Asn1PropType
@@ -11,175 +20,422 @@ import { OctetString } from "./types/index";
  * ASN.1 ANY converter
  */
 export const AsnAnyConverter: IAsnConverter<AnyConverterType> = {
-  fromASN: (value: asn1js.AsnType) =>
-    value instanceof asn1js.Null ? null : value.valueBeforeDecodeView,
-  toASN: (value: AnyConverterType): asn1js.AsnType => {
-    if (value === null) {
-      return new asn1js.Null();
+  fromASN: (value: AsnNodeType) => {
+    if (value.node.tagClass === 0 && value.node.type === 5) {
+      return null;
     }
-    const schema = asn1js.fromBER(value);
-    if (schema.result.error) {
-      throw new Error(schema.result.error);
-    }
-    return schema.result;
+    const bytes = value.context.sliceRaw(value.node);
+    return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
   },
+  toASN: (value: AnyConverterType): AsnNode => {
+    let node = AsnNodeUtils.makeNode();
+    if (value === null) {
+      node.type = 5;
+      node.valueRaw = new Uint8Array(0);
+    } else if (value instanceof ArrayBuffer) {
+      const data = new Uint8Array(value);
+
+      // Try to parse as DER
+      try {
+        const res = AsnParser.parse(data, { captureRaw: true });
+        if (!res.errors || res.errors.length === 0) {
+          // It's valid DER, use it as is
+          node = res.root;
+        } else {
+          // Not valid DER, throw error as legacy behavior expects
+          throw new Error(`Invalid ANY value: ${res.errors[0]?.message || "parse error"}`);
+        }
+      } catch {
+        // Re-throw to match expected behavior for wrong encoded values
+        throw new Error("Invalid ANY value");
+      }
+    } else {
+      const res = AsnParser.parse(new Uint8Array(value), { captureRaw: true });
+      if (res.errors?.length) {
+        throw new Error(`Error parse ANY value: ${res.errors[0].message}`);
+      }
+      node = res.root;
+    }
+
+    return node;
+  },
+};
+
+const integerSchema: CompiledSchema = {
+  root: {
+    id: -1,
+    name: "IntegerWrapper",
+    typeName: "INTEGER",
+    expectedTag: { cls: 0, tag: 2, constructed: false },
+  },
+  nodes: new Map(),
 };
 
 /**
  * ASN.1 INTEGER to Number/String converter
  */
-export const AsnIntegerConverter: IAsnConverter<IntegerConverterType, asn1js.Integer> = {
-  fromASN: (value: asn1js.Integer) =>
-    value.valueBlock.valueHexView.byteLength >= 4
-      ? value.valueBlock.toString() // use string format
-      : value.valueBlock.valueDec, // use number format
-  toASN: (value: IntegerConverterType) => new asn1js.Integer({ value: +value }),
+export const AsnIntegerConverter: IAsnConverter<IntegerConverterType> = {
+  fromASN: (value: AsnNodeType) => {
+    const decoded = AsnDecoders.decodeInteger(value.context, value.node) as number | bigint;
+    // Convert bigint to string for large numbers
+    if (typeof decoded === "bigint") {
+      return decoded.toString();
+    }
+    return decoded as number | string;
+  },
+  toASN: (value: IntegerConverterType) => {
+    // Convert string to BigInt for proper INTEGER encoding
+    let numericValue: number | bigint;
+    if (typeof value === "string") {
+      // Try to parse as number first
+      const parsed = Number(value);
+      if (Number.isInteger(parsed) && parsed.toString() === value) {
+        numericValue = parsed;
+      } else {
+        // Use BigInt for large numbers
+        numericValue = BigInt(value);
+      }
+    } else {
+      numericValue = value;
+    }
+    return AsnSerializer.serialize(numericValue, integerSchema);
+  },
+};
+
+const enumeratedSchema: CompiledSchema = {
+  root: {
+    id: -1,
+    name: "EnumeratedWrapper",
+    typeName: "ENUMERATED",
+    expectedTag: { cls: 0, tag: 10, constructed: false },
+  },
+  nodes: new Map(),
 };
 
 /**
  * ASN.1 ENUMERATED converter
  */
-export const AsnEnumeratedConverter: IAsnConverter<number, asn1js.Enumerated> = {
-  fromASN: (value: asn1js.Enumerated) => value.valueBlock.valueDec,
-  toASN: (value: number) => new asn1js.Enumerated({ value }),
+export const AsnEnumeratedConverter: IAsnConverter<number> = {
+  fromASN: (value: AsnNodeType) =>
+    AsnDecoders.decodeEnumerated(value.context, value.node) as number,
+  toASN: (value: number) => AsnSerializer.serialize(value, enumeratedSchema),
 };
 
 /**
  * ASN.1 INTEGER to ArrayBuffer converter
  */
-export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer, asn1js.Integer> = {
-  fromASN: (value: asn1js.Integer) => value.valueBlock.valueHexView,
-  toASN: (value: ArrayBuffer) => new asn1js.Integer({ valueHex: value }),
+export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer> = {
+  fromASN: (value: AsnNodeType) => {
+    // Return raw bytes of the integer value without INTEGER header/length.
+    // Slice the encoded value content (valueRaw) directly.
+    // If constructed/primitive differences exist, context.sliceValueRaw handles it.
+    const bytes = value.context.sliceValueRaw(value.node);
+    return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+  },
+  toASN: (value: ArrayBuffer) => {
+    // Wrap provided bytes as INTEGER content without changing sign/adding a leading 0x00.
+    const node = AsnNodeUtils.makeNode();
+    node.tagClass = 0; // UNIVERSAL
+    node.type = 2; // INTEGER
+    node.constructed = false;
+    node.valueRaw = new Uint8Array(value);
+    node.end = node.valueRaw.length;
+    return node;
+  },
 };
 
 /**
  * ASN.1 INTEGER to BigInt converter
  */
-export const AsnIntegerBigIntConverter: IAsnConverter<bigint, asn1js.Integer> = {
-  fromASN: (value: asn1js.Integer) => value.toBigInt(),
-  toASN: (value: bigint) => asn1js.Integer.fromBigInt(value),
+export const AsnIntegerBigIntConverter: IAsnConverter<bigint> = {
+  fromASN: (value: AsnNodeType) => {
+    const v = AsnDecoders.decodeInteger(value.context, value.node) as number | bigint;
+    return typeof v === "bigint" ? v : BigInt(v);
+  },
+  toASN: (value: bigint) => AsnSerializer.serialize(value, integerSchema),
 };
+
+// Removed unused bitStringSchema; BIT STRING converter constructs node manually
 
 /**
  * ASN.1 BIT STRING converter
  */
-export const AsnBitStringConverter: IAsnConverter<ArrayBuffer, asn1js.BitString> = {
-  fromASN: (value: asn1js.BitString) => value.valueBlock.valueHexView,
-  toASN: (value: ArrayBuffer) => new asn1js.BitString({ valueHex: value }),
+export const AsnBitStringConverter: IAsnConverter<ArrayBuffer> = {
+  fromASN: (value: AsnNodeType) => {
+    const bitString = AsnDecoders.decodeBitString(value.context, value.node) as {
+      unusedBits: number;
+      bytes: Uint8Array;
+    };
+    // Return raw bytes only as ArrayBuffer (legacy API expects ArrayBuffer)
+    const bytes = bitString.bytes;
+    return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+  },
+  toASN: (value: ArrayBuffer) => {
+    // Accept raw bytes only; encode with 0 unused bits by default
+    const bytes = new Uint8Array(value);
+    const unusedBits = 0;
+    // Build AsnNode manually to inject unusedBits prefix
+    const node = AsnNodeUtils.makeNode();
+    node.tagClass = 0; // UNIVERSAL
+    node.type = 3; // BIT STRING
+    node.constructed = false;
+    const content = new Uint8Array(bytes.length + 1);
+    content[0] = unusedBits & 0x07;
+    content.set(bytes, 1);
+    node.valueRaw = content;
+    node.end = content.length;
+    return node;
+  },
+};
+
+const objectIdentifierSchema: CompiledSchema = {
+  root: {
+    id: -1,
+    name: "ObjectIdentifierWrapper",
+    typeName: "OBJECT IDENTIFIER",
+    expectedTag: { cls: 0, tag: 6, constructed: false },
+  },
+  nodes: new Map(),
 };
 
 /**
  * ASN.1 OBJECT IDENTIFIER converter
  */
-export const AsnObjectIdentifierConverter: IAsnConverter<string, asn1js.ObjectIdentifier> = {
-  fromASN: (value: asn1js.ObjectIdentifier) => value.valueBlock.toString(),
-  toASN: (value: string) => new asn1js.ObjectIdentifier({ value }),
+export const AsnObjectIdentifierConverter: IAsnConverter<string> = {
+  fromASN: (value: AsnNodeType) =>
+    AsnDecoders.decodeObjectIdentifier(value.context, value.node) as string,
+  toASN: (value: string) => AsnSerializer.serialize(value, objectIdentifierSchema),
+};
+
+const booleanSchema: CompiledSchema = {
+  root: {
+    id: -1,
+    name: "BooleanWrapper",
+    typeName: "BOOLEAN",
+    expectedTag: { cls: 0, tag: 1, constructed: false },
+  },
+  nodes: new Map(),
 };
 
 /**
  * ASN.1 BOOLEAN converter
  */
-export const AsnBooleanConverter: IAsnConverter<boolean, asn1js.Boolean> = {
-  fromASN: (value: asn1js.Boolean) => value.valueBlock.value,
-  toASN: (value: boolean) => new asn1js.Boolean({ value }),
+export const AsnBooleanConverter: IAsnConverter<boolean> = {
+  fromASN: (value: AsnNodeType) => AsnDecoders.decodeBoolean(value.context, value.node) as boolean,
+  toASN: (value: boolean) => AsnSerializer.serialize(value, booleanSchema),
+};
+
+const octetStringSchema: CompiledSchema = {
+  root: {
+    id: -1,
+    name: "OctetStringWrapper",
+    typeName: "OCTET STRING",
+    expectedTag: { cls: 0, tag: 4, constructed: false },
+  },
+  nodes: new Map(),
 };
 
 /**
  * ASN.1 OCTET_STRING converter
  */
-export const AsnOctetStringConverter: IAsnConverter<ArrayBuffer, asn1js.OctetString> = {
-  fromASN: (value: asn1js.OctetString) => value.valueBlock.valueHexView,
-  toASN: (value: ArrayBuffer) => new asn1js.OctetString({ valueHex: value }),
+export const AsnOctetStringConverter: IAsnConverter<ArrayBuffer> = {
+  fromASN: (value: AsnNodeType) => {
+    const bytes = AsnDecoders.decodeOctetString(value.context, value.node) as Uint8Array;
+    return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+  },
+  toASN: (value: ArrayBuffer) => AsnSerializer.serialize(value, octetStringSchema),
 };
 
 /**
  * ASN.1 OCTET_STRING converter to OctetString class
  */
-export const AsnConstructedOctetStringConverter: IAsnConverter<OctetString, asn1js.OctetString> = {
-  fromASN: (value: asn1js.OctetString) => new OctetString(value.getValue()),
-  toASN: (value: OctetString) => value.toASN(),
+export const AsnConstructedOctetStringConverter: IAsnConverter<OctetString> = {
+  fromASN: (value: AsnNodeType) => {
+    // Support receiving a plain AsnNode without context as well
+    if ((value as unknown as { context?: ParseContext }).context) {
+      const bytes = AsnDecoders.decodeOctetString(value.context, value.node) as Uint8Array;
+      const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+      return new OctetString(buffer);
+    }
+    const node = value as unknown as AsnNode;
+    const raw = node.valueRaw || new Uint8Array(0);
+    const buffer = raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength);
+    return new OctetString(buffer);
+  },
+  toASN: (value: OctetString) => AsnSerializer.serialize(value.buffer, octetStringSchema),
 };
 
-function createStringConverter<T extends asn1js.BaseStringBlock>(
-  Asn1Type: new (params: { value: string }) => T,
+function createStringConverter(
+  schema: CompiledSchema,
+  decoder: (ctx: ParseContext, node: AsnNode) => unknown = AsnDecoders.decodeUtf8String,
 ): IAsnConverter<string> {
   return {
-    fromASN: (value: T) => value.valueBlock.value,
-    toASN: (value: string) => new Asn1Type({ value }),
+    fromASN: (value: AsnNodeType) => decoder(value.context, value.node) as string,
+    toASN: (value: string) => AsnSerializer.serialize(value, schema),
   };
 }
+
+function createSchema(name: string, type: string, tag: number): CompiledSchema {
+  return {
+    root: {
+      id: -1,
+      name,
+      typeName: type,
+      expectedTag: { cls: 0, tag, constructed: false },
+    },
+    nodes: new Map(),
+  };
+}
+
+const utf8StringSchema = createSchema("Utf8StringWrapper", "UTF8 STRING", 12);
 
 /**
  * ASN.1 UTF8_STRING converter
  */
-export const AsnUtf8StringConverter = createStringConverter(asn1js.Utf8String);
+export const AsnUtf8StringConverter = createStringConverter(utf8StringSchema);
+
+const bmpStringSchema = createSchema("BmpStringWrapper", "BMP STRING", 30);
+
 /**
- * ASN.1 BPM STRING converter
+ * ASN.1 BMP STRING converter
  */
-export const AsnBmpStringConverter = createStringConverter(asn1js.BmpString);
+export const AsnBmpStringConverter = createStringConverter(
+  bmpStringSchema,
+  AsnDecoders.decodeBmpString,
+);
+
+const universalStringSchema = createSchema("UniversalStringWrapper", "UNIVERSAL STRING", 28);
+
 /**
  * ASN.1 UNIVERSAL STRING converter
  */
-export const AsnUniversalStringConverter = createStringConverter(asn1js.UniversalString);
+export const AsnUniversalStringConverter = createStringConverter(
+  universalStringSchema,
+  AsnDecoders.decodeUniversalString,
+);
+
+const numericStringSchema = createSchema("NumericStringWrapper", "NUMERIC STRING", 18);
+
 /**
  * ASN.1 NUMERIC STRING converter
  */
-export const AsnNumericStringConverter = createStringConverter(asn1js.NumericString);
+export const AsnNumericStringConverter = createStringConverter(
+  numericStringSchema,
+  AsnDecoders.decodeNumericString,
+);
+
+const printableStringSchema = createSchema("PrintableStringWrapper", "PRINTABLE STRING", 19);
+
 /**
  * ASN.1 PRINTABLE STRING converter
  */
-export const AsnPrintableStringConverter = createStringConverter(asn1js.PrintableString);
+export const AsnPrintableStringConverter = createStringConverter(
+  printableStringSchema,
+  AsnDecoders.decodePrintableString,
+);
+
+const teletexStringSchema = createSchema("TeletexStringWrapper", "TELETEX STRING", 20);
+
 /**
  * ASN.1 TELETEX STRING converter
  */
-export const AsnTeletexStringConverter = createStringConverter(asn1js.TeletexString);
+export const AsnTeletexStringConverter = createStringConverter(
+  teletexStringSchema,
+  AsnDecoders.decodeTeletexString,
+);
+
+const videotexStringSchema = createSchema("VideotexStringWrapper", "VIDEOTEX STRING", 21);
+
 /**
  * ASN.1 VIDEOTEX STRING converter
  */
-export const AsnVideotexStringConverter = createStringConverter(asn1js.VideotexString);
+export const AsnVideotexStringConverter = createStringConverter(
+  videotexStringSchema,
+  AsnDecoders.decodeVideotexString,
+);
+
+const ia5StringSchema = createSchema("IA5StringWrapper", "IA5 STRING", 22);
+
 /**
  * ASN.1 IA5 STRING converter
  */
-export const AsnIA5StringConverter = createStringConverter(asn1js.IA5String);
+export const AsnIA5StringConverter = createStringConverter(
+  ia5StringSchema,
+  AsnDecoders.decodeIa5String,
+);
+
+const graphicStringSchema = createSchema("GraphicStringWrapper", "GRAPHIC STRING", 25);
+
 /**
  * ASN.1 GRAPHIC STRING converter
  */
-export const AsnGraphicStringConverter = createStringConverter(asn1js.GraphicString);
+export const AsnGraphicStringConverter = createStringConverter(
+  graphicStringSchema,
+  AsnDecoders.decodeGraphicString,
+);
+
+const visibleStringSchema = createSchema("VisibleStringWrapper", "VISIBLE STRING", 26);
+
 /**
  * ASN.1 VISIBLE STRING converter
  */
-export const AsnVisibleStringConverter = createStringConverter(asn1js.VisibleString);
+export const AsnVisibleStringConverter = createStringConverter(
+  visibleStringSchema,
+  AsnDecoders.decodeVisibleString,
+);
+
+const generalStringSchema = createSchema("GeneralStringWrapper", "GENERAL STRING", 27);
+
 /**
  * ASN.1 GENERAL STRING converter
  */
-export const AsnGeneralStringConverter = createStringConverter(asn1js.GeneralString);
+export const AsnGeneralStringConverter = createStringConverter(
+  generalStringSchema,
+  AsnDecoders.decodeGeneralString,
+);
+
+const characterStringSchema = createSchema("CharacterStringWrapper", "CHARACTER STRING", 29);
+
 /**
  * ASN.1 CHARACTER STRING converter
  */
-export const AsnCharacterStringConverter = createStringConverter(asn1js.CharacterString);
+export const AsnCharacterStringConverter = createStringConverter(
+  characterStringSchema,
+  AsnDecoders.decodeCharacterString,
+);
+
+const utcTimeSchema = createSchema("UTCTimeWrapper", "UTCTIME", 23);
 
 /**
  * ASN.1 UTCTime converter
  */
-export const AsnUTCTimeConverter: IAsnConverter<Date, asn1js.UTCTime> = {
-  fromASN: (value: asn1js.UTCTime) => value.toDate(),
-  toASN: (value: Date) => new asn1js.UTCTime({ valueDate: value }),
+export const AsnUTCTimeConverter: IAsnConverter<Date> = {
+  fromASN: (value: AsnNodeType) => AsnDecoders.decodeUtcTime(value.context, value.node) as Date,
+  toASN: (value: Date) => AsnSerializer.serialize(value, utcTimeSchema),
 };
+
+const generalizedTimeSchema = createSchema("GeneralizedTimeWrapper", "GENERALIZED TIME", 24);
+
 /**
  * ASN.1 GeneralizedTime converter
  */
-export const AsnGeneralizedTimeConverter: IAsnConverter<Date, asn1js.GeneralizedTime> = {
-  fromASN: (value: asn1js.GeneralizedTime) => value.toDate(),
-  toASN: (value: Date) => new asn1js.GeneralizedTime({ valueDate: value }),
+export const AsnGeneralizedTimeConverter: IAsnConverter<Date> = {
+  fromASN: (value: AsnNodeType) =>
+    AsnDecoders.decodeGeneralizedTime(value.context, value.node) as Date,
+  toASN: (value: Date) => AsnSerializer.serialize(value, generalizedTimeSchema),
 };
 
+const nullSchema = createSchema("NullWrapper", "NULL", 5);
+const nullValueRaw = new Uint8Array(0);
 /**
  * ASN.1 ANY converter
  */
-export const AsnNullConverter: IAsnConverter<null, asn1js.Null> = {
+export const AsnNullConverter: IAsnConverter<null> = {
   fromASN: () => null,
   toASN: () => {
-    return new asn1js.Null();
+    const node = AsnSerializer.serialize(null, nullSchema);
+    node.valueRaw = nullValueRaw;
+    return node;
   },
 };
 
