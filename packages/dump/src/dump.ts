@@ -1,7 +1,8 @@
-import { AsnNode, DumpOptions } from "./types";
-import { decodeAll } from "./ber";
+import { AsnNode, AsnDecoders, parseDER, AsnNodeUtils } from "@peculiar/asn1-codec";
+import { DumpOptions } from "./types";
 import { DefaultOidRegistry } from "./registry";
 
+// Universal tag numbers used by codec AsnNode.type
 const uni = {
   EOC: 0,
   BOOLEAN: 1,
@@ -76,42 +77,20 @@ function headTail<T>(items: T[], head: number, tail: number) {
   };
 }
 
-function oidToString(u8: Uint8Array): string {
-  if (u8.length === 0) return "";
-  const first = u8[0];
-  const firstArc = Math.floor(first / 40);
-  const secondArc = first % 40;
-  const arcs = [firstArc, secondArc];
-  let cur = 1;
-  while (cur < u8.length) {
-    let v = 0;
-    while (cur < u8.length) {
-      const b = u8[cur++];
-      v = (v << 7) | (b & 0x7f);
-      if ((b & 0x80) === 0) break;
-    }
-    arcs.push(v);
-  }
-  return arcs.join(".");
-}
-
-function twosComplementToBigInt(bytes: Uint8Array): bigint {
-  if (bytes.length === 0) return 0n;
-  const negative = (bytes[0] & 0x80) !== 0;
-  let val = 0n;
-  for (const b of bytes) val = (val << 8n) | BigInt(b);
-  if (!negative) return val;
-  const bits = BigInt(bytes.length * 8);
-  const mask = (1n << bits) - 1n;
-  const mag = ~val & mask;
-  return -(mag + 1n);
-}
+// We now rely on codec's PrimitiveDecoders for INTEGER/OID/etc., so no local two's complement needed.
 
 // Note: time normalization is handled inline in dump for UTCTime/GeneralizedTime.
 
-function typeName(tagClass: string, tag: number): string {
-  if (tagClass === "application") return `APPLICATION [${tag}]`;
-  if (tagClass !== "universal") return `[${tag}]`;
+const TAG_CLASS_NAMES = ["universal", "application", "context", "private"] as const;
+type TagClassName = (typeof TAG_CLASS_NAMES)[number];
+function tagClassName(tagClass: number): TagClassName {
+  return TAG_CLASS_NAMES[tagClass] ?? "private";
+}
+
+function typeName(tagClass: number, tag: number): string {
+  const clsName = tagClassName(tagClass);
+  if (clsName === "application") return `APPLICATION [${tag}]`;
+  if (clsName !== "universal") return `[${tag}]`;
   switch (tag) {
     case uni.SEQUENCE:
       return "SEQUENCE";
@@ -192,7 +171,7 @@ function printBitString(value: Uint8Array, opts: Required<DumpOptions>): string 
 
 function printString(tag: number, value: Uint8Array): string {
   // Render string with non-printable as \xNN based on raw bytes to meet TASK2
-  const type = typeName("universal", tag);
+  const type = typeName(0, tag);
   // Build ASCII-safe representation from raw bytes, escaping non-printables
   const chars: string[] = new Array(value.length);
   for (let i = 0; i < value.length; i++) {
@@ -217,8 +196,8 @@ function printString(tag: number, value: Uint8Array): string {
   }
 }
 
-function printOid(value: Uint8Array, opts: Required<DumpOptions>): string {
-  const numeric = oidToString(value);
+function printOid(node: AsnNode, opts: Required<DumpOptions>): string {
+  const numeric = AsnDecoders.decodeObjectIdentifier(node);
   const name = opts.oidRegistry.lookup(numeric);
   switch (opts.oidsMode) {
     case "numeric":
@@ -232,19 +211,18 @@ function printOid(value: Uint8Array, opts: Required<DumpOptions>): string {
 }
 
 function isConstructedOctetString(node: AsnNode): boolean {
-  return node.tagClass === "universal" && node.tag === uni.OCTET_STRING && node.constructed;
+  return node.tagClass === 0 && node.type === uni.OCTET_STRING && node.constructed;
 }
 
-function dumpNode(
-  node: AsnNode,
-  buf: Uint8Array,
-  lines: string[],
-  level: number,
-  opts: Required<DumpOptions>,
-) {
-  const pre = opts.style === "dev" ? prefixDev(node.offset, node.length) : "";
+function contentLength(node: AsnNode) {
+  return node.end - node.headerEnd;
+}
+
+function dumpNode(node: AsnNode, lines: string[], level: number, opts: Required<DumpOptions>) {
+  const ctx = AsnNodeUtils.getContext(node);
+  const pre = opts.style === "dev" ? prefixDev(node.start, contentLength(node)) : "";
   const ind = indentStr(level, opts.indent);
-  const tn = typeName(node.tagClass, node.tag);
+  const tn = typeName(node.tagClass, node.type);
 
   // Max depth check occurs before recursing into children
   if (level >= opts.maxDepth) {
@@ -253,31 +231,31 @@ function dumpNode(
     return;
   }
 
-  if (node.tagClass === "context") {
+  if (tagClassName(node.tagClass) === "context") {
     if (node.constructed) {
-      lines.push(`${pre}${ind}[${node.tag}]`);
+      lines.push(`${pre}${ind}[${node.type}]`);
       // children
       if (node.children) {
-        dumpChildren(node.children, buf, lines, level + 1, opts);
+        dumpChildren(node.children, lines, level + 1, opts);
       }
       return;
     } else {
       // implicit primitive — show bytes preview
-      const v = node.value ?? new Uint8Array();
+      const v = ctx.sliceValueRaw(node);
       const { head, tail } = getBlobPreview(opts);
       const blob = printBlob(v, head, tail);
-      lines.push(`${pre}${ind}[${node.tag}]: ${blob}`);
+      lines.push(`${pre}${ind}[${node.type}]: ${blob}`);
       return;
     }
   }
 
-  if (node.tagClass !== "universal") {
+  if (tagClassName(node.tagClass) !== "universal") {
     // Generic fallback
     if (node.constructed) {
       lines.push(`${pre}${ind}${tn}`);
-      if (node.children) dumpChildren(node.children, buf, lines, level + 1, opts);
+      if (node.children) dumpChildren(node.children, lines, level + 1, opts);
     } else {
-      const v = node.value ?? new Uint8Array();
+      const v = ctx.sliceValueRaw(node);
       const { head, tail } = getBlobPreview(opts);
       const blob = printBlob(v, head, tail);
       lines.push(`${pre}${ind}${tn}: ${blob}`);
@@ -286,14 +264,14 @@ function dumpNode(
   }
 
   // Universal
-  switch (node.tag) {
+  switch (node.type) {
     case uni.SEQUENCE:
     case uni.SET: {
       const kind = tn;
       const count = node.children?.length ?? 0;
       lines.push(`${pre}${ind}${kind}${count ? ` (${count} elem)` : ""}`);
       if (node.children && count) {
-        dumpChildren(node.children, buf, lines, level + 1, opts);
+        dumpChildren(node.children, lines, level + 1, opts);
       }
       break;
     }
@@ -302,14 +280,20 @@ function dumpNode(
       break;
     }
     case uni.BOOLEAN: {
-      const v = (node.value?.[0] ?? 0) !== 0;
+      const v = (ctx.sliceValueRaw(node)[0] ?? 0) !== 0;
       lines.push(`${pre}${ind}BOOLEAN: ${v ? "TRUE" : "FALSE"}`);
       break;
     }
     case uni.INTEGER: {
-      const v = node.value ?? new Uint8Array();
-      const bi = twosComplementToBigInt(v);
-      const dec = bi.toString();
+      const v = ctx.sliceValueRaw(node);
+      // Use codec's PrimitiveDecoders for integer; fallback to manual if error
+      let dec: string;
+      try {
+        const val = AsnDecoders.decodeInteger(node);
+        dec = typeof val === "bigint" ? val.toString() : String(val);
+      } catch {
+        dec = "<invalid INTEGER>";
+      }
       if (v.length > 16) {
         const hxPrefix = hexBytes(v.slice(0, Math.min(8, v.length)));
         lines.push(`${pre}${ind}INTEGER: ${dec}…  (0x${hxPrefix}${v.length > 8 ? " …" : ""})`);
@@ -319,8 +303,7 @@ function dumpNode(
       break;
     }
     case uni.OBJECT_IDENTIFIER: {
-      const v = node.value ?? new Uint8Array();
-      lines.push(`${pre}${ind}${printOid(v, opts)}`);
+      lines.push(`${pre}${ind}${printOid(node, opts)}`);
       break;
     }
     case uni.OCTET_STRING: {
@@ -331,9 +314,9 @@ function dumpNode(
         const s = printBlob(concat, head, tail);
         lines.push(`${pre}${ind}OCTET STRING: ${s}`);
         // reveal children if depth allows
-        dumpChildren(node.children, buf, lines, level + 1, opts);
+        dumpChildren(node.children, lines, level + 1, opts);
       } else {
-        const v = node.value ?? new Uint8Array();
+        const v = ctx.sliceValueRaw(node);
         const { head, tail } = getBlobPreview(opts);
         const s = printBlob(v, head, tail);
         const ascii = safeAscii(v);
@@ -345,9 +328,9 @@ function dumpNode(
       if (node.constructed && node.children && node.children.length) {
         // Constructed BIT STRING: print container, then children per rules
         lines.push(`${pre}${ind}BIT STRING`);
-        dumpChildren(node.children, buf, lines, level + 1, opts);
+        dumpChildren(node.children, lines, level + 1, opts);
       } else {
-        const v = node.value ?? new Uint8Array();
+        const v = ctx.sliceValueRaw(node);
         lines.push(`${pre}${ind}BIT STRING: ${printBitString(v, opts)}`);
       }
       break;
@@ -357,8 +340,8 @@ function dumpNode(
     case uni.IA5String:
     case uni.UTCTime:
     case uni.GeneralizedTime: {
-      if (node.tag === uni.UTCTime || node.tag === uni.GeneralizedTime) {
-        const raw = new TextDecoder().decode(node.value ?? new Uint8Array());
+      if (node.type === uni.UTCTime || node.type === uni.GeneralizedTime) {
+        const raw = new TextDecoder().decode(ctx.sliceValueRaw(node));
         const norm = raw.endsWith("Z")
           ? raw.replace(
               /^(\d{2,4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})Z$/,
@@ -368,19 +351,19 @@ function dumpNode(
               },
             )
           : raw;
-        const type = typeName("universal", node.tag);
+        const type = typeName(0, node.type);
         lines.push(`${pre}${ind}${type}: ${norm}`);
       } else {
-        lines.push(`${pre}${ind}${printString(node.tag, node.value ?? new Uint8Array())}`);
+        lines.push(`${pre}${ind}${printString(node.type, ctx.sliceValueRaw(node))}`);
       }
       break;
     }
     default: {
       if (node.constructed && node.children) {
         lines.push(`${pre}${ind}${tn}`);
-        dumpChildren(node.children, buf, lines, level + 1, opts);
+        dumpChildren(node.children, lines, level + 1, opts);
       } else {
-        const v = node.value ?? new Uint8Array();
+        const v = ctx.sliceValueRaw(node);
         const { head, tail } = getBlobPreview(opts);
         lines.push(`${pre}${ind}${tn}: ${printBlob(v, head, tail)}`);
       }
@@ -391,24 +374,23 @@ function dumpNode(
 
 function dumpChildren(
   children: AsnNode[],
-  buf: Uint8Array,
   lines: string[],
   level: number,
   opts: Required<DumpOptions>,
 ) {
   const max = opts.maxItems;
   if (children.length <= max) {
-    for (const ch of children) dumpNode(ch, buf, lines, level, opts);
+    for (const ch of children) dumpNode(ch, lines, level, opts);
     return;
   }
   // head..omitted..tail
   const headCount = Math.max(0, max - 1); // show first max-1, omit middle, show last
   const omitted = children.length - headCount - 1;
-  for (let i = 0; i < headCount; i++) dumpNode(children[i], buf, lines, level, opts);
+  for (let i = 0; i < headCount; i++) dumpNode(children[i], lines, level, opts);
   const p = opts.style === "dev" ? prefixDev() : "";
   const ind = indentStr(level, opts.indent);
   lines.push(`${p}${ind}… (omitted ${omitted} items)`);
-  dumpNode(children[children.length - 1], buf, lines, level, opts);
+  dumpNode(children[children.length - 1], lines, level, opts);
 }
 
 function concatConstructedBytes(children: AsnNode[]): Uint8Array {
@@ -416,8 +398,9 @@ function concatConstructedBytes(children: AsnNode[]): Uint8Array {
   for (const ch of children) {
     if (isConstructedOctetString(ch) && ch.children) {
       parts.push(concatConstructedBytes(ch.children));
-    } else if (!ch.constructed && ch.value) {
-      parts.push(ch.value);
+    } else if (!ch.constructed) {
+      const ctx = AsnNodeUtils.getContext(ch);
+      parts.push(ctx.sliceValueRaw(ch));
     }
   }
   const total = parts.reduce((n, p) => n + p.length, 0);
@@ -438,9 +421,14 @@ export function dumpAsn(input: Uint8Array | AsnNode, options?: DumpOptions): str
     oidRegistry: options?.oidRegistry ?? defaultOpts.oidRegistry,
   };
 
-  const node = input instanceof Uint8Array ? decodeAll(input) : input;
-  const buf = input instanceof Uint8Array ? input : new Uint8Array(0);
+  let node: AsnNode;
+  if (input instanceof Uint8Array) {
+    const { root } = parseDER(input, { captureRaw: false, mode: "ber" });
+    node = root;
+  } else {
+    node = input;
+  }
   const lines: string[] = [];
-  dumpNode(node, buf, lines, 0, opts);
+  dumpNode(node, lines, 0, opts);
   return lines.join("\n");
 }

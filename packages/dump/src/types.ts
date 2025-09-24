@@ -16,17 +16,3 @@ export interface DumpOptions {
 }
 
 export type TagClass = "universal" | "application" | "context" | "private";
-
-export interface AsnNode {
-  // Absolute offsets in the original buffer
-  offset: number;        // tag offset
-  headerLen: number;     // TL header size (tag+len)
-  length: number;        // content length
-  tagClass: TagClass;
-  tag: number;
-  constructed: boolean;
-  // For primitive
-  value?: Uint8Array;
-  // For constructed
-  children?: AsnNode[];
-}

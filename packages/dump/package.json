@@ -36,6 +36,7 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
+    "@peculiar/asn1-codec": "^2.5.0",
     "tslib": "^2.8.1"
   }
 }
