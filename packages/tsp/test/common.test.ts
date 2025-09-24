@@ -7,7 +7,7 @@ import {
   KeyUsage,
   KeyUsageFlags,
 } from "@peculiar/asn1-x509";
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
 import * as src from "../src";
 
 describe("TSP", () => {
