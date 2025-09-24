@@ -4,6 +4,12 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "paths": {
+      "@peculiar/asn1-codec": [
+        "packages/codec/src"
+      ],
+      "@peculiar/asn1-dump": [
+        "packages/dump/src"
+      ],
       "@peculiar/asn1-cms": [
         "./packages/cms/src"
       ],
