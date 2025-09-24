@@ -1,3 +1,7 @@
+import { AsnNode } from "@peculiar/asn1-codec";
+
+export { AsnNode };
+
 export * from "./converters";
 export * from "./types/index";
 export { AsnProp, AsnType, AsnChoiceType, AsnSequenceType, AsnSetType } from "./decorators";
