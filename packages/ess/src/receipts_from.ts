@@ -1,6 +1,6 @@
 import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
-import { AllOrFirstTier } from "./types";
 import { GeneralNames } from "@peculiar/asn1-x509";
+import { AllOrFirstTier } from "./types";
 
 /**
  * ```asn1
