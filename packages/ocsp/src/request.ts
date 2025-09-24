@@ -1,6 +1,6 @@
 import { AsnProp } from "@peculiar/asn1-schema";
-import { CertID } from "./cert_id";
 import { Extensions, Extension } from "@peculiar/asn1-x509";
+import { CertID } from "./cert_id";
 
 /**
  * ```asn1

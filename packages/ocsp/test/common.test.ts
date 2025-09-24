@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
 import { AsnParser, AsnSerializer, OctetString } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 import { OCSPRequest, TBSRequest, CertID, Request } from "../src";
