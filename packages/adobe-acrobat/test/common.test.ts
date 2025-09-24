@@ -1,6 +1,6 @@
-import * as assert from "node:assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
-import { Timestamp, Version } from "../src";
+import { describe, it, assert } from "vitest";
+import { Timestamp, Version } from "@peculiar/asn1-adobe-acrobat";
 
 describe("adobe-acrobat", () => {
   describe("Timestamp", () => {
