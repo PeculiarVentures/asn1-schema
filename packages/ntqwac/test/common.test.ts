@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
 import { AsnParser } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 import {
