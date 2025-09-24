@@ -1,4 +1,4 @@
-import { AsnNode, ParseContext } from "../types";
+import { AsnNode, ParseContext } from "@peculiar/asn1-codec";
 
 /**
  * Validation profile types

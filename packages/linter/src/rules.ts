@@ -1,5 +1,5 @@
-import { AsnNode } from "../types";
-import { ValidationRule, ValidationContext, LintIssue, ValidationProfile } from "./types";
+import { AsnNode } from "@peculiar/asn1-codec";
+import { ValidationRule, ValidationContext, LintIssue } from "./types";
 
 /**
  * Helper function to create lint issues
@@ -307,7 +307,6 @@ export const coreValidationRules: ValidationRule[] = [
       while (pos < node.end) {
         let value = 0;
         let hasMore = true;
-        const startPos = pos;
 
         while (hasMore && pos < node.end) {
           const byte = data[pos++];
@@ -471,7 +470,7 @@ export const coreValidationRules: ValidationRule[] = [
 
       try {
         new TextDecoder("utf-8", { fatal: true }).decode(data.slice(node.headerEnd, node.end));
-      } catch (e) {
+      } catch {
         return createIssue(
           "UTF8_INVALID",
           "UTF8String contains invalid UTF-8 sequence",
@@ -748,7 +747,6 @@ export const coreValidationRules: ValidationRule[] = [
       while (pos < node.end) {
         let value = 0;
         let hasMore = true;
-        const startPos = pos;
 
         while (hasMore && pos < node.end) {
           const byte = data[pos++];

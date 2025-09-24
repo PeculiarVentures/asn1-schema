@@ -3,9 +3,6 @@
 // Core types
 export * from "../types";
 
-// Validation
-export * from "../validation/index";
-
 // Schema builder
 export * from "../schema-builder";
 

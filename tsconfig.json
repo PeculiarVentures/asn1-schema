@@ -4,6 +4,9 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "paths": {
+      "@peculiar/asn1-linter": [
+        "packages/linter/src"
+      ],
       "@peculiar/asn1-codec": [
         "packages/codec/src"
       ],

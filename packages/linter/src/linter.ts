@@ -1,4 +1,4 @@
-import { AsnNode } from "../types";
+import { AsnNode, AsnNodeUtils } from "@peculiar/asn1-codec";
 import {
   LintOptions,
   LintReport,
@@ -9,7 +9,6 @@ import {
   ValidationRule,
 } from "./types";
 import { coreValidationRules } from "./rules";
-import { AsnNodeUtils } from "../node-utils";
 
 /**
  * ASN.1 Linter - performs semantic validation on parsed ASN.1 structures
