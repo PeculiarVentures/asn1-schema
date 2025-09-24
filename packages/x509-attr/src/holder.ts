@@ -1,6 +1,6 @@
 import { AsnProp } from "@peculiar/asn1-schema";
-import { IssuerSerial } from "./issuer_serial";
 import { GeneralNames } from "@peculiar/asn1-x509";
+import { IssuerSerial } from "./issuer_serial";
 import { ObjectDigestInfo } from "./object_digest_info";
 
 /**
