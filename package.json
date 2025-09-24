@@ -6,20 +6,20 @@
   ],
   "devDependencies": {
     "@eslint/js": "^9.31.0",
-    "@types/jest": "^30.0.0",
     "@types/node": "^24.0.14",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^9.31.0",
-    "jest": "^30.0.4",
-    "lerna": "^8.2.3",
+    "lerna": "^9.0.0",
     "prettier": "^3.6.2",
-    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.37.0"
+    "typescript-eslint": "^8.37.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
   },
   "scripts": {
-    "test": "jest",
+    "test": "vitest --run",
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "clear": "lerna run --parallel clear",
@@ -31,7 +31,7 @@
     "bootstrap": "yarn",
     "bootstrap:upgrade": "yarn upgrade-interactive --latest",
     "upgrade": "yarn upgrade-interactive --latest",
-    "coverage": "jest --coverage"
+    "coverage": "vitest --coverage"
   },
   "resolutions": {
     "cliui": "^8.0.1",
