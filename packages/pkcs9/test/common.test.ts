@@ -1,6 +1,6 @@
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { Attribute, id_ce_subjectKeyIdentifier } from "@peculiar/asn1-x509";
-import * as assert from "node:assert";
+import { describe, it, assert } from "vitest";
 import { Convert } from "pvtsutils";
 import { ExtensionRequest, id_pkcs9_at_extensionRequest } from "../src";
 
