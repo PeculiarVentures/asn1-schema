@@ -1,5 +1,4 @@
 import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
-import * as asn1js from "asn1js";
 
 /**
  * ```asn1
@@ -19,10 +18,10 @@ export const id_lei = "1.3.6.1.4.1.52266.1";
  */
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class Lei {
-  @AsnProp({ type: asn1js.PrintableString })
+  @AsnProp({ type: AsnPropTypes.PrintableString })
   public leiCode = "";
 
-  @AsnProp({ type: asn1js.PrintableString, context: 0, optional: true })
+  @AsnProp({ type: AsnPropTypes.PrintableString, context: 0, optional: true })
   public leiRole?: string;
 
   public constructor(params: Partial<Lei> = {}) {
