@@ -1,6 +1,6 @@
 import { AsnNode, AsnNodeUtils, CompiledSchema } from "@peculiar/asn1-codec";
 import { BufferSource, BufferSourceConverter } from "pvtsutils";
-import { AsnNodeType, IAsnConvertible } from "../types";
+import { IAsnConvertible } from "../types";
 
 export class BitString<T extends number = number> implements IAsnConvertible {
   public unusedBits = 0;
@@ -23,13 +23,14 @@ export class BitString<T extends number = number> implements IAsnConvertible {
     }
   }
 
-  public fromASN(asn: AsnNodeType): this {
+  public fromASN(asn: AsnNode): this {
     // Expect UNIVERSAL BIT STRING (class = 0, tag = 3)
-    if (asn.node.tagClass !== 0 || asn.node.type !== 3) {
+    if (asn.tagClass !== 0 || asn.type !== 3) {
       throw new Error("Object's ASN.1 structure doesn't match BIT STRING");
     }
 
-    const raw = asn.context.sliceValueRaw(asn.node);
+    const ctx = AsnNodeUtils.getContext(asn);
+    const raw = ctx.sliceValueRaw(asn);
     this.unusedBits = raw[0];
     this.value = raw.subarray(1);
 

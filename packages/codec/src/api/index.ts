@@ -62,34 +62,20 @@ export function parseDER(input: Uint8Array | string, options?: ParseOptions) {
 /**
  * Bind schema to AST
  */
-export function bindSchema(
-  root: AsnNode,
-  ctx: ParseContext,
-  schema: CompiledSchema,
-  options?: BindSchemaOptions,
-) {
-  const result = SchemaBinder.bindSchema(root, ctx, schema, options);
+export function bindSchema(root: AsnNode, schema: CompiledSchema, options?: BindSchemaOptions) {
+  const ctx = AsnNodeUtils.getContext(root);
+  const result = SchemaBinder.bindSchema(root, schema, options);
   // Create new context with schema bound
   const newCtx = new ParseContextImpl(ctx.data, schema);
+  ctx.schema = schema;
   return { ...result, ctx: newCtx };
-}
-
-/**
- * Decode a node based on available decoders
- */
-export function decode<T = unknown>(node: AsnNode, ctx: ParseContext): T {
-  return ctx.decode<T>(node);
 }
 
 /**
  * Materialize AST into JavaScript object
  */
-export function materialize(
-  node: AsnNode,
-  ctx: ParseContext,
-  options?: MaterializeOptions,
-): unknown {
-  return AsnTreeUtils.materialize(node, ctx, options);
+export function materialize(node: AsnNode, options?: MaterializeOptions): unknown {
+  return AsnTreeUtils.materialize(node, options);
 }
 
 /**

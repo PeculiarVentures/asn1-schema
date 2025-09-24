@@ -1,9 +1,8 @@
 import { bindSchema, materialize, parseDER } from "@peculiar/asn1-codec";
 import { BufferSource, BufferSourceConverter } from "pvtsutils";
 import { schemaStorage } from "./storage";
-import { IEmptyConstructor } from "./types";
+import { IAsnConverter, IEmptyConstructor } from "./types";
 import { AsnArray } from "./objects";
-// import { AsnTypeTypes } from "./enums";
 
 export class AsnParser {
   public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>): T {
@@ -32,17 +31,14 @@ export class AsnParser {
     // If no schema was registered for the target, but the target implements the
     // convertible interface (fromASN/toASN), use it directly on the parsed root.
     if (!schemaStorage.has(target)) {
-      const instance = new target() as unknown as {
-        fromASN?: (asn: { node: typeof result.root; context: typeof result.ctx }) => unknown;
-        toASN?: () => unknown;
-      };
+      const instance = new target() as unknown as IAsnConverter;
 
       if (
         instance &&
         typeof instance.fromASN === "function" &&
         typeof instance.toASN === "function"
       ) {
-        const converted = instance.fromASN!({ node: result.root, context: result.ctx });
+        const converted = instance.fromASN(result.root);
         return converted as T;
       }
 
@@ -57,13 +53,13 @@ export class AsnParser {
       schemaStorage.cache(target);
     }
 
-    const boundSchema = bindSchema(result.root, result.ctx, schema.schema!);
+    const boundSchema = bindSchema(result.root, schema.schema!);
     if (boundSchema.errors?.length) {
       throw new Error(`Cannot bind ASN.1 schema. ${boundSchema.errors[0].message}`);
     }
 
     // Materialize using parser with decoders producing final JS values/instances
-    const object = materialize(boundSchema.root, boundSchema.ctx);
+    const object = materialize(boundSchema.root);
 
     // Apply default values for missing fields
     if (typeof object === "object" && object !== null) {

@@ -1,9 +1,4 @@
-import { AsnNode, ParseContext } from "@peculiar/asn1-codec";
-
-export interface AsnNodeType {
-  node: AsnNode;
-  context: ParseContext;
-}
+import { AsnNode } from "@peculiar/asn1-codec";
 
 export interface IEmptyConstructor<T = unknown> {
   new (): T;
@@ -17,7 +12,7 @@ export interface IAsnConverter<T = unknown> {
    * Returns JS value from ASN.1 object
    * @param value ASN.1 object from asn1js module
    */
-  fromASN(value: AsnNodeType): T;
+  fromASN(value: AsnNode): T;
   /**
    * Returns ASN.1 object from JS value
    * @param value JS value
@@ -32,7 +27,7 @@ export type AnyConverterType = ArrayBuffer | null;
  * Allows an object to control its own ASN.1 serialization and deserialization
  */
 export interface IAsnConvertible {
-  fromASN(asn: AsnNodeType): this;
+  fromASN(asn: AsnNode): this;
   toASN(): AsnNode;
 }
 

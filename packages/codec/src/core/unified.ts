@@ -46,13 +46,12 @@ export class AsnParser {
     capturePolicy?: CapturePolicy,
     mode: ParseMode = DER,
   ): ParseResult {
-    // Convert mode to strict boolean for legacy compatibility with TlvParser
-    const strict = mode === DER;
-
     // Prepare capture policy or fallback to simple captureRaw
     const fallbackCaptureBits = captureRaw ? 0b011 : 0b000;
 
-    // Fast TLV pass for two-phase mode
+    const ctx = new ParseContextImpl(data, null, integerAs as "auto" | "number" | "bigint");
+
+    // Fast TLV pass for two-phase mode (attach ctx to each node)
     const { node: root, off: endOffset } = TlvParser.parseElement(data, 0, data.length, {
       captureBits: fallbackCaptureBits,
       capturePolicy,
@@ -60,14 +59,10 @@ export class AsnParser {
       maxDepth,
       mode,
       path: "root",
+      ctx,
     });
 
-    const ctx = new ParseContextImpl(data, null, integerAs as "auto" | "number" | "bigint");
-
-    const result: ParseResult = {
-      root,
-      ctx,
-    };
+    const result: ParseResult = { root, ctx };
 
     // Check if there's unexpected data after the root element
     if (endOffset < data.length) {

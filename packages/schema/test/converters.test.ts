@@ -1,5 +1,5 @@
 import { describe, it, assert } from "vitest";
-import { AsnSerializer, ParseContextImpl } from "@peculiar/asn1-codec";
+import { AsnSerializer } from "@peculiar/asn1-codec";
 import {
   AsnAnyConverter,
   AsnConstructedOctetStringConverter,
@@ -16,8 +16,7 @@ describe("converters", () => {
       const der = AsnSerializer.nodeToBytes(node);
       assert.strictEqual(Buffer.from(der).toString("hex"), "0500");
 
-      const context = new ParseContextImpl(der, null);
-      const value = AsnAnyConverter.fromASN({ node, context });
+      const value = AsnAnyConverter.fromASN(node);
       assert.strictEqual(value, null);
     });
     it("Integer", () => {
@@ -26,8 +25,7 @@ describe("converters", () => {
       const der = AsnSerializer.nodeToBytes(node);
       assert.strictEqual(Buffer.from(der).toString("hex"), "020101");
 
-      const context = new ParseContextImpl(der, null);
-      const value = AsnAnyConverter.fromASN({ node, context });
+      const value = AsnAnyConverter.fromASN(node);
       assert.ok(value);
       assert.strictEqual(value.byteLength, 3);
     });
@@ -49,8 +47,7 @@ describe("converters", () => {
         "181332303138303932313230303332342e3435355a",
       );
 
-      const context = new ParseContextImpl(der, null);
-      const value = AsnGeneralizedTimeConverter.fromASN({ node, context });
+      const value = AsnGeneralizedTimeConverter.fromASN(node);
       assert.strictEqual(value.getTime(), dateNum);
     });
   });
@@ -63,8 +60,7 @@ describe("converters", () => {
       const der = AsnSerializer.nodeToBytes(node);
       assert.strictEqual(Buffer.from(der).toString("hex"), "170d3138303932313230303332345a");
 
-      const context = new ParseContextImpl(der, null);
-      const value = AsnUTCTimeConverter.fromASN({ node, context });
+      const value = AsnUTCTimeConverter.fromASN(node);
       assert.strictEqual(value.getTime(), dateNum);
     });
   });
@@ -77,8 +73,7 @@ describe("converters", () => {
       const der = AsnSerializer.nodeToBytes(asn);
       assert.strictEqual(Buffer.from(der).toString("hex"), "04053132333435");
 
-      const context = new ParseContextImpl(der, null);
-      const value = AsnConstructedOctetStringConverter.fromASN({ node: asn, context });
+      const value = AsnConstructedOctetStringConverter.fromASN(asn);
       assert.notStrictEqual(Buffer.from(value.buffer), buffer);
     });
   });

@@ -1,4 +1,5 @@
-import { AsnNode, ParseContext } from "../types";
+import { AsnNodeUtils } from "../node-utils";
+import { AsnNode } from "../types";
 
 /**
  * Decoders for primitive ASN.1 types
@@ -7,19 +8,18 @@ export class PrimitiveDecoders {
   /**
    * Decode INTEGER with fast-path for small numbers
    */
-  static decodeInteger(ctx: ParseContext, node: AsnNode): bigint | number {
-    const bytes = ctx.sliceValueRaw(node);
-
+  static decodeInteger(node: AsnNode): bigint | number {
+    const integerAs = node.ctx?.integerAs || "auto";
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     if (bytes.length === 0) {
       throw new Error("Invalid INTEGER: empty content");
     }
 
     const isNegative = (bytes[0] & 0x80) !== 0;
-    const ctxImpl = ctx as { integerAs: "auto" | "number" | "bigint" }; // Type assertion to access integerAs
 
     // Fast path: small integer (positive or negative) -> Number
     // Use stricter size check to avoid 32-bit overflow in JavaScript bitwise operations
-    if (bytes.length <= 4 && ctxImpl.integerAs !== "bigint") {
+    if (bytes.length <= 4 && integerAs !== "bigint") {
       if (!isNegative) {
         // Positive small integer
         let x = 0;
@@ -27,7 +27,7 @@ export class PrimitiveDecoders {
         for (let i = 0; i < len; i++) {
           x = (x << 8) | bytes[i];
         }
-        return ctxImpl.integerAs === "number" ? x : x; // "auto" also returns number for small values
+        return integerAs === "number" ? x : x; // "auto" also returns number for small values
       } else {
         // Negative small integer - decode as two's complement
         let x = 0;
@@ -39,7 +39,7 @@ export class PrimitiveDecoders {
         const bitLength = len * 8;
         const mask = (1 << bitLength) - 1;
         x = (x & mask) - (x & (1 << (bitLength - 1))) * 2;
-        return ctxImpl.integerAs === "number" ? x : x;
+        return integerAs === "number" ? x : x;
       }
     }
 
@@ -67,9 +67,8 @@ export class PrimitiveDecoders {
   /**
    * Decode BOOLEAN
    */
-  static decodeBoolean(ctx: ParseContext, node: AsnNode): boolean {
-    const bytes = ctx.sliceValueRaw(node);
-
+  static decodeBoolean(node: AsnNode): boolean {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     if (bytes.length !== 1) {
       throw new Error("Invalid BOOLEAN: must be exactly 1 byte");
     }
@@ -80,22 +79,18 @@ export class PrimitiveDecoders {
   /**
    * Decode OCTET STRING
    */
-  static decodeOctetString(ctx: ParseContext, node: AsnNode): Uint8Array {
-    return ctx.sliceValueRaw(node);
+  static decodeOctetString(node: AsnNode): Uint8Array {
+    return AsnNodeUtils.sliceValueRaw(node);
   }
 
   /**
    * Decode BIT STRING
    */
-  static decodeBitString(
-    ctx: ParseContext,
-    node: AsnNode,
-  ): {
+  static decodeBitString(node: AsnNode): {
     unusedBits: number;
     bytes: Uint8Array;
   } {
-    const bytes = ctx.sliceValueRaw(node);
-
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     if (bytes.length === 0) {
       throw new Error("Invalid BIT STRING: empty content");
     }
@@ -114,9 +109,8 @@ export class PrimitiveDecoders {
   /**
    * Decode NULL
    */
-  static decodeNull(ctx: ParseContext, node: AsnNode): null {
-    const bytes = ctx.sliceValueRaw(node);
-
+  static decodeNull(node: AsnNode): null {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     if (bytes.length !== 0) {
       throw new Error("Invalid NULL: must be empty");
     }
@@ -127,9 +121,8 @@ export class PrimitiveDecoders {
   /**
    * Decode OBJECT IDENTIFIER
    */
-  static decodeObjectIdentifier(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
-
+  static decodeObjectIdentifier(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     if (bytes.length === 0) {
       throw new Error("Invalid OBJECT IDENTIFIER: empty content");
     }
@@ -163,24 +156,23 @@ export class PrimitiveDecoders {
   /**
    * Decode OBJECT IDENTIFIER (alias)
    */
-  static decodeOid(ctx: ParseContext, node: AsnNode): string {
-    return PrimitiveDecoders.decodeObjectIdentifier(ctx, node);
+  static decodeOid(node: AsnNode): string {
+    return PrimitiveDecoders.decodeObjectIdentifier(node);
   }
 
   /**
    * Decode ENUMERATED (similar to INTEGER but semantically different)
    */
-  static decodeEnumerated(ctx: ParseContext, node: AsnNode): bigint | number {
+  static decodeEnumerated(node: AsnNode): bigint | number {
     // ENUMERATED has the same encoding as INTEGER
-    return PrimitiveDecoders.decodeInteger(ctx, node);
+    return PrimitiveDecoders.decodeInteger(node);
   }
 
   /**
    * Decode REAL (IEEE 754 floating point or special encoding)
    */
-  static decodeReal(ctx: ParseContext, node: AsnNode): number {
-    const bytes = ctx.sliceValueRaw(node);
-
+  static decodeReal(node: AsnNode): number {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     if (bytes.length === 0) {
       throw new Error("Invalid REAL: empty content");
     }
@@ -224,8 +216,8 @@ export class PrimitiveDecoders {
   /**
    * Decode RELATIVE OBJECT IDENTIFIER
    */
-  static decodeRelativeOid(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeRelativeOid(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
 
     if (bytes.length === 0) {
       throw new Error("Invalid RELATIVE OBJECT IDENTIFIER: empty content");

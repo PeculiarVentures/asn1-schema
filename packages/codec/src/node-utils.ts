@@ -1,8 +1,8 @@
-import { evaluateCapture } from './core/capture';
-import { getTextDecoder } from './decoders/strings';
-import { AsnNode, CapturePolicy, ParseMode } from './types';
+import { evaluateCapture } from "./core/capture";
+import { getTextDecoder } from "./decoders/strings";
+import { AsnNode, CapturePolicy, ParseContext, ParseMode } from "./types";
 
-export const DER = 'der' as const;
+export const DER = "der" as const;
 
 interface LengthDescriptor {
   /**
@@ -18,11 +18,7 @@ interface LengthDescriptor {
  */
 export class AsnNodeUtils {
   private static isBufferAvailable(): boolean {
-    return (
-      typeof globalThis !== 'undefined' &&
-      'Buffer' in globalThis &&
-      !!globalThis.Buffer?.from
-    );
+    return typeof globalThis !== "undefined" && "Buffer" in globalThis && !!globalThis.Buffer?.from;
   }
 
   private static isBuffer(data: unknown): boolean {
@@ -36,21 +32,17 @@ export class AsnNodeUtils {
     // Check if Buffer is available (Node.js environment)
     if (this.isBufferAvailable()) {
       // Use Buffer for better performance in Node.js
-      return globalThis.Buffer.from(
-        buf.buffer,
-        buf.byteOffset,
-        buf.length
-      ).toString('latin1');
+      return globalThis.Buffer.from(buf.buffer, buf.byteOffset, buf.length).toString("latin1");
     }
 
-    return getTextDecoder('latin1')!.decode(buf);
+    return getTextDecoder("latin1")!.decode(buf);
   }
 
   static stringToBytes(str: string): Uint8Array {
     // Check if Buffer is available (Node.js environment)
     if (this.isBufferAvailable()) {
       // Use Buffer for better performance in Node.js
-      return new Uint8Array(globalThis.Buffer.from(str, 'latin1'));
+      return new Uint8Array(globalThis.Buffer.from(str, "latin1"));
     }
 
     // Fallback for other environments
@@ -68,7 +60,7 @@ export class AsnNodeUtils {
   static fromLatin1String(str: string): Uint8Array {
     // Check if Buffer is available (Node.js environment)
     if (this.isBufferAvailable()) {
-      return new Uint8Array(globalThis.Buffer.from(str, 'latin1'));
+      return new Uint8Array(globalThis.Buffer.from(str, "latin1"));
     }
 
     // Fallback for other environments
@@ -96,6 +88,7 @@ export class AsnNodeUtils {
       fieldName: null,
       typeName: null,
       isSequenceOf: undefined,
+      ctx: null,
       valueRaw: null,
       raw: null,
       decoded: null,
@@ -105,37 +98,31 @@ export class AsnNodeUtils {
   /**
    * Parse length from data at offset
    */
-  static parseLength(
-    data: Uint8Array,
-    off: number,
-    mode: ParseMode = DER
-  ): LengthDescriptor {
+  static parseLength(data: Uint8Array, off: number, mode: ParseMode = DER): LengthDescriptor {
     const strict = mode === DER;
-    if (off >= data.length) throw new Error('ASN.1: truncated length');
+    if (off >= data.length) throw new Error("ASN.1: truncated length");
     const b = data[off++];
     if (b < 128) return { len: b, off };
     const n = b & 127;
     if (n === 0) {
       if (strict) {
-        throw new Error('Indefinite length not supported in DER');
+        throw new Error("Indefinite length not supported in DER");
       }
       // Indefinite length - return a special marker
       return { len: -1, off };
     }
-    if (off + n > data.length) throw new Error('ASN.1: length overruns buffer');
+    if (off + n > data.length) throw new Error("ASN.1: length overruns buffer");
 
     // Check for non-minimal length encoding
     if (n > 1 && data[off] === 0) {
-      throw new Error('ASN.1: non-minimal length encoding (leading zero)');
+      throw new Error("ASN.1: non-minimal length encoding (leading zero)");
     }
 
     if (n === 1) {
       const len = data[off++];
       // Check if long form was used unnecessarily
       if (len < 128) {
-        throw new Error(
-          'ASN.1: non-minimal length encoding (long form for short length)'
-        );
+        throw new Error("ASN.1: non-minimal length encoding (long form for short length)");
       }
       return { len, off };
     }
@@ -158,9 +145,9 @@ export class AsnNodeUtils {
     path: string | null,
     schemaId: number,
     fieldName?: string,
-    typeName?: string
+    typeName?: string,
   ): number {
-    return evaluateCapture(policy, path || '', schemaId, fieldName, typeName);
+    return evaluateCapture(policy, path || "", schemaId, fieldName, typeName);
   }
 
   static equalBuffers(a: Uint8Array, b: Uint8Array): boolean {
@@ -179,5 +166,30 @@ export class AsnNodeUtils {
       return new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
     }
     return data;
+  }
+
+  static getContext(node: AsnNode): ParseContext {
+    if (node.ctx) {
+      return node.ctx;
+    }
+    throw new Error("AsnNode context (ctx) is not set");
+  }
+
+  static sliceValueRaw(node: AsnNode): Uint8Array {
+    if (node.ctx) {
+      return node.ctx.sliceValueRaw(node);
+    } else if (node.valueRaw) {
+      return node.valueRaw; // fallback if ctx is missing
+    }
+    throw new Error("AsnNode context (ctx) is not set, cannot slice value");
+  }
+
+  static sliceRaw(node: AsnNode): Uint8Array {
+    if (node.ctx) {
+      return node.ctx.sliceRaw(node);
+    } else if (node.raw) {
+      return node.raw; // fallback if ctx is missing
+    }
+    throw new Error("AsnNode context (ctx) is not set, cannot slice raw");
   }
 }

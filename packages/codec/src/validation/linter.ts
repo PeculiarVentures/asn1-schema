@@ -1,4 +1,4 @@
-import { AsnNode, ParseContext } from "../types";
+import { AsnNode } from "../types";
 import {
   LintOptions,
   LintReport,
@@ -9,6 +9,7 @@ import {
   ValidationRule,
 } from "./types";
 import { coreValidationRules } from "./rules";
+import { AsnNodeUtils } from "../node-utils";
 
 /**
  * ASN.1 Linter - performs semantic validation on parsed ASN.1 structures
@@ -47,7 +48,9 @@ export class AsnLinter {
   /**
    * Lint ASN.1 structure
    */
-  lint(root: AsnNode, parseContext: ParseContext, options: LintOptions = {}): LintReport {
+  lint(root: AsnNode, options: LintOptions = {}): LintReport {
+    const parseContext = AsnNodeUtils.getContext(root);
+
     const startTime = performance.now();
 
     const profile: ValidationProfile = options.profile || "der";
@@ -57,7 +60,6 @@ export class AsnLinter {
     const disabledRules = new Set(options.disabledRules || []);
 
     const issues: LintIssue[] = [];
-    let errorCount = 0;
 
     // Create validation context
     const context: ValidationContext = {
@@ -220,11 +222,7 @@ export class AsnLinter {
 /**
  * Convenience function to create and use linter
  */
-export function lint(
-  root: AsnNode,
-  parseContext: ParseContext,
-  options: LintOptions = {},
-): LintReport {
+export function lint(root: AsnNode, options: LintOptions = {}): LintReport {
   const linter = new AsnLinter();
-  return linter.lint(root, parseContext, options);
+  return linter.lint(root, options);
 }

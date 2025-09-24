@@ -1,5 +1,5 @@
 import { AsnNodeUtils, DER } from "../node-utils";
-import { AsnNode, ParseMode, CapturePolicy } from "../types";
+import { AsnNode, ParseMode, CapturePolicy, ParseContext } from "../types";
 import { evaluateCapture } from "./capture";
 
 /**
@@ -20,6 +20,7 @@ export interface TlvParseOptions {
   maxDepth?: number;
   mode?: ParseMode;
   path?: string; // current path for per-node capture evaluation
+  ctx?: ParseContext | null; // optional parse context to attach to nodes
 }
 
 const asn1PrimitiveTypes = [1, 2, 5, 6, 9, 10, 13];
@@ -65,6 +66,7 @@ export class TlvParser {
 
     const node = AsnNodeUtils.makeNode();
     node.start = off;
+    if (options.ctx) node.ctx = options.ctx;
 
     // Parse tag
     if (off >= data.length) throw new Error("ASN.1: truncated tag");
@@ -156,6 +158,8 @@ export class TlvParser {
                 mode,
               };
 
+          if (options.ctx) (childOptions as TlvParseOptions).ctx = options.ctx;
+
           const { node: child, off: newOff } = this.parseElement(
             data,
             childOff,
@@ -180,7 +184,7 @@ export class TlvParser {
         // Definite length
         while (childOff < end) {
           const childPath = capturePolicy ? `${path}[${children.length}]` : path;
-          const childOptions = capturePolicy
+          const childOptions: TlvParseOptions = capturePolicy
             ? {
                 captureBits: fallbackCaptureBits,
                 capturePolicy,
@@ -195,6 +199,8 @@ export class TlvParser {
                 maxDepth,
                 mode,
               };
+
+          if (options.ctx) childOptions.ctx = options.ctx;
 
           const { node: child, off: newOff } = this.parseElement(data, childOff, end, childOptions);
           children.push(child);

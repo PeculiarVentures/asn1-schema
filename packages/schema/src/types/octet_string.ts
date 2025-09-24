@@ -1,6 +1,6 @@
 import { AsnNode, AsnNodeUtils, CompiledSchema } from "@peculiar/asn1-codec";
 import { BufferSource, BufferSourceConverter } from "pvtsutils";
-import { AsnNodeType, IAsnConvertible } from "../types";
+import { IAsnConvertible } from "../types";
 
 // Implement ArrayBufferView, cause ES5 doesn't allow to extend ArrayBuffer class
 
@@ -31,15 +31,15 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
     }
   }
 
-  public fromASN(asn: AsnNodeType): this {
+  public fromASN(asn: AsnNode): this {
     // Accept both universal OCTET STRING and context-specific IMPLICIT tagging
-    const isUniversalOctetString = asn.node.tagClass === 0 && asn.node.type === 4;
-    const isContextImplicit = asn.node.tagClass === 2; // context-specific, IMPLICIT assumed by schema
+    const isUniversalOctetString = asn.tagClass === 0 && asn.type === 4;
+    const isContextImplicit = asn.tagClass === 2; // context-specific, IMPLICIT assumed by schema
     if (!isUniversalOctetString && !isContextImplicit) {
       throw new Error("Object's ASN.1 structure doesn't match OCTET STRING");
     }
     // Slice raw value regardless of constructed flag (parser handles constructed/primitive)
-    const bytes = asn.context.sliceValueRaw(asn.node);
+    const bytes = AsnNodeUtils.getContext(asn).sliceValueRaw(asn);
     // Persist as ArrayBuffer for API compatibility
     this.buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
     return this;

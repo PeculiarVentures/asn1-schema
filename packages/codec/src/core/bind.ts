@@ -1,9 +1,9 @@
+import { AsnNodeUtils } from "../node-utils";
 import {
   AsnNode,
   CompiledSchema,
   CompiledSchemaNode,
   AsnSchemaError,
-  ParseContext,
   BindSchemaOptions,
 } from "../types";
 
@@ -16,12 +16,11 @@ export class SchemaBinder {
    */
   static bindSchema(
     root: AsnNode,
-    ctx: ParseContext,
     schema: CompiledSchema,
     options: BindSchemaOptions = {},
   ): { root: AsnNode; errors: AsnSchemaError[] } {
+    const ctx = AsnNodeUtils.getContext(root);
     const errors: AsnSchemaError[] = [];
-
     this.bindToSchema(root, schema.root, schema.root.name, errors, ctx.data);
 
     return { root, errors };

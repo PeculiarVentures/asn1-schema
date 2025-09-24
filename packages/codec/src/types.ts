@@ -40,7 +40,7 @@ export interface CompiledSchemaNode {
   isSequenceOf?: boolean; // flag for SEQUENCE OF optimization
   choices?: CompiledSchemaNode[];
   choiceTagIndex?: Map<number, CompiledSchemaNode>; // for fast CHOICE lookup
-  decoder?: (ctx: ParseContext, node: AsnNode) => unknown;
+  decoder?: (node: AsnNode) => unknown;
   children?: CompiledSchemaNode[]; // for SEQUENCE/SET/CHOICE
 }
 
@@ -66,6 +66,9 @@ export interface AsnNode {
 
   // Tree structure
   children: AsnNode[] | null;
+
+  // Parse context attached to node to avoid passing ctx separately
+  ctx?: ParseContext | null;
 
   // Schema binding (applied in second phase)
   schemaId: number; // index in compiled schema, -1 if not matched

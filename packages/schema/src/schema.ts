@@ -6,6 +6,7 @@ import {
   ParseContext,
   AsnNode,
   AsnDecoders,
+  AsnNodeUtils,
 } from "@peculiar/asn1-codec";
 import { AsnRepeatType } from "./decorators";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
@@ -110,11 +111,11 @@ export class AsnSchemaStorage {
         }
         const optional = !!item.optional || item.defaultValue !== undefined;
 
-        const convDecoder = (ctx: ParseContext, node: AsnNode) => {
+        const convDecoder = (node: AsnNode) => {
           const inst = new (item.type as unknown as IEmptyConstructor)() as unknown as {
-            fromASN: (v: { node: AsnNode; context: ParseContext }) => unknown;
+            fromASN: (node: AsnNode) => unknown;
           };
-          return inst.fromASN({ node, context: ctx });
+          return inst.fromASN(node);
         };
 
         childNode = builder.createNode({
@@ -161,17 +162,17 @@ export class AsnSchemaStorage {
     const optional = !!item.optional || item.defaultValue !== undefined;
     // Always use converter for primitives (default or explicit) to preserve legacy JS shapes
     // like INTEGER -> number/string, BIT STRING -> ArrayBuffer, etc.
-    const decoder = (ctx: ParseContext, node: AsnNode) => {
+    const decoder = (node: AsnNode) => {
       if (!item.converter) {
         // Fallback to default converter if somehow not set (e.g., synthetic itemType)
         const conv = defaultConverter(item.type as AsnPropTypes);
         if (!conv) {
           const prim = this.getDecoderForPrimitiveType(item.type as AsnPropTypes);
-          return prim(ctx, node);
+          return prim(node);
         }
-        return conv.fromASN({ node, context: ctx });
+        return conv.fromASN(node);
       }
-      return item.converter.fromASN({ node, context: ctx });
+      return item.converter.fromASN(node);
     };
 
     return builder.createNode({
@@ -202,11 +203,11 @@ export class AsnSchemaStorage {
       if (!convSchema || !convSchema.root) {
         throw new Error("Convertible type doesn't provide schema");
       }
-      const convDecoder = (ctx: ParseContext, node: AsnNode) => {
+      const convDecoder = (node: AsnNode) => {
         const inst = new (ClassType as unknown as IEmptyConstructor)() as unknown as {
-          fromASN: (v: { node: AsnNode; context: ParseContext }) => unknown;
+          fromASN: (node: AsnNode) => unknown;
         };
-        return inst.fromASN({ node, context: ctx });
+        return inst.fromASN(node);
       };
       return builder.createNode({
         name,
@@ -225,7 +226,7 @@ export class AsnSchemaStorage {
 
     // Special handling for CHOICE-typed classes used as properties
     if (nestedSchema.root.isChoice) {
-      const choiceDecoder = (ctx: ParseContext, node: AsnNode) => {
+      const choiceDecoder = (node: AsnNode) => {
         const inst = new ClassType() as Record<string, unknown>;
         const children = nestedSchema.root.children || [];
         // Determine tag of incoming node
@@ -254,7 +255,7 @@ export class AsnSchemaStorage {
         if (!matched.decoder) {
           throw new Error("No decoder for matched CHOICE arm");
         }
-        const value = matched.decoder(ctx, node);
+        const value = matched.decoder(node);
         inst[matched.name] = value as unknown;
         return inst;
       };
@@ -270,12 +271,13 @@ export class AsnSchemaStorage {
     }
 
     // Regular complex SEQUENCE/SET class
-    const complexDecoder = (ctx: ParseContext, node: AsnNode) => {
+    const complexDecoder = (node: AsnNode) => {
       const created = new ClassType();
       // If target class extends AsnArray, fill it from element children
       if (created instanceof AsnArray) {
         const out = created as AsnArray<unknown>;
         for (const ch of node.children || []) {
+          const ctx = AsnNodeUtils.getContext(node);
           out.push(ctx.decode(ch));
         }
         return out;
@@ -293,6 +295,7 @@ export class AsnSchemaStorage {
         return map;
       };
       for (const child of children) {
+        const ctx = AsnNodeUtils.getContext(child);
         const field = child.fieldName || "";
         if (!field) continue;
         // Read field schema to check raw/lazy flags
@@ -369,10 +372,11 @@ export class AsnSchemaStorage {
     const containerType = item.repeated === "set" ? "SET OF" : "SEQUENCE OF";
 
     // Decoder for repeated containers: decode each element child using ctx.decode
-    const repeatedDecoder = (ctx: ParseContext, node: AsnNode) => {
+    const repeatedDecoder = (node: AsnNode) => {
       const out: unknown[] = [];
       const elements = node.children || [];
       for (const el of elements) {
+        const ctx = AsnNodeUtils.getContext(el);
         out.push(ctx.decode(el));
       }
       return out;
@@ -412,12 +416,13 @@ export class AsnSchemaStorage {
         // Use the original child's decoder to decode this implicitly tagged constructed value
         const constructedDecoder = childNode.decoder
           ? childNode.decoder
-          : (ctx: ParseContext, node: AsnNode) => {
+          : (node: AsnNode) => {
               // Fallback: if it's a repeated container
               const typeName = childNode.typeName || "";
               if (typeName.includes("SEQUENCE OF") || typeName.includes("SET OF")) {
                 const out: unknown[] = [];
                 for (const el of node.children || []) {
+                  const ctx = AsnNodeUtils.getContext(el);
                   out.push(ctx.decode(el));
                 }
                 return out;
@@ -427,6 +432,7 @@ export class AsnSchemaStorage {
               for (const ch of node.children || []) {
                 const k = ch.fieldName || "";
                 if (!k) continue;
+                const ctx = AsnNodeUtils.getContext(ch);
                 obj[k] = ctx.decode(ch);
               }
               return obj;
@@ -443,16 +449,16 @@ export class AsnSchemaStorage {
         });
       } else {
         // Delegate to child decoder if available (works for convertible types too)
-        const primDecoder = (ctx: ParseContext, node: AsnNode) => {
+        const primDecoder = (node: AsnNode) => {
           if (childNode.decoder) {
-            return childNode.decoder(ctx, node);
+            return childNode.decoder(node);
           }
           // Fallback to primitive handling
           if (item.converter) {
-            return item.converter.fromASN({ node, context: ctx });
+            return item.converter.fromASN(node);
           }
           const dec = this.getDecoderForPrimitiveType(item.type as AsnPropTypes);
-          return dec(ctx, node);
+          return dec(node);
         };
         return builder.createNode({
           name,
@@ -467,8 +473,9 @@ export class AsnSchemaStorage {
     } else {
       // EXPLICIT tagging
       // For EXPLICIT tagging, always unwrap and delegate to child decode
-      const explicitDecoder = (ctx: ParseContext, node: AsnNode) => {
+      const explicitDecoder = (node: AsnNode) => {
         if (node.children && node.children.length === 1) {
+          const ctx = AsnNodeUtils.getContext(node);
           return ctx.decode(node.children[0]);
         }
         throw new Error(`Invalid explicit tagging for ${name}`);
@@ -509,11 +516,12 @@ export class AsnSchemaStorage {
               : "SEQUENCE",
           expectedTag: { cls: 0, tag: 16, constructed: true },
           children,
-          decoder: (ctx: ParseContext, node: AsnNode) => {
+          decoder: (node: AsnNode) => {
             const inst = new targetCtor() as unknown;
             if (inst instanceof AsnArray) {
               const out = inst as AsnArray<unknown>;
               for (const child of node.children || []) {
+                const ctx = AsnNodeUtils.getContext(child);
                 out.push(ctx.decode(child));
               }
               return out;
@@ -529,6 +537,7 @@ export class AsnSchemaStorage {
               return map;
             };
             for (const child of node.children || []) {
+              const ctx = AsnNodeUtils.getContext(child);
               const key = child.fieldName || "";
               if (!key) continue;
               const rootSchema = this.items.get(targetCtor as unknown as object);
@@ -586,11 +595,12 @@ export class AsnSchemaStorage {
             schema.itemType && children.length === 1 ? `SET OF ${children[0].typeName}` : "SET",
           expectedTag: { cls: 0, tag: 17, constructed: true },
           children,
-          decoder: (ctx: ParseContext, node: AsnNode) => {
+          decoder: (node: AsnNode) => {
             const inst = new targetCtor() as unknown;
             if (inst instanceof AsnArray) {
               const out = inst as AsnArray<unknown>;
               for (const child of node.children || []) {
+                const ctx = AsnNodeUtils.getContext(child);
                 out.push(ctx.decode(child));
               }
               return out;
@@ -599,6 +609,7 @@ export class AsnSchemaStorage {
             for (const child of node.children || []) {
               const key = child.fieldName || "";
               if (!key) continue;
+              const ctx = AsnNodeUtils.getContext(child);
               obj[key] = ctx.decode(child);
               // capture raw for fields with raw:true
               const rootSchema = this.items.get(targetCtor as unknown as object);
@@ -616,7 +627,7 @@ export class AsnSchemaStorage {
       }
       case AsnTypeTypes.Choice: {
         // CHOICE at root level: decode to instance of targetCtor with one selected property
-        const choiceDecoder = (ctx: ParseContext, node: AsnNode) => {
+        const choiceDecoder = (node: AsnNode) => {
           const inst = new targetCtor() as Record<string, unknown>;
           const tagKey = (node.tagClass << 16) | (node.type << 8) | (node.constructed ? 1 : 0);
           let matched: CompiledSchemaNode | undefined;
@@ -638,7 +649,9 @@ export class AsnSchemaStorage {
             return inst;
           }
           // Decode using matched decoder to respect explicit converters
-          let value: unknown = matched.decoder ? matched.decoder(ctx, node) : ctx.decode(node);
+          let value: unknown = matched.decoder
+            ? matched.decoder(node)
+            : AsnNodeUtils.getContext(node).decode(node);
           // If it's a universal INTEGER and the decoded value is a number or string,
           // normalize to number|bigint for legacy behavior in simple CHOICEs.
           if (
@@ -696,7 +709,7 @@ export class AsnSchemaStorage {
       if (!convSchema || !convSchema.root?.expectedTag) {
         throw new Error("Convertible type doesn't provide schema");
       }
-      const wrapDecoder = (ctx: ParseContext, node: AsnNode) => ({ node, context: ctx });
+      const wrapDecoder = (node: AsnNode) => node;
       return builder.createNode({
         name,
         typeName: convSchema.root.typeName,
@@ -778,9 +791,7 @@ export class AsnSchemaStorage {
     }
   }
 
-  private getDecoderForPrimitiveType(
-    type: AsnPropTypes,
-  ): (ctx: ParseContext, node: AsnNode) => unknown {
+  private getDecoderForPrimitiveType(type: AsnPropTypes): (node: AsnNode) => unknown {
     // For now, ignore custom converters to avoid recursion
     // Custom converters should be handled at a higher level
     // Use default decoder from AsnDecoders
@@ -829,12 +840,13 @@ export class AsnSchemaStorage {
         return AsnDecoders.decodeEnumerated;
       case AsnPropTypes.Any:
         // For ANY type, return the complete raw ASN.1 data (including tag and length)
-        return (ctx: ParseContext, node: AsnNode) => {
+        return (node: AsnNode) => {
+          const ctx = AsnNodeUtils.getContext(node);
           return ctx.data.slice(node.start, node.end);
         };
       default:
         // For unsupported types, return a function that returns the raw value
-        return (ctx: ParseContext, node: AsnNode) => node.valueRaw;
+        return (node: AsnNode) => node.valueRaw;
     }
   }
 

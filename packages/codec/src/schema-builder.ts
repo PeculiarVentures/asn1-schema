@@ -1,5 +1,5 @@
 import { AsnDecoders } from "./decoders";
-import { AsnNode, CompiledSchema, CompiledSchemaNode, ParseContext } from "./types";
+import { AsnNode, CompiledSchema, CompiledSchemaNode } from "./types";
 
 /**
  * Schema builder utilities
@@ -19,7 +19,7 @@ export class SchemaBuilder {
     optional?: boolean;
     default?: unknown;
     isChoice?: boolean;
-    decoder?: (ctx: ParseContext, node: AsnNode) => unknown;
+    decoder?: (node: AsnNode) => unknown;
     children?: CompiledSchemaNode[];
   }): CompiledSchemaNode {
     const id = this.nodeId++;

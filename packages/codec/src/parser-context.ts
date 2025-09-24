@@ -48,7 +48,7 @@ export class ParseContextImpl implements ParseContext {
       throw new Error(`No decoder for schema node ${node.schemaId}`);
     }
 
-    const result = schemaNode.decoder(this, node);
+    const result = schemaNode.decoder(node);
     node.decoded = result;
     return result as T;
   }

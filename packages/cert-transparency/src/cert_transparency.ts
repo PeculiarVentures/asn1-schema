@@ -1,4 +1,4 @@
-import { OctetString, AsnNodeType } from "@peculiar/asn1-schema";
+import { AsnNode, OctetString } from "@peculiar/asn1-schema";
 import { IJsonSignedCertificateTimestamp, SignedCertificateTimestamp } from "./timestamp";
 import { ByteStream } from "./byte_stream";
 
@@ -11,7 +11,7 @@ export const id_certificateTransparency = "1.3.6.1.4.1.11129.2.4.2";
 export class CertificateTransparency extends OctetString {
   public items: SignedCertificateTimestamp[] = [];
 
-  public override fromASN(asn: AsnNodeType): this {
+  public override fromASN(asn: AsnNode): this {
     super.fromASN(asn);
 
     // parse value

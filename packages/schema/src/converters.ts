@@ -7,7 +7,7 @@ import {
   AsnDecoders,
   ParseContext,
 } from "@peculiar/asn1-codec";
-import { AnyConverterType, AsnNodeType, IAsnConverter, IntegerConverterType } from "./types";
+import { AnyConverterType, IAsnConverter, IntegerConverterType } from "./types";
 import { AsnPropTypes } from "./enums";
 import { OctetString } from "./types/index";
 
@@ -20,11 +20,12 @@ import { OctetString } from "./types/index";
  * ASN.1 ANY converter
  */
 export const AsnAnyConverter: IAsnConverter<AnyConverterType> = {
-  fromASN: (value: AsnNodeType) => {
-    if (value.node.tagClass === 0 && value.node.type === 5) {
+  fromASN: (value: AsnNode) => {
+    if (value.tagClass === 0 && value.type === 5) {
       return null;
     }
-    const bytes = value.context.sliceRaw(value.node);
+    const ctx = AsnNodeUtils.getContext(value);
+    const bytes = ctx.sliceRaw(value);
     return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
   },
   toASN: (value: AnyConverterType): AsnNode => {
@@ -75,8 +76,8 @@ const integerSchema: CompiledSchema = {
  * ASN.1 INTEGER to Number/String converter
  */
 export const AsnIntegerConverter: IAsnConverter<IntegerConverterType> = {
-  fromASN: (value: AsnNodeType) => {
-    const decoded = AsnDecoders.decodeInteger(value.context, value.node) as number | bigint;
+  fromASN: (value: AsnNode) => {
+    const decoded = AsnDecoders.decodeInteger(value) as number | bigint;
     // Convert bigint to string for large numbers
     if (typeof decoded === "bigint") {
       return decoded.toString();
@@ -116,8 +117,7 @@ const enumeratedSchema: CompiledSchema = {
  * ASN.1 ENUMERATED converter
  */
 export const AsnEnumeratedConverter: IAsnConverter<number> = {
-  fromASN: (value: AsnNodeType) =>
-    AsnDecoders.decodeEnumerated(value.context, value.node) as number,
+  fromASN: (value: AsnNode) => AsnDecoders.decodeEnumerated(value) as number,
   toASN: (value: number) => AsnSerializer.serialize(value, enumeratedSchema),
 };
 
@@ -125,11 +125,12 @@ export const AsnEnumeratedConverter: IAsnConverter<number> = {
  * ASN.1 INTEGER to ArrayBuffer converter
  */
 export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer> = {
-  fromASN: (value: AsnNodeType) => {
+  fromASN: (value: AsnNode) => {
     // Return raw bytes of the integer value without INTEGER header/length.
     // Slice the encoded value content (valueRaw) directly.
     // If constructed/primitive differences exist, context.sliceValueRaw handles it.
-    const bytes = value.context.sliceValueRaw(value.node);
+    const ctx = AsnNodeUtils.getContext(value);
+    const bytes = ctx.sliceValueRaw(value);
     return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
   },
   toASN: (value: ArrayBuffer) => {
@@ -148,8 +149,8 @@ export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer> = {
  * ASN.1 INTEGER to BigInt converter
  */
 export const AsnIntegerBigIntConverter: IAsnConverter<bigint> = {
-  fromASN: (value: AsnNodeType) => {
-    const v = AsnDecoders.decodeInteger(value.context, value.node) as number | bigint;
+  fromASN: (value: AsnNode) => {
+    const v = AsnDecoders.decodeInteger(value) as number | bigint;
     return typeof v === "bigint" ? v : BigInt(v);
   },
   toASN: (value: bigint) => AsnSerializer.serialize(value, integerSchema),
@@ -161,8 +162,8 @@ export const AsnIntegerBigIntConverter: IAsnConverter<bigint> = {
  * ASN.1 BIT STRING converter
  */
 export const AsnBitStringConverter: IAsnConverter<ArrayBuffer> = {
-  fromASN: (value: AsnNodeType) => {
-    const bitString = AsnDecoders.decodeBitString(value.context, value.node) as {
+  fromASN: (value: AsnNode) => {
+    const bitString = AsnDecoders.decodeBitString(value) as {
       unusedBits: number;
       bytes: Uint8Array;
     };
@@ -202,8 +203,7 @@ const objectIdentifierSchema: CompiledSchema = {
  * ASN.1 OBJECT IDENTIFIER converter
  */
 export const AsnObjectIdentifierConverter: IAsnConverter<string> = {
-  fromASN: (value: AsnNodeType) =>
-    AsnDecoders.decodeObjectIdentifier(value.context, value.node) as string,
+  fromASN: (value: AsnNode) => AsnDecoders.decodeObjectIdentifier(value) as string,
   toASN: (value: string) => AsnSerializer.serialize(value, objectIdentifierSchema),
 };
 
@@ -221,7 +221,7 @@ const booleanSchema: CompiledSchema = {
  * ASN.1 BOOLEAN converter
  */
 export const AsnBooleanConverter: IAsnConverter<boolean> = {
-  fromASN: (value: AsnNodeType) => AsnDecoders.decodeBoolean(value.context, value.node) as boolean,
+  fromASN: (value: AsnNode) => AsnDecoders.decodeBoolean(value) as boolean,
   toASN: (value: boolean) => AsnSerializer.serialize(value, booleanSchema),
 };
 
@@ -239,8 +239,8 @@ const octetStringSchema: CompiledSchema = {
  * ASN.1 OCTET_STRING converter
  */
 export const AsnOctetStringConverter: IAsnConverter<ArrayBuffer> = {
-  fromASN: (value: AsnNodeType) => {
-    const bytes = AsnDecoders.decodeOctetString(value.context, value.node) as Uint8Array;
+  fromASN: (value: AsnNode) => {
+    const bytes = AsnDecoders.decodeOctetString(value) as Uint8Array;
     return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
   },
   toASN: (value: ArrayBuffer) => AsnSerializer.serialize(value, octetStringSchema),
@@ -250,10 +250,10 @@ export const AsnOctetStringConverter: IAsnConverter<ArrayBuffer> = {
  * ASN.1 OCTET_STRING converter to OctetString class
  */
 export const AsnConstructedOctetStringConverter: IAsnConverter<OctetString> = {
-  fromASN: (value: AsnNodeType) => {
+  fromASN: (value: AsnNode) => {
     // Support receiving a plain AsnNode without context as well
     if ((value as unknown as { context?: ParseContext }).context) {
-      const bytes = AsnDecoders.decodeOctetString(value.context, value.node) as Uint8Array;
+      const bytes = AsnDecoders.decodeOctetString(value) as Uint8Array;
       const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
       return new OctetString(buffer);
     }
@@ -267,10 +267,10 @@ export const AsnConstructedOctetStringConverter: IAsnConverter<OctetString> = {
 
 function createStringConverter(
   schema: CompiledSchema,
-  decoder: (ctx: ParseContext, node: AsnNode) => unknown = AsnDecoders.decodeUtf8String,
+  decoder: (node: AsnNode) => unknown = AsnDecoders.decodeUtf8String,
 ): IAsnConverter<string> {
   return {
-    fromASN: (value: AsnNodeType) => decoder(value.context, value.node) as string,
+    fromASN: (value: AsnNode) => decoder(value) as string,
     toASN: (value: string) => AsnSerializer.serialize(value, schema),
   };
 }
@@ -410,7 +410,7 @@ const utcTimeSchema = createSchema("UTCTimeWrapper", "UTCTIME", 23);
  * ASN.1 UTCTime converter
  */
 export const AsnUTCTimeConverter: IAsnConverter<Date> = {
-  fromASN: (value: AsnNodeType) => AsnDecoders.decodeUtcTime(value.context, value.node) as Date,
+  fromASN: (value: AsnNode) => AsnDecoders.decodeUtcTime(value) as Date,
   toASN: (value: Date) => AsnSerializer.serialize(value, utcTimeSchema),
 };
 
@@ -420,8 +420,7 @@ const generalizedTimeSchema = createSchema("GeneralizedTimeWrapper", "GENERALIZE
  * ASN.1 GeneralizedTime converter
  */
 export const AsnGeneralizedTimeConverter: IAsnConverter<Date> = {
-  fromASN: (value: AsnNodeType) =>
-    AsnDecoders.decodeGeneralizedTime(value.context, value.node) as Date,
+  fromASN: (value: AsnNode) => AsnDecoders.decodeGeneralizedTime(value) as Date,
   toASN: (value: Date) => AsnSerializer.serialize(value, generalizedTimeSchema),
 };
 

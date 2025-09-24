@@ -1,4 +1,5 @@
-import { AsnNode, ParseContext } from "../types";
+import { AsnNodeUtils } from "../node-utils";
+import { AsnNode } from "../types";
 
 /**
  * Shared text decoder utilities to avoid duplication
@@ -34,8 +35,8 @@ export class StringDecoders {
   /**
    * Decode ASCII string (for multiple ASN.1 types)
    */
-  static decodeAsciiString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeAsciiString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     const decoder = getTextDecoder("ascii");
     if (!decoder) throw new Error("ASCII TextDecoder not supported");
     return decoder.decode(bytes);
@@ -43,8 +44,8 @@ export class StringDecoders {
   /**
    * Decode UTF8String
    */
-  static decodeUtf8String(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeUtf8String(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     const decoder = getTextDecoder("utf-8");
     if (!decoder) throw new Error("UTF-8 TextDecoder not supported");
     return decoder.decode(bytes);
@@ -53,8 +54,8 @@ export class StringDecoders {
   /**
    * Decode PrintableString
    */
-  static decodePrintableString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodePrintableString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     // PrintableString is ASCII subset
     const decoder = getTextDecoder("ascii");
     if (!decoder) throw new Error("ASCII TextDecoder not supported");
@@ -64,8 +65,8 @@ export class StringDecoders {
   /**
    * Decode IA5String
    */
-  static decodeIa5String(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeIa5String(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     // IA5String is ASCII
     const decoder = getTextDecoder("ascii");
     if (!decoder) throw new Error("ASCII TextDecoder not supported");
@@ -75,8 +76,8 @@ export class StringDecoders {
   /**
    * Decode Latin1String (ISO 8859-1)
    */
-  static decodeLatin1String(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeLatin1String(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     const decoder = getTextDecoder("latin1");
     if (!decoder) throw new Error("Latin1 TextDecoder not supported");
     return decoder.decode(bytes);
@@ -85,9 +86,8 @@ export class StringDecoders {
   /**
    * Decode BMPString (Basic Multilingual Plane) with TextDecoder optimization
    */
-  static decodeBmpString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
-
+  static decodeBmpString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     if (bytes.length % 2 !== 0) {
       throw new Error("Invalid BMPString: length must be even");
     }
@@ -116,8 +116,8 @@ export class StringDecoders {
   /**
    * Decode NumericString (tag 18) - digits and space only
    */
-  static decodeNumericString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeNumericString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
 
     // Validate characters
     for (let i = 0; i < bytes.length; i++) {
@@ -143,8 +143,8 @@ export class StringDecoders {
   /**
    * Decode TeletexString (tag 20) - T.61 character set (Latin-1 fallback)
    */
-  static decodeTeletexString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeTeletexString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
 
     // Validate characters - no null bytes
     for (let i = 0; i < bytes.length; i++) {
@@ -170,8 +170,8 @@ export class StringDecoders {
   /**
    * Decode VisibleString (tag 26) - graphic characters and space (ASCII 0x20-0x7E)
    */
-  static decodeVisibleString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeVisibleString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
 
     // Validate characters
     for (let i = 0; i < bytes.length; i++) {
@@ -197,8 +197,8 @@ export class StringDecoders {
   /**
    * Decode GeneralString (tag 27) - arbitrary character set
    */
-  static decodeGeneralString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeGeneralString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
 
     // GeneralString cannot be empty
     if (bytes.length === 0) {
@@ -230,9 +230,8 @@ export class StringDecoders {
   /**
    * Decode UniversalString (tag 28) - UCS-4 (UTF-32BE)
    */
-  static decodeUniversalString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
-
+  static decodeUniversalString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
     if (bytes.length % 4 !== 0) {
       throw new Error("Invalid UniversalString: length must be multiple of 4");
     }
@@ -272,8 +271,8 @@ export class StringDecoders {
   /**
    * Decode VideotexString (tag 21) - T.100/T.101 character set (Latin-1 fallback)
    */
-  static decodeVideotexString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeVideotexString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
 
     // VideotexString cannot be empty
     if (bytes.length === 0) {
@@ -296,8 +295,8 @@ export class StringDecoders {
   /**
    * Decode GraphicString (tag 25) - T.61 character set (Latin-1 fallback)
    */
-  static decodeGraphicString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeGraphicString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
 
     // GraphicString cannot be empty
     if (bytes.length === 0) {
@@ -320,8 +319,8 @@ export class StringDecoders {
   /**
    * Decode CharacterString (tag 29) - complex type with explicit character set
    */
-  static decodeCharacterString(ctx: ParseContext, node: AsnNode): string {
-    const bytes = ctx.sliceValueRaw(node);
+  static decodeCharacterString(node: AsnNode): string {
+    const bytes = AsnNodeUtils.sliceValueRaw(node);
 
     // CharacterString cannot be empty
     if (bytes.length === 0) {

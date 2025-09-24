@@ -1,4 +1,4 @@
-import { AsnNode, ParseContext } from "../types";
+import { AsnNode } from "../types";
 import { StringDecoders } from "./strings";
 
 /**
@@ -8,9 +8,8 @@ export class TimeDecoders {
   /**
    * Decode UTCTime
    */
-  static decodeUtcTime(ctx: ParseContext, node: AsnNode): Date {
-    const bytes = ctx.sliceValueRaw(node);
-    const str = StringDecoders.decodeIa5String(ctx, node);
+  static decodeUtcTime(node: AsnNode): Date {
+    const str = StringDecoders.decodeIa5String(node);
 
     // UTCTime format: YYMMDDHHMMSSZ or YYMMDDHHMMSS+HHMM
     if (str.length < 13) {
@@ -38,8 +37,8 @@ export class TimeDecoders {
   /**
    * Decode GeneralizedTime
    */
-  static decodeGeneralizedTime(ctx: ParseContext, node: AsnNode): Date {
-    const str = StringDecoders.decodeAsciiString(ctx, node);
+  static decodeGeneralizedTime(node: AsnNode): Date {
+    const str = StringDecoders.decodeAsciiString(node);
 
     // GeneralizedTime format: YYYYMMDDHHMMSSZ or YYYYMMDDHHMMSS.fZ
     const genPattern = /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(?:\.(\d+))?Z$/;
