@@ -14,4 +14,17 @@ describe("csr", () => {
     assert.strictEqual(csr.signature.byteLength, 256);
     assert.ok(csr.certificationRequestInfoRaw);
   });
+
+  it("parse request with omitted attributes", () => {
+    const pem =
+      "MIICUjCCAToCAQAwDzENMAsGA1UEAxMEVGVzdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJ8Ztw7rtsiaxYfgBtSiVt5NMPPmEUAykx/MsHSnGQW9DfhC8Hue2AmsDbPkEkRVlIxd0dAZ6YQlP730PKidS89f8Zb0xi0sRLB8P0NWi/wrhd5r6YEltIC2XHQpgSeZeYfR4iG+33VMlNKQQqc1wVy3ppClgrdjXjZ+Y1xXm98hdZS7tgGXMTfNJ+3qO/BeIgJ54UQpTmW8xnrrFaxnDIM7fuT054w2VXQw3LSvuCQefj0BhH+VeSVRhjGoP43SXNkwuBLXK5DtGzcZSWZzJqvB0udcMJwXlZopXFcOW6aCHyR6PtO7QGJvAhMB7HCZ9uSUHYSHROw4psFEBQRWIVcCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAnpoy6pZGjkrOvmoRWvKSLELkbKsyajqsmMzGTaluKqnTh59ptBemOf3k86vSk3X+dbm6hkSUwIyK3mdL6NG5hbQiotDcvT1p6Pe7yu9zpeUohaJExjTUwKCnNDwWLa3zoUqkLpwlhfQ+RFEB5odjRiilhcLBb/InPax2OLvAVrp32Ts72DqgPxch3Vxlbf5x3NVxKi+6mKN9dPQFpLqPK2X8aCB7dt7M8++2tcBSeVskPvrrMnJ+jtNL3Agjfap3NlBTdb3j2CdN9uCB6a+ddRe7uLKi/LTTBnRlHW4IHJblu0Ov0EhxaX/D/30xSO16IrKfGxece6i4Dt668bMFcg==";
+    const csr = AsnConvert.parse(Buffer.from(pem, "base64"), CertificationRequest);
+
+    assert.strictEqual(csr.certificationRequestInfo.subject[0].length, 1);
+    assert.strictEqual(csr.certificationRequestInfo.version, 0);
+    // It parses attributes as empty when omitted
+    assert.strictEqual(csr.certificationRequestInfo.attributes.length, 0);
+    assert.strictEqual(csr.signature.byteLength, 256);
+    assert.ok(csr.certificationRequestInfoRaw);
+  });
 });
