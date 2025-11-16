@@ -27,7 +27,7 @@ export class QCStatement {
   public statementId = "";
 
   @AsnProp({ type: AsnPropTypes.Any, optional: true })
-  public statementInfo = new ArrayBuffer(0);
+  public statementInfo?: ArrayBuffer;
 }
 
 /**
