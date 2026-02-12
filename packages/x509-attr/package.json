@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-attr",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "ASN.1 schema of `An Internet Attribute Certificate` (RFC3281)",
   "files": [
     "build/**/*.{js,d.ts}",
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.6.0",
-    "@peculiar/asn1-x509": "^2.6.0",
+    "@peculiar/asn1-x509": "^2.6.1",
     "asn1js": "^3.0.6",
     "tslib": "^2.8.1"
   }
