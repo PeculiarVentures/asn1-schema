@@ -269,5 +269,21 @@ describe("x509", () => {
         "3020170d3439313233313233353935395a180f32303530303130313030303030305a",
       );
     });
+
+    it("generalized time without fractional seconds", () => {
+      // Create a date after 2049 with milliseconds
+      const dateWithMillis = new Date("2050-01-01T00:00:00.123Z");
+      const validity = new src.Validity({
+        notBefore: new Date("2049-12-31T23:59:59Z"),
+        notAfter: dateWithMillis,
+      });
+      const hex = Buffer.from(AsnConvert.serialize(validity)).toString("hex");
+      // Expected: GeneralizedTime should not include fractional seconds (.123)
+      // The hex should end with 180f32303530303130313030303030305a (without fractional part)
+      assert.strictEqual(
+        hex,
+        "3020170d3439313233313233353935395a180f32303530303130313030303030305a",
+      );
+    });
   });
 });
