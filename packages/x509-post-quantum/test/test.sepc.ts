@@ -8,6 +8,21 @@ import {
   CompositeSignatureValue,
   id_alg_composite,
   id_composite_key,
+  id_ml_dsa_44,
+  id_ml_dsa_65,
+  id_ml_dsa_87,
+  id_slh_dsa_sha2_128s,
+  id_slh_dsa_sha2_128f,
+  id_slh_dsa_sha2_192s,
+  id_slh_dsa_sha2_192f,
+  id_slh_dsa_sha2_256s,
+  id_slh_dsa_sha2_256f,
+  id_slh_dsa_shake_128s,
+  id_slh_dsa_shake_128f,
+  id_slh_dsa_shake_192s,
+  id_slh_dsa_shake_192f,
+  id_slh_dsa_shake_256s,
+  id_slh_dsa_shake_256f,
 } from "../src";
 import { OneAsymmetricKey, Version } from "@peculiar/asn1-asym-key";
 
@@ -1348,6 +1363,37 @@ describe("x509-post-quantum", () => {
       const signatureValue = AsnConvert.parse(Buffer.from(pem, "base64"), BitString);
       const composote = AsnConvert.parse(signatureValue.value, CompositeSignatureValue);
       assert.strictEqual(composote.length, 2);
+    });
+  });
+
+  describe("FIPS 204 / FIPS 205 object identifiers", () => {
+    it("ML-DSA OIDs match NIST CSOR sigAlgs assignments", () => {
+      assert.strictEqual(id_ml_dsa_44, "2.16.840.1.101.3.4.3.17");
+      assert.strictEqual(id_ml_dsa_65, "2.16.840.1.101.3.4.3.18");
+      assert.strictEqual(id_ml_dsa_87, "2.16.840.1.101.3.4.3.19");
+    });
+
+    it("SLH-DSA OIDs match NIST CSOR sigAlgs assignments", () => {
+      assert.strictEqual(id_slh_dsa_sha2_128s, "2.16.840.1.101.3.4.3.20");
+      assert.strictEqual(id_slh_dsa_sha2_128f, "2.16.840.1.101.3.4.3.21");
+      assert.strictEqual(id_slh_dsa_sha2_192s, "2.16.840.1.101.3.4.3.22");
+      assert.strictEqual(id_slh_dsa_sha2_192f, "2.16.840.1.101.3.4.3.23");
+      assert.strictEqual(id_slh_dsa_sha2_256s, "2.16.840.1.101.3.4.3.24");
+      assert.strictEqual(id_slh_dsa_sha2_256f, "2.16.840.1.101.3.4.3.25");
+      assert.strictEqual(id_slh_dsa_shake_128s, "2.16.840.1.101.3.4.3.26");
+      assert.strictEqual(id_slh_dsa_shake_128f, "2.16.840.1.101.3.4.3.27");
+      assert.strictEqual(id_slh_dsa_shake_192s, "2.16.840.1.101.3.4.3.28");
+      assert.strictEqual(id_slh_dsa_shake_192f, "2.16.840.1.101.3.4.3.29");
+      assert.strictEqual(id_slh_dsa_shake_256s, "2.16.840.1.101.3.4.3.30");
+      assert.strictEqual(id_slh_dsa_shake_256f, "2.16.840.1.101.3.4.3.31");
+    });
+
+    it("round-trips an AlgorithmIdentifier with an ML-DSA-87 OID and absent parameters", () => {
+      const input = new AlgorithmIdentifier({ algorithm: id_ml_dsa_87 });
+      const der = AsnConvert.serialize(input);
+      const output = AsnConvert.parse(der, AlgorithmIdentifier);
+      assert.strictEqual(output.algorithm, id_ml_dsa_87);
+      assert.strictEqual(output.parameters, undefined);
     });
   });
 });
