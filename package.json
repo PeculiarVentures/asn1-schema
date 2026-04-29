@@ -26,16 +26,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "create": "ts-node scripts/create_package.ts",
-    "prepub": "yarn run build",
+    "prepub": "npm run build",
     "pub": "lerna publish",
-    "bootstrap": "yarn",
-    "bootstrap:upgrade": "yarn upgrade-interactive --latest",
-    "upgrade": "yarn upgrade-interactive --latest",
     "coverage": "jest --coverage"
-  },
-  "resolutions": {
-    "cliui": "^8.0.1",
-    "path-scurry": "^2.0.0"
   },
   "dependencies": {
     "@types/rimraf": "^4.0.5",
