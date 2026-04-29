@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 import { CertificateSet } from "./certificate_choices";
 import { CMSVersion, DigestAlgorithmIdentifier } from "./types";
 import { EncapsulatedContentInfo } from "./encapsulated_content_info";
@@ -10,7 +12,9 @@ import { SignerInfos } from "./signer_info";
  * DigestAlgorithmIdentifiers ::= SET OF DigestAlgorithmIdentifier
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Set, itemType: DigestAlgorithmIdentifier })
+@AsnType({
+  type: AsnTypeTypes.Set, itemType: DigestAlgorithmIdentifier,
+})
 export class DigestAlgorithmIdentifiers extends AsnArray<DigestAlgorithmIdentifier> {
   constructor(items?: DigestAlgorithmIdentifier[]) {
     super(items);
@@ -41,10 +45,14 @@ export class SignedData {
   @AsnProp({ type: EncapsulatedContentInfo })
   public encapContentInfo = new EncapsulatedContentInfo();
 
-  @AsnProp({ type: CertificateSet, context: 0, implicit: true, optional: true })
+  @AsnProp({
+    type: CertificateSet, context: 0, implicit: true, optional: true,
+  })
   public certificates?: CertificateSet;
 
-  @AsnProp({ type: RevocationInfoChoices, context: 1, implicit: true, optional: true })
+  @AsnProp({
+    type: RevocationInfoChoices, context: 1, implicit: true, optional: true,
+  })
   public crls?: RevocationInfoChoices;
 
   @AsnProp({ type: SignerInfos })

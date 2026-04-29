@@ -20,7 +20,9 @@ export interface ICaVersion {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class CaVersion {
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public value = new ArrayBuffer(0);
 
   public toString(): string {

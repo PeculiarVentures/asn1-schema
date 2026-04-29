@@ -13,7 +13,9 @@ export class SecretBag {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public secretTypeId = "";
 
-  @AsnProp({ type: AsnPropTypes.Any, context: 0 })
+  @AsnProp({
+    type: AsnPropTypes.Any, context: 0,
+  })
   public secretValue = new ArrayBuffer(0);
 
   constructor(params: Partial<SecretBag> = {}) {

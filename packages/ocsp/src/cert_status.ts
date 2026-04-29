@@ -1,4 +1,6 @@
-import { AsnProp, AsnType, AsnTypeTypes, AsnPropTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnType, AsnTypeTypes, AsnPropTypes,
+} from "@peculiar/asn1-schema";
 import { RevokedInfo } from "./revoked_info";
 
 /**
@@ -18,13 +20,19 @@ export type UnknownInfo = null;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class CertStatus {
-  @AsnProp({ type: AsnPropTypes.Null, context: 0, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.Null, context: 0, implicit: true,
+  })
   public good?: null;
 
-  @AsnProp({ type: RevokedInfo, context: 1, implicit: true })
+  @AsnProp({
+    type: RevokedInfo, context: 1, implicit: true,
+  })
   public revoked?: RevokedInfo;
 
-  @AsnProp({ type: AsnPropTypes.Null, context: 2, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.Null, context: 2, implicit: true,
+  })
   public unknown?: UnknownInfo;
 
   constructor(params: Partial<CertStatus> = {}) {

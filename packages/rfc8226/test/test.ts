@@ -1,5 +1,5 @@
-import { AsnConvert } from "@peculiar/asn1-schema";
 import * as assert from "node:assert";
+import { AsnConvert } from "@peculiar/asn1-schema";
 import { TNAuthorizationList } from "../src";
 
 describe("RFC8266", () => {

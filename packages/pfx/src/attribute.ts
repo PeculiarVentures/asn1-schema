@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -12,7 +14,9 @@ export class PKCS12Attribute {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public attrId = "";
 
-  @AsnProp({ type: AsnPropTypes.Any, repeated: "set" })
+  @AsnProp({
+    type: AsnPropTypes.Any, repeated: "set",
+  })
   public attrValues: ArrayBuffer[] = [];
 
   constructor(params: Partial<PKCS12Attribute> = {}) {
@@ -29,7 +33,9 @@ export class PKCS12Attribute {
  * }
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: PKCS12Attribute })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: PKCS12Attribute,
+})
 export class PKCS12AttrSet extends AsnArray<PKCS12Attribute> {
   constructor(items?: PKCS12Attribute[]) {
     super(items);

@@ -57,7 +57,9 @@ export class Curve {
   @AsnProp({ type: AsnPropTypes.OctetString })
   public b!: ArrayBuffer;
 
-  @AsnProp({ type: AsnPropTypes.BitString, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.BitString, optional: true,
+  })
   public seed?: ArrayBuffer;
 
   constructor(params: Partial<Curve> = {}) {
@@ -103,10 +105,14 @@ export class SpecifiedECDomain {
   @AsnProp({ type: ECPoint })
   public base!: ECPoint;
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public order!: ArrayBuffer;
 
-  @AsnProp({ type: AsnPropTypes.Integer, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Integer, optional: true,
+  })
   public cofactor?: ArrayBuffer;
 
   constructor(params: Partial<SpecifiedECDomain> = {}) {

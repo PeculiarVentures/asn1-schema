@@ -87,7 +87,7 @@ import * as attr from "@peculiar/asn1-x509-attr";
  */
 export const id_pkcs9 = "1.2.840.113549.1.9";
 
-//#region Main arcs
+// #region Main arcs
 
 /**
  * pkcs-9-mo OBJECT IDENTIFIER ::= {pkcs-9 0}  -- Modules branch
@@ -115,9 +115,9 @@ export const id_pkcs9_sx = `${id_pkcs9}.26`;
  */
 export const id_pkcs9_mr = `${id_pkcs9}.27`;
 
-//#endregion
+// #endregion
 
-//#region Object classes
+// #region Object classes
 
 /**
  * pkcs-9-oc-pkcsEntity    OBJECT IDENTIFIER ::= {pkcs-9-oc 1}
@@ -129,9 +129,9 @@ export const id_pkcs9_oc_pkcsEntity = `${id_pkcs9_oc}.1`;
  */
 export const id_pkcs9_oc_naturalPerson = `${id_pkcs9_oc}.2`;
 
-//#endregion
+// #endregion
 
-//#region Attributes
+// #region Attributes
 
 /**
  * pkcs-9-at-emailAddress        OBJECT IDENTIFIER ::= {pkcs-9 1}
@@ -223,7 +223,7 @@ export const id_pkcs9_at_localKeyId = `${id_pkcs9}.21`;
  * pkcs-9-at-userPKCS12               OBJECT IDENTIFIER ::=
  *                                       {2 16 840 1 113730 3 1 216}
  */
-export const id_pkcs9_at_userPKCS12 = `2.16.840.1.113730.3.1.216`;
+export const id_pkcs9_at_userPKCS12 = "2.16.840.1.113730.3.1.216";
 
 /**
  * pkcs-9-at-pkcs15Token              OBJECT IDENTIFIER ::= {pkcs-9-at 1}
@@ -250,13 +250,13 @@ export const id_pkcs9_at_sequenceNumber = `${id_pkcs9_at}.4`;
  */
 export const id_pkcs9_at_pkcs7PDU = `${id_pkcs9_at}.5`;
 
-//#region IETF PKIX Attribute branch
+// #region IETF PKIX Attribute branch
 
 /**
  * ietf-at                            OBJECT IDENTIFIER ::=
  *                                       {1 3 6 1 5 5 7 9}
  */
-export const id_ietf_at = `1.3.6.1.5.5.7.9`;
+export const id_ietf_at = "1.3.6.1.5.5.7.9";
 
 /**
  * pkcs-9-at-dateOfBirth              OBJECT IDENTIFIER ::= {ietf-at 1}
@@ -283,11 +283,11 @@ export const id_pkcs9_at_countryOfCitizenship = `${id_ietf_at}.4`;
  */
 export const id_pkcs9_at_countryOfResidence = `${id_ietf_at}.5`;
 
-//#endregion
+// #endregion
 
-//#endregion
+// #endregion
 
-//#region Syntaxes (for use with LDAP accessible directories)
+// #region Syntaxes (for use with LDAP accessible directories)
 
 /**
  * pkcs-9-sx-pkcs9String              OBJECT IDENTIFIER ::= {pkcs-9-sx 1}
@@ -299,9 +299,9 @@ export const id_pkcs9_sx_pkcs9String = `${id_pkcs9_sx}.1`;
  */
 export const id_pkcs9_sx_signingTime = `${id_pkcs9_sx}.2`;
 
-//#endregion
+// #endregion
 
-//#region Matching rules
+// #region Matching rules
 
 /**
  * pkcs-9-mr-caseIgnoreMatch          OBJECT IDENTIFIER ::= {pkcs-9-mr 1}
@@ -313,7 +313,7 @@ export const id_pkcs9_mr_caseIgnoreMatch = `${id_pkcs9_mr}.1`;
  */
 export const id_pkcs9_mr_signingTimeMatch = `${id_pkcs9_mr}.2`;
 
-//#endregion
+// #endregion
 /**
  *   -- Arcs with attributes defined elsewhere
  */
@@ -743,7 +743,9 @@ export class ExtensionRequest extends x509.Extensions {
  *         ID pkcs-9-at-extendedCertificateAttributes
  * }
  */
-@AsnType({ type: AsnTypeTypes.Set, itemType: cms.Attribute })
+@AsnType({
+  type: AsnTypeTypes.Set, itemType: cms.Attribute,
+})
 export class ExtendedCertificateAttributes extends AsnArray<cms.Attribute> {
   constructor(items?: cms.Attribute[]) {
     super(items);
@@ -818,7 +820,9 @@ export class SMIMECapability extends x509.AlgorithmIdentifier {}
  *         ID pkcs-9-at-smimeCapabilities
  * }
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: SMIMECapability })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: SMIMECapability,
+})
 export class SMIMECapabilities extends AsnArray<SMIMECapability> {
   constructor(items?: SMIMECapability[]) {
     super(items);

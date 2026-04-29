@@ -5,7 +5,9 @@ import * as converters from "./converters";
 import { AsnSchemaValidationError } from "./errors";
 import { isConvertible, isTypeOfArray } from "./helper";
 import { schemaStorage } from "./storage";
-import { IEmptyConstructor, IAsnConverter, IAsnConvertibleConstructor } from "./types";
+import {
+  IEmptyConstructor, IAsnConverter, IAsnConvertibleConstructor,
+} from "./types";
 import { AsnSchemaType } from "./schema";
 
 /**
@@ -79,7 +81,7 @@ export class AsnParser {
    */
   private static handleChoiceTypes<T>(
     asn1Schema: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schema: any,
     target: IEmptyConstructor<T>,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -87,24 +89,24 @@ export class AsnParser {
   ): { result?: unknown; targetSchema?: AsnSchemaType } | null {
     // Special handling for Choice types with context tags (IMPLICIT)
     if (
-      asn1Schema.constructor === asn1js.Constructed &&
-      schema.type === AsnTypeTypes.Choice &&
-      asn1Schema.idBlock.tagClass === 3
+      asn1Schema.constructor === asn1js.Constructed
+      && schema.type === AsnTypeTypes.Choice
+      && asn1Schema.idBlock.tagClass === 3
     ) {
       for (const key in schema.items) {
         const schemaItem = schema.items[key];
         if (schemaItem.context === asn1Schema.idBlock.tagNumber && schemaItem.implicit) {
           if (
-            typeof schemaItem.type === "function" &&
-            schemaStorage.has(schemaItem.type as IEmptyConstructor)
+            typeof schemaItem.type === "function"
+            && schemaStorage.has(schemaItem.type as IEmptyConstructor)
           ) {
             const fieldSchema = schemaStorage.get(schemaItem.type as IEmptyConstructor);
             if (fieldSchema && fieldSchema.type === AsnTypeTypes.Sequence) {
               const newSeq = new asn1js.Sequence();
               if (
-                "value" in asn1Schema.valueBlock &&
-                Array.isArray((asn1Schema.valueBlock as { value: asn1js.AsnType[] }).value) &&
-                "value" in newSeq.valueBlock
+                "value" in asn1Schema.valueBlock
+                && Array.isArray((asn1Schema.valueBlock as { value: asn1js.AsnType[] }).value)
+                && "value" in newSeq.valueBlock
               ) {
                 (newSeq.valueBlock as { value: asn1js.AsnType[] }).value = (
                   asn1Schema.valueBlock as { value: asn1js.AsnType[] }
@@ -120,8 +122,8 @@ export class AsnParser {
         }
       }
     } else if (
-      asn1Schema.constructor === asn1js.Constructed &&
-      schema.type !== AsnTypeTypes.Choice
+      asn1Schema.constructor === asn1js.Constructed
+      && schema.type !== AsnTypeTypes.Choice
     ) {
       // Fix tag value for IMPLICIT
       const newTargetSchema = new asn1js.Constructed({
@@ -134,6 +136,7 @@ export class AsnParser {
 
       // Delete all parsed values, because asn1js adds duplicated values to arrays
       for (const key in schema.items) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete (asn1Schema as unknown as Record<string, unknown>)[key];
       }
 
@@ -148,9 +151,9 @@ export class AsnParser {
    */
   private static handleSequenceTypes(
     asn1Schema: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schema: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     target: IEmptyConstructor<any>,
     targetSchema: AsnSchemaType,
   ): asn1js.CompareSchemaResult {
@@ -191,7 +194,7 @@ export class AsnParser {
   private static processRepeatedField(
     asn1Elements: asn1js.AsnType[],
     asn1Index: number,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItem: any,
   ): unknown[] {
     let elementsToProcess = asn1Elements.slice(asn1Index);
@@ -236,7 +239,7 @@ export class AsnParser {
    */
   private static processPrimitiveField(
     asn1Element: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItem: any,
   ): unknown {
     const converter = converters.defaultConverter(schemaItem.type);
@@ -248,14 +251,14 @@ export class AsnParser {
    * Checks if a schema item is an optional CHOICE field
    */
   private static isOptionalChoiceField(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItem: any,
   ): boolean {
     return (
-      schemaItem.optional &&
-      typeof schemaItem.type === "function" &&
-      schemaStorage.has(schemaItem.type as IEmptyConstructor) &&
-      schemaStorage.get(schemaItem.type as IEmptyConstructor).type === AsnTypeTypes.Choice
+      schemaItem.optional
+      && typeof schemaItem.type === "function"
+      && schemaStorage.has(schemaItem.type as IEmptyConstructor)
+      && schemaStorage.get(schemaItem.type as IEmptyConstructor).type === AsnTypeTypes.Choice
     );
   }
 
@@ -264,16 +267,18 @@ export class AsnParser {
    */
   private static processOptionalChoiceField(
     asn1Element: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItem: any,
   ): { processed: boolean; value?: unknown } {
     try {
       const value = this.fromASN(asn1Element, schemaItem.type as IEmptyConstructor);
-      return { processed: true, value };
+      return {
+        processed: true, value,
+      };
     } catch (err) {
       if (
-        err instanceof AsnSchemaValidationError &&
-        /Wrong values for Choice type/.test(err.message)
+        err instanceof AsnSchemaValidationError
+        && /Wrong values for Choice type/.test(err.message)
       ) {
         return { processed: false };
       }
@@ -286,14 +291,14 @@ export class AsnParser {
    */
   private static handleArrayTypes(
     asn1Schema: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schema: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     target: IEmptyConstructor<any>,
   ): unknown {
     if (!("value" in asn1Schema.valueBlock && Array.isArray(asn1Schema.valueBlock.value))) {
       throw new Error(
-        `Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.`,
+        "Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.",
       );
     }
 
@@ -305,13 +310,12 @@ export class AsnParser {
           `Cannot get default converter for array item of ${target.name} ASN1 schema`,
         );
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       return (target as any).from(
         asn1Schema.valueBlock.value as asn1js.AsnType[],
         (element: asn1js.AsnType) => converter.fromASN(element),
       );
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (target as any).from(
         asn1Schema.valueBlock.value as asn1js.AsnType[],
         (element: asn1js.AsnType) => this.fromASN(element, itemType),
@@ -323,13 +327,12 @@ export class AsnParser {
    * Processes all schema items
    */
   private static processSchemaItems(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schema: any,
     asn1ComparedSchema: asn1js.CompareSchemaResult,
     res: Record<string, unknown>,
   ): void {
     for (const key in schema.items) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const asn1SchemaValue = (asn1ComparedSchema.result as any)[key] as asn1js.AsnType | undefined;
       if (!asn1SchemaValue) {
         continue; // skip empty props
@@ -347,14 +350,13 @@ export class AsnParser {
 
       // Handle raw data if returned as object
       if (
-        parsedValue &&
-        typeof parsedValue === "object" &&
-        "value" in parsedValue &&
-        "raw" in parsedValue
+        parsedValue
+        && typeof parsedValue === "object"
+        && "value" in parsedValue
+        && "raw" in parsedValue
       ) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         res[key] = (parsedValue as any).value;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         res[`${key}Raw`] = (parsedValue as any).raw;
       } else {
         res[key] = parsedValue;
@@ -367,16 +369,16 @@ export class AsnParser {
    */
   private static processPrimitiveSchemaItem(
     asn1SchemaValue: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItem: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItemType: any,
   ): unknown {
-    const converter: IAsnConverter | null =
-      schemaItem.converter ??
-      (isConvertible(schemaItemType)
-        ? new (schemaItemType as unknown as IAsnConvertibleConstructor)()
-        : null);
+    const converter: IAsnConverter | null
+      = schemaItem.converter
+        ?? (isConvertible(schemaItemType)
+          ? new (schemaItemType as unknown as IAsnConvertibleConstructor)()
+          : null);
     if (!converter) {
       throw new Error("Converter is empty");
     }
@@ -398,14 +400,14 @@ export class AsnParser {
    */
   private static processRepeatedPrimitiveItem(
     asn1SchemaValue: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItem: any,
     converter: IAsnConverter,
   ): unknown[] {
     if (schemaItem.implicit) {
       const Container = schemaItem.repeated === "sequence" ? asn1js.Sequence : asn1js.Set;
       const newItem = new Container();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       newItem.valueBlock = asn1SchemaValue.valueBlock as any;
       const newItemAsn = asn1js.fromBER(newItem.toBER(false));
       if (newItemAsn.offset === -1) {
@@ -413,8 +415,8 @@ export class AsnParser {
       }
       if (
         !(
-          "value" in newItemAsn.result.valueBlock &&
-          Array.isArray(newItemAsn.result.valueBlock.value)
+          "value" in newItemAsn.result.valueBlock
+          && Array.isArray(newItemAsn.result.valueBlock.value)
         )
       ) {
         throw new Error(
@@ -435,9 +437,9 @@ export class AsnParser {
    */
   private static processSinglePrimitiveItem(
     asn1SchemaValue: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItem: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItemType: any,
     converter: IAsnConverter,
   ): unknown {
@@ -467,9 +469,9 @@ export class AsnParser {
    */
   private static processComplexSchemaItem(
     asn1SchemaValue: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItem: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItemType: any,
   ): unknown {
     if (schemaItem.repeated) {
@@ -494,8 +496,8 @@ export class AsnParser {
           return this.fromASN(valueToProcess, schemaItemType);
         } catch (err) {
           if (
-            err instanceof AsnSchemaValidationError &&
-            /Wrong values for Choice type/.test(err.message)
+            err instanceof AsnSchemaValidationError
+            && /Wrong values for Choice type/.test(err.message)
           ) {
             return undefined; // Skip this optional CHOICE field
           }
@@ -520,9 +522,9 @@ export class AsnParser {
    */
   private static handleImplicitTagging(
     asn1SchemaValue: asn1js.AsnType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItem: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     schemaItemType: any,
   ): asn1js.AsnType {
     if (schemaItem.implicit && typeof schemaItem.context === "number") {
@@ -531,9 +533,9 @@ export class AsnParser {
       if (schema.type === AsnTypeTypes.Sequence) {
         const newSeq = new asn1js.Sequence();
         if (
-          "value" in asn1SchemaValue.valueBlock &&
-          Array.isArray((asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value) &&
-          "value" in newSeq.valueBlock
+          "value" in asn1SchemaValue.valueBlock
+          && Array.isArray((asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value)
+          && "value" in newSeq.valueBlock
         ) {
           (newSeq.valueBlock as { value: asn1js.AsnType[] }).value = (
             asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }
@@ -543,9 +545,9 @@ export class AsnParser {
       } else if (schema.type === AsnTypeTypes.Set) {
         const newSet = new asn1js.Set();
         if (
-          "value" in asn1SchemaValue.valueBlock &&
-          Array.isArray((asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value) &&
-          "value" in newSet.valueBlock
+          "value" in asn1SchemaValue.valueBlock
+          && Array.isArray((asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value)
+          && "value" in newSet.valueBlock
         ) {
           (newSet.valueBlock as { value: asn1js.AsnType[] }).value = (
             asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }

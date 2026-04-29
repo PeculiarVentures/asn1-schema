@@ -1,4 +1,6 @@
-import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import {
+  AsnType, AsnTypeTypes, AsnProp, AsnPropTypes,
+} from "@peculiar/asn1-schema";
 import { SpecifiedECDomain } from "./rfc3279";
 
 /**

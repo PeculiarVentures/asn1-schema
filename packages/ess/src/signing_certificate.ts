@@ -1,12 +1,14 @@
-import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, OctetString,
+} from "@peculiar/asn1-schema";
 import {
   AlgorithmIdentifier,
   CertificateSerialNumber,
   GeneralNames,
   PolicyInformation,
 } from "@peculiar/asn1-x509";
-import { Hash } from "./types";
 import { id_sha256 } from "@peculiar/asn1-rsa";
+import { Hash } from "./types";
 
 /**
  * ```asn1
@@ -40,7 +42,9 @@ export class ESSCertID {
   @AsnProp({ type: OctetString })
   public certHash: Hash = new OctetString();
 
-  @AsnProp({ type: IssuerSerial, optional: true })
+  @AsnProp({
+    type: IssuerSerial, optional: true,
+  })
   public issuerSerial?: IssuerSerial;
 
   constructor(params: Partial<ESSCertID> = {}) {
@@ -57,10 +61,14 @@ export class ESSCertID {
  * ```
  */
 export class SigningCertificate {
-  @AsnProp({ type: ESSCertID, repeated: "sequence" })
+  @AsnProp({
+    type: ESSCertID, repeated: "sequence",
+  })
   public certs: ESSCertID[] = [];
 
-  @AsnProp({ type: PolicyInformation, repeated: "sequence", optional: true })
+  @AsnProp({
+    type: PolicyInformation, repeated: "sequence", optional: true,
+  })
   public policies?: PolicyInformation[];
 
   constructor(params: Partial<SigningCertificate> = {}) {
@@ -79,13 +87,17 @@ export class SigningCertificate {
  * ```
  */
 export class ESSCertIDv2 {
-  @AsnProp({ type: AlgorithmIdentifier, defaultValue: id_sha256 })
+  @AsnProp({
+    type: AlgorithmIdentifier, defaultValue: id_sha256,
+  })
   public hashAlgorithm?: AlgorithmIdentifier;
 
   @AsnProp({ type: OctetString })
   public certHash: Hash = new OctetString();
 
-  @AsnProp({ type: IssuerSerial, optional: true })
+  @AsnProp({
+    type: IssuerSerial, optional: true,
+  })
   public issuerSerial?: IssuerSerial;
 
   constructor(params: Partial<ESSCertIDv2> = {}) {
@@ -102,10 +114,14 @@ export class ESSCertIDv2 {
  * ```
  */
 export class SigningCertificateV2 {
-  @AsnProp({ type: ESSCertIDv2, repeated: "sequence" })
+  @AsnProp({
+    type: ESSCertIDv2, repeated: "sequence",
+  })
   public certs: ESSCertIDv2[] = [];
 
-  @AsnProp({ type: PolicyInformation, repeated: "sequence", optional: true })
+  @AsnProp({
+    type: PolicyInformation, repeated: "sequence", optional: true,
+  })
   public policies?: PolicyInformation[];
 
   constructor(params: Partial<SigningCertificateV2> = {}) {

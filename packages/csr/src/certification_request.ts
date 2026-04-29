@@ -1,6 +1,6 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
-import { CertificationRequestInfo } from "./certification_request_info";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
+import { CertificationRequestInfo } from "./certification_request_info";
 
 /**
  * ```asn1
@@ -12,7 +12,9 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
  * ```
  */
 export class CertificationRequest {
-  @AsnProp({ type: CertificationRequestInfo, raw: true })
+  @AsnProp({
+    type: CertificationRequestInfo, raw: true,
+  })
   public certificationRequestInfo = new CertificationRequestInfo();
 
   public certificationRequestInfoRaw?: ArrayBuffer;

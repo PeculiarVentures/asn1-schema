@@ -1,6 +1,8 @@
 import * as assert from "node:assert";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
-import { DigestInfo, sha1, id_sha1 } from "../../src";
+import {
+  DigestInfo, sha1, id_sha1,
+} from "../../src";
 
 describe("RSASSA PKCS v1.5", () => {
   describe("DigestInfo", () => {

@@ -1,6 +1,6 @@
 import * as assert from "node:assert";
-import { RSAPublicKey } from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
+import { RSAPublicKey } from "../src";
 
 describe("RSA Public Key", () => {
   it("serialize", () => {
@@ -25,8 +25,8 @@ describe("RSA Public Key", () => {
   });
 
   it("parse", () => {
-    const pem =
-      "MIGJAoGBAL6qb3cbsmeqymJ1k4/2cwwRWQAAJaXuYaaImB6mto+ZCu7/FORGj2Nmy4m/ZuAeNI/p9xVfcVAhoqZVnajCSSk/uD4xjuRN0uDfZIxYbue56GE+8+99NidLCV3qBW18ZYBPuBueTsZZudiA9v0SXrD+Z83Bk64kMKEW6yT+ThLdAgMBAAE=";
+    const pem
+      = "MIGJAoGBAL6qb3cbsmeqymJ1k4/2cwwRWQAAJaXuYaaImB6mto+ZCu7/FORGj2Nmy4m/ZuAeNI/p9xVfcVAhoqZVnajCSSk/uD4xjuRN0uDfZIxYbue56GE+8+99NidLCV3qBW18ZYBPuBueTsZZudiA9v0SXrD+Z83Bk64kMKEW6yT+ThLdAgMBAAE=";
     const der = Buffer.from(pem, "base64");
 
     const publicKey = AsnConvert.parse(der, RSAPublicKey);

@@ -29,7 +29,9 @@ export class PrivateKey extends OctetString {}
  * Attributes ::= SET OF Attribute
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: Attribute })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: Attribute,
+})
 export class Attributes extends AsnArray<Attribute> {
   constructor(items?: Attribute[]) {
     super(items);
@@ -58,7 +60,9 @@ export class PrivateKeyInfo {
   @AsnProp({ type: PrivateKey })
   public privateKey = new PrivateKey();
 
-  @AsnProp({ type: Attributes, implicit: true, context: 0, optional: true })
+  @AsnProp({
+    type: Attributes, implicit: true, context: 0, optional: true,
+  })
   public attributes?: Attributes;
 
   constructor(params: Partial<PrivateKeyInfo> = {}) {

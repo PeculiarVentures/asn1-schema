@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 import { KeyAgreeRecipientInfo } from "./key_agree_recipient_info";
 import { KeyTransRecipientInfo } from "./key_trans_recipient_info";
 import { KEKRecipientInfo } from "./kek_recipient_info";
@@ -35,19 +37,29 @@ export class OtherRecipientInfo {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class RecipientInfo {
-  @AsnProp({ type: KeyTransRecipientInfo, optional: true })
+  @AsnProp({
+    type: KeyTransRecipientInfo, optional: true,
+  })
   public ktri?: KeyTransRecipientInfo;
 
-  @AsnProp({ type: KeyAgreeRecipientInfo, context: 1, implicit: true, optional: true })
+  @AsnProp({
+    type: KeyAgreeRecipientInfo, context: 1, implicit: true, optional: true,
+  })
   public kari?: KeyAgreeRecipientInfo;
 
-  @AsnProp({ type: KEKRecipientInfo, context: 2, implicit: true, optional: true })
+  @AsnProp({
+    type: KEKRecipientInfo, context: 2, implicit: true, optional: true,
+  })
   public kekri?: KEKRecipientInfo;
 
-  @AsnProp({ type: PasswordRecipientInfo, context: 3, implicit: true, optional: true })
+  @AsnProp({
+    type: PasswordRecipientInfo, context: 3, implicit: true, optional: true,
+  })
   public pwri?: PasswordRecipientInfo;
 
-  @AsnProp({ type: OtherRecipientInfo, context: 4, implicit: true, optional: true })
+  @AsnProp({
+    type: OtherRecipientInfo, context: 4, implicit: true, optional: true,
+  })
   public ori?: OtherRecipientInfo;
 
   constructor(params: Partial<RecipientInfo> = {}) {

@@ -14,10 +14,14 @@ export class LogotypeDetails {
   @AsnProp({ type: AsnPropTypes.IA5String })
   public mediaType = "";
 
-  @AsnProp({ type: HashAlgAndValue, repeated: "sequence" })
+  @AsnProp({
+    type: HashAlgAndValue, repeated: "sequence",
+  })
   public logotypeHash: HashAlgAndValue[] = [];
 
-  @AsnProp({ type: AsnPropTypes.IA5String, repeated: "sequence" })
+  @AsnProp({
+    type: AsnPropTypes.IA5String, repeated: "sequence",
+  })
   public logotypeURI: string[] = [];
 
   constructor(params: Partial<LogotypeDetails> = {}) {

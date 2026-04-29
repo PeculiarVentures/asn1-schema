@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, BitString } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, BitString,
+} from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -49,8 +51,8 @@ export class EntrustInfo extends BitString {
 /**
  * ```asn1
  * EntrustVersionInfo ::= SEQUENCE {
- *     entrustVers	GeneralString,
- *     entrustInfoFlags	EntrustInfoFlags }
+ *     entrustVers      GeneralString,
+ *     entrustInfoFlags EntrustInfoFlags }
  * ```
  */
 export class EntrustVersionInfo {

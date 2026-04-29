@@ -1,4 +1,6 @@
-import { AsnArray, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnArray, AsnPropTypes, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 /**
@@ -15,7 +17,9 @@ export const id_alg_composite = "1.3.6.1.4.1.18227.2.1";
  * CompositeParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: AlgorithmIdentifier })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: AlgorithmIdentifier,
+})
 export class CompositeParams extends AsnArray<AlgorithmIdentifier> {
   constructor(items?: AlgorithmIdentifier[]) {
     super(items);
@@ -30,7 +34,9 @@ export class CompositeParams extends AsnArray<AlgorithmIdentifier> {
  * CompositeSignatureValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.BitString })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.BitString,
+})
 export class CompositeSignatureValue extends AsnArray<ArrayBuffer> {
   constructor(items?: ArrayBuffer[]) {
     super(items);

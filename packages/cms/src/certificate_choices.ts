@@ -1,4 +1,6 @@
-import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, AsnArray } from "@peculiar/asn1-schema";
+import {
+  AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, AsnArray,
+} from "@peculiar/asn1-schema";
 import { Certificate } from "@peculiar/asn1-x509";
 import { AttributeCertificate } from "@peculiar/asn1-x509-attr";
 /**
@@ -43,10 +45,14 @@ export class CertificateChoices {
   // @AsnProp({ type: AttributeCertificateV1, context: 1, implicit: true })
   // public v1AttrCert?: AttributeCertificateV1;
 
-  @AsnProp({ type: AttributeCertificate, context: 2, implicit: true })
+  @AsnProp({
+    type: AttributeCertificate, context: 2, implicit: true,
+  })
   public v2AttrCert?: AttributeCertificate;
 
-  @AsnProp({ type: OtherCertificateFormat, context: 3, implicit: true })
+  @AsnProp({
+    type: OtherCertificateFormat, context: 3, implicit: true,
+  })
   public other?: OtherCertificateFormat;
 
   constructor(params: Partial<CertificateChoices> = {}) {
@@ -59,7 +65,9 @@ export class CertificateChoices {
  * CertificateSet ::= SET OF CertificateChoices
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Set, itemType: CertificateChoices })
+@AsnType({
+  type: AsnTypeTypes.Set, itemType: CertificateChoices,
+})
 export class CertificateSet extends AsnArray<CertificateChoices> {
   constructor(items?: CertificateChoices[]) {
     super(items);

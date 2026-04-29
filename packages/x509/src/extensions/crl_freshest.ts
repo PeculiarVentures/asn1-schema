@@ -14,7 +14,9 @@ export const id_ce_freshestCRL = `${id_ce}.46`;
  * FreshestCRL ::= CRLDistributionPoints
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: DistributionPoint })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: DistributionPoint,
+})
 export class FreshestCRL extends CRLDistributionPoints {
   constructor(items?: DistributionPoint[]) {
     super(items);

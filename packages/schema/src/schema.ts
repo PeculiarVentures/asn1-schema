@@ -1,7 +1,9 @@
 import * as asn1js from "asn1js";
 import { AsnRepeatType } from "./decorators";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
-import { IAsnConverter, IEmptyConstructor, IAsnConvertible } from "./types";
+import {
+  IAsnConverter, IEmptyConstructor, IAsnConvertible,
+} from "./types";
 import { isConvertible } from "./helper";
 
 export interface IAsnSchemaItem {
@@ -18,7 +20,7 @@ export interface IAsnSchemaItem {
 export interface IAsnSchema {
   type: AsnTypeTypes;
   itemType: AsnPropTypes | IEmptyConstructor;
-  items: { [key: string]: IAsnSchemaItem };
+  items: Record<string, IAsnSchemaItem>;
   schema?: AsnSchemaType;
 }
 
@@ -58,7 +60,9 @@ export class AsnSchemaStorage {
 
   public createDefault(target: object): IAsnSchema {
     // Initialize default ASN1 schema
-    const schema = { type: AsnTypeTypes.Sequence, items: {} } as IAsnSchema;
+    const schema = {
+      type: AsnTypeTypes.Sequence, items: {},
+    } as IAsnSchema;
 
     // Get and assign schema from parent
     const parentSchema = this.findParentSchema(target);
@@ -117,7 +121,9 @@ export class AsnSchemaStorage {
         const Container = item.repeated === "set" ? asn1js.Set : asn1js.Sequence;
         asn1Item = new Container({
           name: "",
-          value: [new asn1js.Repeated({ name, value: asn1Item })],
+          value: [new asn1js.Repeated({
+            name, value: asn1Item,
+          })],
         });
       }
       if (item.context !== null && item.context !== undefined) {
@@ -127,24 +133,29 @@ export class AsnSchemaStorage {
           if (typeof item.type === "number" || isConvertible(item.type)) {
             const Container = item.repeated ? asn1js.Constructed : asn1js.Primitive;
             asn1Value.push(
-              new Container({ name, optional, idBlock: { tagClass: 3, tagNumber: item.context } }),
+              new Container({
+                name, optional, idBlock: {
+                  tagClass: 3, tagNumber: item.context,
+                },
+              }),
             );
           } else {
             this.cache(item.type);
             const isRepeated = !!item.repeated;
             let value = !isRepeated ? this.get(item.type, true).schema : asn1Item;
 
-            value =
-              "valueBlock" in value
+            value
+              = "valueBlock" in value
                 ? (value as asn1js.Sequence).valueBlock.value
-                : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  (value as any).value;
+                : (value as any).value;
             asn1Value.push(
               new asn1js.Constructed({
                 name: !isRepeated ? name : "",
                 optional,
-                idBlock: { tagClass: 3, tagNumber: item.context },
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                idBlock: {
+                  tagClass: 3, tagNumber: item.context,
+                },
+
                 value: value as any,
               }),
             );
@@ -154,7 +165,9 @@ export class AsnSchemaStorage {
           asn1Value.push(
             new asn1js.Constructed({
               optional,
-              idBlock: { tagClass: 3, tagNumber: item.context },
+              idBlock: {
+                tagClass: 3, tagNumber: item.context,
+              },
               value: [asn1Item],
             }),
           );
@@ -168,13 +181,19 @@ export class AsnSchemaStorage {
 
     switch (schema.type) {
       case AsnTypeTypes.Sequence:
-        return new asn1js.Sequence({ value: asn1Value, name: "" });
+        return new asn1js.Sequence({
+          value: asn1Value, name: "",
+        });
       case AsnTypeTypes.Set:
-        return new asn1js.Set({ value: asn1Value, name: "" });
+        return new asn1js.Set({
+          value: asn1Value, name: "",
+        });
       case AsnTypeTypes.Choice:
-        return new asn1js.Choice({ value: asn1Value as asn1js.BaseBlock[], name: "" });
+        return new asn1js.Choice({
+          value: asn1Value as asn1js.BaseBlock[], name: "",
+        });
       default:
-        throw new Error(`Unsupported ASN1 type in use`);
+        throw new Error("Unsupported ASN1 type in use");
     }
   }
 

@@ -1,6 +1,6 @@
 import { AsnProp } from "@peculiar/asn1-schema";
-import { CertID } from "./cert_id";
 import { Extensions, Extension } from "@peculiar/asn1-x509";
+import { CertID } from "./cert_id";
 
 /**
  * ```asn1
@@ -13,7 +13,9 @@ export class Request {
   @AsnProp({ type: CertID })
   public reqCert = new CertID();
 
-  @AsnProp({ type: Extension, repeated: "sequence", optional: true })
+  @AsnProp({
+    type: Extension, repeated: "sequence", optional: true,
+  })
   public singleRequestExtensions?: Extensions;
 
   constructor(params: Partial<Request> = {}) {

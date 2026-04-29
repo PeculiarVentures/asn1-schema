@@ -1,6 +1,6 @@
 import * as assert from "node:assert";
-import { BitString, AsnConvert } from "../src";
 import { Convert } from "pvtsutils";
+import { BitString, AsnConvert } from "../src";
 
 describe("asn1-schema", () => {
   describe("BitString", () => {

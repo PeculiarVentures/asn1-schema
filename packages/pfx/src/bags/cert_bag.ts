@@ -13,7 +13,9 @@ export class CertBag {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public certId = "";
 
-  @AsnProp({ type: AsnPropTypes.Any, context: 0 })
+  @AsnProp({
+    type: AsnPropTypes.Any, context: 0,
+  })
   public certValue = new ArrayBuffer(0);
 
   constructor(params: Partial<CertBag> = {}) {

@@ -1,5 +1,5 @@
-import { Structure } from "./structure";
 import { BufferSourceConverter, Convert } from "pvtsutils";
+import { Structure } from "./structure";
 import { ByteStream } from "./byte_stream";
 
 export interface IJsonSignedCertificateTimestamp {

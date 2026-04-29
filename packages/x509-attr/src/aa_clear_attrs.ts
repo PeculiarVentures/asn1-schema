@@ -17,7 +17,9 @@ export class ACClearAttrs {
   @AsnProp({ type: AsnPropTypes.Integer })
   public acSerial = 0;
 
-  @AsnProp({ type: Attribute, repeated: "sequence" })
+  @AsnProp({
+    type: Attribute, repeated: "sequence",
+  })
   public attrs: Attribute[] = [];
 
   constructor(params: Partial<ACClearAttrs> = {}) {

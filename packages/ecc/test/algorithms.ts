@@ -1,6 +1,6 @@
 import * as assert from "node:assert";
-import * as src from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
+import * as src from "../src";
 
 describe("ECC algorithms", () => {
   it("ECDSA with SHA-1", () => {

@@ -13,7 +13,9 @@ export class CRLBag {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public crlId = "";
 
-  @AsnProp({ type: AsnPropTypes.Any, context: 0 })
+  @AsnProp({
+    type: AsnPropTypes.Any, context: 0,
+  })
   public crltValue = new ArrayBuffer(0);
 
   constructor(params: Partial<CRLBag> = {}) {

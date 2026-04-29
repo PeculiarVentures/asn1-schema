@@ -6,9 +6,11 @@ import {
   AsnTypeTypes,
   OctetString,
 } from "@peculiar/asn1-schema";
-import { CMSVersion, KeyEncryptionAlgorithmIdentifier, EncryptedKey } from "./types";
-import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 import { AlgorithmIdentifier, SubjectKeyIdentifier } from "@peculiar/asn1-x509";
+import {
+  CMSVersion, KeyEncryptionAlgorithmIdentifier, EncryptedKey,
+} from "./types";
+import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 import { OtherKeyAttribute } from "./other_key_attribute";
 
 /**
@@ -30,10 +32,14 @@ export class RecipientKeyIdentifier {
   @AsnProp({ type: SubjectKeyIdentifier })
   public subjectKeyIdentifier = new SubjectKeyIdentifier();
 
-  @AsnProp({ type: AsnPropTypes.GeneralizedTime, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.GeneralizedTime, optional: true,
+  })
   public date?: Date;
 
-  @AsnProp({ type: OtherKeyAttribute, optional: true })
+  @AsnProp({
+    type: OtherKeyAttribute, optional: true,
+  })
   public other?: OtherKeyAttribute;
 
   constructor(params: Partial<RecipientKeyIdentifier> = {}) {
@@ -51,10 +57,14 @@ export class RecipientKeyIdentifier {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class KeyAgreeRecipientIdentifier {
   // * Declare rKeyId before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
-  @AsnProp({ type: RecipientKeyIdentifier, context: 0, implicit: true, optional: true })
+  @AsnProp({
+    type: RecipientKeyIdentifier, context: 0, implicit: true, optional: true,
+  })
   public rKeyId?: RecipientKeyIdentifier;
 
-  @AsnProp({ type: IssuerAndSerialNumber, optional: true })
+  @AsnProp({
+    type: IssuerAndSerialNumber, optional: true,
+  })
   public issuerAndSerialNumber?: IssuerAndSerialNumber;
 
   constructor(params: Partial<KeyAgreeRecipientIdentifier> = {}) {
@@ -86,7 +96,9 @@ export class RecipientEncryptedKey {
  * RecipientEncryptedKeys ::= SEQUENCE OF RecipientEncryptedKey
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: RecipientEncryptedKey })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: RecipientEncryptedKey,
+})
 export class RecipientEncryptedKeys extends AsnArray<RecipientEncryptedKey> {
   constructor(items?: RecipientEncryptedKey[]) {
     super(items);
@@ -126,14 +138,20 @@ export class OriginatorPublicKey {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class OriginatorIdentifierOrKey {
   // * Declare subjectKeyIdentifier before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
-  @AsnProp({ type: SubjectKeyIdentifier, context: 0, implicit: true, optional: true })
+  @AsnProp({
+    type: SubjectKeyIdentifier, context: 0, implicit: true, optional: true,
+  })
   public subjectKeyIdentifier?: SubjectKeyIdentifier;
 
   // * Declare originatorKey before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
-  @AsnProp({ type: OriginatorPublicKey, context: 1, implicit: true, optional: true })
+  @AsnProp({
+    type: OriginatorPublicKey, context: 1, implicit: true, optional: true,
+  })
   public originatorKey?: OriginatorPublicKey;
 
-  @AsnProp({ type: IssuerAndSerialNumber, optional: true })
+  @AsnProp({
+    type: IssuerAndSerialNumber, optional: true,
+  })
   public issuerAndSerialNumber?: IssuerAndSerialNumber;
 
   constructor(params: Partial<OriginatorIdentifierOrKey> = {}) {
@@ -155,10 +173,14 @@ export class KeyAgreeRecipientInfo {
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: CMSVersion = CMSVersion.v3;
 
-  @AsnProp({ type: OriginatorIdentifierOrKey, context: 0 })
+  @AsnProp({
+    type: OriginatorIdentifierOrKey, context: 0,
+  })
   public originator = new OriginatorIdentifierOrKey();
 
-  @AsnProp({ type: OctetString, context: 1, optional: true })
+  @AsnProp({
+    type: OctetString, context: 1, optional: true,
+  })
   public ukm?: UserKeyingMaterial;
 
   @AsnProp({ type: KeyEncryptionAlgorithmIdentifier })

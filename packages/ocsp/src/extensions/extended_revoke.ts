@@ -1,4 +1,6 @@
-import { AsnProp, AsnType, AsnTypeTypes, AsnPropTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnType, AsnTypeTypes, AsnPropTypes,
+} from "@peculiar/asn1-schema";
 
 // re-ocsp-extended-revoke EXTENSION ::= { SYNTAX NULL IDENTIFIED BY
 //                                         id-pkix-ocsp-extended-revoke }

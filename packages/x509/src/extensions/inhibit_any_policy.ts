@@ -21,7 +21,9 @@ export const id_ce_inhibitAnyPolicy = `${id_ce}.54`;
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class InhibitAnyPolicy {
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public value: ArrayBuffer;
 
   constructor(value: ArrayBuffer = new ArrayBuffer(0)) {

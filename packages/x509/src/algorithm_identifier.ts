@@ -14,9 +14,7 @@ export type ParametersType = ArrayBuffer | null;
  * ```
  */
 export class AlgorithmIdentifier {
-  @AsnProp({
-    type: AsnPropTypes.ObjectIdentifier,
-  })
+  @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public algorithm = "";
 
   @AsnProp({
@@ -31,12 +29,12 @@ export class AlgorithmIdentifier {
 
   public isEqual(data: unknown): data is this {
     return (
-      data instanceof AlgorithmIdentifier &&
-      data.algorithm == this.algorithm &&
-      ((data.parameters &&
-        this.parameters &&
-        pvtsutils.isEqual(data.parameters, this.parameters)) ||
-        data.parameters === this.parameters)
+      data instanceof AlgorithmIdentifier
+      && data.algorithm == this.algorithm
+      && ((data.parameters
+        && this.parameters
+        && pvtsutils.isEqual(data.parameters, this.parameters))
+      || data.parameters === this.parameters)
     );
   }
 }

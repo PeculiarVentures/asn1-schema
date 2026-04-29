@@ -25,7 +25,9 @@ export class CertID {
   @AsnProp({ type: OctetString })
   public issuerKeyHash = new OctetString();
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public serialNumber = new ArrayBuffer(0);
 
   constructor(params: Partial<CertID> = {}) {

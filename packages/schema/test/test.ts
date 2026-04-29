@@ -13,7 +13,9 @@ function assertBuffer(actual: Buffer, expected: Buffer): void {
 describe("Test", () => {
   describe("Default value", () => {
     class Test {
-      @src.AsnProp({ type: src.AsnPropTypes.Integer, defaultValue: 0 })
+      @src.AsnProp({
+        type: src.AsnPropTypes.Integer, defaultValue: 0,
+      })
       public version = 0;
     }
     describe("serialize", () => {
@@ -39,19 +41,31 @@ describe("Test", () => {
       class Child {
         @src.AsnProp({ type: src.AsnPropTypes.Integer })
         public value = 2;
+
         @src.AsnProp({ type: src.AsnPropTypes.Utf8String })
         public text = "test";
       }
 
       @src.AsnType({ type: src.AsnTypeTypes.Choice })
       class Test {
-        @src.AsnProp({ type: src.AsnPropTypes.OctetString, context: 0, implicit: true })
+        @src.AsnProp({
+          type: src.AsnPropTypes.OctetString, context: 0, implicit: true,
+        })
         public select1?: ArrayBuffer;
-        @src.AsnProp({ type: src.AsnPropTypes.Utf8String, context: 1 })
+
+        @src.AsnProp({
+          type: src.AsnPropTypes.Utf8String, context: 1,
+        })
         public select2?: string;
-        @src.AsnProp({ type: src.AsnPropTypes.Integer, context: 2 })
+
+        @src.AsnProp({
+          type: src.AsnPropTypes.Integer, context: 2,
+        })
         public select3?: number;
-        @src.AsnProp({ type: Child, context: 3, implicit: true })
+
+        @src.AsnProp({
+          type: Child, context: 3, implicit: true,
+        })
         public select4?: Child;
       }
       describe("EXPLICIT", () => {
@@ -160,8 +174,10 @@ describe("Test", () => {
       class Choice {
         @src.AsnProp({ type: src.AsnPropTypes.Integer })
         public numValue!: number;
+
         @src.AsnProp({ type: src.AsnPropTypes.Boolean })
         public boolValue!: boolean;
+
         @src.AsnProp({ type: src.AsnPropTypes.ObjectIdentifier })
         public oidValue!: string;
       }
@@ -186,6 +202,7 @@ describe("Test", () => {
       class Test {
         @src.AsnProp({ type: src.AsnPropTypes.Integer })
         public case1?: number;
+
         @src.AsnProp({ type: src.AsnPropTypes.Utf8String })
         public case2?: string;
       }
@@ -338,7 +355,6 @@ describe("Test", () => {
          * SEQUENCE (1 elem)
          *   Universal My test text
          */
-        // tslint:disable-next-line:max-line-length
         test(
           Test,
           "30321c300000004d0000007900000020000000740000006500000073000000740000002000000074000000650000007800000074",
@@ -471,7 +487,9 @@ describe("Test", () => {
     describe("BigInt", () => {
       @src.AsnChoiceType()
       class Test {
-        @src.AsnProp({ type: src.AsnPropTypes.Integer, converter: src.AsnIntegerBigIntConverter })
+        @src.AsnProp({
+          type: src.AsnPropTypes.Integer, converter: src.AsnIntegerBigIntConverter,
+        })
         public value!: bigint;
       }
 
@@ -624,7 +642,9 @@ describe("Test", () => {
     describe("IMPLICIT", () => {
       it("unused bits 0", () => {
         class Test {
-          @src.AsnProp({ type: src.AsnPropTypes.BitString, context: 0, implicit: true })
+          @src.AsnProp({
+            type: src.AsnPropTypes.BitString, context: 0, implicit: true,
+          })
           public value = new Uint8Array([255, 1]).buffer;
         }
         const der = src.AsnSerializer.serialize(new Test());
@@ -639,7 +659,9 @@ describe("Test", () => {
   describe("IA5String", () => {
     it("IMPLICIT", () => {
       class Test {
-        @src.AsnProp({ type: src.AsnPropTypes.IA5String, context: 2, implicit: true })
+        @src.AsnProp({
+          type: src.AsnPropTypes.IA5String, context: 2, implicit: true,
+        })
         public value = "test";
       }
 
@@ -659,6 +681,7 @@ describe("Test", () => {
           this.value = asn.valueBlock.value;
           return this;
         }
+
         public toASN(): asn1js.Utf8String {
           return new asn1js.Utf8String({ value: this.value });
         }
@@ -681,8 +704,11 @@ describe("Test", () => {
 
   it("optional property", () => {
     class Test {
-      @src.AsnProp({ type: src.AsnPropTypes.Utf8String, optional: true })
+      @src.AsnProp({
+        type: src.AsnPropTypes.Utf8String, optional: true,
+      })
       public opt?: string;
+
       @src.AsnProp({ type: src.AsnPropTypes.Integer })
       public value = 1;
     }
@@ -700,7 +726,9 @@ describe("Test", () => {
     describe("PRIMITIVE", () => {
       it("SET", () => {
         class Test {
-          @src.AsnProp({ type: src.AsnPropTypes.Integer, repeated: "set" })
+          @src.AsnProp({
+            type: src.AsnPropTypes.Integer, repeated: "set",
+          })
           public values = [1, 2, 3, 4, 5];
         }
 
@@ -716,7 +744,9 @@ describe("Test", () => {
       });
       it("SEQUENCE", () => {
         class Test {
-          @src.AsnProp({ type: src.AsnPropTypes.Integer, repeated: "sequence" })
+          @src.AsnProp({
+            type: src.AsnPropTypes.Integer, repeated: "sequence",
+          })
           public values = [1, 2, 3, 4, 5];
         }
 
@@ -736,6 +766,7 @@ describe("Test", () => {
         class Child {
           @src.AsnProp({ type: src.AsnPropTypes.Integer })
           public value = 0;
+
           constructor(value?: number) {
             if (value !== undefined) {
               this.value = value;
@@ -743,7 +774,9 @@ describe("Test", () => {
           }
         }
         class Test {
-          @src.AsnProp({ type: Child, repeated: "set" })
+          @src.AsnProp({
+            type: Child, repeated: "set",
+          })
           public values: Child[] = [];
         }
 
@@ -762,6 +795,7 @@ describe("Test", () => {
         class Child {
           @src.AsnProp({ type: src.AsnPropTypes.Integer })
           public value = 0;
+
           constructor(value?: number) {
             if (value !== undefined) {
               this.value = value;
@@ -769,7 +803,9 @@ describe("Test", () => {
           }
         }
         class Test {
-          @src.AsnProp({ type: Child, repeated: "sequence" })
+          @src.AsnProp({
+            type: Child, repeated: "sequence",
+          })
           public values: Child[] = [];
         }
 
@@ -848,7 +884,9 @@ describe("Test", () => {
   });
 
   describe("Repeated SET using AsnType decorator", () => {
-    @src.AsnType({ type: src.AsnTypeTypes.Set, itemType: src.AsnPropTypes.ObjectIdentifier })
+    @src.AsnType({
+      type: src.AsnTypeTypes.Set, itemType: src.AsnPropTypes.ObjectIdentifier,
+    })
     class Test extends src.AsnArray<string> {}
 
     const testHex = "310c06042a030405060453040506";

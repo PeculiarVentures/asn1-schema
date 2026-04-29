@@ -64,11 +64,11 @@ export class AsnSerializer {
 
         // Default value
         if (
-          objProp === undefined ||
-          schemaItem.defaultValue === objProp ||
-          (typeof schemaItem.defaultValue === "object" &&
-            typeof objProp === "object" &&
-            isArrayEqual(this.serialize(schemaItem.defaultValue), this.serialize(objProp)))
+          objProp === undefined
+          || schemaItem.defaultValue === objProp
+          || (typeof schemaItem.defaultValue === "object"
+            && typeof objProp === "object"
+            && isArrayEqual(this.serialize(schemaItem.defaultValue), this.serialize(objProp)))
         ) {
           continue; // skip item
         }
@@ -79,12 +79,12 @@ export class AsnSerializer {
           if (schemaItem.implicit) {
             // IMPLICIT
             if (
-              !schemaItem.repeated &&
-              (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))
+              !schemaItem.repeated
+              && (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))
             ) {
               const value: { valueHex?: ArrayBuffer; value?: ArrayBuffer } = {};
-              value.valueHex =
-                asn1Item instanceof asn1js.Null
+              value.valueHex
+                = asn1Item instanceof asn1js.Null
                   ? asn1Item.valueBeforeDecodeView
                   : asn1Item.valueBlock.toBER();
               asn1Value.push(
@@ -105,7 +105,7 @@ export class AsnSerializer {
                     tagClass: 3,
                     tagNumber: schemaItem.context,
                   },
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
                   value: (asn1Item as any).valueBlock.value,
                 }),
               );
@@ -164,7 +164,6 @@ export class AsnSerializer {
       // we MUST to use Converters
       const converter = schemaItem.converter;
       if (!converter) {
-        // tslint:disable-next-line:max-line-length
         throw new Error(
           `Property '${key}' doesn't have converter for type ${AsnPropTypes[schemaItem.type]} in schema '${target.name}'`,
         );
@@ -175,9 +174,7 @@ export class AsnSerializer {
         }
         const items = Array.from(objProp, (element) => converter.toASN(element));
         const Container = schemaItem.repeated === "sequence" ? asn1js.Sequence : asn1js.Set;
-        asn1Item = new Container({
-          value: items,
-        });
+        asn1Item = new Container({ value: items });
       } else {
         asn1Item = converter.toASN(objProp);
       }
@@ -190,9 +187,7 @@ export class AsnSerializer {
         }
         const items = Array.from(objProp, (element) => this.toASN(element));
         const Container = schemaItem.repeated === "sequence" ? asn1js.Sequence : asn1js.Set;
-        asn1Item = new Container({
-          value: items,
-        });
+        asn1Item = new Container({ value: items });
       } else {
         asn1Item = this.toASN(objProp);
       }

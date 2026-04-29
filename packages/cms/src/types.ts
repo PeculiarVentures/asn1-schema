@@ -1,5 +1,7 @@
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import { AsnTypeTypes, AsnType, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnTypeTypes, AsnType, OctetString,
+} from "@peculiar/asn1-schema";
 
 /**
  * ```asn

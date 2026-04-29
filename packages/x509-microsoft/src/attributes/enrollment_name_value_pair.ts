@@ -1,4 +1,6 @@
-import { AsnArray, AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import {
+  AsnArray, AsnType, AsnTypeTypes, AsnProp, AsnPropTypes,
+} from "@peculiar/asn1-schema";
 
 export const id_enrollmenNameValuePair = "1.3.6.1.4.1.311.13.2.1";
 
@@ -28,7 +30,9 @@ export class EnrollmentNameValuePair {
  * EnrollmentNameValuePairs ::= SEQUENCE OF EnrollmentNameValuePair
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: EnrollmentNameValuePair })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: EnrollmentNameValuePair,
+})
 export class EnrollmentNameValuePairs extends AsnArray<EnrollmentNameValuePair> {
   constructor(items?: EnrollmentNameValuePair[]) {
     super(items);

@@ -12,16 +12,24 @@ import { AttrSpec } from "./attr_spec";
  * ```
  */
 export class AAControls {
-  @AsnProp({ type: AsnPropTypes.Integer, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Integer, optional: true,
+  })
   public pathLenConstraint?: number;
 
-  @AsnProp({ type: AttrSpec, implicit: true, context: 0, optional: true })
+  @AsnProp({
+    type: AttrSpec, implicit: true, context: 0, optional: true,
+  })
   public permittedAttrs?: AttrSpec;
 
-  @AsnProp({ type: AttrSpec, implicit: true, context: 1, optional: true })
+  @AsnProp({
+    type: AttrSpec, implicit: true, context: 1, optional: true,
+  })
   public excludedAttrs?: AttrSpec;
 
-  @AsnProp({ type: AsnPropTypes.Boolean, defaultValue: true })
+  @AsnProp({
+    type: AsnPropTypes.Boolean, defaultValue: true,
+  })
   public permitUnSpecified = true;
 
   constructor(params: Partial<AAControls> = {}) {

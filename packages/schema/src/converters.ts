@@ -1,5 +1,7 @@
 import * as asn1js from "asn1js";
-import { AnyConverterType, IAsnConverter, IntegerConverterType } from "./types";
+import {
+  AnyConverterType, IAsnConverter, IntegerConverterType,
+} from "./types";
 import { AsnPropTypes } from "./enums";
 import { OctetString } from "./types/index";
 /**

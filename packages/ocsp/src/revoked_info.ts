@@ -12,7 +12,9 @@ export class RevokedInfo {
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public revocationTime = new Date();
 
-  @AsnProp({ type: CRLReason, context: 0, optional: true })
+  @AsnProp({
+    type: CRLReason, context: 0, optional: true,
+  })
   public revocationReason?: CRLReason;
 
   constructor(params: Partial<RevokedInfo> = {}) {

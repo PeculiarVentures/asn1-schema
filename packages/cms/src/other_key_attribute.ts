@@ -11,7 +11,9 @@ export class OtherKeyAttribute {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public keyAttrId = "";
 
-  @AsnProp({ type: AsnPropTypes.Any, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Any, optional: true,
+  })
   public keyAttr?: ArrayBuffer;
 
   constructor(params: Partial<OtherKeyAttribute> = {}) {

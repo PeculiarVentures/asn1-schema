@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter,
+} from "@peculiar/asn1-schema";
 import {
   AlgorithmIdentifier,
   Attribute,
@@ -47,19 +49,27 @@ export class AttributeCertificateInfo {
   @AsnProp({ type: AlgorithmIdentifier })
   public signature = new AlgorithmIdentifier();
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public serialNumber: CertificateSerialNumber = new ArrayBuffer(0);
 
   @AsnProp({ type: AttCertValidityPeriod })
   public attrCertValidityPeriod = new AttCertValidityPeriod();
 
-  @AsnProp({ type: Attribute, repeated: "sequence" })
+  @AsnProp({
+    type: Attribute, repeated: "sequence",
+  })
   public attributes: Attribute[] = [];
 
-  @AsnProp({ type: AsnPropTypes.BitString, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.BitString, optional: true,
+  })
   public issuerUniqueID?: UniqueIdentifier;
 
-  @AsnProp({ type: Extensions, optional: true })
+  @AsnProp({
+    type: Extensions, optional: true,
+  })
   public extensions?: Extensions;
 
   constructor(params: Partial<AttributeCertificateInfo> = {}) {

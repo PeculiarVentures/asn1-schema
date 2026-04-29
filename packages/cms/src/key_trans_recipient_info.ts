@@ -1,7 +1,11 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
-import { CMSVersion, KeyEncryptionAlgorithmIdentifier, EncryptedKey } from "./types";
-import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
+import {
+  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString,
+} from "@peculiar/asn1-schema";
 import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
+import {
+  CMSVersion, KeyEncryptionAlgorithmIdentifier, EncryptedKey,
+} from "./types";
+import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 
 /**
  * ```asn
@@ -13,7 +17,9 @@ import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
 @AsnType({ type: AsnTypeTypes.Choice })
 export class RecipientIdentifier {
   // * Declare subjectKeyIdentifier before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
-  @AsnProp({ type: SubjectKeyIdentifier, context: 0, implicit: true })
+  @AsnProp({
+    type: SubjectKeyIdentifier, context: 0, implicit: true,
+  })
   public subjectKeyIdentifier?: SubjectKeyIdentifier;
 
   @AsnProp({ type: IssuerAndSerialNumber })

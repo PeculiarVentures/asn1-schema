@@ -1,15 +1,13 @@
 import * as assert from "node:assert";
-import { ECParameters, id_secp256r1 } from "../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
+import { ECParameters, id_secp256r1 } from "../src";
 
 describe("EC parameters", () => {
   describe("Named curve", () => {
     const ecParamsHex = "06082a8648ce3d030107";
 
     it("serialize", () => {
-      const ecParams = new ECParameters({
-        namedCurve: id_secp256r1,
-      });
+      const ecParams = new ECParameters({ namedCurve: id_secp256r1 });
       const der = AsnConvert.serialize(ecParams);
       assert.strictEqual(Buffer.from(der).toString("hex"), ecParamsHex);
     });

@@ -12,16 +12,24 @@ import { OtherLogotypeInfo } from "./other_logotype_info";
  * ```
  */
 export class LogotypeExtn {
-  @AsnProp({ type: LogotypeInfo, context: 0, repeated: "sequence", optional: true })
+  @AsnProp({
+    type: LogotypeInfo, context: 0, repeated: "sequence", optional: true,
+  })
   public communityLogos?: LogotypeInfo[];
 
-  @AsnProp({ type: LogotypeInfo, context: 1, optional: true })
+  @AsnProp({
+    type: LogotypeInfo, context: 1, optional: true,
+  })
   public issuerLogo?: LogotypeInfo;
 
-  @AsnProp({ type: LogotypeInfo, context: 2, optional: true })
+  @AsnProp({
+    type: LogotypeInfo, context: 2, optional: true,
+  })
   public subjectLogo?: LogotypeInfo;
 
-  @AsnProp({ type: OtherLogotypeInfo, context: 3, repeated: "sequence", optional: true })
+  @AsnProp({
+    type: OtherLogotypeInfo, context: 3, repeated: "sequence", optional: true,
+  })
   public otherLogos?: OtherLogotypeInfo[];
 
   constructor(params: Partial<LogotypeExtn> = {}) {

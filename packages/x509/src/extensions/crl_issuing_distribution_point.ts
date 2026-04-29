@@ -1,7 +1,6 @@
-import { AsnProp } from "@peculiar/asn1-schema";
-import { DistributionPointName, Reason } from "./crl_distribution_points";
+import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
-import { AsnPropTypes } from "@peculiar/asn1-schema";
+import { DistributionPointName, Reason } from "./crl_distribution_points";
 
 /**
  * ```asn1
@@ -27,7 +26,9 @@ export const id_ce_issuingDistributionPoint = `${id_ce}.28`;
 export class IssuingDistributionPoint {
   public static readonly ONLY = false;
 
-  @AsnProp({ type: DistributionPointName, context: 0, optional: true })
+  @AsnProp({
+    type: DistributionPointName, context: 0, optional: true,
+  })
   public distributionPoint?: DistributionPointName;
 
   @AsnProp({
@@ -46,7 +47,9 @@ export class IssuingDistributionPoint {
   })
   public onlyContainsCACerts = IssuingDistributionPoint.ONLY;
 
-  @AsnProp({ type: Reason, context: 3, optional: true, implicit: true })
+  @AsnProp({
+    type: Reason, context: 3, optional: true, implicit: true,
+  })
   public onlySomeReasons?: Reason;
 
   @AsnProp({

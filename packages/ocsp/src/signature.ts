@@ -17,7 +17,9 @@ export class Signature {
   @AsnProp({ type: AsnPropTypes.BitString })
   public signature = new ArrayBuffer(0);
 
-  @AsnProp({ type: Certificate, repeated: "sequence", optional: true, context: 0 })
+  @AsnProp({
+    type: Certificate, repeated: "sequence", optional: true, context: 0,
+  })
   public certs?: Certificate[];
 
   constructor(params: Partial<Signature> = {}) {

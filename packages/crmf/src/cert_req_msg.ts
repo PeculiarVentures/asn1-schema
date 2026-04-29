@@ -1,4 +1,6 @@
-import { AsnArray, AsnProp, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnArray, AsnProp, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 import { AttributeTypeAndValue } from "@peculiar/asn1-x509";
 import { CertRequest } from "./cert_request";
 import { ProofOfPossession } from "./proof_of_possession";
@@ -17,10 +19,14 @@ export class CertReqMsg {
   @AsnProp({ type: CertRequest })
   public certReq = new CertRequest();
 
-  @AsnProp({ type: ProofOfPossession, optional: true })
+  @AsnProp({
+    type: ProofOfPossession, optional: true,
+  })
   public popo?: ProofOfPossession;
 
-  @AsnProp({ type: AttributeTypeAndValue, repeated: "sequence", optional: true })
+  @AsnProp({
+    type: AttributeTypeAndValue, repeated: "sequence", optional: true,
+  })
   public regInfo?: AttributeTypeAndValue[];
 
   constructor(params: Partial<CertReqMsg> = {}) {
@@ -33,7 +39,9 @@ export class CertReqMsg {
  * CertReqMessages ::= SEQUENCE SIZE (1..MAX) OF CertReqMsg
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: CertReqMsg })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: CertReqMsg,
+})
 export class CertReqMessages extends AsnArray<CertReqMsg> {
   constructor(items?: CertReqMsg[]) {
     super(items);

@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, OctetString,
+} from "@peculiar/asn1-schema";
 import {
   CMSVersion,
   KeyDerivationAlgorithmIdentifier,
@@ -19,7 +21,9 @@ export class PasswordRecipientInfo {
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: CMSVersion = CMSVersion.v0;
 
-  @AsnProp({ type: KeyDerivationAlgorithmIdentifier, context: 0, optional: true })
+  @AsnProp({
+    type: KeyDerivationAlgorithmIdentifier, context: 0, optional: true,
+  })
   public keyDerivationAlgorithm?: KeyDerivationAlgorithmIdentifier;
 
   @AsnProp({ type: KeyEncryptionAlgorithmIdentifier })

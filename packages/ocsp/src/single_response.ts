@@ -1,6 +1,6 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
-import { CertID } from "./cert_id";
 import { Extension } from "@peculiar/asn1-x509";
+import { CertID } from "./cert_id";
 import { CertStatus } from "./cert_status";
 
 /**
@@ -26,10 +26,14 @@ export class SingleResponse {
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public thisUpdate = new Date();
 
-  @AsnProp({ type: AsnPropTypes.GeneralizedTime, context: 0, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.GeneralizedTime, context: 0, optional: true,
+  })
   public nextUpdate?: Date;
 
-  @AsnProp({ type: Extension, context: 1, repeated: "sequence", optional: true })
+  @AsnProp({
+    type: Extension, context: 1, repeated: "sequence", optional: true,
+  })
   public singleExtensions?: Extension[];
 
   constructor(params: Partial<SingleResponse> = {}) {

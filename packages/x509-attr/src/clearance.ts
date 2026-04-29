@@ -15,10 +15,14 @@ export class Clearance {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public policyId = "";
 
-  @AsnProp({ type: ClassList, defaultValue: new ClassList(ClassListFlags.unclassified) })
+  @AsnProp({
+    type: ClassList, defaultValue: new ClassList(ClassListFlags.unclassified),
+  })
   public classList = new ClassList(ClassListFlags.unclassified);
 
-  @AsnProp({ type: SecurityCategory, repeated: "set" })
+  @AsnProp({
+    type: SecurityCategory, repeated: "set",
+  })
   public securityCategories?: SecurityCategory[];
 
   constructor(params: Partial<Clearance> = {}) {

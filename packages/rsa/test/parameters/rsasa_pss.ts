@@ -1,7 +1,9 @@
 import * as assert from "node:assert";
-import { RsaSaPssParams, id_md5, id_sha1 } from "../../src";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
+import {
+  RsaSaPssParams, id_md5, id_sha1,
+} from "../../src";
 
 describe("RSASSA-PSS params", () => {
   it("serialize default", () => {

@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 /**
  * ```asn1
  * Time ::= CHOICE {
@@ -8,14 +10,10 @@ import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-sch
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class Time {
-  @AsnProp({
-    type: AsnPropTypes.UTCTime,
-  })
+  @AsnProp({ type: AsnPropTypes.UTCTime })
   public utcTime?: Date;
 
-  @AsnProp({
-    type: AsnPropTypes.GeneralizedTime,
-  })
+  @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public generalTime?: Date;
 
   constructor(time?: Date | string | number | Partial<Time>) {

@@ -38,13 +38,17 @@ export class LogotypeAudioInfo {
   /**
    * Samples per second
    */
-  @AsnProp({ type: AsnPropTypes.Integer, implicit: true, context: 3, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Integer, implicit: true, context: 3, optional: true,
+  })
   public sampleRate?: number;
 
   /**
    * RFC 3066 Language Tag
    */
-  @AsnProp({ type: AsnPropTypes.IA5String, implicit: true, context: 4, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.IA5String, implicit: true, context: 4, optional: true,
+  })
   public language?: string;
 
   constructor(params: Partial<LogotypeAudioInfo> = {}) {

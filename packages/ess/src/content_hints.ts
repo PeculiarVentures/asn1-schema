@@ -10,7 +10,9 @@ import { ContentType } from "@peculiar/asn1-cms";
  * @todo - how to implement size?
  */
 export class ContentHints {
-  @AsnProp({ type: AsnPropTypes.Utf8String, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Utf8String, optional: true,
+  })
   public contentDescription?: string;
 
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })

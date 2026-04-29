@@ -1,4 +1,6 @@
-import { AsnProp, AsnType, AsnTypeTypes, AsnArray, BitString } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnType, AsnTypeTypes, AsnArray, BitString,
+} from "@peculiar/asn1-schema";
 import { RelativeDistinguishedName } from "../name";
 import { GeneralName } from "../general_name";
 import { id_ce } from "../object_identifiers";
@@ -10,16 +12,16 @@ import { id_ce } from "../object_identifiers";
  */
 export const id_ce_cRLDistributionPoints = `${id_ce}.31`;
 
-export type ReasonType =
-  | "unused"
-  | "keyCompromise"
-  | "cACompromise"
-  | "affiliationChanged"
-  | "superseded"
-  | "cessationOfOperation"
-  | "certificateHold"
-  | "privilegeWithdrawn"
-  | "aACompromise";
+export type ReasonType
+  = | "unused"
+    | "keyCompromise"
+    | "cACompromise"
+    | "affiliationChanged"
+    | "superseded"
+    | "cessationOfOperation"
+    | "certificateHold"
+    | "privilegeWithdrawn"
+    | "aACompromise";
 
 export enum ReasonFlags {
   unused = 0x0001,
@@ -95,10 +97,14 @@ export class Reason extends BitString {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class DistributionPointName {
-  @AsnProp({ type: GeneralName, context: 0, repeated: "sequence", implicit: true })
+  @AsnProp({
+    type: GeneralName, context: 0, repeated: "sequence", implicit: true,
+  })
   public fullName?: GeneralName[];
 
-  @AsnProp({ type: RelativeDistinguishedName, context: 1, implicit: true })
+  @AsnProp({
+    type: RelativeDistinguishedName, context: 1, implicit: true,
+  })
   public nameRelativeToCRLIssuer?: RelativeDistinguishedName;
 
   constructor(params: Partial<DistributionPointName> = {}) {
@@ -115,13 +121,19 @@ export class DistributionPointName {
  * ```
  */
 export class DistributionPoint {
-  @AsnProp({ type: DistributionPointName, context: 0, optional: true })
+  @AsnProp({
+    type: DistributionPointName, context: 0, optional: true,
+  })
   public distributionPoint?: DistributionPointName;
 
-  @AsnProp({ type: Reason, context: 1, optional: true, implicit: true })
+  @AsnProp({
+    type: Reason, context: 1, optional: true, implicit: true,
+  })
   public reasons?: Reason;
 
-  @AsnProp({ type: GeneralName, context: 2, optional: true, repeated: "sequence", implicit: true })
+  @AsnProp({
+    type: GeneralName, context: 2, optional: true, repeated: "sequence", implicit: true,
+  })
   public cRLIssuer?: GeneralName[];
 
   constructor(params: Partial<DistributionPoint> = {}) {
@@ -134,7 +146,9 @@ export class DistributionPoint {
  * CRLDistributionPoints ::= SEQUENCE SIZE (1..MAX) OF DistributionPoint
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: DistributionPoint })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: DistributionPoint,
+})
 export class CRLDistributionPoints extends AsnArray<DistributionPoint> {
   constructor(items?: DistributionPoint[]) {
     super(items);

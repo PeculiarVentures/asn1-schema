@@ -1,6 +1,8 @@
 import * as assert from "node:assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
-import { CertReqMsg, CertReqMessages, CertRequest } from "@peculiar/asn1-crmf";
+import {
+  CertReqMsg, CertReqMessages, CertRequest,
+} from "@peculiar/asn1-crmf";
 
 describe("crmf", () => {
   const pem = [
@@ -18,13 +20,9 @@ describe("crmf", () => {
   ].join("\n");
 
   it("create CertReqMsg", () => {
-    const certReq = new CertRequest({
-      certReqId: 1,
-    });
+    const certReq = new CertRequest({ certReqId: 1 });
 
-    const certReqMsg = new CertReqMsg({
-      certReq,
-    });
+    const certReqMsg = new CertReqMsg({ certReq });
 
     const der = AsnConvert.serialize(certReqMsg);
     assert.ok(der.byteLength > 0);
