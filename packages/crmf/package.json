@@ -1,50 +1,24 @@
 {
   "name": "@peculiar/asn1-crmf",
   "version": "2.6.1",
-  "description": "ASN.1 schema of Certificate Request Message Format (CRMF) defined in RFC 4211",
+  "description": "ASN.1 schema for Certificate Request Message Format (CRMF) defined in RFC 4211.",
   "keywords": [
-    "asn"
+    "asn",
+    "asn1",
+    "crmf",
+    "cmp",
+    "certificate-request",
+    "rfc4211"
   ],
   "author": "PeculiarVentures, LLC",
   "license": "MIT",
-  "main": "build/cjs/index.js",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/PeculiarVentures/asn1-schema",
-    "directory": "packages/crmf"
-  },
-  "scripts": {
-    "test": "mocha",
-    "clear": "rimraf build",
-    "build": "npm run build:module && npm run build:types",
-    "build:module": "npm run build:cjs && npm run build:es2015",
-    "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
-    "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
-    "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
-    "prebuild:types": "rimraf build/types",
-    "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
-    "rebuild": "npm run clear && npm run build"
-  },
-  "dependencies": {
-    "@peculiar/asn1-cms": "^2.6.1",
-    "@peculiar/asn1-schema": "^2.6.0",
-    "@peculiar/asn1-x509": "^2.6.1",
-    "asn1js": "^3.0.6",
-    "tslib": "^2.8.1"
-  },
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/crmf#readme",
+  "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
   "exports": {
@@ -54,5 +28,36 @@
       "require": "./build/cjs/index.js"
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PeculiarVentures/asn1-schema",
+    "directory": "packages/crmf"
+  },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/crmf#readme",
+  "scripts": {
+    "clear": "rimraf build",
+    "build": "npm run build:module && npm run build:types",
+    "build:module": "npm run build:cjs && npm run build:es2015",
+    "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
+    "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+    "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
+    "prebuild:types": "rimraf build/types",
+    "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
+    "rebuild": "npm run clear && npm run build",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "@peculiar/asn1-cms": "^2.6.1",
+    "@peculiar/asn1-schema": "^2.6.0",
+    "@peculiar/asn1-x509": "^2.6.1",
+    "asn1js": "^3.0.6",
+    "tslib": "^2.8.1"
   }
 }

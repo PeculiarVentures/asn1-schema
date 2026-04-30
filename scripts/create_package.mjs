@@ -13,6 +13,105 @@ import {
 import { fileURLToPath } from "node:url";
 import * as rimraf from "rimraf";
 
+const COMMON_FILES = ["build/**/*.{js,d.ts}", "build/es2015/package.json", "LICENSE", "README.md"];
+
+const COMMON_SCRIPTS = {
+  clear: "rimraf build",
+  build: "npm run build:module && npm run build:types",
+  "build:module": "npm run build:cjs && npm run build:es2015",
+  "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
+  "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+  "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
+  "prebuild:types": "rimraf build/types",
+  "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
+  rebuild: "npm run clear && npm run build",
+};
+
+function orderedObject(entries) {
+  return Object.fromEntries(entries.filter(([, value]) => value !== undefined));
+}
+
+function sortObject(input) {
+  return Object.fromEntries(Object.entries(input).sort(([left], [right]) => left.localeCompare(right)));
+}
+
+function createPackageDescription(name) {
+  return `ASN.1 schema definitions for ${name}.`;
+}
+
+function createPackageKeywords(name) {
+  return ["asn", "asn1", name];
+}
+
+function createBadgeBlock(packageName, packageDirName) {
+  const encodedName = encodeURIComponent(packageName);
+
+  return [
+    `[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/${packageDirName}/LICENSE)`,
+    `[![npm version](https://badge.fury.io/js/${encodedName}.svg)](https://badge.fury.io/js/${encodedName})`,
+    "",
+    `[![NPM](https://nodei.co/npm/${packageName}.png)](https://nodei.co/npm/${packageName}/)`,
+  ].join("\n");
+}
+
+function createReadme(moduleName, packageDirName) {
+  return `# \`${moduleName}\`
+
+${createBadgeBlock(moduleName, packageDirName)}
+
+ASN.1 schema definitions for ${packageDirName}.
+
+Use the exported classes with \`@peculiar/asn1-schema\` helpers such as
+\`AsnConvert\`, \`AsnParser\`, and \`AsnSerializer\` to parse or serialize
+DER-encoded data defined by the referenced specification.
+
+## Installation
+
+\`\`\`bash
+npm install ${moduleName}
+\`\`\`
+
+## Specifications
+
+- Add the primary RFC, draft, or vendor specification implemented by this package.
+`;
+}
+
+function createPackageJson(packageJson, name, moduleName) {
+  const dependencies = packageJson.dependencies ? sortObject(packageJson.dependencies) : undefined;
+
+  return orderedObject([
+    ["name", moduleName],
+    ["version", packageJson.version],
+    ["description", createPackageDescription(name)],
+    ["keywords", createPackageKeywords(name)],
+    ["author", "PeculiarVentures, LLC"],
+    ["license", "MIT"],
+    ["files", COMMON_FILES],
+    ["main", "build/cjs/index.js"],
+    ["module", "build/es2015/index.js"],
+    ["types", "build/types/index.d.ts"],
+    ["exports", {
+      ".": {
+        types: "./build/types/index.d.ts",
+        import: "./build/es2015/index.js",
+        require: "./build/cjs/index.js",
+      },
+      "./package.json": "./package.json",
+    }],
+    ["publishConfig", { access: "public" }],
+    ["repository", {
+      type: "git",
+      url: "https://github.com/PeculiarVentures/asn1-schema",
+      directory: `packages/${name}`,
+    }],
+    ["bugs", { url: "https://github.com/PeculiarVentures/asn1-schema/issues" }],
+    ["homepage", `https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/${name}#readme`],
+    ["scripts", COMMON_SCRIPTS],
+    ["dependencies", dependencies],
+  ]);
+}
+
 async function main(name) {
   if (!name) {
     throw new Error("Argument 'name' is empty");
@@ -26,65 +125,21 @@ async function main(name) {
 
   // Create package
   execSync(
-    `lerna create ${moduleName} --dependencies @peculiar/asn1-schema asn1js tslib --keywords asn --yes`,
+    `lerna create ${moduleName} --dependencies @peculiar/asn1-schema asn1js tslib --yes`,
   );
   renameSync(join(projectDir, "packages", `asn1-${name}`), moduleDir);
 
   // Update package.json
   const packageJson = JSON.parse(readFileSync(join(moduleDir, "package.json"), "utf8"));
-  Object.assign(packageJson, {
-    description: "",
-    files: ["build/**/*.{js,d.ts}", "build/es2015/package.json", "LICENSE", "README.md"],
-    author: "PeculiarVentures, LLC",
-    license: "MIT",
-    main: "build/cjs/index.js",
-    module: "build/es2015/index.js",
-    types: "build/types/index.d.ts",
-    publishConfig: { access: "public" },
-    repository: {
-      type: "git",
-      url: "https://github.com/PeculiarVentures/asn1-schema",
-      directory: `packages/${name}`,
-    },
-    exports: {
-      ".": {
-        types: "./build/types/index.d.ts",
-        import: "./build/es2015/index.js",
-        require: "./build/cjs/index.js",
-      },
-      "./package.json": "./package.json",
-    },
-    scripts: {
-      clear: "rimraf build",
-      build: "npm run build:module && npm run build:types",
-      "build:module": "npm run build:cjs && npm run build:es2015",
-      "build:cjs":
-        "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
-      "build:es2015":
-        "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
-      "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
-      "prebuild:types": "rimraf build/types",
-      "build:types":
-        "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
-      rebuild: "npm run clear && npm run build",
-    },
-  });
-  delete packageJson.directories;
-  writeFileSync(join(moduleDir, "package.json"), `${JSON.stringify(packageJson, null, "  ")}\n`);
+  const normalizedPackageJson = createPackageJson(packageJson, name, moduleName);
+  writeFileSync(join(moduleDir, "package.json"), `${JSON.stringify(normalizedPackageJson, null, "  ")}\n`);
 
-  rimraf.sync(path.join(moduleDir, "__tests__"));
+  rimraf.sync(join(moduleDir, "__tests__"));
   rimraf.sync(join(moduleDir, "lib"));
   mkdirSync(join(moduleDir, "test"));
   mkdirSync(join(moduleDir, "src"));
 
-  const readme = `# \`${moduleName}\`
-
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/asn1-schema/master/packages/${name}/LICENSE.md)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-${name}.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-${name})
-
-[![NPM](https://nodei.co/npm/@peculiar/asn1-${name}.png)](https://nodei.co/npm/@peculiar/asn1-${name}/)
-`;
-  writeFileSync(join(moduleDir, "README.md"), readme);
+  writeFileSync(join(moduleDir, "README.md"), createReadme(moduleName, name));
 
   const license = `MIT License
 

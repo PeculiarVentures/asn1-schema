@@ -1,22 +1,22 @@
 {
   "name": "@peculiar/asn1-x509-qualified",
   "version": "2.6.1",
-  "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure: Qualified Certificates Profile` (RFC3739)",
+  "description": "ASN.1 schema for qualified certificate statements and profiles defined in RFC 3739.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "x509",
+    "qualified-certificate",
+    "rfc3739"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-qualified#readme",
-  "keywords": [
-    "asn"
-  ],
-  "author": "PeculiarVentures, LLC",
-  "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -36,6 +36,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/x509-qualified"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-qualified#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",

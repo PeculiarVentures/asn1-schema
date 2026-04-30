@@ -1,22 +1,24 @@
 {
   "name": "@peculiar/asn1-android",
   "version": "2.6.0",
-  "description": "",
+  "description": "ASN.1 schema for Android key attestation extensions, including legacy Keymaster and newer KeyMint structures.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "android",
+    "attestation",
+    "keystore",
+    "keymint",
+    "keymaster"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/android#readme",
-  "keywords": [
-    "asn"
-  ],
-  "author": "PeculiarVentures, LLC",
-  "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -36,6 +38,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/android"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/android#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",

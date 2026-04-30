@@ -1,22 +1,23 @@
 {
   "name": "@peculiar/asn1-lei",
   "version": "2.6.0",
-  "description": "",
+  "description": "ASN.1 schema for Legal Entity Identifier (LEI) attributes used in digital certificates and ISO 17442-2 profiles.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "lei",
+    "x509",
+    "organization",
+    "iso17442"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/lei#readme",
-  "keywords": [
-    "asn"
-  ],
-  "author": "PeculiarVentures, LLC",
-  "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -36,6 +37,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/lei"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/lei#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",

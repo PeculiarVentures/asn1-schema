@@ -1,26 +1,25 @@
 {
   "name": "@peculiar/asn1-ecc",
   "version": "2.6.1",
-  "description": "ASN.1 schema of `Elliptic Curve Private Key Structure` (RFC5915)",
-  "files": [
-    "build/**/*.{js,d.ts}",
-    "build/es2015/package.json",
-    "LICENSE",
-    "README.md"
-  ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/ecc#readme",
+  "description": "ASN.1 schema for elliptic-curve private keys and related identifiers defined in RFC 5915, RFC 5480, and RFC 3279.",
   "keywords": [
     "asn",
+    "asn1",
     "ecc",
+    "ec",
+    "elliptic-curve",
     "rfc5915",
     "rfc5480",
     "rfc3279"
   ],
   "author": "PeculiarVentures, LLC",
   "license": "MIT",
+  "files": [
+    "build/**/*.{js,d.ts}",
+    "build/es2015/package.json",
+    "LICENSE",
+    "README.md"
+  ],
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -40,6 +39,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/ecc"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/ecc#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",

@@ -1,22 +1,22 @@
 {
   "name": "@peculiar/asn1-pkcs8",
   "version": "2.6.1",
-  "description": "ASN.1 schema of `Public-Key Cryptography Standards (PKCS) #8: Private-Key Information Syntax Specification Version 1.2` (RFC5208)",
+  "description": "ASN.1 schema for PKCS #8 private key information structures defined in RFC 5208.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "pkcs8",
+    "private-key",
+    "rfc5208"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/pkcs8#readme",
-  "keywords": [
-    "asn"
-  ],
-  "author": "PeculiarVentures, LLC",
-  "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -36,6 +36,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/pkcs8"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/pkcs8#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",

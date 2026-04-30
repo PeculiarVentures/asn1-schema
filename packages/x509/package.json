@@ -1,25 +1,23 @@
 {
   "name": "@peculiar/asn1-x509",
   "version": "2.6.1",
-  "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile` (RFC5280)",
+  "description": "ASN.1 schema for X.509 certificates, certificate revocation lists, and related profile structures defined in RFC 5280.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "x509",
+    "certificate",
+    "crl",
+    "rfc5280"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509#readme",
-  "keywords": [
-    "asn",
-    "rfc",
-    "rfc5280",
-    "x509"
-  ],
-  "author": "PeculiarVentures, LLC",
-  "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -39,6 +37,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/x509"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",
@@ -52,8 +54,8 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.6.0",
-    "asn1js": "^3.0.6",
     "@peculiar/utils": "^2.0.2",
+    "asn1js": "^3.0.6",
     "tslib": "^2.8.1"
   }
 }

@@ -1,49 +1,25 @@
 {
   "name": "@peculiar/asn1-ntqwac",
   "version": "2.6.1",
-  "description": "",
+  "description": "ASN.1 schema for ntQWAC profile extensions, including domain-name roles, activity descriptions, GDPR attestations, insurance values, and valuation rankings.",
   "keywords": [
-    "asn"
+    "asn",
+    "asn1",
+    "ntqwac",
+    "qwac",
+    "x509",
+    "gdpr",
+    "certificate-profile"
   ],
   "author": "PeculiarVentures, LLC",
   "license": "MIT",
-  "main": "build/cjs/index.js",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/PeculiarVentures/asn1-schema",
-    "directory": "packages/ntqwac"
-  },
-  "scripts": {
-    "test": "mocha",
-    "clear": "rimraf build",
-    "build": "npm run build:module && npm run build:types",
-    "build:module": "npm run build:cjs && npm run build:es2015",
-    "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
-    "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
-    "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
-    "prebuild:types": "rimraf build/types",
-    "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
-    "rebuild": "npm run clear && npm run build"
-  },
-  "dependencies": {
-    "@peculiar/asn1-schema": "^2.6.0",
-    "@peculiar/asn1-x509": "^2.6.1",
-    "asn1js": "^3.0.6",
-    "tslib": "^2.8.1"
-  },
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema#readme",
+  "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
   "exports": {
@@ -53,5 +29,35 @@
       "require": "./build/cjs/index.js"
     },
     "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PeculiarVentures/asn1-schema",
+    "directory": "packages/ntqwac"
+  },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/ntqwac#readme",
+  "scripts": {
+    "clear": "rimraf build",
+    "build": "npm run build:module && npm run build:types",
+    "build:module": "npm run build:cjs && npm run build:es2015",
+    "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
+    "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+    "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
+    "prebuild:types": "rimraf build/types",
+    "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
+    "rebuild": "npm run clear && npm run build",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "@peculiar/asn1-schema": "^2.6.0",
+    "@peculiar/asn1-x509": "^2.6.1",
+    "asn1js": "^3.0.6",
+    "tslib": "^2.8.1"
   }
 }

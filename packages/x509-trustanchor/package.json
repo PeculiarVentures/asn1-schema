@@ -1,22 +1,22 @@
 {
   "name": "@peculiar/asn1-x509-trustanchor",
   "version": "2.6.1",
-  "description": "ASN.1 schema of `Trust Anchor Format` (RFC5914)",
+  "description": "ASN.1 schema for the Trust Anchor Format defined in RFC 5914.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "x509",
+    "trust-anchor",
+    "rfc5914"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-trustanchor#readme",
-  "keywords": [
-    "asn"
-  ],
-  "author": "PeculiarVentures, LLC",
-  "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -36,6 +36,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/x509-trustanchor"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-trustanchor#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",

@@ -1,22 +1,24 @@
 {
   "name": "@peculiar/asn1-cert-transparency",
   "version": "2.6.0",
-  "description": "",
+  "description": "ASN.1 schema for Certificate Transparency structures and signed certificate timestamp data defined in RFC 6962.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "certificate-transparency",
+    "ct",
+    "sct",
+    "rfc6962",
+    "x509"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/cert-transparency#readme",
-  "keywords": [
-    "asn"
-  ],
-  "author": "PeculiarVentures, LLC",
-  "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -36,6 +38,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/cert-transparency"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/cert-transparency#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",
@@ -49,8 +55,8 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.6.0",
-    "asn1js": "^3.0.6",
     "@peculiar/utils": "^2.0.2",
+    "asn1js": "^3.0.6",
     "tslib": "^2.8.1"
   }
 }

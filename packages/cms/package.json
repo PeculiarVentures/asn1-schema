@@ -1,22 +1,23 @@
 {
   "name": "@peculiar/asn1-cms",
   "version": "2.6.1",
-  "description": "ASN.1 schema of `Cryptographic Message Syntax (CMS)` (RFC5652)",
+  "description": "ASN.1 schema for Cryptographic Message Syntax (CMS) defined in RFC 5652.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "cms",
+    "pkcs7",
+    "cryptography",
+    "rfc5652"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/cms#readme",
-  "keywords": [
-    "asn"
-  ],
-  "license": "MIT",
-  "author": "PeculiarVentures, LLC",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -36,6 +37,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/cms"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/cms#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",

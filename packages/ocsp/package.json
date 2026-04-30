@@ -1,24 +1,23 @@
 {
   "name": "@peculiar/asn1-ocsp",
   "version": "2.6.1",
-  "description": "ASN.1 schema of `X.509 Internet Public Key Infrastructure Online Certificate Status Protocol - OCSP` (RFC6990)",
+  "description": "ASN.1 schema for the Online Certificate Status Protocol (OCSP) defined in RFC 6960.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "ocsp",
+    "x509",
+    "certificate-status",
+    "rfc6960"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/ocsp#readme",
-  "keywords": [
-    "rfc",
-    "rfc6960",
-    "asn"
-  ],
-  "license": "MIT",
-  "author": "PeculiarVentures, LLC",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -38,6 +37,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/ocsp"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/ocsp#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",

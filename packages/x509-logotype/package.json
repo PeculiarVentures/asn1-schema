@@ -1,25 +1,24 @@
 {
   "name": "@peculiar/asn1-x509-logotype",
   "version": "2.6.1",
-  "description": "ASN.1 schema of `Internet X.509 Public Key Infrastructure: Logotypes in X.509 Certificates` (RFC3709)",
+  "description": "ASN.1 schema for X.509 certificate logotype extensions defined in RFC 3709 and RFC 9399.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "x509",
+    "logotype",
+    "certificate",
+    "rfc3709",
+    "rfc9399"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
     "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
-  "bugs": {
-    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
-  },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-logotype#readme",
-  "keywords": [
-    "asn",
-    "logotype",
-    "rfc3709",
-    "rfc9399"
-  ],
-  "author": "PeculiarVentures, LLC",
-  "license": "MIT",
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
@@ -39,6 +38,10 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema",
     "directory": "packages/x509-logotype"
   },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-logotype#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",
