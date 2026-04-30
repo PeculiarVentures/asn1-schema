@@ -68,7 +68,9 @@ export class BiometricData {
   @AsnProp({ type: OctetString })
   public biometricDataHash = new OctetString();
 
-  @AsnProp({ type: AsnPropTypes.IA5String, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.IA5String, optional: true,
+  })
   public sourceDataUri?: string;
 
   constructor(params: Partial<BiometricData> = {}) {
@@ -81,7 +83,9 @@ export class BiometricData {
  * BiometricSyntax ::= SEQUENCE OF BiometricData
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: BiometricData })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: BiometricData,
+})
 export class BiometricSyntax extends AsnArray<BiometricData> {
   constructor(items?: BiometricData[]) {
     super(items);

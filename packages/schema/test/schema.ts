@@ -1,5 +1,7 @@
 import * as assert from "node:assert";
-import { AsnConvert, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "../src";
+import {
+  AsnConvert, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
+} from "../src";
 import { schemaStorage } from "../src/storage";
 
 describe("Schema", () => {
@@ -66,7 +68,9 @@ describe("Schema", () => {
 
   it.skip("empty sequence", () => {
     class Test {
-      @AsnProp({ type: AsnPropTypes.Boolean, repeated: "sequence", optional: true })
+      @AsnProp({
+        type: AsnPropTypes.Boolean, repeated: "sequence", optional: true,
+      })
       public items?: boolean[];
     }
 

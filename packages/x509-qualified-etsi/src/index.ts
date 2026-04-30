@@ -1,4 +1,6 @@
-import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 
 /**
  * Alphabetic or numeric currency code as defined in ISO 4217. It is recommended that the Alphabetic form is used
@@ -156,7 +158,9 @@ export class PdsLocation {
  * PdsLocations ::= SEQUENCE SIZE (1..MAX) OF PdsLocation
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: PdsLocation })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: PdsLocation,
+})
 export class PdsLocations extends AsnArray<PdsLocation> {
   constructor(items?: PdsLocation[]) {
     super(items);
@@ -176,7 +180,9 @@ export class PdsLocations extends AsnArray<PdsLocation> {
  *     language PrintableString (SIZE(2))} --ISO 639-1 language code
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: PdsLocation })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: PdsLocation,
+})
 export class QcEuPDS extends PdsLocations {
   constructor(items?: PdsLocation[]) {
     super(items);
@@ -193,7 +199,9 @@ export class QcEuPDS extends PdsLocations {
  *                                         id-etsi-qct-web, ...)
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.ObjectIdentifier })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.ObjectIdentifier,
+})
 export class QcType extends AsnArray<string> {
   constructor(items?: string[]) {
     super(items);
@@ -219,7 +227,9 @@ export type CountryName = string;
  *   CountryName ::= PrintableString (SIZE (2)) (export constRAINED BY { -- ISO 3166 alpha-2 codes only -- })
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.PrintableString })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.PrintableString,
+})
 export class QcCClegislation extends AsnArray<CountryName> {
   /**
    * Create a new insatnce of {@link QcCClegislation}
@@ -233,7 +243,7 @@ export class QcCClegislation extends AsnArray<CountryName> {
   }
 }
 
-//#region object identifiers
+// #region object identifiers
 
 /**
  * ```asn1
@@ -291,9 +301,9 @@ export const id_etsi_qcs_qcType = `${id_etsi_qcs}.6`;
  */
 export const id_etsi_qcs_qcCClegislation = `${id_etsi_qcs}.7`;
 
-//#endregion
+// #endregion
 
-//#region QC type identifiers
+// #region QC type identifiers
 /**
  * Certificate for electronic signatures as defined in Regulation (EU) No 910/2014
  * ```asn1
@@ -302,7 +312,7 @@ export const id_etsi_qcs_qcCClegislation = `${id_etsi_qcs}.7`;
  */
 export const id_etsi_qct_esign = `${id_etsi_qcs_qcType}.1`;
 
-/**asn1
+/** asn1
  * Certificate for electronic seals as defined in Regulation (EU) No 910/2014
  * ```asn1
  * id-etsi-qct-eseal OBJECT IDENTIFIER ::= { id-etsi-qcs-QcType 2 }
@@ -318,4 +328,4 @@ export const id_etsi_qct_eseal = `${id_etsi_qcs_qcType}.2`;
  */
 export const id_etsi_qct_web = `${id_etsi_qcs_qcType}.3`;
 
-//#endregion
+// #endregion

@@ -1,6 +1,10 @@
-import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, OctetString,
+} from "@peculiar/asn1-schema";
 import { OtherKeyAttribute } from "./other_key_attribute";
-import { CMSVersion, EncryptedKey, KeyEncryptionAlgorithmIdentifier } from "./types";
+import {
+  CMSVersion, EncryptedKey, KeyEncryptionAlgorithmIdentifier,
+} from "./types";
 
 /**
  * ```asn
@@ -14,10 +18,14 @@ export class KEKIdentifier {
   @AsnProp({ type: OctetString })
   public keyIdentifier = new OctetString();
 
-  @AsnProp({ type: AsnPropTypes.GeneralizedTime, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.GeneralizedTime, optional: true,
+  })
   public date?: Date;
 
-  @AsnProp({ type: OtherKeyAttribute, optional: true })
+  @AsnProp({
+    type: OtherKeyAttribute, optional: true,
+  })
   public other?: OtherKeyAttribute;
 
   constructor(params: Partial<KEKIdentifier> = {}) {

@@ -1,7 +1,7 @@
 import * as assert from "node:assert";
-import { EncryptedPrivateKeyInfo } from "../src";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
+import { EncryptedPrivateKeyInfo } from "../src";
 
 describe("PrivateKeyInfo", () => {
   const hex = "300f300806042a03040505000403800001";

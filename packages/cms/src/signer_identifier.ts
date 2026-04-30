@@ -1,6 +1,8 @@
-import { AsnProp, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
-import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
+import {
+  AsnProp, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
+import { IssuerAndSerialNumber } from "./issuer_and_serial_number";
 
 /**
  * ```asn
@@ -12,7 +14,9 @@ import { SubjectKeyIdentifier } from "@peculiar/asn1-x509";
 @AsnType({ type: AsnTypeTypes.Choice })
 export class SignerIdentifier {
   // * Declare subjectKeyIdentifier before issuerAndSerialNumber, because issuerAndSerialNumber is any in schema declaration
-  @AsnProp({ type: SubjectKeyIdentifier, context: 0, implicit: true })
+  @AsnProp({
+    type: SubjectKeyIdentifier, context: 0, implicit: true,
+  })
   public subjectKeyIdentifier?: SubjectKeyIdentifier;
 
   @AsnProp({ type: IssuerAndSerialNumber })

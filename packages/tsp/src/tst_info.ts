@@ -1,4 +1,6 @@
-import { AsnIntegerArrayBufferConverter, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import {
+  AsnIntegerArrayBufferConverter, AsnProp, AsnPropTypes,
+} from "@peculiar/asn1-schema";
 import { Extensions, GeneralName } from "@peculiar/asn1-x509";
 import { Accuracy } from "./accuracy";
 import { MessageImprint } from "./message_imprint";
@@ -45,16 +47,22 @@ export class TSTInfo {
   /**
    * Time-Stamping users MUST be ready to accommodate integers up to 160 bits
    */
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public serialNumber = new ArrayBuffer(0);
 
   @AsnProp({ type: AsnPropTypes.GeneralizedTime })
   public genTime = new Date();
 
-  @AsnProp({ type: Accuracy, optional: true })
+  @AsnProp({
+    type: Accuracy, optional: true,
+  })
   public accuracy?: Accuracy;
 
-  @AsnProp({ type: AsnPropTypes.Boolean, defaultValue: false })
+  @AsnProp({
+    type: AsnPropTypes.Boolean, defaultValue: false,
+  })
   public ordering = false;
 
   /**
@@ -68,10 +76,14 @@ export class TSTInfo {
   })
   public nonce?: ArrayBuffer;
 
-  @AsnProp({ type: GeneralName, context: 0, optional: true })
+  @AsnProp({
+    type: GeneralName, context: 0, optional: true,
+  })
   public tsa?: GeneralName;
 
-  @AsnProp({ type: Extensions, context: 1, implicit: true, optional: true })
+  @AsnProp({
+    type: Extensions, context: 1, implicit: true, optional: true,
+  })
   public extensions?: Extensions;
 
   constructor(params: Partial<TSTInfo> = {}) {

@@ -1,4 +1,6 @@
-import { id_pe, id_ce, id_pkix } from "@peculiar/asn1-x509";
+import {
+  id_pe, id_ce, id_pkix,
+} from "@peculiar/asn1-x509";
 
 /**
  * ```asn1

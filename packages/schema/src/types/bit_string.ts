@@ -35,7 +35,9 @@ export class BitString<T extends number = number> implements IAsnConvertible {
   }
 
   public toASN(): asn1js.BitString {
-    return new asn1js.BitString({ unusedBits: this.unusedBits, valueHex: this.value });
+    return new asn1js.BitString({
+      unusedBits: this.unusedBits, valueHex: this.value,
+    });
   }
 
   public toSchema(name: string): asn1js.BitString {

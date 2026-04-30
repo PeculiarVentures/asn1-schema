@@ -61,9 +61,7 @@ export class JWTClaimNames extends asn.AsnArray<JWTClaimName> {
  * ```
  */
 export class JWTClaimPermittedValues {
-  @asn.AsnProp({
-    type: asn.AsnPropTypes.IA5String,
-  })
+  @asn.AsnProp({ type: asn.AsnPropTypes.IA5String })
   public claim = "";
 
   @asn.AsnProp({
@@ -183,9 +181,7 @@ export type ServiceProviderCode = string;
  *   }
  * ```
  */
-@asn.AsnType({
-  type: asn.AsnTypeTypes.Choice,
-})
+@asn.AsnType({ type: asn.AsnTypeTypes.Choice })
 export class TNEntry {
   @asn.AsnProp({
     type: asn.AsnPropTypes.IA5String,

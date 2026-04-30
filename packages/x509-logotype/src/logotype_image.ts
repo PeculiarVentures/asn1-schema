@@ -13,7 +13,9 @@ export class LogotypeImage {
   @AsnProp({ type: LogotypeDetails })
   public imageDetails = new LogotypeDetails();
 
-  @AsnProp({ type: LogotypeImageInfo, optional: true })
+  @AsnProp({
+    type: LogotypeImageInfo, optional: true,
+  })
   public imageInfo?: LogotypeImageInfo;
 
   constructor(params: Partial<LogotypeImage> = {}) {

@@ -17,7 +17,9 @@ export class SvceAuthInfo {
   @AsnProp({ type: GeneralName })
   public ident = new GeneralName();
 
-  @AsnProp({ type: OctetString, optional: true })
+  @AsnProp({
+    type: OctetString, optional: true,
+  })
   public authInfo?: OctetString;
 
   constructor(params: Partial<SvceAuthInfo> = {}) {

@@ -1,5 +1,7 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
-import { SubjectPublicKeyInfo, KeyIdentifier, Extensions } from "@peculiar/asn1-x509";
+import {
+  SubjectPublicKeyInfo, KeyIdentifier, Extensions,
+} from "@peculiar/asn1-x509";
 import { CertPathControls } from "./cert_path_controls";
 
 /**
@@ -31,7 +33,9 @@ export enum TrustAnchorInfoVersion {
  * ```
  */
 export class TrustAnchorInfo {
-  @AsnProp({ type: AsnPropTypes.Integer, defaultValue: TrustAnchorInfoVersion.v1 })
+  @AsnProp({
+    type: AsnPropTypes.Integer, defaultValue: TrustAnchorInfoVersion.v1,
+  })
   public version = TrustAnchorInfoVersion.v1;
 
   @AsnProp({ type: SubjectPublicKeyInfo })
@@ -40,16 +44,24 @@ export class TrustAnchorInfo {
   @AsnProp({ type: KeyIdentifier })
   public keyId = new KeyIdentifier();
 
-  @AsnProp({ type: AsnPropTypes.Utf8String, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Utf8String, optional: true,
+  })
   public taTitle?: TrustAnchorTitle;
 
-  @AsnProp({ type: CertPathControls, optional: true })
+  @AsnProp({
+    type: CertPathControls, optional: true,
+  })
   public certPath?: CertPathControls;
 
-  @AsnProp({ type: Extensions, context: 1, optional: true })
+  @AsnProp({
+    type: Extensions, context: 1, optional: true,
+  })
   public exts?: Extensions;
 
-  @AsnProp({ type: AsnPropTypes.Utf8String, context: 2, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Utf8String, context: 2, optional: true,
+  })
   public taTitleLangTag?: string;
 
   constructor(params: Partial<TrustAnchorInfo> = {}) {

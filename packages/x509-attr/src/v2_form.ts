@@ -16,13 +16,19 @@ import { ObjectDigestInfo } from "./object_digest_info";
  * ```
  */
 export class V2Form {
-  @AsnProp({ type: GeneralNames, optional: true })
+  @AsnProp({
+    type: GeneralNames, optional: true,
+  })
   public issuerName?: GeneralNames;
 
-  @AsnProp({ type: IssuerSerial, context: 0, implicit: true, optional: true })
+  @AsnProp({
+    type: IssuerSerial, context: 0, implicit: true, optional: true,
+  })
   public baseCertificateID?: IssuerSerial;
 
-  @AsnProp({ type: ObjectDigestInfo, context: 1, implicit: true, optional: true })
+  @AsnProp({
+    type: ObjectDigestInfo, context: 1, implicit: true, optional: true,
+  })
   public objectDigestInfo?: ObjectDigestInfo;
 
   constructor(params: Partial<V2Form> = {}) {

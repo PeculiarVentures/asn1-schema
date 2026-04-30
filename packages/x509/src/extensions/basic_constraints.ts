@@ -16,10 +16,14 @@ export const id_ce_basicConstraints = `${id_ce}.19`;
  * ```
  */
 export class BasicConstraints {
-  @AsnProp({ type: AsnPropTypes.Boolean, defaultValue: false })
+  @AsnProp({
+    type: AsnPropTypes.Boolean, defaultValue: false,
+  })
   public cA = false;
 
-  @AsnProp({ type: AsnPropTypes.Integer, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Integer, optional: true,
+  })
   public pathLenConstraint?: number;
 
   constructor(params: Partial<BasicConstraints> = {}) {

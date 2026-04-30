@@ -12,10 +12,14 @@ import { LogotypeImage } from "./logotype_image";
  * ```
  */
 export class LogotypeData {
-  @AsnProp({ type: LogotypeImage, repeated: "sequence", optional: true })
+  @AsnProp({
+    type: LogotypeImage, repeated: "sequence", optional: true,
+  })
   public image?: LogotypeImage[];
 
-  @AsnProp({ type: LogotypeAudio, repeated: "sequence", context: 1, optional: true })
+  @AsnProp({
+    type: LogotypeAudio, repeated: "sequence", context: 1, optional: true,
+  })
   public audio?: LogotypeAudio[];
 
   constructor(params: Partial<LogotypeData> = {}) {

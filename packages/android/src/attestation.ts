@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, OctetString,
+} from "@peculiar/asn1-schema";
 
 /**
  * Implements ASN.1 structure for attestation package info.
@@ -33,10 +35,14 @@ export class AttestationPackageInfo {
  * ```
  */
 export class AttestationApplicationId {
-  @AsnProp({ type: AttestationPackageInfo, repeated: "set" })
+  @AsnProp({
+    type: AttestationPackageInfo, repeated: "set",
+  })
   public packageInfos!: AttestationPackageInfo[];
 
-  @AsnProp({ type: AsnPropTypes.OctetString, repeated: "set" })
+  @AsnProp({
+    type: AsnPropTypes.OctetString, repeated: "set",
+  })
   public signatureDigests!: OctetString[];
 
   constructor(params: Partial<AttestationApplicationId> = {}) {

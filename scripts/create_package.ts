@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
-import * as rimraf from "rimraf";
 import * as fs from "fs";
 import * as path from "path";
+import * as rimraf from "rimraf";
 
 async function main(name: string): Promise<void> {
   if (!name) {
@@ -30,9 +30,7 @@ async function main(name: string): Promise<void> {
     main: "build/cjs/index.js",
     module: "build/es2015/index.js",
     types: "build/types/index.d.ts",
-    publishConfig: {
-      access: "public",
-    },
+    publishConfig: { access: "public" },
     scripts: {
       clear: "rimraf build",
       build: "npm run build:module && npm run build:types",
@@ -48,9 +46,7 @@ async function main(name: string): Promise<void> {
     },
   });
   delete packageJson.directories;
-  fs.writeFileSync(path.join(moduleDir, "package.json"), JSON.stringify(packageJson, null, "  "), {
-    flag: "w+",
-  });
+  fs.writeFileSync(path.join(moduleDir, "package.json"), JSON.stringify(packageJson, null, "  "), { flag: "w+" });
 
   rimraf.sync(path.join(moduleDir, "__tests__"));
   rimraf.sync(path.join(moduleDir, "lib"));

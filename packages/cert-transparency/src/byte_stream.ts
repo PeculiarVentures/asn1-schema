@@ -1,4 +1,6 @@
-import { BufferSource, BufferSourceConverter, Convert } from "pvtsutils";
+import {
+  BufferSource, BufferSourceConverter, Convert,
+} from "pvtsutils";
 
 export class ByteStream {
   protected view: Uint8Array;

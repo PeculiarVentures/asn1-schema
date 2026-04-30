@@ -9,6 +9,8 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
   public get byteLength(): number {
     return this.buffer.byteLength;
   }
+
+  // eslint-disable-next-line @typescript-eslint/class-literal-property-style
   public get byteOffset(): number {
     return 0;
   }

@@ -13,7 +13,9 @@ export class OCSPResponse {
   @AsnProp({ type: AsnPropTypes.Enumerated })
   public responseStatus = OCSPResponseStatus.successful;
 
-  @AsnProp({ type: ResponseBytes, context: 0, optional: true })
+  @AsnProp({
+    type: ResponseBytes, context: 0, optional: true,
+  })
   public responseBytes?: ResponseBytes;
 
   constructor(params: Partial<OCSPResponse> = {}) {

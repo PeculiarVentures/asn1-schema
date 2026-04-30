@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -12,13 +14,17 @@ export class LogotypeImageResolution {
   /**
    * Resolution in bits
    */
-  @AsnProp({ type: AsnPropTypes.Integer, context: 1, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.Integer, context: 1, implicit: true,
+  })
   public numBits?: number;
 
   /**
    * Number of colors or grey tones
    */
-  @AsnProp({ type: AsnPropTypes.Integer, context: 2, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.Integer, context: 2, implicit: true,
+  })
   public tableSize?: number;
 
   constructor(params: Partial<LogotypeImageResolution> = {}) {

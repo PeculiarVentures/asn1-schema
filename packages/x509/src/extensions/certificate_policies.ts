@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray,
+} from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
 
 /**
@@ -58,7 +60,9 @@ export class NoticeReference {
   @AsnProp({ type: DisplayText })
   public organization = new DisplayText();
 
-  @AsnProp({ type: AsnPropTypes.Integer, repeated: "sequence" })
+  @AsnProp({
+    type: AsnPropTypes.Integer, repeated: "sequence",
+  })
   public noticeNumbers: number[] = [];
 
   constructor(params: Partial<NoticeReference> = {}) {
@@ -74,10 +78,14 @@ export class NoticeReference {
  * ```
  */
 export class UserNotice {
-  @AsnProp({ type: NoticeReference, optional: true })
+  @AsnProp({
+    type: NoticeReference, optional: true,
+  })
   public noticeRef?: NoticeReference;
 
-  @AsnProp({ type: DisplayText, optional: true })
+  @AsnProp({
+    type: DisplayText, optional: true,
+  })
   public explicitText?: DisplayText;
 
   constructor(params: Partial<UserNotice> = {}) {
@@ -157,7 +165,9 @@ export class PolicyInformation {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public policyIdentifier: CertPolicyId = "";
 
-  @AsnProp({ type: PolicyQualifierInfo, repeated: "sequence", optional: true })
+  @AsnProp({
+    type: PolicyQualifierInfo, repeated: "sequence", optional: true,
+  })
   public policyQualifiers?: PolicyQualifierInfo[];
 
   constructor(params: Partial<PolicyInformation> = {}) {
@@ -170,7 +180,9 @@ export class PolicyInformation {
  * CertificatePolicies ::= SEQUENCE SIZE (1..MAX) OF PolicyInformation
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: PolicyInformation })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: PolicyInformation,
+})
 export class CertificatePolicies extends AsnArray<PolicyInformation> {
   constructor(items?: PolicyInformation[]) {
     super(items);

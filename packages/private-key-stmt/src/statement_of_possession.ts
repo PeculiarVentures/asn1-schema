@@ -1,4 +1,6 @@
-import { AsnType, AsnTypeTypes, AsnProp } from "@peculiar/asn1-schema";
+import {
+  AsnType, AsnTypeTypes, AsnProp,
+} from "@peculiar/asn1-schema";
 import { Certificate } from "@peculiar/asn1-x509";
 import { IssuerAndSerialNumber } from "@peculiar/asn1-cms";
 
@@ -22,7 +24,9 @@ export class PrivateKeyPossessionStatement {
   @AsnProp({ type: IssuerAndSerialNumber })
   public signer!: IssuerAndSerialNumber;
 
-  @AsnProp({ type: Certificate, optional: true })
+  @AsnProp({
+    type: Certificate, optional: true,
+  })
   public cert?: Certificate;
 
   constructor(params: Partial<PrivateKeyPossessionStatement> = {}) {

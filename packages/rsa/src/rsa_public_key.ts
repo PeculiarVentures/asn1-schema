@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter,
+} from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -9,10 +11,14 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
  * ```
  */
 export class RSAPublicKey {
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public modulus = new ArrayBuffer(0);
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public publicExponent = new ArrayBuffer(0);
 
   constructor(params: Partial<RSAPublicKey> = {}) {

@@ -26,7 +26,9 @@ export class Timestamp {
   @AsnProp({ type: GeneralName })
   public location: GeneralName = new GeneralName();
 
-  @AsnProp({ type: AsnPropTypes.Boolean, defaultValue: false, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.Boolean, defaultValue: false, optional: true,
+  })
   public requiresAuth = false;
 
   public constructor(params: Partial<Timestamp> = {}) {

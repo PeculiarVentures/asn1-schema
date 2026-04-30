@@ -18,7 +18,9 @@ export class PFX {
   @AsnProp({ type: ContentInfo })
   public authSafe = new ContentInfo();
 
-  @AsnProp({ type: MacData, optional: true })
+  @AsnProp({
+    type: MacData, optional: true,
+  })
   public macData = new MacData();
 
   constructor(params: Partial<PFX> = {}) {

@@ -11,7 +11,9 @@ import { TBSCertificate } from "./tbs_certificate";
  * ```
  */
 export class Certificate {
-  @AsnProp({ type: TBSCertificate, raw: true })
+  @AsnProp({
+    type: TBSCertificate, raw: true,
+  })
   public tbsCertificate = new TBSCertificate();
 
   public tbsCertificateRaw?: ArrayBuffer;

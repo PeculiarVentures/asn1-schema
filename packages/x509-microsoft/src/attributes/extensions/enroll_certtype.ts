@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 import { DirectoryString } from "@peculiar/asn1-x509";
 
 export const id_enrollCertType = "1.3.6.1.4.1.311.20.2";

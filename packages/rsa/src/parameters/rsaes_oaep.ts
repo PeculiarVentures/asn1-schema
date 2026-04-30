@@ -1,7 +1,9 @@
 import { AsnProp, AsnConvert } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 import { id_mgf1, id_RSAES_OAEP } from "../object_identifiers";
-import { sha1, mgf1SHA1, pSpecifiedEmpty } from "../algorithms";
+import {
+  sha1, mgf1SHA1, pSpecifiedEmpty,
+} from "../algorithms";
 
 /**
  * ```asn1
@@ -13,16 +15,22 @@ import { sha1, mgf1SHA1, pSpecifiedEmpty } from "../algorithms";
  * ```
  */
 export class RsaEsOaepParams {
-  @AsnProp({ type: AlgorithmIdentifier, context: 0, defaultValue: sha1 })
+  @AsnProp({
+    type: AlgorithmIdentifier, context: 0, defaultValue: sha1,
+  })
   public hashAlgorithm = new AlgorithmIdentifier(sha1);
 
-  @AsnProp({ type: AlgorithmIdentifier, context: 1, defaultValue: mgf1SHA1 })
+  @AsnProp({
+    type: AlgorithmIdentifier, context: 1, defaultValue: mgf1SHA1,
+  })
   public maskGenAlgorithm = new AlgorithmIdentifier({
     algorithm: id_mgf1,
     parameters: AsnConvert.serialize(sha1),
   });
 
-  @AsnProp({ type: AlgorithmIdentifier, context: 2, defaultValue: pSpecifiedEmpty })
+  @AsnProp({
+    type: AlgorithmIdentifier, context: 2, defaultValue: pSpecifiedEmpty,
+  })
   public pSourceAlgorithm = new AlgorithmIdentifier(pSpecifiedEmpty);
 
   constructor(params: Partial<RsaEsOaepParams> = {}) {

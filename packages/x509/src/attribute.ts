@@ -12,7 +12,9 @@ export class Attribute {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public type = "";
 
-  @AsnProp({ type: AsnPropTypes.Any, repeated: "set" })
+  @AsnProp({
+    type: AsnPropTypes.Any, repeated: "set",
+  })
   public values: ArrayBuffer[] = [];
 
   constructor(params: Partial<Attribute> = {}) {

@@ -1,5 +1,7 @@
+import {
+  AsnType, AsnTypeTypes, AsnPropTypes, AsnProp,
+} from "@peculiar/asn1-schema";
 import { id_netscapeCertExtension } from "./object_identifiers";
-import { AsnType, AsnTypeTypes, AsnPropTypes, AsnProp } from "@peculiar/asn1-schema";
 
 /**
  * ```asn1

@@ -12,7 +12,9 @@ export class ContentInfo {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public contentType: ContentType = "";
 
-  @AsnProp({ type: AsnPropTypes.Any, context: 0 })
+  @AsnProp({
+    type: AsnPropTypes.Any, context: 0,
+  })
   public content = new ArrayBuffer(0);
 
   constructor(params: Partial<ContentInfo> = {}) {

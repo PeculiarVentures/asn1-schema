@@ -1,5 +1,5 @@
-import { id_netscapeCertExtension } from "./object_identifiers";
 import { BitString } from "@peculiar/asn1-schema";
+import { id_netscapeCertExtension } from "./object_identifiers";
 
 /**
  * ```asn1
@@ -8,14 +8,14 @@ import { BitString } from "@peculiar/asn1-schema";
  */
 export const id_netscapeCertType = `${id_netscapeCertExtension}.1`;
 
-export type NetscapeCertTypeString =
-  | "sslClient"
-  | "sslServer"
-  | "sMime"
-  | "objectSigning"
-  | "sslCa"
-  | "sMimeCa"
-  | "objectSigningCa";
+export type NetscapeCertTypeString
+  = | "sslClient"
+    | "sslServer"
+    | "sMime"
+    | "objectSigning"
+    | "sslCa"
+    | "sMimeCa"
+    | "objectSigningCa";
 
 export type NetscapeCertTypes = NetscapeCertTypeString[];
 

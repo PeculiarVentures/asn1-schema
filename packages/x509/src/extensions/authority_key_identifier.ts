@@ -32,10 +32,14 @@ export class KeyIdentifier extends OctetString {}
  */
 
 export class AuthorityKeyIdentifier {
-  @AsnProp({ type: KeyIdentifier, context: 0, optional: true, implicit: true })
+  @AsnProp({
+    type: KeyIdentifier, context: 0, optional: true, implicit: true,
+  })
   public keyIdentifier?: KeyIdentifier;
 
-  @AsnProp({ type: GeneralName, context: 1, optional: true, implicit: true, repeated: "sequence" })
+  @AsnProp({
+    type: GeneralName, context: 1, optional: true, implicit: true, repeated: "sequence",
+  })
   public authorityCertIssuer?: GeneralName[];
 
   @AsnProp({

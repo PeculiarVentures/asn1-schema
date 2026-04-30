@@ -44,7 +44,9 @@ export class Extension {
  * Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: Extension })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: Extension,
+})
 export class Extensions extends AsnArray<Extension> {
   constructor(items?: Extension[]) {
     super(items);

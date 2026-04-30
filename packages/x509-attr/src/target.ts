@@ -1,4 +1,6 @@
-import { AsnProp, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnType, AsnTypeTypes, AsnArray,
+} from "@peculiar/asn1-schema";
 import { GeneralName } from "@peculiar/asn1-x509";
 import { IssuerSerial } from "./issuer_serial";
 import { ObjectDigestInfo } from "./object_digest_info";
@@ -16,10 +18,14 @@ export class TargetCert {
   @AsnProp({ type: IssuerSerial })
   public targetCertificate = new IssuerSerial();
 
-  @AsnProp({ type: GeneralName, optional: true })
+  @AsnProp({
+    type: GeneralName, optional: true,
+  })
   public targetName?: GeneralName;
 
-  @AsnProp({ type: ObjectDigestInfo, optional: true })
+  @AsnProp({
+    type: ObjectDigestInfo, optional: true,
+  })
   public certDigestInfo?: ObjectDigestInfo;
 
   constructor(params: Partial<TargetCert> = {}) {
@@ -38,13 +44,19 @@ export class TargetCert {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class Target {
-  @AsnProp({ type: GeneralName, context: 0, implicit: true })
+  @AsnProp({
+    type: GeneralName, context: 0, implicit: true,
+  })
   public targetName?: GeneralName;
 
-  @AsnProp({ type: GeneralName, context: 1, implicit: true })
+  @AsnProp({
+    type: GeneralName, context: 1, implicit: true,
+  })
   public targetGroup?: GeneralName;
 
-  @AsnProp({ type: TargetCert, context: 2, implicit: true })
+  @AsnProp({
+    type: TargetCert, context: 2, implicit: true,
+  })
   public targetCert?: TargetCert;
 
   constructor(params: Partial<Target> = {}) {
@@ -57,7 +69,9 @@ export class Target {
  * Targets ::= SEQUENCE OF Target
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: Target })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: Target,
+})
 export class Targets extends AsnArray<Target> {
   constructor(items?: Target[]) {
     super(items);

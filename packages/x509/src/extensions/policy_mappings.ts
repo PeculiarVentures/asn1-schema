@@ -1,4 +1,6 @@
-import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
 import { CertPolicyId } from "./certificate_policies";
 
@@ -33,7 +35,9 @@ export class PolicyMapping {
  * PolicyMappings ::= SEQUENCE SIZE (1..MAX) OF PolicyMapping
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: PolicyMapping })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: PolicyMapping,
+})
 export class PolicyMappings extends AsnArray<PolicyMapping> {
   constructor(items?: PolicyMapping[]) {
     super(items);

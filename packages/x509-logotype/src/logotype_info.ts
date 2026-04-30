@@ -1,4 +1,6 @@
-import { AsnProp, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 import { LogotypeData } from "./logotype_data";
 import { LogotypeReference } from "./logotype_reference";
 
@@ -11,10 +13,14 @@ import { LogotypeReference } from "./logotype_reference";
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class LogotypeInfo {
-  @AsnProp({ type: LogotypeData, implicit: true, context: 0 })
+  @AsnProp({
+    type: LogotypeData, implicit: true, context: 0,
+  })
   public direct?: LogotypeData;
 
-  @AsnProp({ type: LogotypeReference, implicit: true, context: 1 })
+  @AsnProp({
+    type: LogotypeReference, implicit: true, context: 1,
+  })
   public indirect?: LogotypeReference;
 
   constructor(params: Partial<LogotypeInfo> = {}) {

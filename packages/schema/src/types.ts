@@ -4,9 +4,7 @@
 
 import * as asn1js from "asn1js";
 
-export interface IEmptyConstructor<T = unknown> {
-  new (): T;
-}
+export type IEmptyConstructor<T = unknown> = new () => T;
 
 /**
  * Allows to convert ASN.1 object to JS value and back
@@ -36,6 +34,4 @@ export interface IAsnConvertible<T = asn1js.AsnType> {
   toSchema(name: string): asn1js.BaseBlock;
 }
 
-export interface IAsnConvertibleConstructor {
-  new (): IAsnConvertible;
-}
+export type IAsnConvertibleConstructor = new () => IAsnConvertible;

@@ -13,7 +13,9 @@ export class LogotypeAudio {
   @AsnProp({ type: LogotypeDetails })
   public audioDetails = new LogotypeDetails();
 
-  @AsnProp({ type: LogotypeAudioInfo, optional: true })
+  @AsnProp({
+    type: LogotypeAudioInfo, optional: true,
+  })
   public audioInfo?: LogotypeAudioInfo;
 
   constructor(params: Partial<LogotypeAudio> = {}) {

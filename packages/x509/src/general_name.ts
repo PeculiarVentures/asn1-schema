@@ -27,7 +27,9 @@ export class OtherName {
   @AsnProp({ type: AsnPropTypes.ObjectIdentifier })
   public typeId = "";
 
-  @AsnProp({ type: AsnPropTypes.Any, context: 0 })
+  @AsnProp({
+    type: AsnPropTypes.Any, context: 0,
+  })
   public value: ArrayBuffer = new ArrayBuffer(0);
 
   constructor(params: Partial<OtherName> = {}) {
@@ -43,10 +45,14 @@ export class OtherName {
  * ```
  */
 export class EDIPartyName {
-  @AsnProp({ type: DirectoryString, optional: true, context: 0, implicit: true })
+  @AsnProp({
+    type: DirectoryString, optional: true, context: 0, implicit: true,
+  })
   public nameAssigner?: DirectoryString;
 
-  @AsnProp({ type: DirectoryString, context: 1, implicit: true })
+  @AsnProp({
+    type: DirectoryString, context: 1, implicit: true,
+  })
   public partyName = new DirectoryString();
 
   constructor(params: Partial<EDIPartyName> = {}) {
@@ -70,25 +76,39 @@ export class EDIPartyName {
  */
 @AsnType({ type: AsnTypeTypes.Choice })
 export class GeneralName {
-  @AsnProp({ type: OtherName, context: 0, implicit: true })
+  @AsnProp({
+    type: OtherName, context: 0, implicit: true,
+  })
   public otherName?: OtherName;
 
-  @AsnProp({ type: AsnPropTypes.IA5String, context: 1, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.IA5String, context: 1, implicit: true,
+  })
   public rfc822Name?: string;
 
-  @AsnProp({ type: AsnPropTypes.IA5String, context: 2, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.IA5String, context: 2, implicit: true,
+  })
   public dNSName?: string;
 
-  @AsnProp({ type: AsnPropTypes.Any, context: 3, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.Any, context: 3, implicit: true,
+  })
   public x400Address?: ArrayBuffer; // TODO: Implement ORAddress
 
-  @AsnProp({ type: Name, context: 4, implicit: false })
+  @AsnProp({
+    type: Name, context: 4, implicit: false,
+  })
   public directoryName?: Name;
 
-  @AsnProp({ type: EDIPartyName, context: 5 })
+  @AsnProp({
+    type: EDIPartyName, context: 5,
+  })
   public ediPartyName?: EDIPartyName;
 
-  @AsnProp({ type: AsnPropTypes.IA5String, context: 6, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.IA5String, context: 6, implicit: true,
+  })
   public uniformResourceIdentifier?: string;
 
   @AsnProp({
@@ -99,7 +119,9 @@ export class GeneralName {
   })
   public iPAddress?: string;
 
-  @AsnProp({ type: AsnPropTypes.ObjectIdentifier, context: 8, implicit: true })
+  @AsnProp({
+    type: AsnPropTypes.ObjectIdentifier, context: 8, implicit: true,
+  })
   public registeredID?: string;
 
   /**

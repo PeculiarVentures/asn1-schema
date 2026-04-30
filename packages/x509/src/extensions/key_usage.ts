@@ -8,16 +8,16 @@ import { id_ce } from "../object_identifiers";
  */
 export const id_ce_keyUsage = `${id_ce}.15`;
 
-export type KeyUsageType =
-  | "digitalSignature"
-  | "nonRepudiation"
-  | "keyEncipherment"
-  | "dataEncipherment"
-  | "keyAgreement"
-  | "keyCertSign"
-  | "crlSign"
-  | "encipherOnly"
-  | "decipherOnly";
+export type KeyUsageType
+  = | "digitalSignature"
+    | "nonRepudiation"
+    | "keyEncipherment"
+    | "dataEncipherment"
+    | "keyAgreement"
+    | "keyCertSign"
+    | "crlSign"
+    | "encipherOnly"
+    | "decipherOnly";
 
 export enum KeyUsageFlags {
   digitalSignature = 0x0001,

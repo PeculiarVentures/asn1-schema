@@ -6,7 +6,7 @@ import { EnrollCertTypeChoice } from "../src/attributes";
 describe("Microsoft X509", () => {
   describe("CaVersion", () => {
     describe("parse", () => {
-      const vectors: { [key: string]: Uint8Array } = {
+      const vectors: Record<string, Uint8Array> = {
         "V0.0": new Uint8Array([0x02, 0x01, 0x00]),
         "V2.0": new Uint8Array([0x02, 0x01, 0x02]),
         "V10.0": new Uint8Array([0x02, 0x01, 0x0a]),
@@ -31,14 +31,14 @@ describe("Microsoft X509", () => {
 
   describe("EnrollCertType", () => {
     it("BMPString", () => {
-      const hex = `1E0A00530075006200430041`;
+      const hex = "1E0A00530075006200430041";
       const enrollCertType = AsnConvert.parse(Buffer.from(hex, "hex"), EnrollCertTypeChoice);
       assert.strictEqual(enrollCertType.toString(), "SubCA");
       // console.log(enrollCertType);
     });
 
     it("UTF8String", () => {
-      const hex = `0C086365727454797065`;
+      const hex = "0C086365727454797065";
       const enrollCertType = AsnConvert.parse(Buffer.from(hex, "hex"), EnrollCertTypeChoice);
       assert.strictEqual(enrollCertType.toString(), "certType");
       // console.log(enrollCertType);

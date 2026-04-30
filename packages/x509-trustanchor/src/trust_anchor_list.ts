@@ -1,4 +1,6 @@
-import { AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import {
+  AsnArray, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 import { TrustAnchorChoice } from "./trust_anchor_choice";
 
 /**
@@ -15,7 +17,9 @@ export const id_ct_trustAnchorList = "1.2.840.113549.1.9.16.1.34";
  * TrustAnchorList ::= SEQUENCE SIZE (1..MAX) OF TrustAnchorChoice
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: TrustAnchorChoice })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: TrustAnchorChoice,
+})
 export class TrustAnchorList extends AsnArray<TrustAnchorChoice> {
   constructor(items?: TrustAnchorChoice[]) {
     super(items);

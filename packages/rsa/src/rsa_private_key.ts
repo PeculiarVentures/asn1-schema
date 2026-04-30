@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter,
+} from "@peculiar/asn1-schema";
 import { OtherPrimeInfos } from "./other_prime_info";
 
 /**
@@ -30,31 +32,49 @@ export class RSAPrivateKey {
   @AsnProp({ type: AsnPropTypes.Integer })
   public version: Version = 0;
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public modulus = new ArrayBuffer(0);
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public publicExponent = new ArrayBuffer(0);
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public privateExponent = new ArrayBuffer(0);
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public prime1 = new ArrayBuffer(0);
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public prime2 = new ArrayBuffer(0);
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public exponent1 = new ArrayBuffer(0);
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public exponent2 = new ArrayBuffer(0);
 
-  @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter })
+  @AsnProp({
+    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+  })
   public coefficient = new ArrayBuffer(0);
 
-  @AsnProp({ type: OtherPrimeInfos, optional: true })
+  @AsnProp({
+    type: OtherPrimeInfos, optional: true,
+  })
   public otherPrimeInfos?: OtherPrimeInfos;
 
   constructor(params: Partial<RSAPrivateKey> = {}) {

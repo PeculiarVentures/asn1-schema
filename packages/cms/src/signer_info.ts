@@ -7,7 +7,9 @@ import {
   OctetString,
 } from "@peculiar/asn1-schema";
 import { SignerIdentifier } from "./signer_identifier";
-import { CMSVersion, SignatureAlgorithmIdentifier, DigestAlgorithmIdentifier } from "./types";
+import {
+  CMSVersion, SignatureAlgorithmIdentifier, DigestAlgorithmIdentifier,
+} from "./types";
 import { Attribute } from "./attribute";
 
 /**
@@ -71,7 +73,9 @@ export class SignerInfo {
   @AsnProp({ type: OctetString })
   public signature: SignatureValue = new OctetString();
 
-  @AsnProp({ type: Attribute, repeated: "set", context: 1, implicit: true, optional: true })
+  @AsnProp({
+    type: Attribute, repeated: "set", context: 1, implicit: true, optional: true,
+  })
   unsignedAttrs?: UnsignedAttributes;
 
   constructor(params: Partial<SignerInfo> = {}) {
@@ -84,7 +88,9 @@ export class SignerInfo {
  * SignerInfos ::= SET OF SignerInfo
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Set, itemType: SignerInfo })
+@AsnType({
+  type: AsnTypeTypes.Set, itemType: SignerInfo,
+})
 export class SignerInfos extends AsnArray<SignerInfo> {
   constructor(items?: SignerInfo[]) {
     super(items);

@@ -10,10 +10,14 @@ import { RevocationInfoChoices } from "./revocation_info_choice";
  * ```
  */
 export class OriginatorInfo {
-  @AsnProp({ type: CertificateSet, context: 0, implicit: true, optional: true })
+  @AsnProp({
+    type: CertificateSet, context: 0, implicit: true, optional: true,
+  })
   public certs?: CertificateSet;
 
-  @AsnProp({ type: RevocationInfoChoices, context: 1, implicit: true, optional: true })
+  @AsnProp({
+    type: RevocationInfoChoices, context: 1, implicit: true, optional: true,
+  })
   public crls?: RevocationInfoChoices;
 
   constructor(params: Partial<OriginatorInfo> = {}) {

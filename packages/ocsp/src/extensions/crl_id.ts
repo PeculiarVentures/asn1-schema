@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter,
+} from "@peculiar/asn1-schema";
 
 // re-ocsp-crl EXTENSION ::= { SYNTAX CrlID IDENTIFIED BY
 //                                 id-pkix-ocsp-crl }
@@ -12,7 +14,9 @@ import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar
  * ```
  */
 export class CrlID {
-  @AsnProp({ type: AsnPropTypes.IA5String, context: 0, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.IA5String, context: 0, optional: true,
+  })
   public crlUrl?: string;
 
   @AsnProp({
@@ -23,7 +27,9 @@ export class CrlID {
   })
   public crlNum?: ArrayBuffer;
 
-  @AsnProp({ type: AsnPropTypes.GeneralizedTime, context: 2, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.GeneralizedTime, context: 2, optional: true,
+  })
   public crlTime?: Date;
 
   constructor(params: Partial<CrlID> = {}) {

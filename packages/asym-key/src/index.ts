@@ -119,7 +119,9 @@ export class OneAsymmetricKey {
    * Others documents can constrain these values.  Attributes from
    * [RFC2985] MAY be supported.
    */
-  @AsnProp({ type: Attributes, context: 0, implicit: true, optional: true })
+  @AsnProp({
+    type: Attributes, context: 0, implicit: true, optional: true,
+  })
   public attributes?: Attributes;
 
   // "..." - omitted properties
@@ -133,7 +135,9 @@ export class OneAsymmetricKey {
    * ECC public keys are included in ECPrivateKey (i.e., in the
    * publicKey field), as per [RFC5915].
    */
-  @AsnProp({ type: AsnPropTypes.BitString, context: 1, implicit: true, optional: true })
+  @AsnProp({
+    type: AsnPropTypes.BitString, context: 1, implicit: true, optional: true,
+  })
   public publicKey?: ArrayBuffer;
 }
 
@@ -150,7 +154,9 @@ export class PrivateKeyInfo extends OneAsymmetricKey {}
  * AsymmetricKeyPackage ::= SEQUENCE SIZE (1..MAX) OF OneAsymmetricKey
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: OneAsymmetricKey })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: OneAsymmetricKey,
+})
 export class AsymmetricKeyPackage extends AsnArray<OneAsymmetricKey> {
   constructor(items?: OneAsymmetricKey[]) {
     super(items);

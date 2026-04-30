@@ -1,4 +1,6 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
+import {
+  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray,
+} from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 
 /**
@@ -44,12 +46,12 @@ export class DirectoryString {
    */
   public toString(): string {
     return (
-      this.bmpString ||
-      this.printableString ||
-      this.teletexString ||
-      this.universalString ||
-      this.utf8String ||
-      ""
+      this.bmpString
+      || this.printableString
+      || this.teletexString
+      || this.universalString
+      || this.utf8String
+      || ""
     );
   }
 }
@@ -102,7 +104,9 @@ export class AttributeTypeAndValue {
  * RelativeDistinguishedName ::= SET SIZE (1..MAX) OF AttributeTypeAndValue
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Set, itemType: AttributeTypeAndValue })
+@AsnType({
+  type: AsnTypeTypes.Set, itemType: AttributeTypeAndValue,
+})
 export class RelativeDistinguishedName extends AsnArray<AttributeTypeAndValue> {
   constructor(items?: AttributeTypeAndValue[]) {
     super(items);
@@ -117,7 +121,9 @@ export class RelativeDistinguishedName extends AsnArray<AttributeTypeAndValue> {
  * RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
  * ```
  */
-@AsnType({ type: AsnTypeTypes.Sequence, itemType: RelativeDistinguishedName })
+@AsnType({
+  type: AsnTypeTypes.Sequence, itemType: RelativeDistinguishedName,
+})
 export class RDNSequence extends AsnArray<RelativeDistinguishedName> {
   constructor(items?: RelativeDistinguishedName[]) {
     super(items);
