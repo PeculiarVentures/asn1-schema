@@ -1,7 +1,7 @@
 import * as assert from "node:assert";
+import { Convert } from "pvtsutils";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import * as android from "@peculiar/asn1-android";
-import { Convert } from "pvtsutils";
 
 describe("Android", () => {
   describe("KeyDescription", () => {

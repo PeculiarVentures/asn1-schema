@@ -1,7 +1,7 @@
 import * as assert from "node:assert";
+import { Convert } from "pvtsutils";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import * as asn1X509 from "@peculiar/asn1-x509";
-import { Convert } from "pvtsutils";
 
 describe("crl", () => {
   /**
