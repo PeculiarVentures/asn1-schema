@@ -1,6 +1,6 @@
 import * as assert from "node:assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
-import { Convert } from "pvtsutils";
+import * as encoding from "@peculiar/utils/encoding";
 import {
   ContentInfo,
   EncapsulatedContentInfo,
@@ -42,7 +42,7 @@ describe("cms", () => {
         + "xscwrRK2g4RdhmFvHhT3RKZT12p+NZqexzkkMIYso+DCYFT66Fy+yC9uTJ/7rARq"
         + "d4sO/vmLB9MFCMbdvsEJNvj/4/tedg8cAAAAAAAA";
 
-    const contentInfo = AsnConvert.parse(Convert.FromBase64(pem), ContentInfo);
+    const contentInfo = AsnConvert.parse(encoding.base64.decode(pem), ContentInfo);
     assert.strictEqual(contentInfo.contentType, id_signedData);
 
     const signedData = AsnConvert.parse(contentInfo.content, SignedData);
@@ -101,7 +101,7 @@ describe("cms", () => {
     it("parse constructed OCTET STREAM", () => {
       const pem = "MIAGCSqGSIb3DQEHAaCAJIAAAAAAAAA=";
 
-      const contentInfo = AsnConvert.parse(Convert.FromBase64(pem), EncapsulatedContentInfo);
+      const contentInfo = AsnConvert.parse(encoding.base64.decode(pem), EncapsulatedContentInfo);
       assert.strictEqual(contentInfo.eContentType, id_data);
       assert.strictEqual(contentInfo.eContent?.any?.byteLength, 4);
     });
@@ -109,18 +109,18 @@ describe("cms", () => {
     it("parse single OCTET STREAM", () => {
       const pem = "308006092A864886F70D010701A080040000000000";
 
-      const contentInfo = AsnConvert.parse(Convert.FromHex(pem), EncapsulatedContentInfo);
+      const contentInfo = AsnConvert.parse(encoding.hex.decode(pem), EncapsulatedContentInfo);
       assert.strictEqual(contentInfo.eContentType, id_data);
       assert.strictEqual(contentInfo.eContent?.single?.byteLength, 0);
     });
 
     it("parse signer info", () => {
       const sidRaw = "8014448878CF6D19EDC9D4F0BD2391441054B9B87047";
-      const sid = AsnConvert.parse(Buffer.from(sidRaw, "hex"), SignerIdentifier);
+      const sid = AsnConvert.parse(encoding.hex.decode(sidRaw), SignerIdentifier);
 
       assert.ok(sid.subjectKeyIdentifier);
       assert.strictEqual(
-        Convert.ToHex(sid.subjectKeyIdentifier),
+        encoding.hex.encode(sid.subjectKeyIdentifier),
         "448878cf6d19edc9d4f0bd2391441054b9b87047",
       );
     });
@@ -235,7 +235,7 @@ describe("cms", () => {
     } of contentInfoPEMs) {
       it(`parse CMS with ${type} EnvelopedData - ${constructed ? "constructed" : ""} OctetString`, () => {
         // parse contentInfo
-        const contentInfo = AsnConvert.parse(Convert.FromBase64(pem), ContentInfo);
+        const contentInfo = AsnConvert.parse(encoding.base64.decode(pem), ContentInfo);
         assert.strictEqual(contentInfo.contentType, id_envelopedData);
 
         const envelopedData = AsnConvert.parse(contentInfo.content, EnvelopedData);

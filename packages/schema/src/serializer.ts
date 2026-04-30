@@ -1,4 +1,5 @@
 import * as asn1js from "asn1js";
+import { toArrayBuffer } from "@peculiar/utils/bytes";
 import * as converters from "./converters";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible, isArrayEqual } from "./helper";
@@ -85,7 +86,7 @@ export class AsnSerializer {
               const value: { valueHex?: ArrayBuffer; value?: ArrayBuffer } = {};
               value.valueHex
                 = asn1Item instanceof asn1js.Null
-                  ? asn1Item.valueBeforeDecodeView
+                  ? toArrayBuffer(asn1Item.valueBeforeDecodeView)
                   : asn1Item.valueBlock.toBER();
               asn1Value.push(
                 new asn1js.Primitive({

@@ -1,5 +1,7 @@
 import * as asn1js from "asn1js";
-import { BufferSource, BufferSourceConverter } from "pvtsutils";
+import {
+  BufferSourceLike, isBufferSource, toArrayBuffer,
+} from "@peculiar/utils/bytes";
 import { IAsnConvertible } from "../types";
 
 // Implement ArrayBufferView, cause ES5 doesn't allow to extend ArrayBuffer class
@@ -18,15 +20,15 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
   constructor();
   constructor(byteLength: number);
   constructor(bytes: number[]);
-  constructor(bytes: BufferSource);
-  constructor(param?: BufferSource | number | number[]) {
+  constructor(bytes: BufferSourceLike);
+  constructor(param?: BufferSourceLike | number | number[]) {
     if (typeof param === "number") {
       this.buffer = new ArrayBuffer(param);
     } else {
-      if (BufferSourceConverter.isBufferSource(param)) {
-        this.buffer = BufferSourceConverter.toArrayBuffer(param);
+      if (isBufferSource(param)) {
+        this.buffer = toArrayBuffer(param);
       } else if (Array.isArray(param)) {
-        this.buffer = new Uint8Array(param);
+        this.buffer = new Uint8Array(param).buffer;
       } else {
         this.buffer = new ArrayBuffer(0);
       }
@@ -37,7 +39,7 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
     if (!(asn instanceof asn1js.OctetString)) {
       throw new TypeError("Argument 'asn' is not instance of ASN.1 OctetString");
     }
-    this.buffer = asn.valueBlock.valueHex;
+    this.buffer = toArrayBuffer(asn.valueBlock.valueHex);
     return this;
   }
 

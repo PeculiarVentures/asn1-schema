@@ -1,7 +1,7 @@
 import {
   AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray,
 } from "@peculiar/asn1-schema";
-import { Convert } from "pvtsutils";
+import { hex } from "@peculiar/utils/encoding";
 
 /**
  * ```asn1
@@ -76,7 +76,7 @@ export class AttributeValue extends DirectoryString {
   }
 
   public override toString(): string {
-    return this.ia5String || (this.anyValue ? Convert.ToHex(this.anyValue) : super.toString());
+    return this.ia5String || (this.anyValue ? hex.encode(this.anyValue) : super.toString());
   }
 }
 

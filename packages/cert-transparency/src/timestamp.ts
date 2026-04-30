@@ -1,4 +1,5 @@
-import { BufferSourceConverter, Convert } from "pvtsutils";
+import { toArrayBuffer } from "@peculiar/utils/bytes";
+import { hex, base64 } from "@peculiar/utils/encoding";
 import { Structure } from "./structure";
 import { ByteStream } from "./byte_stream";
 
@@ -54,27 +55,27 @@ export class SignedCertificateTimestamp extends Structure {
     this.version = stream.readByte();
 
     stream.read(2); // struct
-    this.logId = BufferSourceConverter.toArrayBuffer(stream.read(32));
+    this.logId = toArrayBuffer(stream.read(32));
 
     this.timestamp = new Date(stream.readNumber(8));
 
     const extLen = stream.readNumber(2);
-    this.extensions = stream.read(extLen).buffer;
+    this.extensions = toArrayBuffer(stream.read(extLen));
 
     this.hashAlgorithm = stream.readByte();
     this.signatureAlgorithm = stream.readByte();
-    this.signature = stream.read(stream.readNumber(2)).buffer;
+    this.signature = toArrayBuffer(stream.read(stream.readNumber(2)));
   }
 
   public toJSON(): IJsonSignedCertificateTimestamp {
     return {
       version: this.version,
-      logId: Convert.ToHex(this.logId),
+      logId: hex.encode(this.logId),
       timestamp: this.timestamp,
-      extensions: Convert.ToBase64(this.extensions),
+      extensions: base64.encode(this.extensions),
       hashAlgorithm: HashAlgorithm[this.hashAlgorithm] || "undefined",
       signatureAlgorithm: SignatureAlgorithm[this.signatureAlgorithm] || "undefined",
-      signature: Convert.ToBase64(this.signature),
+      signature: base64.encode(this.signature),
     };
   }
 }

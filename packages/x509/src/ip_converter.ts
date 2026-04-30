@@ -1,4 +1,4 @@
-import { Convert } from "pvtsutils";
+import { hex } from "@peculiar/utils/encoding";
 
 export class IpConverter {
   private static isIPv4(ip: string): boolean {
@@ -177,7 +177,7 @@ export class IpConverter {
       }
     }
 
-    return this.decodeIP(Convert.ToHex(buf));
+    return this.decodeIP(hex.encode(buf));
   }
 
   public static fromString(text: string): ArrayBuffer {
