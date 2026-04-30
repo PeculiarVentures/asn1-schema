@@ -1,7 +1,7 @@
 import * as assert from "node:assert";
-import { OneAsymmetricKey } from "@peculiar/asn1-asym-key";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { id_rsaEncryption } from "@peculiar/asn1-rsa";
+import { OneAsymmetricKey } from "@peculiar/asn1-asym-key";
 
 describe("RFC5958", () => {
   it("RSA private key", () => {

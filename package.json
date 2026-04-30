@@ -5,19 +5,19 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.0.14",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "@peculiar/eslint-config-base": "^0.2.9",
-    "jest": "^30.0.4",
+    "@types/node": "^24.0.14",
+    "@vitest/coverage-v8": "^4.1.5",
     "lerna": "^9.0.7",
     "prettier": "^3.6.2",
-    "ts-jest": "^29.4.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.5"
   },
   "scripts": {
-    "test": "jest",
+    "test": "vitest run",
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "clear": "lerna run --parallel clear",
@@ -26,7 +26,7 @@
     "create": "ts-node scripts/create_package.ts",
     "prepub": "npm run build",
     "pub": "lerna publish",
-    "coverage": "jest --coverage"
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@types/rimraf": "^4.0.5",

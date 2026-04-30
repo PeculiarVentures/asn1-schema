@@ -34,9 +34,9 @@ describe("TSP", () => {
       Buffer.from(tstInfo.serialNumber).toString("hex"),
       "01e023b628463246e5488b0c3f04b9a3503e2e2b",
     );
-    assert(tstInfo.genTime);
+    assert.ok(tstInfo.genTime);
     assert.strictEqual(tstInfo.ordering, false);
-    assert(tstInfo.tsa);
+    assert.ok(tstInfo.tsa);
   });
 
   it("create TSP request", () => {
