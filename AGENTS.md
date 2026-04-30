@@ -8,6 +8,19 @@
 - Many packages also commit generated `build` output. Do not hand-edit `build` files; change `src` first and regenerate when needed.
 - Use npm for package management. Do not switch the repo to yarn or pnpm.
 
+## Package README
+
+- Keep each package README short, factual, and aligned with the existing pattern in `packages/*/README.md`.
+- Start with the published package name as the main heading, usually wrapped in backticks.
+- Include the common badge block when the package is published on npm, especially license and npm version badges.
+- Open with a one-sentence description of what the package provides.
+- If the package is a schema module, mention how it works with `@peculiar/asn1-schema` helpers such as `AsnConvert`, `AsnParser`, and `AsnSerializer`.
+- Include an `Installation` section with the exact `npm install @peculiar/...` command for the package.
+- Include a `Specifications`, `References`, or `Overview` section as appropriate, with links to the relevant RFCs or standards when the package models one.
+- Add a short example only when it helps explain the public API or usage pattern; keep it close to the actual exported surface.
+- Keep README text focused on package purpose and usage, not on repository internals, build steps, or test commands.
+- Make sure the package name, npm install command, and linked files such as `LICENSE` all match the package directory and `package.json` metadata.
+
 ## Environment
 
 - Install dependencies with `npm ci`.
