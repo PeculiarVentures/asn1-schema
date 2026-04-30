@@ -3,6 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "resolveJsonModule": true,
+    "types": [
+      "vitest/globals",
+      "node"
+    ],
     "paths": {
       "@peculiar/asn1-cms": [
         "./packages/cms/src"
