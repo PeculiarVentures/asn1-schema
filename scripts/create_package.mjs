@@ -1,16 +1,26 @@
-import { execSync } from "child_process";
-import * as fs from "fs";
-import * as path from "path";
+/* eslint-disable no-undef */
+import { execSync } from "node:child_process";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  writeFileSync,
+} from "node:fs";
+import {
+  dirname, join, resolve,
+} from "node:path";
+import { fileURLToPath } from "node:url";
 import * as rimraf from "rimraf";
 
-async function main(name: string): Promise<void> {
+async function main(name) {
   if (!name) {
     throw new Error("Argument 'name' is empty");
   }
   const moduleName = `@peculiar/asn1-${name}`;
-  const projectDir = path.join(__dirname, "..");
-  const moduleDir = path.join(projectDir, "packages", name);
-  if (fs.existsSync(moduleDir)) {
+  const projectDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+  const moduleDir = join(projectDir, "packages", name);
+  if (existsSync(moduleDir)) {
     throw new Error(`Module '${name}' already exists`);
   }
 
@@ -18,19 +28,32 @@ async function main(name: string): Promise<void> {
   execSync(
     `lerna create ${moduleName} --dependencies @peculiar/asn1-schema asn1js tslib --keywords asn --yes`,
   );
-  fs.renameSync(path.join(projectDir, "packages", `asn1-${name}`), moduleDir);
+  renameSync(join(projectDir, "packages", `asn1-${name}`), moduleDir);
 
   // Update package.json
-  const packageJson = await import(path.join(moduleDir, "package.json"));
+  const packageJson = JSON.parse(readFileSync(join(moduleDir, "package.json"), "utf8"));
   Object.assign(packageJson, {
     description: "",
-    files: ["build/**/*.{js,d.ts}", "LICENSE", "README.md"],
+    files: ["build/**/*.{js,d.ts}", "build/es2015/package.json", "LICENSE", "README.md"],
     author: "PeculiarVentures, LLC",
     license: "MIT",
     main: "build/cjs/index.js",
     module: "build/es2015/index.js",
     types: "build/types/index.d.ts",
     publishConfig: { access: "public" },
+    repository: {
+      type: "git",
+      url: "https://github.com/PeculiarVentures/asn1-schema",
+      directory: `packages/${name}`,
+    },
+    exports: {
+      ".": {
+        types: "./build/types/index.d.ts",
+        import: "./build/es2015/index.js",
+        require: "./build/cjs/index.js",
+      },
+      "./package.json": "./package.json",
+    },
     scripts: {
       clear: "rimraf build",
       build: "npm run build:module && npm run build:types",
@@ -39,6 +62,7 @@ async function main(name: string): Promise<void> {
         "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
       "build:es2015":
         "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+      "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
       "prebuild:types": "rimraf build/types",
       "build:types":
         "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
@@ -46,12 +70,12 @@ async function main(name: string): Promise<void> {
     },
   });
   delete packageJson.directories;
-  fs.writeFileSync(path.join(moduleDir, "package.json"), JSON.stringify(packageJson, null, "  "), { flag: "w+" });
+  writeFileSync(join(moduleDir, "package.json"), `${JSON.stringify(packageJson, null, "  ")}\n`);
 
   rimraf.sync(path.join(moduleDir, "__tests__"));
-  rimraf.sync(path.join(moduleDir, "lib"));
-  fs.mkdirSync(path.join(moduleDir, "test"));
-  fs.mkdirSync(path.join(moduleDir, "src"));
+  rimraf.sync(join(moduleDir, "lib"));
+  mkdirSync(join(moduleDir, "test"));
+  mkdirSync(join(moduleDir, "src"));
 
   const readme = `# \`${moduleName}\`
 
@@ -60,7 +84,7 @@ async function main(name: string): Promise<void> {
 
 [![NPM](https://nodei.co/npm/@peculiar/asn1-${name}.png)](https://nodei.co/npm/@peculiar/asn1-${name}/)
 `;
-  fs.writeFileSync(path.join(moduleDir, "README.md"), readme, { flag: "w+" });
+  writeFileSync(join(moduleDir, "README.md"), readme);
 
   const license = `MIT License
 
@@ -84,28 +108,24 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 `;
-  fs.writeFileSync(path.join(moduleDir, "LICENSE"), license, { flag: "w+" });
+  writeFileSync(join(moduleDir, "LICENSE"), license);
 
   const tsconfig = {
     extends: "../../tsconfig.compile.json",
+    compilerOptions: { rootDir: "src" },
     include: ["src"],
   };
-  fs.writeFileSync(
-    path.join(moduleDir, "tsconfig.compile.json"),
-    JSON.stringify(tsconfig, null, "  "),
-    { flag: "w+" },
+  writeFileSync(
+    join(moduleDir, "tsconfig.compile.json"),
+    `${JSON.stringify(tsconfig, null, "  ")}\n`,
   );
 
   // Add TS alias
-  const globalTsConfig = await import("../tsconfig.json");
-  (globalTsConfig.compilerOptions.paths as Record<string, string[]>)[moduleName] = [
+  const globalTsConfig = JSON.parse(readFileSync(join(projectDir, "tsconfig.json"), "utf8"));
+  globalTsConfig.compilerOptions.paths[moduleName] = [
     `./packages/${name}/src`,
   ];
-  fs.writeFileSync(
-    path.join(projectDir, "tsconfig.json"),
-    `${JSON.stringify(globalTsConfig, null, "  ")}\n`,
-    { flag: "w+" },
-  );
+  writeFileSync(join(projectDir, "tsconfig.json"), `${JSON.stringify(globalTsConfig, null, "  ")}\n`);
 
   console.log(`Package '${moduleName}' created`);
 }

@@ -1,10 +1,12 @@
 {
   "extends": "./tsconfig.compile.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "types": [
-      "vitest/globals"
+      "vitest/globals",
+      "node"
     ],
     "paths": {
       "@peculiar/asn1-cms": [
@@ -83,10 +85,10 @@
         "./packages/ess/src"
       ],
       "@peculiar/asn1-x509-post-quantum": [
-        "packages/x509-post-quantum/src"
+        "./packages/x509-post-quantum/src"
       ],
       "@peculiar/asn1-asym-key": [
-        "packages/asym-key/src"
+        "./packages/asym-key/src"
       ],
       "@peculiar/asn1-crmf": [
         "./packages/crmf/src"
