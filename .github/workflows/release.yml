@@ -672,6 +672,115 @@ jobs:
           }
           NODE
 
+      - name: Create GitHub Release body
+        if: always() && env.RELEASE_TAG != '' && env.RELEASE_COMMIT_SHA != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          node - <<'NODE' > .release/github-release-body.md
+          const fs = require("node:fs");
+
+          const reportPath = ".release/publish-report.json";
+
+          console.log(`# ${process.env.RELEASE_TAG}`);
+          console.log("");
+          console.log("## npm publish status");
+          console.log("");
+
+          if (!fs.existsSync(reportPath)) {
+            console.log("Publish report was not generated.");
+            console.log("");
+            process.exit(0);
+          }
+
+          const report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
+
+          const published = report.published || [];
+          const firstPublishRequired = report.first_publish_required || [];
+          const failedPublish = report.failed_publish || [];
+
+          if (firstPublishRequired.length === 0 && failedPublish.length === 0) {
+            console.log("All intended npm packages were published successfully.");
+            console.log("");
+            process.exit(0);
+          }
+
+          console.log("This release was partially published to npm.");
+          console.log("");
+          console.log(`- Successfully published: ${published.length}`);
+          console.log(`- First manual publish required: ${firstPublishRequired.length}`);
+          console.log(`- Failed automatic publish: ${failedPublish.length}`);
+          console.log("");
+
+          function printPackages(title, packages) {
+            if (packages.length === 0) {
+              return;
+            }
+
+            console.log(`### ${title}`);
+            console.log("");
+
+            for (const pkg of packages) {
+              console.log(`- \`${pkg.name}@${pkg.version}\``);
+              console.log(`  - Tarball: \`${pkg.tarball}\``);
+
+              if (pkg.reason) {
+                console.log(`  - Reason: ${pkg.reason}`);
+              }
+            }
+
+            console.log("");
+          }
+
+          printPackages("Packages requiring first manual publish", firstPublishRequired);
+          printPackages("Packages that failed automatic publishing", failedPublish);
+
+          console.log("### Manual recovery");
+          console.log("");
+          console.log("Download the `release-artifacts` artifact from this GitHub Actions run, extract it locally, and publish the relevant tarball manually:");
+          console.log("");
+          console.log("```bash");
+          console.log("npm publish .release/tarballs/<package-file>.tgz --access public");
+          console.log("```");
+          console.log("");
+          console.log("For first-time package publication, Trusted Publisher / provenance setup may need to be configured before automated publishing can work.");
+          NODE
+
+      - name: Update major release branch
+        if: always() && env.RELEASE_TAG != '' && env.RELEASE_COMMIT_SHA != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          RELEASE_VERSION="$(node -p "require('./.release/release-manifest.json').releaseVersion || ''")"
+
+          if [ -z "$RELEASE_VERSION" ]; then
+            echo "Skipping major release branch update for independent version mode."
+            exit 0
+          fi
+
+          MAJOR_VERSION="${RELEASE_VERSION%%.*}"
+          MAJOR_BRANCH="v${MAJOR_VERSION}"
+
+          git branch -f "$MAJOR_BRANCH" "$RELEASE_COMMIT_SHA"
+          git push origin "$MAJOR_BRANCH" --force
+
+      - name: Create GitHub Release
+        if: always() && env.RELEASE_TAG != '' && env.RELEASE_COMMIT_SHA != ''
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          gh release create "$RELEASE_TAG" \
+            --verify-tag \
+            --title "$RELEASE_TAG" \
+            --target "$RELEASE_COMMIT_SHA" \
+            --notes "$(< .release/github-release-body.md)" \
+            --generate-notes
+
       - name: Validate publish result
         shell: bash
         run: |
@@ -700,15 +809,3 @@ jobs:
 
           console.log("All intended packages were published successfully.");
           NODE
-
-      - name: Create GitHub Release
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-
-          gh release create "$RELEASE_TAG" \
-            --verify-tag \
-            --title "$RELEASE_TAG" \
-            --generate-notes
