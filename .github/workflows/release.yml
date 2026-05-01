@@ -195,7 +195,7 @@ jobs:
             [ -n "$package_dir" ] || continue
 
             echo "Packing ${package_dir}"
-            npm pack "$package_dir" \
+            npm pack "./${package_dir}" \
               --pack-destination "$PACK_DIR" \
               --json
           done < .release/package-dirs.txt
