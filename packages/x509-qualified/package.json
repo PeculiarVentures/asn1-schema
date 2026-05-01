@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-qualified",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "ASN.1 schema for qualified certificate statements and profiles defined in RFC 3739.",
   "keywords": [
     "asn",
@@ -52,8 +52,8 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.6.0",
-    "@peculiar/asn1-x509": "^2.6.1",
+    "@peculiar/asn1-schema": "^2.7.0",
+    "@peculiar/asn1-x509": "^2.7.0",
     "asn1js": "^3.0.6",
     "tslib": "^2.8.1"
   }

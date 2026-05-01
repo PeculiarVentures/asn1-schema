@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-cert-transparency",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "ASN.1 schema for Certificate Transparency structures and signed certificate timestamp data defined in RFC 6962.",
   "keywords": [
     "asn",
@@ -54,7 +54,7 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.6.0",
+    "@peculiar/asn1-schema": "^2.7.0",
     "@peculiar/utils": "^2.0.2",
     "asn1js": "^3.0.6",
     "tslib": "^2.8.1"

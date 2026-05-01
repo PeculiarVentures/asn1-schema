@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-lei",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "description": "ASN.1 schema for Legal Entity Identifier (LEI) attributes used in digital certificates and ISO 17442-2 profiles.",
   "keywords": [
     "asn",
@@ -53,7 +53,7 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.6.0",
+    "@peculiar/asn1-schema": "^2.7.0",
     "asn1js": "^3.0.6",
     "tslib": "^2.8.1"
   }

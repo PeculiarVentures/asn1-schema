@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-crmf",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "ASN.1 schema for Certificate Request Message Format (CRMF) defined in RFC 4211.",
   "keywords": [
     "asn",
@@ -54,9 +54,9 @@
     "test": "mocha"
   },
   "dependencies": {
-    "@peculiar/asn1-cms": "^2.6.1",
-    "@peculiar/asn1-schema": "^2.6.0",
-    "@peculiar/asn1-x509": "^2.6.1",
+    "@peculiar/asn1-cms": "^2.7.0",
+    "@peculiar/asn1-schema": "^2.7.0",
+    "@peculiar/asn1-x509": "^2.7.0",
     "asn1js": "^3.0.6",
     "tslib": "^2.8.1"
   }
