@@ -1,6 +1,6 @@
 import * as assert from "node:assert";
 import { AsnParser } from "@peculiar/asn1-schema";
-import { Convert } from "pvtsutils";
+import { base64 } from "@peculiar/utils/encoding";
 import {
   DomainName,
   TypeRelationship,
@@ -24,19 +24,19 @@ describe("ntQWAC", () => {
   const id_0_4_0_9496_9 = "MBACAgH0AgEoAgEeAgECAgEB";
 
   it("Domain name #1", () => {
-    const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_1), DomainName);
+    const obj = AsnParser.parse(base64.decode(id_0_4_0_9496_1), DomainName);
 
     assert.strictEqual(!!obj, true);
   });
 
   it("Domain name #2", () => {
-    const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_2), DomainName);
+    const obj = AsnParser.parse(base64.decode(id_0_4_0_9496_2), DomainName);
 
     assert.strictEqual(!!obj, true);
   });
 
   it("Type Relationship", () => {
-    const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_5), TypeRelationship);
+    const obj = AsnParser.parse(base64.decode(id_0_4_0_9496_5), TypeRelationship);
 
     assert.strictEqual(!!obj, true);
     assert.strictEqual(obj.DNBvsDNO.toNumber(), 1);
@@ -45,26 +45,26 @@ describe("ntQWAC", () => {
   });
 
   it("Activity Description", () => {
-    const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_6), ActivityDescription);
+    const obj = AsnParser.parse(base64.decode(id_0_4_0_9496_6), ActivityDescription);
 
     assert.strictEqual(!!obj, true);
   });
 
   it("Web GDPR", () => {
-    const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_7), WebGDPR);
+    const obj = AsnParser.parse(base64.decode(id_0_4_0_9496_7), WebGDPR);
 
     assert.strictEqual(!!obj, true);
   });
 
   it("Insurance Value", () => {
-    const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_8), InsuranceValue);
+    const obj = AsnParser.parse(base64.decode(id_0_4_0_9496_8), InsuranceValue);
 
     assert.strictEqual(!!obj, true);
     assert.strictEqual(obj.toString(), "1000 x 10^2 EUR");
   });
 
-  it("Insurance Value", () => {
-    const obj = AsnParser.parse(Convert.FromBase64(id_0_4_0_9496_9), ValuationRanking);
+  it("Valuation Ranking", () => {
+    const obj = AsnParser.parse(base64.decode(id_0_4_0_9496_9), ValuationRanking);
 
     assert.strictEqual(!!obj, true);
   });

@@ -1,15 +1,16 @@
 import * as assert from "node:assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
+import { toArrayBuffer } from "@peculiar/utils/bytes";
 import { RSAPublicKey } from "../src";
 
 describe("RSA Public Key", () => {
   it("serialize", () => {
     const publicKey = new RSAPublicKey({
       publicExponent: new Uint8Array([1, 0, 1]).buffer,
-      modulus: Buffer.from(
+      modulus: toArrayBuffer(Buffer.from(
         "vqpvdxuyZ6rKYnWTj/ZzDBFZAAAlpe5hpoiYHqa2j5kK7v8U5EaPY2bLib9m4B40j+n3FV9xUCGiplWdqMJJKT+4PjGO5E3S4N9kjFhu57noYT7z7302J0sJXeoFbXxlgE+4G55Oxlm52ID2/RJesP5nzcGTriQwoRbrJP5OEt0=",
         "base64",
-      ),
+      )),
     });
 
     const der = AsnConvert.serialize(publicKey);

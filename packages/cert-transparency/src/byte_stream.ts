@@ -1,6 +1,5 @@
-import {
-  BufferSource, BufferSourceConverter, Convert,
-} from "pvtsutils";
+import { toUint8Array, type BufferSourceLike } from "@peculiar/utils/bytes";
+import { hex } from "@peculiar/utils/encoding";
 
 export class ByteStream {
   protected view: Uint8Array;
@@ -10,8 +9,8 @@ export class ByteStream {
     return this.offset;
   }
 
-  constructor(bytes: BufferSource) {
-    this.view = BufferSourceConverter.toUint8Array(bytes);
+  constructor(bytes: BufferSourceLike) {
+    this.view = toUint8Array(bytes);
   }
 
   public read(size = 1): Uint8Array {
@@ -31,8 +30,8 @@ export class ByteStream {
 
   public readNumber(size: number): number {
     const bytes = this.read(size);
-    const hex = Convert.ToHex(bytes);
-    return parseInt(hex, 16);
+    const hexString = hex.encode(bytes);
+    return parseInt(hexString, 16);
   }
 
   public readEnd(): Uint8Array {

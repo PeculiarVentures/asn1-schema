@@ -56,7 +56,7 @@ export class NonStandardAuthorizationList extends AsnArray<NonStandardAuthorizat
    * @returns The first authorization that contains the specified key, or `undefined` if not found.
    */
   findProperty<K extends keyof AuthorizationList>(key: K): AuthorizationList[K] | undefined {
-    const prop = this.find((o) => key in o);
+    const prop = this.find((o) => o[key] !== undefined);
     if (prop) {
       return prop[key];
     }

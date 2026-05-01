@@ -1,4 +1,5 @@
 import * as asn1js from "asn1js";
+import { toArrayBuffer } from "@peculiar/utils/bytes";
 import {
   AnyConverterType, IAsnConverter, IntegerConverterType,
 } from "./types";
@@ -14,7 +15,9 @@ import { OctetString } from "./types/index";
  */
 export const AsnAnyConverter: IAsnConverter<AnyConverterType> = {
   fromASN: (value: asn1js.AsnType) =>
-    value instanceof asn1js.Null ? null : value.valueBeforeDecodeView,
+    value instanceof asn1js.Null
+      ? null
+      : toArrayBuffer(value.valueBeforeDecodeView),
   toASN: (value: AnyConverterType): asn1js.AsnType => {
     if (value === null) {
       return new asn1js.Null();
@@ -50,7 +53,7 @@ export const AsnEnumeratedConverter: IAsnConverter<number, asn1js.Enumerated> = 
  * ASN.1 INTEGER to ArrayBuffer converter
  */
 export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer, asn1js.Integer> = {
-  fromASN: (value: asn1js.Integer) => value.valueBlock.valueHexView,
+  fromASN: (value: asn1js.Integer) => toArrayBuffer(value.valueBlock.valueHexView),
   toASN: (value: ArrayBuffer) => new asn1js.Integer({ valueHex: value }),
 };
 
@@ -66,7 +69,7 @@ export const AsnIntegerBigIntConverter: IAsnConverter<bigint, asn1js.Integer> = 
  * ASN.1 BIT STRING converter
  */
 export const AsnBitStringConverter: IAsnConverter<ArrayBuffer, asn1js.BitString> = {
-  fromASN: (value: asn1js.BitString) => value.valueBlock.valueHexView,
+  fromASN: (value: asn1js.BitString) => toArrayBuffer(value.valueBlock.valueHexView),
   toASN: (value: ArrayBuffer) => new asn1js.BitString({ valueHex: value }),
 };
 
@@ -90,7 +93,7 @@ export const AsnBooleanConverter: IAsnConverter<boolean, asn1js.Boolean> = {
  * ASN.1 OCTET_STRING converter
  */
 export const AsnOctetStringConverter: IAsnConverter<ArrayBuffer, asn1js.OctetString> = {
-  fromASN: (value: asn1js.OctetString) => value.valueBlock.valueHexView,
+  fromASN: (value: asn1js.OctetString) => toArrayBuffer(value.valueBlock.valueHexView),
   toASN: (value: ArrayBuffer) => new asn1js.OctetString({ valueHex: value }),
 };
 

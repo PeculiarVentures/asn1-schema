@@ -5,15 +5,15 @@
     "packages/*"
   ],
   "devDependencies": {
-    "eslint-import-resolver-typescript": "^4.4.4",
     "@peculiar/eslint-config-base": "^0.2.9",
-    "@types/node": "^24.0.14",
+    "@peculiar/utils": "^2.0.2",
+    "@types/node": "^25.6.0",
+    "@types/rimraf": "^3.0.2",
     "@vitest/coverage-v8": "^4.1.5",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "lerna": "^9.0.7",
-    "prettier": "^3.6.2",
-    "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.8.3",
+    "rimraf": "^6.1.3",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.5"
   },
   "scripts": {
@@ -23,13 +23,9 @@
     "clear": "lerna run --parallel clear",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "create": "ts-node scripts/create_package.ts",
+    "create": "node scripts/create_package.mjs",
     "prepub": "npm run build",
     "pub": "lerna publish",
     "coverage": "vitest run --coverage"
-  },
-  "dependencies": {
-    "@types/rimraf": "^4.0.5",
-    "rimraf": "^6.0.1"
   }
 }

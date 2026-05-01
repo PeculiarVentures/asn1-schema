@@ -1,33 +1,53 @@
 {
   "name": "@peculiar/asn1-lei",
   "version": "2.6.0",
-  "description": "",
+  "description": "ASN.1 schema for Legal Entity Identifier (LEI) attributes used in digital certificates and ISO 17442-2 profiles.",
+  "keywords": [
+    "asn",
+    "asn1",
+    "lei",
+    "x509",
+    "organization",
+    "iso17442"
+  ],
+  "author": "PeculiarVentures, LLC",
+  "license": "MIT",
   "files": [
     "build/**/*.{js,d.ts}",
+    "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
+  "main": "build/cjs/index.js",
+  "module": "build/es2015/index.js",
+  "types": "build/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/types/index.d.ts",
+      "import": "./build/es2015/index.js",
+      "require": "./build/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PeculiarVentures/asn1-schema",
+    "directory": "packages/lei"
+  },
   "bugs": {
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/lei#readme",
-  "keywords": [
-    "asn"
-  ],
-  "author": "PeculiarVentures, LLC",
-  "license": "MIT",
-  "main": "build/cjs/index.js",
-  "module": "build/es2015/index.js",
-  "types": "build/types/index.d.ts",
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",
     "build:module": "npm run build:cjs && npm run build:es2015",
     "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
     "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+    "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
     "prebuild:types": "rimraf build/types",
     "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
     "rebuild": "npm run clear && npm run build"

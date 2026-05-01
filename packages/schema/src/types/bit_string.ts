@@ -1,5 +1,7 @@
 import * as asn1js from "asn1js";
-import { BufferSource, BufferSourceConverter } from "pvtsutils";
+import {
+  isBufferSource, toArrayBuffer, type BufferSourceLike,
+} from "@peculiar/utils/bytes";
 import { IAsnConvertible } from "../types";
 
 export class BitString<T extends number = number> implements IAsnConvertible {
@@ -9,14 +11,14 @@ export class BitString<T extends number = number> implements IAsnConvertible {
 
   constructor();
   constructor(value: T);
-  constructor(value: BufferSource, unusedBits?: number);
-  constructor(params?: number | BufferSource, unusedBits = 0) {
+  constructor(value: BufferSourceLike, unusedBits?: number);
+  constructor(params?: number | BufferSourceLike, unusedBits = 0) {
     if (params) {
       if (typeof params === "number") {
         this.fromNumber(params as T);
-      } else if (BufferSourceConverter.isBufferSource(params)) {
+      } else if (isBufferSource(params)) {
         this.unusedBits = unusedBits;
-        this.value = BufferSourceConverter.toArrayBuffer(params);
+        this.value = toArrayBuffer(params);
       } else {
         throw TypeError("Unsupported type of 'params' argument for BitString");
       }
@@ -29,7 +31,7 @@ export class BitString<T extends number = number> implements IAsnConvertible {
     }
 
     this.unusedBits = asn.valueBlock.unusedBits;
-    this.value = asn.valueBlock.valueHex;
+    this.value = toArrayBuffer(asn.valueBlock.valueHex);
 
     return this;
   }

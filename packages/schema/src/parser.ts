@@ -1,5 +1,5 @@
 import * as asn1js from "asn1js";
-import type { BufferSource } from "pvtsutils";
+import { type BufferSourceLike, toArrayBuffer } from "@peculiar/utils/bytes";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import * as converters from "./converters";
 import { AsnSchemaValidationError } from "./errors";
@@ -19,8 +19,8 @@ export class AsnParser {
    * @param data ASN.1 encoded buffer
    * @param target Target schema for object deserialization
    */
-  public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>): T {
-    const asn1Parsed = asn1js.fromBER(data);
+  public static parse<T>(data: BufferSourceLike, target: IEmptyConstructor<T>): T {
+    const asn1Parsed = asn1js.fromBER(toArrayBuffer(data));
     if (asn1Parsed.result.error) {
       throw new Error(asn1Parsed.result.error);
     }

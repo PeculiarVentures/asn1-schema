@@ -47,7 +47,7 @@ console.log(cert);
 
 **Output**
 
-```
+```plain
 Certificate {
   tbsCertificate: TBSCertificate {
     version: 2,
@@ -89,6 +89,6 @@ Certificate {
 
 ### Create schema
 
-```
+```shell
 npm run create <name>
 ```

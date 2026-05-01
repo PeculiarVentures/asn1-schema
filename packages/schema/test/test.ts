@@ -1,5 +1,6 @@
 import * as assert from "node:assert";
 import * as asn1js from "asn1js";
+import type { BufferSourceLike } from "@peculiar/utils/bytes";
 import * as src from "../src";
 
 function assertBuffer(actual: Buffer, expected: Buffer): void {
@@ -858,7 +859,7 @@ describe("Test", () => {
       });
       it("ArrayBufferView", () => {
         assert.throws(() => {
-          src.AsnParser.parse([48, 3, 2, 1, 1] as unknown as ArrayBuffer, Test);
+          src.AsnParser.parse([48, 3, 2, 1, 1] as unknown as BufferSourceLike, Test);
         });
       });
     });

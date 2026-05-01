@@ -1,5 +1,5 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
-import * as pvtsutils from "pvtsutils";
+import { equal } from "@peculiar/utils/bytes";
 
 export type ParametersType = ArrayBuffer | null;
 
@@ -33,7 +33,7 @@ export class AlgorithmIdentifier {
       && data.algorithm == this.algorithm
       && ((data.parameters
         && this.parameters
-        && pvtsutils.isEqual(data.parameters, this.parameters))
+        && equal(data.parameters, this.parameters))
       || data.parameters === this.parameters)
     );
   }

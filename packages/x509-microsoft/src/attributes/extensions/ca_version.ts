@@ -5,7 +5,7 @@ import {
   AsnPropTypes,
   AsnIntegerArrayBufferConverter,
 } from "@peculiar/asn1-schema";
-import { Convert } from "pvtsutils";
+import { hex } from "@peculiar/utils/encoding";
 
 export const id_caVersion = "1.3.6.1.4.1.311.21.1";
 
@@ -38,8 +38,8 @@ export class CaVersion {
     }
 
     return {
-      keyIndex: parseInt(Convert.ToHex(data.slice(0, 2)), 16),
-      certificateIndex: parseInt(Convert.ToHex(data.slice(2)), 16),
-    } as ICaVersion;
+      keyIndex: parseInt(hex.encode(data.slice(0, 2)), 16),
+      certificateIndex: parseInt(hex.encode(data.slice(2)), 16),
+    };
   }
 }

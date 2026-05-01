@@ -1,5 +1,7 @@
 import * as asn1js from "asn1js";
-import { BufferSource, BufferSourceConverter } from "pvtsutils";
+import {
+  type BufferSourceLike, isBufferSource, toArrayBuffer,
+} from "@peculiar/utils/bytes";
 import { AsnParser } from "./parser";
 import { IEmptyConstructor } from "./types";
 import { AsnSerializer } from "./serializer";
@@ -9,7 +11,7 @@ export class AsnConvert {
     return AsnSerializer.serialize(obj);
   }
 
-  public static parse<T>(data: BufferSource, target: IEmptyConstructor<T>): T {
+  public static parse<T>(data: BufferSourceLike, target: IEmptyConstructor<T>): T {
     return AsnParser.parse(data, target);
   }
 
@@ -18,7 +20,7 @@ export class AsnConvert {
    * @param data ASN.1 encoded buffer source
    * @returns String representation of ASN.1 structure
    */
-  public static toString(data: BufferSource): string;
+  public static toString(data: BufferSourceLike): string;
   /**
    * Returns a string representation of an ASN.1 schema
    * @param obj Object which can be serialized to ASN.1 schema
@@ -26,8 +28,8 @@ export class AsnConvert {
    */
   public static toString(obj: unknown): string;
   public static toString(data: unknown): string {
-    const buf = BufferSourceConverter.isBufferSource(data)
-      ? BufferSourceConverter.toArrayBuffer(data)
+    const buf = isBufferSource(data)
+      ? toArrayBuffer(data)
       : AsnConvert.serialize(data);
     const asn = asn1js.fromBER(buf);
 

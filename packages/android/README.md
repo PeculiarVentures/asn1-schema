@@ -1,9 +1,21 @@
 # `@peculiar/asn1-android`
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/asn1-schema/master/packages/android/LICENSE.md)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/android/LICENSE)
 [![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-android.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-android)
 
 [![NPM](https://nodei.co/npm/@peculiar/asn1-android.png)](https://nodei.co/npm/@peculiar/asn1-android/)
+
+ASN.1 schema for Android key attestation extensions, including legacy Keymaster and newer KeyMint structures.
+
+Use the exported classes with `@peculiar/asn1-schema` helpers such as `AsnConvert`, `AsnParser`, and `AsnSerializer` to parse or serialize DER-encoded data defined by the referenced specification.
+
+## Installation
+
+```bash
+npm install @peculiar/asn1-android
+```
+
+## Specifications
 
 - [Android key attestation schema](https://source.android.com/security/keystore/attestation#schema)
 - [Key attestation extension data schema](https://developer.android.com/privacy-and-security/security-key-attestation#key_attestation_ext_schema)

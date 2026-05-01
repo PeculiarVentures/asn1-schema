@@ -1,5 +1,5 @@
 import * as assert from "node:assert";
-import { Convert } from "pvtsutils";
+import { utf8 } from "@peculiar/utils/encoding";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import * as android from "@peculiar/asn1-android";
 
@@ -50,7 +50,7 @@ describe("Android", () => {
         kd.softwareEnforced.findProperty("attestationApplicationId")?.byteLength,
         81,
       );
-      assert.strictEqual(kd.teeEnforced.findProperty("attestationIdBrand")?.byteLength, 8);
+      assert.strictEqual(kd.teeEnforced.findProperty("origin"), 0);
     });
 
     it("should create standard KeyDescription and parse using NonStandardKeyDescription", () => {
@@ -168,7 +168,7 @@ describe("Android", () => {
       assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
       assert.ok(parsed.hardwareEnforced.attestationIdSecondImei);
       assert.strictEqual(
-        Convert.ToUtf8String(parsed.hardwareEnforced.attestationIdSecondImei),
+        utf8.decode(parsed.hardwareEnforced.attestationIdSecondImei.buffer),
         "second-imei",
       );
 
@@ -176,7 +176,7 @@ describe("Android", () => {
       assert.ok(parsed.hardwareEnforced.rootOfTrust);
       assert.ok(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash);
       assert.strictEqual(
-        Convert.ToUtf8String(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash),
+        utf8.decode(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash.buffer),
         "boot-hash-data",
       );
 
@@ -215,7 +215,7 @@ describe("Android", () => {
       // Check fields using the findProperty method
       const secondImei = parsed.hardwareEnforced.findProperty("attestationIdSecondImei");
       assert.ok(secondImei);
-      assert.strictEqual(Convert.ToUtf8String(secondImei), "second-imei");
+      assert.strictEqual(utf8.decode(secondImei.buffer), "second-imei");
     });
 
     it("should create and serialize KeyMintKeyDescription", () => {
@@ -270,12 +270,12 @@ describe("Android", () => {
       assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
       assert.ok(parsed.hardwareEnforced.moduleHash);
       assert.strictEqual(
-        Convert.ToUtf8String(parsed.hardwareEnforced.moduleHash),
+        utf8.decode(parsed.hardwareEnforced.moduleHash.buffer),
         "module-hash-value",
       );
       assert.ok(parsed.hardwareEnforced.attestationIdSecondImei);
       assert.strictEqual(
-        Convert.ToUtf8String(parsed.hardwareEnforced.attestationIdSecondImei),
+        utf8.decode(parsed.hardwareEnforced.attestationIdSecondImei.buffer),
         "second-imei",
       );
 
@@ -283,7 +283,7 @@ describe("Android", () => {
       assert.ok(parsed.hardwareEnforced.rootOfTrust);
       assert.ok(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash);
       assert.strictEqual(
-        Convert.ToUtf8String(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash),
+        utf8.decode(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash.buffer),
         "boot-hash-data",
       );
     });
@@ -318,11 +318,11 @@ describe("Android", () => {
       // Check the new fields using the findProperty method
       const moduleHash = parsed.hardwareEnforced.findProperty("moduleHash");
       assert.ok(moduleHash);
-      assert.strictEqual(Convert.ToUtf8String(moduleHash), "module-hash-value");
+      assert.strictEqual(utf8.decode(moduleHash.buffer), "module-hash-value");
 
       const secondImei = parsed.hardwareEnforced.findProperty("attestationIdSecondImei");
       assert.ok(secondImei);
-      assert.strictEqual(Convert.ToUtf8String(secondImei), "second-imei");
+      assert.strictEqual(utf8.decode(secondImei.buffer), "second-imei");
     });
 
     it("should convert between KeyDescription and KeyMintKeyDescription", () => {
@@ -385,11 +385,11 @@ describe("Android", () => {
       // Check module hash and second IMEI with hardwareEnforced getter
       const moduleHash = parsed.hardwareEnforced.findProperty("moduleHash");
       assert.ok(moduleHash);
-      assert.strictEqual(Convert.ToUtf8String(moduleHash), "module-hash");
+      assert.strictEqual(utf8.decode(moduleHash.buffer), "module-hash");
 
       const secondImei = parsed.hardwareEnforced.findProperty("attestationIdSecondImei");
       assert.ok(secondImei);
-      assert.strictEqual(Convert.ToUtf8String(secondImei), "second-imei");
+      assert.strictEqual(utf8.decode(secondImei.buffer), "second-imei");
     });
   });
 });
