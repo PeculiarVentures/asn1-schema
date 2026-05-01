@@ -95,6 +95,9 @@
       ],
       "@peculiar/asn1-private-key-stmt": [
         "./packages/private-key-stmt/src"
+      ],
+      "@peculiar/asn1-apple": [
+        "./packages/apple/src"
       ]
     }
   },
