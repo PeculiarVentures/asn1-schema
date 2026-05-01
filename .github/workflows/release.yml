@@ -64,8 +64,8 @@ jobs:
         run: |
           set -euo pipefail
 
-          if ! npx lerna changed --no-private; then
-            echo "No changed public packages detected by Lerna." >&2
+          if ! npx lerna changed; then
+            echo "No changed packages detected by Lerna." >&2
             exit 1
           fi
 
@@ -85,7 +85,6 @@ jobs:
           # Without --force-publish, Lerna updates only changed packages.
           npx lerna version "${{ inputs.version }}" \
             --yes \
-            --no-private \
             --no-push \
             --no-git-tag-version \
             --no-commit-hooks
@@ -366,7 +365,6 @@ jobs:
 
           npx lerna version "${{ inputs.version }}" \
             --yes \
-            --no-private \
             --no-push \
             --no-git-tag-version \
             --no-commit-hooks
