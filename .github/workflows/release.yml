@@ -455,22 +455,253 @@ jobs:
         run: |
           set -euo pipefail
 
-          node - <<'NODE' > .release/tarballs-to-publish.txt
-          const manifest = require("./.release/release-manifest.json");
+          node - <<'NODE'
+          const fs = require("node:fs");
+          const { spawnSync } = require("node:child_process");
+
+          const manifestPath = ".release/release-manifest.json";
+          const reportPath = ".release/publish-report.json";
+          const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+
+          const report = {
+            published: [],
+            first_publish_required: [],
+            failed_publish: [],
+          };
+
+          function runNpm(args) {
+            const result = spawnSync("npm", args, {
+              encoding: "utf8",
+              env: {
+                ...process.env,
+                NPM_CONFIG_PROVENANCE: "true",
+              },
+            });
+
+            return {
+              status: result.status,
+              signal: result.signal,
+              stdout: result.stdout || "",
+              stderr: result.stderr || "",
+              output: [result.stdout || "", result.stderr || ""]
+                .join("\n")
+                .trim(),
+            };
+          }
+
+          function packageInfo(pkg, extra = {}) {
+            return {
+              name: pkg.name,
+              version: pkg.version,
+              tarball: pkg.tarball,
+              ...extra,
+            };
+          }
+
+          function packageExists(pkg) {
+            const view = runNpm([
+              "view",
+              pkg.name,
+              "version",
+              "--json",
+            ]);
+
+            if (view.status === 0) {
+              return {
+                exists: true,
+                output: view.output,
+              };
+            }
+
+            return {
+              exists: false,
+              output: view.output,
+            };
+          }
 
           for (const pkg of manifest.packages) {
-            console.log(pkg.tarball);
+            if (!pkg.tarball) {
+              report.failed_publish.push(packageInfo(pkg, {
+                reason: "Package tarball is missing from .release/release-manifest.json.",
+              }));
+              continue;
+            }
+
+            if (!fs.existsSync(pkg.tarball)) {
+              report.failed_publish.push(packageInfo(pkg, {
+                reason: `Package tarball does not exist at ${pkg.tarball}.`,
+              }));
+              continue;
+            }
+
+            console.log(`Checking npm package existence for ${pkg.name}`);
+            const existence = packageExists(pkg);
+
+            if (!existence.exists) {
+              console.log(`Skipping ${pkg.name}@${pkg.version}: package does not exist in npm yet.`);
+              report.first_publish_required.push(packageInfo(pkg, {
+                reason: "Package does not exist in npm yet. First publish must be done manually.",
+                npmViewOutput: existence.output,
+              }));
+              continue;
+            }
+
+            console.log(`Publishing ${pkg.tarball}`);
+            const publish = runNpm([
+              "publish",
+              pkg.tarball,
+              "--provenance",
+              "--access",
+              "public",
+            ]);
+
+            if (publish.status === 0) {
+              report.published.push(packageInfo(pkg, {
+                npmPublishOutput: publish.output,
+              }));
+              continue;
+            }
+
+            console.error(`Failed to publish ${pkg.name}@${pkg.version}`);
+            report.failed_publish.push(packageInfo(pkg, {
+              reason: "npm publish failed.",
+              status: publish.status,
+              signal: publish.signal,
+              npmPublishOutput: publish.output,
+            }));
+          }
+
+          fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
+          NODE
+
+      - name: Render publish report
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
+          const fs = require("node:fs");
+
+          const reportPath = ".release/publish-report.json";
+
+          console.log("");
+          console.log("## npm publish report");
+          console.log("");
+
+          if (!fs.existsSync(reportPath)) {
+            console.log("Publish report was not generated.");
+            process.exit(0);
+          }
+
+          const report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
+
+          function printPackageList(title, packages, includeDetails = false) {
+            console.log(`### ${title}`);
+            console.log("");
+
+            if (packages.length === 0) {
+              console.log("None.");
+              console.log("");
+              return;
+            }
+
+            for (const pkg of packages) {
+              console.log(`- \`${pkg.name}@${pkg.version}\``);
+              console.log(`  - Tarball: \`${pkg.tarball}\``);
+
+              if (includeDetails && pkg.reason) {
+                console.log(`  - Reason: ${pkg.reason}`);
+              }
+
+              if (includeDetails && pkg.npmViewOutput) {
+                console.log("  - npm view output:");
+                console.log("");
+                console.log("    ```text");
+                for (const line of String(pkg.npmViewOutput).split("\n")) {
+                  console.log(`    ${line}`);
+                }
+                console.log("    ```");
+              }
+
+              if (includeDetails && pkg.npmPublishOutput) {
+                console.log("  - npm publish output:");
+                console.log("");
+                console.log("    ```text");
+                for (const line of String(pkg.npmPublishOutput).split("\n")) {
+                  console.log(`    ${line}`);
+                }
+                console.log("    ```");
+              }
+            }
+
+            console.log("");
+          }
+
+          printPackageList("Successfully published packages", report.published || []);
+          printPackageList(
+            "Packages requiring first manual publish",
+            report.first_publish_required || [],
+            true
+          );
+          printPackageList(
+            "Packages that failed automatic publishing",
+            report.failed_publish || [],
+            true
+          );
+
+          const hasProblems =
+            (report.first_publish_required || []).length > 0 ||
+            (report.failed_publish || []).length > 0;
+
+          if (hasProblems) {
+            console.log("### Manual recovery instructions");
+            console.log("");
+            console.log("Some packages were not published automatically.");
+            console.log("");
+            console.log("To recover manually:");
+            console.log("");
+            console.log("1. Download the `release-artifacts` artifact from this failed GitHub Actions run.");
+            console.log("2. Extract the artifact locally.");
+            console.log("3. Publish the specific prepared tarball from the artifact:");
+            console.log("");
+            console.log("```bash");
+            console.log("npm publish .release/tarballs/<package-file>.tgz --access public");
+            console.log("```");
+            console.log("");
+            console.log("For first-time package publication, Trusted Publisher / provenance setup may need to be configured for the package before automated publishing can work.");
+            console.log("");
           }
           NODE
 
-          while IFS= read -r tarball; do
-            [ -n "$tarball" ] || continue
+      - name: Validate publish result
+        shell: bash
+        run: |
+          set -euo pipefail
 
-            echo "Publishing ${tarball}"
-            npm publish "$tarball" \
-              --provenance \
-              --access public
-          done < .release/tarballs-to-publish.txt
+          node - <<'NODE'
+          const fs = require("node:fs");
+
+          const reportPath = ".release/publish-report.json";
+
+          if (!fs.existsSync(reportPath)) {
+            throw new Error("Publish report was not generated.");
+          }
+
+          const report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
+
+          const firstPublishRequired = report.first_publish_required || [];
+          const failedPublish = report.failed_publish || [];
+
+          if (firstPublishRequired.length > 0 || failedPublish.length > 0) {
+            console.error("npm publish did not complete successfully for all intended packages.");
+            console.error(`first_publish_required: ${firstPublishRequired.length}`);
+            console.error(`failed_publish: ${failedPublish.length}`);
+            process.exit(1);
+          }
+
+          console.log("All intended packages were published successfully.");
+          NODE
 
       - name: Create GitHub Release
         shell: bash
