@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Bump type for changed packages
+        description: Release type
         required: true
         default: patch
         type: choice
@@ -83,7 +83,6 @@ jobs:
           # Important:
           # Do NOT add --force-publish here.
           # Without --force-publish, Lerna updates only changed packages.
-          # In independent mode, the selected bump type applies to every changed package in this run.
           npx lerna version "${{ inputs.version }}" \
             --yes \
             --no-push \
