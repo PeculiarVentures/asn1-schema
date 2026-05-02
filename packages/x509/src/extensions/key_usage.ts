@@ -15,7 +15,7 @@ export type KeyUsageType
     | "dataEncipherment"
     | "keyAgreement"
     | "keyCertSign"
-    | "crlSign"
+    | "cRLSign"
     | "encipherOnly"
     | "decipherOnly";
 
@@ -51,7 +51,7 @@ export class KeyUsage extends BitString {
     const flag = this.toNumber();
     const res: KeyUsageType[] = [];
     if (flag & KeyUsageFlags.cRLSign) {
-      res.push("crlSign");
+      res.push("cRLSign");
     }
     if (flag & KeyUsageFlags.dataEncipherment) {
       res.push("dataEncipherment");
