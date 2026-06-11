@@ -945,4 +945,63 @@ describe("Test", () => {
       assert.strictEqual(test.value, "5233100606242806050955395731361295");
     });
   });
+
+  // https://github.com/PeculiarVentures/asn1-schema/issues/134
+  describe("issue #134 - fromBER parse options", () => {
+    @src.AsnType({
+      type: src.AsnTypeTypes.Sequence, itemType: src.AsnPropTypes.Integer,
+    })
+    class BigList extends src.AsnArray<number> {}
+
+    // 1 SEQUENCE + N INTEGER nodes; > default maxNodes (10000) when N >= 10000
+    const bigCount = 10010;
+    const bigListDer = new asn1js.Sequence({ value: Array.from({ length: bigCount }, (_, i) => new asn1js.Integer({ value: i })) }).toBER(false);
+
+    it("throws on a large structure with default limits", () => {
+      assert.throws(
+        () => src.AsnConvert.parse(bigListDer, BigList),
+        /Maximum ASN.1 node count exceeded/,
+      );
+    });
+
+    it("parses a large structure when berOptions.maxNodes is raised", () => {
+      const parsed = src.AsnConvert.parse(bigListDer, BigList, { berOptions: { maxNodes: bigCount + 100 } });
+      assert.strictEqual(parsed.length, bigCount);
+    });
+
+    it("forwards berOptions.maxDepth through AsnConvert.toString", () => {
+      let deep: asn1js.AsnType = new asn1js.Integer({ value: 1 });
+      for (let i = 0; i < 150; i++) {
+        deep = new asn1js.Sequence({ value: [deep] });
+      }
+      const deepDer = deep.toBER(false);
+
+      assert.throws(
+        () => src.AsnConvert.toString(deepDer),
+        /Maximum ASN.1 nesting depth exceeded/,
+      );
+      assert.strictEqual(typeof src.AsnConvert.toString(deepDer, { berOptions: { maxDepth: 200 } }), "string");
+    });
+
+    it("forwards berOptions to the internal IMPLICIT repeated re-parse", () => {
+      // `[1] IMPLICIT SEQUENCE OF INTEGER` is normalized via an internal fromBER
+      // call (processRepeatedPrimitiveItem). Raising maxNodes must reach it too.
+      class Implicit {
+        @src.AsnProp({
+          type: src.AsnPropTypes.Integer, repeated: "sequence", implicit: true, context: 1,
+        })
+        public items: number[] = [];
+      }
+      const obj = new Implicit();
+      obj.items = Array.from({ length: bigCount }, (_, i) => i);
+      const der = src.AsnConvert.serialize(obj);
+
+      assert.throws(
+        () => src.AsnConvert.parse(der, Implicit),
+        /Maximum ASN.1 node count exceeded/,
+      );
+      const parsed = src.AsnConvert.parse(der, Implicit, { berOptions: { maxNodes: bigCount + 100 } });
+      assert.strictEqual(parsed.items.length, bigCount);
+    });
+  });
 });

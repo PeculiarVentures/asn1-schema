@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@peculiar/utils": "^2.0.2",
-    "asn1js": "^3.0.6",
+    "asn1js": "^3.0.10",
     "tslib": "^2.8.1"
   },
   "contributors": [
