@@ -11,6 +11,7 @@ import {
   encodeSerialNumber,
   id_pe_mtcCertificationAuthority_experimental,
   id_rdna_trustAnchorID_experimental,
+  mtcMaxSerial,
 } from "../src";
 
 // TrustAsia test MTC CA cosigner certificate, CA ID 44494.3.1.1.
@@ -69,6 +70,43 @@ describe("mtc", () => {
       assert.strictEqual(Buffer.from(der).toString("hex"), "0d0481fd5901");
     });
 
+    it("matches the draft binary representation for 32473.1", () => {
+      // draft-ietf-tls-trust-anchor-ids section 3
+      assert.deepStrictEqual(
+        Array.from(new TrustAnchorID("32473.1").toBinary()),
+        [0x81, 0xfd, 0x59, 0x01],
+      );
+    });
+
+    it("matches the draft SVCB wire-format encodings", () => {
+      // draft-ietf-tls-trust-anchor-ids section 6.1, tls-trust-anchors example
+      assert.deepStrictEqual(
+        Array.from(new TrustAnchorID("32473.2.1").toBinary()),
+        [0x81, 0xfd, 0x59, 0x02, 0x01],
+      );
+      assert.deepStrictEqual(
+        Array.from(new TrustAnchorID("32473.2.2").toBinary()),
+        [0x81, 0xfd, 0x59, 0x02, 0x02],
+      );
+      assert.strictEqual(
+        TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x01])).value,
+        "32473.2.1",
+      );
+      assert.strictEqual(
+        TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x02])).value,
+        "32473.2.2",
+      );
+    });
+
+    it("round trips MTC landmark trust anchor IDs", () => {
+      // draft-ietf-plants-merkle-tree-certs section 8.2: landmark 42 of CA
+      // 32473.1 and log 8, and its landmark group
+      for (const value of ["32473.1.1.8.42", "32473.1.2.8.42"]) {
+        const id = new TrustAnchorID(value);
+        assert.strictEqual(TrustAnchorID.fromBinary(id.toBinary()).value, value);
+      }
+    });
+
     it("builds the cosigner_name origin string", () => {
       assert.strictEqual(new TrustAnchorID("32473.1").toOriginString(), "oid/1.3.6.1.4.1.32473.1");
     });
@@ -116,6 +154,19 @@ describe("mtc", () => {
       assert.deepStrictEqual(decodeSerialNumber(value.toString(16).padStart(16, "0")), {
         logNumber: 3,
         index: 987654321n,
+      });
+    });
+
+    it("handles the maximum serial number", () => {
+      // Log numbers are 1..2^16-1 and indices at most 2^48-1
+      // (draft-ietf-plants-merkle-tree-certs sections 5.2 and 6.2), so the
+      // largest serial is 2^64-1, mtcMaxSerial.
+      const value = encodeSerialNumber(0xffff, 0xffffffffffffn);
+
+      assert.strictEqual(value, mtcMaxSerial);
+      assert.deepStrictEqual(decodeSerialNumber(mtcMaxSerial.toString(16).padStart(16, "0")), {
+        logNumber: 0xffff,
+        index: 0xffffffffffffn,
       });
     });
   });
