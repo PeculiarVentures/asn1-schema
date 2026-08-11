@@ -11,14 +11,17 @@ import { TBSRequest } from "./tbs_request";
  */
 export class OCSPRequest {
   @AsnProp({
-    type: TBSRequest, raw: true,
+    type: TBSRequest,
+    raw: true,
   })
   public tbsRequest = new TBSRequest();
 
   public tbsRequestRaw?: ArrayBuffer;
 
   @AsnProp({
-    type: Signature, optional: true, context: 0,
+    type: Signature,
+    optional: true,
+    context: 0,
   })
   public optionalSignature?: Signature;
 

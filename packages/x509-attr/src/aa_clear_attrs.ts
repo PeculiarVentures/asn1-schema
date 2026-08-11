@@ -18,7 +18,8 @@ export class ACClearAttrs {
   public acSerial = 0;
 
   @AsnProp({
-    type: Attribute, repeated: "sequence",
+    type: Attribute,
+    repeated: "sequence",
   })
   public attrs: Attribute[] = [];
 

@@ -1,18 +1,10 @@
-import {
-  AsnProp,
-  AsnPropTypes,
-  AsnType,
-  AsnTypeTypes,
-  AsnOctetStringConverter,
-  IAsnConverter,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnOctetStringConverter, IAsnConverter } from "@peculiar/asn1-schema";
 import * as asn1js from "asn1js";
 import { IpConverter } from "./ip_converter";
 import { DirectoryString, Name } from "./name";
 
 export const AsnIpConverter: IAsnConverter<string> = {
-  fromASN: (value: asn1js.OctetString) =>
-    IpConverter.toString(AsnOctetStringConverter.fromASN(value)),
+  fromASN: (value: asn1js.OctetString) => IpConverter.toString(AsnOctetStringConverter.fromASN(value)),
   toASN: (value: string) => AsnOctetStringConverter.toASN(IpConverter.fromString(value)),
 };
 
@@ -28,7 +20,8 @@ export class OtherName {
   public typeId = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, context: 0,
+    type: AsnPropTypes.Any,
+    context: 0,
   })
   public value: ArrayBuffer = new ArrayBuffer(0);
 
@@ -46,12 +39,17 @@ export class OtherName {
  */
 export class EDIPartyName {
   @AsnProp({
-    type: DirectoryString, optional: true, context: 0, implicit: true,
+    type: DirectoryString,
+    optional: true,
+    context: 0,
+    implicit: true,
   })
   public nameAssigner?: DirectoryString;
 
   @AsnProp({
-    type: DirectoryString, context: 1, implicit: true,
+    type: DirectoryString,
+    context: 1,
+    implicit: true,
   })
   public partyName = new DirectoryString();
 
@@ -77,37 +75,50 @@ export class EDIPartyName {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class GeneralName {
   @AsnProp({
-    type: OtherName, context: 0, implicit: true,
+    type: OtherName,
+    context: 0,
+    implicit: true,
   })
   public otherName?: OtherName;
 
   @AsnProp({
-    type: AsnPropTypes.IA5String, context: 1, implicit: true,
+    type: AsnPropTypes.IA5String,
+    context: 1,
+    implicit: true,
   })
   public rfc822Name?: string;
 
   @AsnProp({
-    type: AsnPropTypes.IA5String, context: 2, implicit: true,
+    type: AsnPropTypes.IA5String,
+    context: 2,
+    implicit: true,
   })
   public dNSName?: string;
 
   @AsnProp({
-    type: AsnPropTypes.Any, context: 3, implicit: true,
+    type: AsnPropTypes.Any,
+    context: 3,
+    implicit: true,
   })
   public x400Address?: ArrayBuffer; // TODO: Implement ORAddress
 
   @AsnProp({
-    type: Name, context: 4, implicit: false,
+    type: Name,
+    context: 4,
+    implicit: false,
   })
   public directoryName?: Name;
 
   @AsnProp({
-    type: EDIPartyName, context: 5,
+    type: EDIPartyName,
+    context: 5,
   })
   public ediPartyName?: EDIPartyName;
 
   @AsnProp({
-    type: AsnPropTypes.IA5String, context: 6, implicit: true,
+    type: AsnPropTypes.IA5String,
+    context: 6,
+    implicit: true,
   })
   public uniformResourceIdentifier?: string;
 
@@ -120,7 +131,9 @@ export class GeneralName {
   public iPAddress?: string;
 
   @AsnProp({
-    type: AsnPropTypes.ObjectIdentifier, context: 8, implicit: true,
+    type: AsnPropTypes.ObjectIdentifier,
+    context: 8,
+    implicit: true,
   })
   public registeredID?: string;
 

@@ -7,10 +7,12 @@ describe("RSA Public Key", () => {
   it("serialize", () => {
     const publicKey = new RSAPublicKey({
       publicExponent: new Uint8Array([1, 0, 1]).buffer,
-      modulus: toArrayBuffer(Buffer.from(
-        "vqpvdxuyZ6rKYnWTj/ZzDBFZAAAlpe5hpoiYHqa2j5kK7v8U5EaPY2bLib9m4B40j+n3FV9xUCGiplWdqMJJKT+4PjGO5E3S4N9kjFhu57noYT7z7302J0sJXeoFbXxlgE+4G55Oxlm52ID2/RJesP5nzcGTriQwoRbrJP5OEt0=",
-        "base64",
-      )),
+      modulus: toArrayBuffer(
+        Buffer.from(
+          "vqpvdxuyZ6rKYnWTj/ZzDBFZAAAlpe5hpoiYHqa2j5kK7v8U5EaPY2bLib9m4B40j+n3FV9xUCGiplWdqMJJKT+4PjGO5E3S4N9kjFhu57noYT7z7302J0sJXeoFbXxlgE+4G55Oxlm52ID2/RJesP5nzcGTriQwoRbrJP5OEt0=",
+          "base64",
+        ),
+      ),
     });
 
     const der = AsnConvert.serialize(publicKey);
@@ -26,8 +28,8 @@ describe("RSA Public Key", () => {
   });
 
   it("parse", () => {
-    const pem
-      = "MIGJAoGBAL6qb3cbsmeqymJ1k4/2cwwRWQAAJaXuYaaImB6mto+ZCu7/FORGj2Nmy4m/ZuAeNI/p9xVfcVAhoqZVnajCSSk/uD4xjuRN0uDfZIxYbue56GE+8+99NidLCV3qBW18ZYBPuBueTsZZudiA9v0SXrD+Z83Bk64kMKEW6yT+ThLdAgMBAAE=";
+    const pem =
+      "MIGJAoGBAL6qb3cbsmeqymJ1k4/2cwwRWQAAJaXuYaaImB6mto+ZCu7/FORGj2Nmy4m/ZuAeNI/p9xVfcVAhoqZVnajCSSk/uD4xjuRN0uDfZIxYbue56GE+8+99NidLCV3qBW18ZYBPuBueTsZZudiA9v0SXrD+Z83Bk64kMKEW6yT+ThLdAgMBAAE=";
     const der = Buffer.from(pem, "base64");
 
     const publicKey = AsnConvert.parse(der, RSAPublicKey);

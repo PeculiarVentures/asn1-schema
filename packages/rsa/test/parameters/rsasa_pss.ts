@@ -1,9 +1,7 @@
 import * as assert from "node:assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import {
-  RsaSaPssParams, id_md5, id_sha1,
-} from "../../src";
+import { RsaSaPssParams, id_md5, id_sha1 } from "../../src";
 
 describe("RSASSA-PSS params", () => {
   it("serialize default", () => {
@@ -48,9 +46,6 @@ describe("RSASSA-PSS params", () => {
     //     INTEGER 1000
     //   [3] (1 elem)
     //     INTEGER 2
-    assert.strictEqual(
-      Buffer.from(der).toString("hex"),
-      "3031a00e300c06082a864886f70d02050500a114301206052b0e03021a300906052b0e03021a0500a204020203e8a303020102",
-    );
+    assert.strictEqual(Buffer.from(der).toString("hex"), "3031a00e300c06082a864886f70d02050500a114301206052b0e03021a300906052b0e03021a0500a204020203e8a303020102");
   });
 });

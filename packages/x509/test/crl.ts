@@ -35,16 +35,11 @@ describe("crl", () => {
 
     it("authorityKeyIdentifier", () => {
       assert.ok(crl.tbsCertList.crlExtensions);
-      const ext = crl.tbsCertList.crlExtensions.find(
-        (o) => o.extnID === asn1X509.id_ce_authorityKeyIdentifier,
-      );
+      const ext = crl.tbsCertList.crlExtensions.find((o) => o.extnID === asn1X509.id_ce_authorityKeyIdentifier);
       assert.ok(ext);
       const aki = AsnConvert.parse(ext.extnValue, asn1X509.AuthorityKeyIdentifier);
       assert.ok(aki.keyIdentifier);
-      assert.strictEqual(
-        encoding.hex.encode(aki.keyIdentifier.buffer),
-        "1bd9d8cb089623db9b5b5e17b3b2e53f89789ce6",
-      );
+      assert.strictEqual(encoding.hex.encode(aki.keyIdentifier.buffer), "1bd9d8cb089623db9b5b5e17b3b2e53f89789ce6");
     });
 
     it("cRLNumber", () => {
@@ -57,9 +52,7 @@ describe("crl", () => {
 
     it("issuingDistributionPoint", () => {
       assert.ok(crl.tbsCertList.crlExtensions);
-      const ext = crl.tbsCertList.crlExtensions.find(
-        (o) => o.extnID === asn1X509.id_ce_issuingDistributionPoint,
-      );
+      const ext = crl.tbsCertList.crlExtensions.find((o) => o.extnID === asn1X509.id_ce_issuingDistributionPoint);
       assert.ok(ext);
       const point = AsnConvert.parse(ext.extnValue, asn1X509.IssuingDistributionPoint);
       assert.strictEqual(point.onlyContainsAttributeCerts, false);
@@ -74,9 +67,7 @@ describe("crl", () => {
 
     it("freshestCRL", () => {
       assert.ok(crl.tbsCertList.crlExtensions);
-      const ext = crl.tbsCertList.crlExtensions.find(
-        (o) => o.extnID === asn1X509.id_ce_freshestCRL,
-      );
+      const ext = crl.tbsCertList.crlExtensions.find((o) => o.extnID === asn1X509.id_ce_freshestCRL);
       assert.ok(ext);
       const freshest = AsnConvert.parse(ext.extnValue, asn1X509.FreshestCRL);
       assert.strictEqual(
@@ -95,9 +86,7 @@ describe("crl", () => {
     const crl = AsnConvert.parse(crlExtDeltaRaw, asn1X509.CertificateList);
     assert.ok(crl.tbsCertList.crlExtensions);
 
-    const deltaExt = crl.tbsCertList.crlExtensions.find(
-      (o) => o.extnID === asn1X509.id_ce_deltaCRLIndicator,
-    );
+    const deltaExt = crl.tbsCertList.crlExtensions.find((o) => o.extnID === asn1X509.id_ce_deltaCRLIndicator);
     assert.ok(deltaExt);
 
     const delta = AsnConvert.parse(deltaExt.extnValue, asn1X509.BaseCRLNumber);
@@ -113,9 +102,7 @@ describe("crl", () => {
     assert.ok(encoding.hex.encode(revokedCert.userCertificate), "047a58");
 
     assert.ok(revokedCert.crlEntryExtensions);
-    const crlReasonExt = revokedCert.crlEntryExtensions.find(
-      (o) => o.extnID === asn1X509.id_ce_cRLReasons,
-    );
+    const crlReasonExt = revokedCert.crlEntryExtensions.find((o) => o.extnID === asn1X509.id_ce_cRLReasons);
     assert.ok(crlReasonExt);
 
     const crlReason = AsnConvert.parse(crlReasonExt.extnValue, asn1X509.CRLReason);

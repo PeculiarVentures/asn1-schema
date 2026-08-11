@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 
 /**
  * Alphabetic or numeric currency code as defined in ISO 4217. It is recommended that the Alphabetic form is used
@@ -159,7 +157,8 @@ export class PdsLocation {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: PdsLocation,
+  type: AsnTypeTypes.Sequence,
+  itemType: PdsLocation,
 })
 export class PdsLocations extends AsnArray<PdsLocation> {
   constructor(items?: PdsLocation[]) {
@@ -181,7 +180,8 @@ export class PdsLocations extends AsnArray<PdsLocation> {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: PdsLocation,
+  type: AsnTypeTypes.Sequence,
+  itemType: PdsLocation,
 })
 export class QcEuPDS extends PdsLocations {
   constructor(items?: PdsLocation[]) {
@@ -200,7 +200,8 @@ export class QcEuPDS extends PdsLocations {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.ObjectIdentifier,
+  type: AsnTypeTypes.Sequence,
+  itemType: AsnPropTypes.ObjectIdentifier,
 })
 export class QcType extends AsnArray<string> {
   constructor(items?: string[]) {
@@ -228,7 +229,8 @@ export type CountryName = string;
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.PrintableString,
+  type: AsnTypeTypes.Sequence,
+  itemType: AsnPropTypes.PrintableString,
 })
 export class QcCClegislation extends AsnArray<CountryName> {
   /**

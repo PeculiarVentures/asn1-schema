@@ -1,9 +1,5 @@
-import {
-  AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter,
-} from "@peculiar/asn1-schema";
-import {
-  GeneralNames, CertificateSerialNumber, UniqueIdentifier,
-} from "@peculiar/asn1-x509";
+import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
+import { GeneralNames, CertificateSerialNumber, UniqueIdentifier } from "@peculiar/asn1-x509";
 
 /**
  * ```asn1
@@ -19,12 +15,14 @@ export class IssuerSerial {
   public issuer = new GeneralNames();
 
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public serial: CertificateSerialNumber = new ArrayBuffer(0);
 
   @AsnProp({
-    type: AsnPropTypes.BitString, optional: true,
+    type: AsnPropTypes.BitString,
+    optional: true,
   })
   public issuerUID: UniqueIdentifier = new ArrayBuffer(0);
 

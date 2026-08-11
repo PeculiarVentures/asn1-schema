@@ -4,104 +4,39 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": [
-      "vitest/globals",
-      "node"
-    ],
+    "types": ["vitest/globals", "node"],
     "paths": {
-      "@peculiar/asn1-cms": [
-        "./packages/cms/src"
-      ],
-      "@peculiar/asn1-csr": [
-        "./packages/csr/src"
-      ],
-      "@peculiar/asn1-ecc": [
-        "./packages/ecc/src"
-      ],
-      "@peculiar/asn1-ocsp": [
-        "./packages/ocsp/src"
-      ],
-      "@peculiar/asn1-pfx": [
-        "./packages/pfx/src"
-      ],
-      "@peculiar/asn1-pkcs8": [
-        "./packages/pkcs8/src"
-      ],
-      "@peculiar/asn1-rsa": [
-        "./packages/rsa/src"
-      ],
-      "@peculiar/asn1-schema": [
-        "./packages/schema/src"
-      ],
-      "@peculiar/asn1-x509": [
-        "./packages/x509/src"
-      ],
-      "@peculiar/asn1-x509-attr": [
-        "./packages/x509-attr/src"
-      ],
-      "@peculiar/asn1-x509-logotype": [
-        "./packages/x509-logotype/src"
-      ],
-      "@peculiar/asn1-x509-microsoft": [
-        "./packages/x509-microsoft/src"
-      ],
-      "@peculiar/asn1-x509-qualified": [
-        "./packages/x509-qualified/src"
-      ],
-      "@peculiar/asn1-x509-trustanchor": [
-        "./packages/x509-trustanchor/src"
-      ],
-      "@peculiar/asn1-x509-netscape": [
-        "./packages/x509-netscape/src"
-      ],
-      "@peculiar/asn1-android": [
-        "./packages/android/src"
-      ],
-      "@peculiar/asn1-cert-transparency": [
-        "./packages/cert-transparency/src"
-      ],
-      "@peculiar/asn1-lei": [
-        "./packages/lei/src"
-      ],
-      "@peculiar/asn1-adobe-acrobat": [
-        "./packages/adobe-acrobat/src"
-      ],
-      "@peculiar/asn1-ntqwac": [
-        "./packages/ntqwac/src"
-      ],
-      "@peculiar/asn1-pkcs9": [
-        "./packages/pkcs9/src"
-      ],
-      "@peculiar/asn1-x509-qualified-etsi": [
-        "./packages/x509-qualified-etsi/src"
-      ],
-      "@peculiar/asn1-tsp": [
-        "./packages/tsp/src"
-      ],
-      "@peculiar/asn1-rfc8226": [
-        "./packages/rfc8226/src"
-      ],
-      "@peculiar/asn1-ess": [
-        "./packages/ess/src"
-      ],
-      "@peculiar/asn1-x509-post-quantum": [
-        "./packages/x509-post-quantum/src"
-      ],
-      "@peculiar/asn1-asym-key": [
-        "./packages/asym-key/src"
-      ],
-      "@peculiar/asn1-crmf": [
-        "./packages/crmf/src"
-      ],
-      "@peculiar/asn1-private-key-stmt": [
-        "./packages/private-key-stmt/src"
-      ],
-      "@peculiar/asn1-apple": [
-        "./packages/apple/src"
-      ]
+      "@peculiar/asn1-cms": ["./packages/cms/src"],
+      "@peculiar/asn1-csr": ["./packages/csr/src"],
+      "@peculiar/asn1-ecc": ["./packages/ecc/src"],
+      "@peculiar/asn1-ocsp": ["./packages/ocsp/src"],
+      "@peculiar/asn1-pfx": ["./packages/pfx/src"],
+      "@peculiar/asn1-pkcs8": ["./packages/pkcs8/src"],
+      "@peculiar/asn1-rsa": ["./packages/rsa/src"],
+      "@peculiar/asn1-schema": ["./packages/schema/src"],
+      "@peculiar/asn1-x509": ["./packages/x509/src"],
+      "@peculiar/asn1-x509-attr": ["./packages/x509-attr/src"],
+      "@peculiar/asn1-x509-logotype": ["./packages/x509-logotype/src"],
+      "@peculiar/asn1-x509-microsoft": ["./packages/x509-microsoft/src"],
+      "@peculiar/asn1-x509-qualified": ["./packages/x509-qualified/src"],
+      "@peculiar/asn1-x509-trustanchor": ["./packages/x509-trustanchor/src"],
+      "@peculiar/asn1-x509-netscape": ["./packages/x509-netscape/src"],
+      "@peculiar/asn1-android": ["./packages/android/src"],
+      "@peculiar/asn1-cert-transparency": ["./packages/cert-transparency/src"],
+      "@peculiar/asn1-lei": ["./packages/lei/src"],
+      "@peculiar/asn1-adobe-acrobat": ["./packages/adobe-acrobat/src"],
+      "@peculiar/asn1-ntqwac": ["./packages/ntqwac/src"],
+      "@peculiar/asn1-pkcs9": ["./packages/pkcs9/src"],
+      "@peculiar/asn1-x509-qualified-etsi": ["./packages/x509-qualified-etsi/src"],
+      "@peculiar/asn1-tsp": ["./packages/tsp/src"],
+      "@peculiar/asn1-rfc8226": ["./packages/rfc8226/src"],
+      "@peculiar/asn1-ess": ["./packages/ess/src"],
+      "@peculiar/asn1-x509-post-quantum": ["./packages/x509-post-quantum/src"],
+      "@peculiar/asn1-asym-key": ["./packages/asym-key/src"],
+      "@peculiar/asn1-crmf": ["./packages/crmf/src"],
+      "@peculiar/asn1-private-key-stmt": ["./packages/private-key-stmt/src"],
+      "@peculiar/asn1-apple": ["./packages/apple/src"]
     }
   },
-  "exclude": [
-    "packages/*/build"
-  ]
+  "exclude": ["packages/*/build"]
 }

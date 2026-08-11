@@ -15,7 +15,8 @@ export class TimeStampResp {
   public status = new PKIStatusInfo();
 
   @AsnProp({
-    type: TimeStampToken, optional: true,
+    type: TimeStampToken,
+    optional: true,
   })
   public timeStampToken?: TimeStampToken;
 

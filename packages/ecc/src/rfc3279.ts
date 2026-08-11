@@ -1,11 +1,4 @@
-import {
-  AsnType,
-  AsnTypeTypes,
-  AsnProp,
-  AsnPropTypes,
-  OctetString,
-  AsnIntegerArrayBufferConverter,
-} from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, OctetString, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -58,7 +51,8 @@ export class Curve {
   public b!: ArrayBuffer;
 
   @AsnProp({
-    type: AsnPropTypes.BitString, optional: true,
+    type: AsnPropTypes.BitString,
+    optional: true,
   })
   public seed?: ArrayBuffer;
 
@@ -106,12 +100,14 @@ export class SpecifiedECDomain {
   public base!: ECPoint;
 
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public order!: ArrayBuffer;
 
   @AsnProp({
-    type: AsnPropTypes.Integer, optional: true,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public cofactor?: ArrayBuffer;
 

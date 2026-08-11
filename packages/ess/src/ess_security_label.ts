@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 import { SecurityClassification } from "./types";
 import { SecurityCategories } from "./security_category";
 
@@ -43,17 +41,20 @@ export class ESSSecurityLabel {
   public securityPolicyIdentifier = "";
 
   @AsnProp({
-    type: AsnPropTypes.Integer, optional: true,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public securityClassification?: SecurityClassification;
 
   @AsnProp({
-    type: ESSPrivacyMark, optional: true,
+    type: ESSPrivacyMark,
+    optional: true,
   })
   public privacyMark?: ESSPrivacyMark;
 
   @AsnProp({
-    type: SecurityCategories, optional: true,
+    type: SecurityCategories,
+    optional: true,
   })
   public securityCategories?: SecurityCategories;
 
@@ -68,7 +69,8 @@ export class ESSSecurityLabel {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: ESSSecurityLabel,
+  type: AsnTypeTypes.Sequence,
+  itemType: ESSSecurityLabel,
 })
 export class EquivalentLabels extends AsnArray<ESSSecurityLabel> {
   constructor(items?: ESSSecurityLabel[]) {

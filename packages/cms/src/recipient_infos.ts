@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { RecipientInfo } from "./recipient_info";
 
 /**
@@ -9,7 +7,8 @@ import { RecipientInfo } from "./recipient_info";
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Set, itemType: RecipientInfo,
+  type: AsnTypeTypes.Set,
+  itemType: RecipientInfo,
 })
 export class RecipientInfos extends AsnArray<RecipientInfo> {
   constructor(items?: RecipientInfo[]) {

@@ -14,7 +14,8 @@ export class SecretBag {
   public secretTypeId = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, context: 0,
+    type: AsnPropTypes.Any,
+    context: 0,
   })
   public secretValue = new ArrayBuffer(0);
 

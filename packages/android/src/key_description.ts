@@ -1,11 +1,4 @@
-import {
-  AsnProp,
-  AsnPropTypes,
-  AsnArray,
-  AsnType,
-  AsnTypeTypes,
-  OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 
 /**
  * Extension OID for key description.
@@ -61,7 +54,8 @@ export class RootOfTrust {
    * `verifiedBootHash` must present in `KeyDescription` version 3
    */
   @AsnProp({
-    type: OctetString, optional: true,
+    type: OctetString,
+    optional: true,
   })
   public verifiedBootHash?: OctetString;
 
@@ -78,7 +72,8 @@ export class RootOfTrust {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Set, itemType: AsnPropTypes.Integer,
+  type: AsnTypeTypes.Set,
+  itemType: AsnPropTypes.Integer,
 })
 export class IntegerSet extends AsnArray<number> {
   constructor(items?: number[]) {
@@ -142,217 +137,303 @@ export class IntegerSet extends AsnArray<number> {
  */
 export class AuthorizationList {
   @AsnProp({
-    context: 1, type: IntegerSet, optional: true,
+    context: 1,
+    type: IntegerSet,
+    optional: true,
   })
   public purpose?: IntegerSet;
 
   @AsnProp({
-    context: 2, type: AsnPropTypes.Integer, optional: true,
+    context: 2,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public algorithm?: number;
 
   @AsnProp({
-    context: 3, type: AsnPropTypes.Integer, optional: true,
+    context: 3,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public keySize?: number;
 
   @AsnProp({
-    context: 5, type: IntegerSet, optional: true,
+    context: 5,
+    type: IntegerSet,
+    optional: true,
   })
   public digest?: IntegerSet;
 
   @AsnProp({
-    context: 6, type: IntegerSet, optional: true,
+    context: 6,
+    type: IntegerSet,
+    optional: true,
   })
   public padding?: IntegerSet;
 
   @AsnProp({
-    context: 10, type: AsnPropTypes.Integer, optional: true,
+    context: 10,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public ecCurve?: number;
 
   @AsnProp({
-    context: 200, type: AsnPropTypes.Integer, optional: true,
+    context: 200,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public rsaPublicExponent?: number;
 
   @AsnProp({
-    context: 203, type: IntegerSet, optional: true,
+    context: 203,
+    type: IntegerSet,
+    optional: true,
   })
   public mgfDigest?: IntegerSet;
 
   @AsnProp({
-    context: 303, type: AsnPropTypes.Null, optional: true,
+    context: 303,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public rollbackResistance?: null;
 
   @AsnProp({
-    context: 305, type: AsnPropTypes.Null, optional: true,
+    context: 305,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public earlyBootOnly?: null;
 
   @AsnProp({
-    context: 400, type: AsnPropTypes.Integer, optional: true,
+    context: 400,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public activeDateTime?: number;
 
   @AsnProp({
-    context: 401, type: AsnPropTypes.Integer, optional: true,
+    context: 401,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public originationExpireDateTime?: number;
 
   @AsnProp({
-    context: 402, type: AsnPropTypes.Integer, optional: true,
+    context: 402,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public usageExpireDateTime?: number;
 
   @AsnProp({
-    context: 405, type: AsnPropTypes.Integer, optional: true,
+    context: 405,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public usageCountLimit?: number;
 
   @AsnProp({
-    context: 503, type: AsnPropTypes.Null, optional: true,
+    context: 503,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public noAuthRequired?: null;
 
   @AsnProp({
-    context: 504, type: AsnPropTypes.Integer, optional: true,
+    context: 504,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public userAuthType?: number;
 
   @AsnProp({
-    context: 505, type: AsnPropTypes.Integer, optional: true,
+    context: 505,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public authTimeout?: number;
 
   @AsnProp({
-    context: 506, type: AsnPropTypes.Null, optional: true,
+    context: 506,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public allowWhileOnBody?: null;
 
   @AsnProp({
-    context: 507, type: AsnPropTypes.Null, optional: true,
+    context: 507,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public trustedUserPresenceRequired?: null;
 
   @AsnProp({
-    context: 508, type: AsnPropTypes.Null, optional: true,
+    context: 508,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public trustedConfirmationRequired?: null;
 
   @AsnProp({
-    context: 509, type: AsnPropTypes.Null, optional: true,
+    context: 509,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public unlockedDeviceRequired?: null;
 
   @AsnProp({
-    context: 600, type: AsnPropTypes.Null, optional: true,
+    context: 600,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public allApplications?: null;
 
   @AsnProp({
-    context: 601, type: OctetString, optional: true,
+    context: 601,
+    type: OctetString,
+    optional: true,
   })
   public applicationId?: OctetString;
 
   @AsnProp({
-    context: 701, type: AsnPropTypes.Integer, optional: true,
+    context: 701,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public creationDateTime?: number;
 
   @AsnProp({
-    context: 702, type: AsnPropTypes.Integer, optional: true,
+    context: 702,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public origin?: number;
 
   @AsnProp({
-    context: 703, type: AsnPropTypes.Null, optional: true,
+    context: 703,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public rollbackResistant?: null;
 
   @AsnProp({
-    context: 704, type: RootOfTrust, optional: true,
+    context: 704,
+    type: RootOfTrust,
+    optional: true,
   })
   public rootOfTrust?: RootOfTrust;
 
   @AsnProp({
-    context: 705, type: AsnPropTypes.Integer, optional: true,
+    context: 705,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public osVersion?: number;
 
   @AsnProp({
-    context: 706, type: AsnPropTypes.Integer, optional: true,
+    context: 706,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public osPatchLevel?: number;
 
   @AsnProp({
-    context: 709, type: OctetString, optional: true,
+    context: 709,
+    type: OctetString,
+    optional: true,
   })
   public attestationApplicationId?: OctetString;
 
   @AsnProp({
-    context: 710, type: OctetString, optional: true,
+    context: 710,
+    type: OctetString,
+    optional: true,
   })
   public attestationIdBrand?: OctetString;
 
   @AsnProp({
-    context: 711, type: OctetString, optional: true,
+    context: 711,
+    type: OctetString,
+    optional: true,
   })
   public attestationIdDevice?: OctetString;
 
   @AsnProp({
-    context: 712, type: OctetString, optional: true,
+    context: 712,
+    type: OctetString,
+    optional: true,
   })
   public attestationIdProduct?: OctetString;
 
   @AsnProp({
-    context: 713, type: OctetString, optional: true,
+    context: 713,
+    type: OctetString,
+    optional: true,
   })
   public attestationIdSerial?: OctetString;
 
   @AsnProp({
-    context: 714, type: OctetString, optional: true,
+    context: 714,
+    type: OctetString,
+    optional: true,
   })
   public attestationIdImei?: OctetString;
 
   @AsnProp({
-    context: 715, type: OctetString, optional: true,
+    context: 715,
+    type: OctetString,
+    optional: true,
   })
   public attestationIdMeid?: OctetString;
 
   @AsnProp({
-    context: 716, type: OctetString, optional: true,
+    context: 716,
+    type: OctetString,
+    optional: true,
   })
   public attestationIdManufacturer?: OctetString;
 
   @AsnProp({
-    context: 717, type: OctetString, optional: true,
+    context: 717,
+    type: OctetString,
+    optional: true,
   })
   public attestationIdModel?: OctetString;
 
   @AsnProp({
-    context: 718, type: AsnPropTypes.Integer, optional: true,
+    context: 718,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public vendorPatchLevel?: number;
 
   @AsnProp({
-    context: 719, type: AsnPropTypes.Integer, optional: true,
+    context: 719,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public bootPatchLevel?: number;
 
   @AsnProp({
-    context: 720, type: AsnPropTypes.Null, optional: true,
+    context: 720,
+    type: AsnPropTypes.Null,
+    optional: true,
   })
   public deviceUniqueAttestation?: null;
 
   @AsnProp({
-    context: 723, type: OctetString, optional: true,
+    context: 723,
+    type: OctetString,
+    optional: true,
   })
   public attestationIdSecondImei?: OctetString;
 
   @AsnProp({
-    context: 724, type: OctetString, optional: true,
+    context: 724,
+    type: OctetString,
+    optional: true,
   })
   public moduleHash?: OctetString;
 

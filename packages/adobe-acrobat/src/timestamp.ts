@@ -27,7 +27,9 @@ export class Timestamp {
   public location: GeneralName = new GeneralName();
 
   @AsnProp({
-    type: AsnPropTypes.Boolean, defaultValue: false, optional: true,
+    type: AsnPropTypes.Boolean,
+    defaultValue: false,
+    optional: true,
   })
   public requiresAuth = false;
 

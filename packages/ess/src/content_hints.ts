@@ -11,7 +11,8 @@ import { ContentType } from "@peculiar/asn1-cms";
  */
 export class ContentHints {
   @AsnProp({
-    type: AsnPropTypes.Utf8String, optional: true,
+    type: AsnPropTypes.Utf8String,
+    optional: true,
   })
   public contentDescription?: string;
 

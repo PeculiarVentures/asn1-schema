@@ -11,12 +11,17 @@ import { GeneralNames, GeneralName } from "@peculiar/asn1-x509";
  */
 export class RoleSyntax {
   @AsnProp({
-    type: GeneralNames, implicit: true, context: 0, optional: true,
+    type: GeneralNames,
+    implicit: true,
+    context: 0,
+    optional: true,
   })
   public roleAuthority?: GeneralNames;
 
   @AsnProp({
-    type: GeneralName, implicit: true, context: 1,
+    type: GeneralName,
+    implicit: true,
+    context: 1,
   })
   public roleName?: GeneralName;
 

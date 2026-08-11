@@ -1,6 +1,4 @@
-import {
-  AsnProp, OctetString, AsnPropTypes,
-} from "@peculiar/asn1-schema";
+import { AsnProp, OctetString, AsnPropTypes } from "@peculiar/asn1-schema";
 import { GeneralNames } from "@peculiar/asn1-x509";
 
 /**
@@ -40,12 +38,16 @@ export class IetfAttrSyntaxValueChoices {
  */
 export class IetfAttrSyntax {
   @AsnProp({
-    type: GeneralNames, implicit: true, context: 0, optional: true,
+    type: GeneralNames,
+    implicit: true,
+    context: 0,
+    optional: true,
   })
   public policyAuthority?: GeneralNames;
 
   @AsnProp({
-    type: IetfAttrSyntaxValueChoices, repeated: "sequence",
+    type: IetfAttrSyntaxValueChoices,
+    repeated: "sequence",
   })
   public values: IetfAttrSyntaxValueChoices[] = [];
 

@@ -13,7 +13,8 @@ export class Attribute {
   public type = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, repeated: "set",
+    type: AsnPropTypes.Any,
+    repeated: "set",
   })
   public values: ArrayBuffer[] = [];
 

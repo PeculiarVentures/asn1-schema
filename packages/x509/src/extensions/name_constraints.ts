@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { GeneralName } from "../general_name";
 import { id_ce } from "../object_identifiers";
 
@@ -31,12 +29,18 @@ export class GeneralSubtree {
   public base = new GeneralName();
 
   @AsnProp({
-    type: AsnPropTypes.Integer, context: 0, defaultValue: 0, implicit: true,
+    type: AsnPropTypes.Integer,
+    context: 0,
+    defaultValue: 0,
+    implicit: true,
   })
   public minimum: BaseDistance = 0;
 
   @AsnProp({
-    type: AsnPropTypes.Integer, context: 1, optional: true, implicit: true,
+    type: AsnPropTypes.Integer,
+    context: 1,
+    optional: true,
+    implicit: true,
   })
   public maximum?: BaseDistance;
 
@@ -51,7 +55,8 @@ export class GeneralSubtree {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: GeneralSubtree,
+  type: AsnTypeTypes.Sequence,
+  itemType: GeneralSubtree,
 })
 export class GeneralSubtrees extends AsnArray<GeneralSubtree> {
   constructor(items?: GeneralSubtree[]) {
@@ -71,12 +76,18 @@ export class GeneralSubtrees extends AsnArray<GeneralSubtree> {
  */
 export class NameConstraints {
   @AsnProp({
-    type: GeneralSubtrees, context: 0, optional: true, implicit: true,
+    type: GeneralSubtrees,
+    context: 0,
+    optional: true,
+    implicit: true,
   })
   public permittedSubtrees?: GeneralSubtrees;
 
   @AsnProp({
-    type: GeneralSubtrees, context: 1, optional: true, implicit: true,
+    type: GeneralSubtrees,
+    context: 1,
+    optional: true,
+    implicit: true,
   })
   public excludedSubtrees?: GeneralSubtrees;
 

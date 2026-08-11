@@ -8,14 +8,7 @@ import { id_netscapeCertExtension } from "./object_identifiers";
  */
 export const id_netscapeCertType = `${id_netscapeCertExtension}.1`;
 
-export type NetscapeCertTypeString
-  = | "sslClient"
-    | "sslServer"
-    | "sMime"
-    | "objectSigning"
-    | "sslCa"
-    | "sMimeCa"
-    | "objectSigningCa";
+export type NetscapeCertTypeString = "sslClient" | "sslServer" | "sMime" | "objectSigning" | "sslCa" | "sMimeCa" | "objectSigningCa";
 
 export type NetscapeCertTypes = NetscapeCertTypeString[];
 

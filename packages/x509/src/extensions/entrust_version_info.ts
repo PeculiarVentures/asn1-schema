@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, BitString,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, BitString } from "@peculiar/asn1-schema";
 
 /**
  * ```asn1

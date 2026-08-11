@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnType, AsnTypeTypes, AsnProp, AsnPropTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { PKCS12Attribute } from "./attribute";
 
 /**
@@ -17,12 +15,15 @@ export class SafeBag {
   public bagId = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, context: 0,
+    type: AsnPropTypes.Any,
+    context: 0,
   })
   public bagValue = new ArrayBuffer(0);
 
   @AsnProp({
-    type: PKCS12Attribute, repeated: "set", optional: true,
+    type: PKCS12Attribute,
+    repeated: "set",
+    optional: true,
   })
   public bagAttributes?: PKCS12Attribute[];
 
@@ -37,7 +38,8 @@ export class SafeBag {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: SafeBag,
+  type: AsnTypeTypes.Sequence,
+  itemType: SafeBag,
 })
 export class SafeContents extends AsnArray<SafeBag> {
   constructor(items?: SafeBag[]) {

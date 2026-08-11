@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 import { ContentType } from "./types";
 
 @AsnType({ type: AsnTypeTypes.Choice })
@@ -28,7 +26,9 @@ export class EncapsulatedContentInfo {
   public eContentType: ContentType = "";
 
   @AsnProp({
-    type: EncapsulatedContent, context: 0, optional: true,
+    type: EncapsulatedContent,
+    context: 0,
+    optional: true,
   })
   public eContent?: EncapsulatedContent;
 

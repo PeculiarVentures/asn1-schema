@@ -22,13 +22,7 @@ Abstract Syntax Notation One (ASN.1) is widely used across X.509, PKCS, CMS, OCS
 ## TypeScript Example
 
 ```ts
-import {
-  AsnConvert,
-  AsnProp,
-  AsnPropTypes,
-  AsnType,
-  AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnConvert, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 
 @AsnType({ type: AsnTypeTypes.Sequence })
 class BasicConstraints {

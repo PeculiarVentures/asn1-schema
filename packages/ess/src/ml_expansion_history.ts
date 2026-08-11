@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { SubjectKeyIdentifier, GeneralNames } from "@peculiar/asn1-x509";
 import { IssuerAndSerialNumber } from "@peculiar/asn1-cms";
 
@@ -44,17 +42,25 @@ export class EntityIdentifier {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class MLReceiptPolicy {
   @AsnProp({
-    type: AsnPropTypes.Null, context: 0, implicit: true,
+    type: AsnPropTypes.Null,
+    context: 0,
+    implicit: true,
   })
   public none?: AsnPropTypes.Null;
 
   @AsnProp({
-    type: GeneralNames, repeated: "sequence", context: 1, implicit: true,
+    type: GeneralNames,
+    repeated: "sequence",
+    context: 1,
+    implicit: true,
   })
   public insteadOf?: GeneralNames[];
 
   @AsnProp({
-    type: GeneralNames, repeated: "sequence", context: 2, implicit: true,
+    type: GeneralNames,
+    repeated: "sequence",
+    context: 2,
+    implicit: true,
   })
   public inAdditionTo?: GeneralNames[];
 
@@ -79,7 +85,8 @@ export class MLData {
   public expansionTime = new Date();
 
   @AsnProp({
-    type: MLReceiptPolicy, optional: true,
+    type: MLReceiptPolicy,
+    optional: true,
   })
   public mlReceiptPolicy?: MLReceiptPolicy;
 
@@ -96,7 +103,8 @@ export class MLData {
  * @todo - implement size constraint?
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: MLData,
+  type: AsnTypeTypes.Sequence,
+  itemType: MLData,
 })
 export class MLExpansionHistory extends AsnArray<MLData> {
   constructor(items?: MLData[]) {

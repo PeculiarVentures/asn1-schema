@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
 import { CertPolicyId } from "./certificate_policies";
 
@@ -36,7 +34,8 @@ export class PolicyMapping {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: PolicyMapping,
+  type: AsnTypeTypes.Sequence,
+  itemType: PolicyMapping,
 })
 export class PolicyMappings extends AsnArray<PolicyMapping> {
   constructor(items?: PolicyMapping[]) {

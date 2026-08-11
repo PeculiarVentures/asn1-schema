@@ -1,7 +1,5 @@
 import * as asn1js from "asn1js";
-import {
-  isBufferSource, toArrayBuffer, type BufferSourceLike,
-} from "@peculiar/utils/bytes";
+import { isBufferSource, toArrayBuffer, type BufferSourceLike } from "@peculiar/utils/bytes";
 import { IAsnConvertible } from "../types";
 
 export class BitString<T extends number = number> implements IAsnConvertible {
@@ -38,7 +36,8 @@ export class BitString<T extends number = number> implements IAsnConvertible {
 
   public toASN(): asn1js.BitString {
     return new asn1js.BitString({
-      unusedBits: this.unusedBits, valueHex: this.value,
+      unusedBits: this.unusedBits,
+      valueHex: this.value,
     });
   }
 

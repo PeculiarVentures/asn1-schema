@@ -1,10 +1,6 @@
 import { EnvelopedData } from "@peculiar/asn1-cms";
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
-import {
-  AlgorithmIdentifier, GeneralName, SubjectPublicKeyInfo,
-} from "@peculiar/asn1-x509";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AlgorithmIdentifier, GeneralName, SubjectPublicKeyInfo } from "@peculiar/asn1-x509";
 
 /**
  * ```asn1
@@ -52,12 +48,16 @@ export class PKMACValue {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class AuthInfo {
   @AsnProp({
-    type: GeneralName, context: 0, optional: true, implicit: false,
+    type: GeneralName,
+    context: 0,
+    optional: true,
+    implicit: false,
   })
   public sender?: GeneralName;
 
   @AsnProp({
-    type: PKMACValue, optional: true,
+    type: PKMACValue,
+    optional: true,
   })
   public publicKeyMAC?: PKMACValue;
 
@@ -105,7 +105,10 @@ export class POPOSigningKeyInput {
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class POPOSigningKey {
   @AsnProp({
-    type: POPOSigningKeyInput, context: 0, optional: true, implicit: true,
+    type: POPOSigningKeyInput,
+    context: 0,
+    optional: true,
+    implicit: true,
   })
   public poposkInput?: POPOSigningKeyInput;
 
@@ -133,27 +136,42 @@ export class POPOSigningKey {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class POPOPrivKey {
   @AsnProp({
-    type: AsnPropTypes.BitString, context: 0, optional: true, implicit: true,
+    type: AsnPropTypes.BitString,
+    context: 0,
+    optional: true,
+    implicit: true,
   })
   public thisMessage?: ArrayBuffer;
 
   @AsnProp({
-    type: AsnPropTypes.Integer, context: 1, optional: true, implicit: true,
+    type: AsnPropTypes.Integer,
+    context: 1,
+    optional: true,
+    implicit: true,
   })
   public subsequentMessage?: SubsequentMessage;
 
   @AsnProp({
-    type: AsnPropTypes.BitString, context: 2, optional: true, implicit: true,
+    type: AsnPropTypes.BitString,
+    context: 2,
+    optional: true,
+    implicit: true,
   })
   public dhMAC?: ArrayBuffer;
 
   @AsnProp({
-    type: PKMACValue, context: 3, optional: true, implicit: true,
+    type: PKMACValue,
+    context: 3,
+    optional: true,
+    implicit: true,
   })
   public agreeMAC?: PKMACValue;
 
   @AsnProp({
-    type: EnvelopedData, context: 4, optional: true, implicit: true,
+    type: EnvelopedData,
+    context: 4,
+    optional: true,
+    implicit: true,
   })
   public encryptedKey?: EnvelopedData;
 
@@ -176,22 +194,34 @@ export class POPOPrivKey {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ProofOfPossession {
   @AsnProp({
-    type: AsnPropTypes.Null, context: 0, optional: true, implicit: true,
+    type: AsnPropTypes.Null,
+    context: 0,
+    optional: true,
+    implicit: true,
   })
   public raVerified?: null;
 
   @AsnProp({
-    type: POPOSigningKey, context: 1, optional: true, implicit: true,
+    type: POPOSigningKey,
+    context: 1,
+    optional: true,
+    implicit: true,
   })
   public signature?: POPOSigningKey;
 
   @AsnProp({
-    type: POPOPrivKey, context: 2, optional: true, implicit: false,
+    type: POPOPrivKey,
+    context: 2,
+    optional: true,
+    implicit: false,
   })
   public keyEncipherment?: POPOPrivKey;
 
   @AsnProp({
-    type: POPOPrivKey, context: 3, optional: true, implicit: false,
+    type: POPOPrivKey,
+    context: 3,
+    optional: true,
+    implicit: false,
   })
   public keyAgreement?: POPOPrivKey;
 

@@ -1,14 +1,7 @@
 // -- Biometric info extension
 
 import { id_pe, AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import {
-  AsnProp,
-  AsnPropTypes,
-  AsnType,
-  AsnTypeTypes,
-  AsnArray,
-  OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray, OctetString } from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -69,7 +62,8 @@ export class BiometricData {
   public biometricDataHash = new OctetString();
 
   @AsnProp({
-    type: AsnPropTypes.IA5String, optional: true,
+    type: AsnPropTypes.IA5String,
+    optional: true,
   })
   public sourceDataUri?: string;
 
@@ -84,7 +78,8 @@ export class BiometricData {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: BiometricData,
+  type: AsnTypeTypes.Sequence,
+  itemType: BiometricData,
 })
 export class BiometricSyntax extends AsnArray<BiometricData> {
   constructor(items?: BiometricData[]) {

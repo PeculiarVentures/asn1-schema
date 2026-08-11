@@ -1,11 +1,4 @@
-import {
-  AsnProp,
-  AsnPropTypes,
-  AsnIntegerArrayBufferConverter,
-  AsnArray,
-  AsnType,
-  AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -18,17 +11,20 @@ import {
  */
 export class OtherPrimeInfo {
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public prime = new ArrayBuffer(0);
 
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public exponent = new ArrayBuffer(0);
 
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public coefficient = new ArrayBuffer(0);
 
@@ -43,7 +39,8 @@ export class OtherPrimeInfo {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: OtherPrimeInfo,
+  type: AsnTypeTypes.Sequence,
+  itemType: OtherPrimeInfo,
 })
 export class OtherPrimeInfos extends AsnArray<OtherPrimeInfo> {
   constructor(items?: OtherPrimeInfo[]) {

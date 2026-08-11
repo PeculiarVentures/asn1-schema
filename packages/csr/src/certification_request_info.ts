@@ -40,7 +40,10 @@ export class CertificationRequestInfo {
    * handle that case (for example, treat `undefined` as an empty set of attributes).
    */
   @AsnProp({
-    type: Attributes, implicit: true, context: 0, optional: true,
+    type: Attributes,
+    implicit: true,
+    context: 0,
+    optional: true,
   })
   public attributes = new Attributes();
 

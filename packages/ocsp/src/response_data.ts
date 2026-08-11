@@ -16,7 +16,9 @@ import { Version } from "./types";
  */
 export class ResponseData {
   @AsnProp({
-    type: AsnPropTypes.Integer, context: 0, defaultValue: Version.v1,
+    type: AsnPropTypes.Integer,
+    context: 0,
+    defaultValue: Version.v1,
   })
   public version = Version.v1;
 
@@ -27,12 +29,16 @@ export class ResponseData {
   public producedAt = new Date();
 
   @AsnProp({
-    type: SingleResponse, repeated: "sequence",
+    type: SingleResponse,
+    repeated: "sequence",
   })
   public responses: SingleResponse[] = [];
 
   @AsnProp({
-    type: Extension, repeated: "sequence", context: 1, optional: true,
+    type: Extension,
+    repeated: "sequence",
+    context: 1,
+    optional: true,
   })
   public responseExtensions?: Extension[];
 

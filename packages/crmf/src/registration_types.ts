@@ -1,13 +1,6 @@
 import { EnvelopedData } from "@peculiar/asn1-cms";
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
-import {
-  AlgorithmIdentifier,
-  Attribute,
-  GeneralName,
-  SubjectPublicKeyInfo,
-} from "@peculiar/asn1-x509";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
+import { AlgorithmIdentifier, Attribute, GeneralName, SubjectPublicKeyInfo } from "@peculiar/asn1-x509";
 
 /**
  * ```asn1
@@ -61,7 +54,8 @@ export class SinglePubInfo {
   public pubMethod: PubMethod = PubMethod.dontCare;
 
   @AsnProp({
-    type: GeneralName, optional: true,
+    type: GeneralName,
+    optional: true,
   })
   public pubLocation?: GeneralName;
 
@@ -90,7 +84,9 @@ export class PKIPublicationInfo {
   public action: PKIPublicationAction = PKIPublicationAction.dontPublish;
 
   @AsnProp({
-    type: SinglePubInfo, repeated: "sequence", optional: true,
+    type: SinglePubInfo,
+    repeated: "sequence",
+    optional: true,
   })
   public pubInfos?: SinglePubInfo[];
 
@@ -147,27 +143,42 @@ export type ProtocolEncrKey = SubjectPublicKeyInfo;
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class EncryptedValue {
   @AsnProp({
-    type: AlgorithmIdentifier, context: 0, optional: true, implicit: true,
+    type: AlgorithmIdentifier,
+    context: 0,
+    optional: true,
+    implicit: true,
   })
   public intendedAlg?: AlgorithmIdentifier;
 
   @AsnProp({
-    type: AlgorithmIdentifier, context: 1, optional: true, implicit: true,
+    type: AlgorithmIdentifier,
+    context: 1,
+    optional: true,
+    implicit: true,
   })
   public symmAlg?: AlgorithmIdentifier;
 
   @AsnProp({
-    type: AsnPropTypes.BitString, context: 2, optional: true, implicit: true,
+    type: AsnPropTypes.BitString,
+    context: 2,
+    optional: true,
+    implicit: true,
   })
   public encSymmKey?: ArrayBuffer;
 
   @AsnProp({
-    type: AlgorithmIdentifier, context: 3, optional: true, implicit: true,
+    type: AlgorithmIdentifier,
+    context: 3,
+    optional: true,
+    implicit: true,
   })
   public keyAlg?: AlgorithmIdentifier;
 
   @AsnProp({
-    type: AsnPropTypes.OctetString, context: 4, optional: true, implicit: true,
+    type: AsnPropTypes.OctetString,
+    context: 4,
+    optional: true,
+    implicit: true,
   })
   public valueHint?: ArrayBuffer;
 
@@ -189,12 +200,16 @@ export class EncryptedValue {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class EncryptedKey {
   @AsnProp({
-    type: EncryptedValue, optional: true,
+    type: EncryptedValue,
+    optional: true,
   })
   public encryptedValue?: EncryptedValue;
 
   @AsnProp({
-    type: EnvelopedData, context: 0, optional: true, implicit: true,
+    type: EnvelopedData,
+    context: 0,
+    optional: true,
+    implicit: true,
   })
   public envelopedData?: EnvelopedData;
 
@@ -214,17 +229,26 @@ export class EncryptedKey {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class PKIArchiveOptions {
   @AsnProp({
-    type: EncryptedKey, context: 0, optional: true, implicit: true,
+    type: EncryptedKey,
+    context: 0,
+    optional: true,
+    implicit: true,
   })
   public encryptedPrivKey?: EncryptedKey;
 
   @AsnProp({
-    type: AsnPropTypes.OctetString, context: 1, optional: true, implicit: true,
+    type: AsnPropTypes.OctetString,
+    context: 1,
+    optional: true,
+    implicit: true,
   })
   public keyGenParameters?: KeyGenParameters;
 
   @AsnProp({
-    type: AsnPropTypes.Boolean, context: 2, optional: true, implicit: true,
+    type: AsnPropTypes.Boolean,
+    context: 2,
+    optional: true,
+    implicit: true,
   })
   public archiveRemGenPrivKey?: boolean;
 
@@ -284,7 +308,11 @@ export class PrivateKeyInfo {
   public privateKey = new ArrayBuffer(0);
 
   @AsnProp({
-    type: Attribute, repeated: "set", context: 0, optional: true, implicit: true,
+    type: Attribute,
+    repeated: "set",
+    context: 0,
+    optional: true,
+    implicit: true,
   })
   public attributes?: Attribute[];
 
@@ -307,12 +335,14 @@ export class PrivateKeyInfo {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class EncKeyWithIDIdentifier {
   @AsnProp({
-    type: AsnPropTypes.Utf8String, optional: true,
+    type: AsnPropTypes.Utf8String,
+    optional: true,
   })
   public string?: string;
 
   @AsnProp({
-    type: GeneralName, optional: true,
+    type: GeneralName,
+    optional: true,
   })
   public generalName?: GeneralName;
 
@@ -327,7 +357,8 @@ export class EncKeyWithID {
   public privateKey = new PrivateKeyInfo();
 
   @AsnProp({
-    type: EncKeyWithIDIdentifier, optional: true,
+    type: EncKeyWithIDIdentifier,
+    optional: true,
   })
   public identifier?: EncKeyWithIDIdentifier;
 

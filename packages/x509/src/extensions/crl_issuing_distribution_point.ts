@@ -27,7 +27,9 @@ export class IssuingDistributionPoint {
   public static readonly ONLY = false;
 
   @AsnProp({
-    type: DistributionPointName, context: 0, optional: true,
+    type: DistributionPointName,
+    context: 0,
+    optional: true,
   })
   public distributionPoint?: DistributionPointName;
 
@@ -48,7 +50,10 @@ export class IssuingDistributionPoint {
   public onlyContainsCACerts = IssuingDistributionPoint.ONLY;
 
   @AsnProp({
-    type: Reason, context: 3, optional: true, implicit: true,
+    type: Reason,
+    context: 3,
+    optional: true,
+    implicit: true,
   })
   public onlySomeReasons?: Reason;
 

@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { GeneralNames } from "@peculiar/asn1-x509";
 import { AllOrFirstTier } from "./types";
 
@@ -15,12 +13,17 @@ import { AllOrFirstTier } from "./types";
 @AsnType({ type: AsnTypeTypes.Choice })
 export class ReceiptsFrom {
   @AsnProp({
-    type: AsnPropTypes.Integer, context: 0, implicit: true,
+    type: AsnPropTypes.Integer,
+    context: 0,
+    implicit: true,
   })
   public allOrFirstTier: AllOrFirstTier = AllOrFirstTier.allReceipts;
 
   @AsnProp({
-    type: GeneralNames, repeated: "sequence", context: 1, implicit: true,
+    type: GeneralNames,
+    repeated: "sequence",
+    context: 1,
+    implicit: true,
   })
   public receiptList: GeneralNames[] = [];
 

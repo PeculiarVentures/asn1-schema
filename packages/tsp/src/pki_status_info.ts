@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { PKIFailureInfo } from "./pki_failure_info";
 import { PKIStatus } from "./pki_status";
 
@@ -12,7 +10,8 @@ import { PKIStatus } from "./pki_status";
  */
 
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.Utf8String,
+  type: AsnTypeTypes.Sequence,
+  itemType: AsnPropTypes.Utf8String,
 })
 export class PKIFreeText extends AsnArray<string> {
   constructor(items?: string[]) {
@@ -36,12 +35,14 @@ export class PKIStatusInfo {
   public status = PKIStatus.granted;
 
   @AsnProp({
-    type: PKIFreeText, optional: true,
+    type: PKIFreeText,
+    optional: true,
   })
   public statusString?: PKIFreeText;
 
   @AsnProp({
-    type: PKIFailureInfo, optional: true,
+    type: PKIFailureInfo,
+    optional: true,
   })
   public failInfo?: PKIFailureInfo;
 

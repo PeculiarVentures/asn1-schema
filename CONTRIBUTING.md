@@ -21,9 +21,9 @@ A typical contributor workflow looks like this:
 1. Create a new feature branch.
 1. Write some code.
 1. Ensure your code is **tested**.
-    - Add unit tests as necessary when fixing bugs or adding features; run them with `npm run test` in the relevant `packages/` directory.
+   - Add unit tests as necessary when fixing bugs or adding features; run them with `npm run test` in the relevant `packages/` directory.
 1. Submit a Pull Request on GitHub and fill out the template.
 1. Team members will review your code and merge it after approvals.
-    - You may be asked to make modifications to code style or to fix bugs you may have not noticed.
-    - Please respond to comments in a timely fashion (even if to tell us you need more time).
+   - You may be asked to make modifications to code style or to fix bugs you may have not noticed.
+   - Please respond to comments in a timely fashion (even if to tell us you need more time).
 1. Cheers, you contributed!
