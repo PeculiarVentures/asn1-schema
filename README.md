@@ -16,6 +16,7 @@
 - [crmf](packages/crmf/README.md) (RFC 4211)
 - [ecc](packages/ecc/README.md) (RFC 5915, RFC 5480)
 - [lei](packages/lei/README.md)
+- [mtc](packages/mtc/README.md) (draft-ietf-plants-merkle-tree-certs)
 - [ntqwac](packages/ntqwac/README.md)
 - [ocsp](packages/ocsp/README.md) (RFC 6960)
 - [pfx](packages/pfx/README.md) (RFC 7292)

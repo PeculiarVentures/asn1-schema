@@ -98,6 +98,9 @@
       ],
       "@peculiar/asn1-apple": [
         "./packages/apple/src"
+      ],
+      "@peculiar/asn1-mtc": [
+        "./packages/mtc/src"
       ]
     }
   },
