@@ -82,6 +82,14 @@ export const AsnObjectIdentifierConverter: IAsnConverter<string, asn1js.ObjectId
 };
 
 /**
+ * ASN.1 RELATIVE OBJECT IDENTIFIER converter
+ */
+export const AsnRelativeObjectIdentifierConverter: IAsnConverter<string, asn1js.RelativeObjectIdentifier> = {
+  fromASN: (value: asn1js.RelativeObjectIdentifier) => value.valueBlock.toString(),
+  toASN: (value: string) => new asn1js.RelativeObjectIdentifier({ value }),
+};
+
+/**
  * ASN.1 BOOLEAN converter
  */
 export const AsnBooleanConverter: IAsnConverter<boolean, asn1js.Boolean> = {
@@ -222,6 +230,8 @@ export function defaultConverter(type: AsnPropTypes): IAsnConverter | null {
       return AsnNumericStringConverter;
     case AsnPropTypes.ObjectIdentifier:
       return AsnObjectIdentifierConverter;
+    case AsnPropTypes.RelativeObjectIdentifier:
+      return AsnRelativeObjectIdentifierConverter;
     case AsnPropTypes.OctetString:
       return AsnOctetStringConverter;
     case AsnPropTypes.PrintableString:

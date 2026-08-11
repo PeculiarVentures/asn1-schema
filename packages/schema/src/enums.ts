@@ -22,6 +22,7 @@ export enum AsnPropTypes {
   Integer,
   Enumerated,
   ObjectIdentifier,
+  RelativeObjectIdentifier,
   Utf8String,
   BmpString,
   UniversalString,

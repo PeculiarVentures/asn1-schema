@@ -281,6 +281,17 @@ describe("Test", () => {
          */
         test(Test, "300606042a030405", "1.2.3.4.5");
       });
+      describe("RelativeObjectIdentifierConverter", () => {
+        class Test {
+          @src.AsnProp({ type: src.AsnPropTypes.RelativeObjectIdentifier })
+          public value!: string;
+        }
+        /**
+         * SEQUENCE (1 elem)
+         *   RELATIVE-OID 32473.1 -- draft-ietf-tls-trust-anchor-ids section 3
+         */
+        test(Test, "30060d0481fd5901", "32473.1");
+      });
       describe("OctetStringConverter", () => {
         class Test {
           @src.AsnProp({ type: src.AsnPropTypes.OctetString })
