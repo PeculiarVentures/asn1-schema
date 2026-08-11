@@ -1,5 +1,6 @@
-import type { IAsnConvertible } from "@peculiar/asn1-schema";
-import * as asn1js from "asn1js";
+import {
+  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
+} from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -8,34 +9,16 @@ import * as asn1js from "asn1js";
  *
  * CA IDs, log IDs, landmark IDs and cosigner IDs are all trust anchor IDs.
  *
- * `@peculiar/asn1-schema` has no `AsnPropTypes.RelativeObjectIdentifier`, so
- * this class implements {@link IAsnConvertible} directly.
- *
  * @see {@link https://datatracker.ietf.org/doc/draft-ietf-tls-trust-anchor-ids/ | draft-ietf-tls-trust-anchor-ids} section 3
  */
-export class TrustAnchorID implements IAsnConvertible<asn1js.RelativeObjectIdentifier> {
+@AsnType({ type: AsnTypeTypes.Choice })
+export class TrustAnchorID {
   /** Dotted decimal representation, for example `44494.3.1.1`. */
+  @AsnProp({ type: AsnPropTypes.RelativeObjectIdentifier })
   public value: string;
 
   constructor(value = "") {
     this.value = value;
-  }
-
-  public fromASN(asn: asn1js.RelativeObjectIdentifier): this {
-    if (!(asn instanceof asn1js.RelativeObjectIdentifier)) {
-      throw new TypeError("Argument 'asn' is not instance of ASN.1 RelativeObjectIdentifier");
-    }
-    this.value = asn.valueBlock.toString();
-
-    return this;
-  }
-
-  public toASN(): asn1js.RelativeObjectIdentifier {
-    return new asn1js.RelativeObjectIdentifier({ value: this.value });
-  }
-
-  public toSchema(name: string): asn1js.RelativeObjectIdentifier {
-    return new asn1js.RelativeObjectIdentifier({ name });
   }
 
   public toString(): string {

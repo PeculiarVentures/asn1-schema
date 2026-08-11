@@ -70,6 +70,12 @@ describe("mtc", () => {
       assert.strictEqual(Buffer.from(der).toString("hex"), "0d0481fd5901");
     });
 
+    it("parses a RELATIVE-OID", () => {
+      const id = AsnConvert.parse(Buffer.from("0d0481fd5901", "hex"), TrustAnchorID);
+
+      assert.strictEqual(id.value, "32473.1");
+    });
+
     it("matches the draft binary representation for 32473.1", () => {
       // draft-ietf-tls-trust-anchor-ids section 3
       assert.deepStrictEqual(
