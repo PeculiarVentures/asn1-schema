@@ -265,6 +265,28 @@ describe("mtc", () => {
       assert.strictEqual(json.signatures[0].cosignerId, "32473.1");
       assert.strictEqual(json.signatures[0].signature, "aabbccdd");
     });
+
+    it("does not alias the input buffer in parsed byte fields", () => {
+      // One extension (type 1, data "aabb"), start=4 end=8, proof(2x32B),
+      // signatures(1: 32473.1, 4B sig)
+      const hex = "0006" + "0001" + "0002" + "aabb"
+        + "000000000004" + "000000000008"
+        + "0040" + "01".repeat(32) + "02".repeat(32)
+        + "000b" + "04" + "81fd5901" + "0004" + "aabbccdd";
+      const raw = Buffer.from(hex, "hex");
+      const before = Buffer.from(raw);
+      const proof = MTCProof.parse(raw);
+
+      assert.strictEqual(proof.extensions.length, 1);
+      assert.strictEqual(proof.inclusionProof.length, 2);
+
+      proof.inclusionProof[0][0] = 0xff;
+      proof.inclusionProof[1][0] = 0xfe;
+      proof.signatures[0].signature[0] = 0xfd;
+      proof.extensions[0].extensionData[0] = 0xfc;
+
+      assert.ok(raw.equals(before), "parsed byte fields must not alias the input buffer");
+    });
   });
 
   describe("CA certificate", () => {

@@ -116,7 +116,7 @@ export class MTCProof {
       }
       prevType = extensionType;
       res.extensions.push({
-        extensionType, extensionData: extensions.readVector(2),
+        extensionType, extensionData: extensions.readVector(2).slice(),
       });
     }
 
@@ -130,7 +130,7 @@ export class MTCProof {
       );
     }
     for (let i = 0; i < proof.length; i += hashSize) {
-      res.inclusionProof.push(proof.subarray(i, i + hashSize));
+      res.inclusionProof.push(proof.slice(i, i + hashSize));
     }
 
     const signatures = new ByteStream(stream.readVector(2));
@@ -145,7 +145,7 @@ export class MTCProof {
       }
       prevId = id;
       res.signatures.push(
-        new MTCSignature(TrustAnchorID.fromBinary(id), signatures.readVector(2)),
+        new MTCSignature(TrustAnchorID.fromBinary(id), signatures.readVector(2).slice()),
       );
     }
 
