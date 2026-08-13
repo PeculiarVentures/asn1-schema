@@ -240,6 +240,22 @@ describe("mtc", () => {
       });
     });
 
+    describe("parse start/end validation", () => {
+      it("rejects start equal to end", () => {
+        // extensions(0) start=5 end=5 proof(empty) signatures(0)
+        const hex = "0000" + "000000000005" + "000000000005" + "0000" + "0000";
+
+        assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /start must be less than end/);
+      });
+
+      it("rejects start greater than end", () => {
+        // extensions(0) start=8 end=4 proof(empty) signatures(0)
+        const hex = "0000" + "000000000008" + "000000000004" + "0000" + "0000";
+
+        assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /start must be less than end/);
+      });
+    });
+
     it("rejects truncated input", () => {
       assert.throws(() => MTCProof.parse(Buffer.from(proofHex, "hex").subarray(0, 12)));
     });

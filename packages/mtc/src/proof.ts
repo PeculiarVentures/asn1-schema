@@ -122,6 +122,9 @@ export class MTCProof {
 
     res.start = stream.readNumber(6);
     res.end = stream.readNumber(6);
+    if (res.start >= res.end) {
+      throw new Error("MTCProof: start must be less than end");
+    }
 
     const proof = stream.readVector(2);
     if (proof.length % hashSize) {
