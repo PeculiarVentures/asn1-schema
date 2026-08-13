@@ -24,7 +24,19 @@ export function decodeSerialNumber(serialNumber: BufferSourceLike | string): IMT
   };
 }
 
-/** Composes an MTC certificate serial number from a log number and entry index. */
+/**
+ * Composes an MTC certificate serial number from a log number and entry index.
+ *
+ * `logNumber` must be an integer in `1..65535` and `index` at most `2^48-1`
+ * (draft-ietf-plants-merkle-tree-certs sections 5.2 and 6.2); out-of-range
+ * values would silently bleed into adjacent bit ranges of the serial number.
+ */
 export function encodeSerialNumber(logNumber: number, index: bigint): bigint {
+  if (!Number.isInteger(logNumber) || logNumber < 1 || logNumber > 0xffff) {
+    throw new RangeError("encodeSerialNumber: logNumber must be in 1..65535");
+  }
+  if (index < 0n || index > 0xffffffffffffn) {
+    throw new RangeError("encodeSerialNumber: index must be in 0..2^48-1");
+  }
   return (BigInt(logNumber) << 48n) | index;
 }

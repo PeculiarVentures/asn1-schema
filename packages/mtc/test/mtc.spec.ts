@@ -199,6 +199,42 @@ describe("mtc", () => {
         index: 0xffffffffffffn,
       });
     });
+
+    it("encodes the valid extremes and decodes them back", () => {
+      const min = encodeSerialNumber(1, 0n);
+      const max = encodeSerialNumber(65535, 0xffffffffffffn);
+
+      assert.strictEqual(min, 1n << 48n);
+      assert.strictEqual(max, mtcMaxSerial);
+      assert.deepStrictEqual(decodeSerialNumber(min.toString(16).padStart(16, "0")), {
+        logNumber: 1,
+        index: 0n,
+      });
+      assert.deepStrictEqual(decodeSerialNumber(max.toString(16).padStart(16, "0")), {
+        logNumber: 65535,
+        index: 0xffffffffffffn,
+      });
+    });
+
+    it("rejects out-of-range log numbers", () => {
+      assert.throws(() => encodeSerialNumber(0, 0n), RangeError);
+      assert.throws(() => encodeSerialNumber(65536, 0n), RangeError);
+      assert.throws(() => encodeSerialNumber(1.5, 0n), RangeError);
+      assert.throws(() => encodeSerialNumber(NaN, 0n), RangeError);
+    });
+
+    it("rejects out-of-range indices", () => {
+      assert.throws(() => encodeSerialNumber(1, -1n), RangeError);
+      assert.throws(() => encodeSerialNumber(1, 2n ** 48n), RangeError);
+    });
+
+    it("rejects out-of-range inputs with a clear message", () => {
+      assert.throws(() => encodeSerialNumber(0, 0n), /logNumber must be in 1\.\.65535/);
+      assert.throws(() => encodeSerialNumber(65536, 0n), /logNumber must be in 1\.\.65535/);
+      assert.throws(() => encodeSerialNumber(1.5, 0n), /logNumber must be in 1\.\.65535/);
+      assert.throws(() => encodeSerialNumber(1, -1n), /index must be in 0\.\.2\^48-1/);
+      assert.throws(() => encodeSerialNumber(1, 2n ** 48n), /index must be in 0\.\.2\^48-1/);
+    });
   });
 
   describe("MTCProof", () => {
