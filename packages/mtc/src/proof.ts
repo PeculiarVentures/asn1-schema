@@ -101,6 +101,9 @@ export class MTCProof {
 
   public static parse(bytes: BufferSourceLike, options: IMTCProofParseOptions = {}): MTCProof {
     const hashSize = options.hashSize ?? 32;
+    if (!Number.isInteger(hashSize) || hashSize <= 0) {
+      throw new RangeError(`MTCProof: invalid hashSize ${hashSize}`);
+    }
     const res = new MTCProof();
     const stream = new ByteStream(bytes);
 

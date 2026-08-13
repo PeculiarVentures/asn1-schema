@@ -217,6 +217,29 @@ describe("mtc", () => {
       assert.strictEqual(proof.inclusionProof.length, 1);
     });
 
+    describe("parse hashSize validation", () => {
+      it("rejects hashSize 0 even with a non-empty proof buffer", () => {
+        assert.throws(
+          () => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 0 }),
+          RangeError,
+        );
+      });
+
+      it("rejects a negative hashSize", () => {
+        assert.throws(
+          () => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: -1 }),
+          /invalid hashSize/,
+        );
+      });
+
+      it("rejects a non-integer hashSize", () => {
+        assert.throws(
+          () => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 1.5 }),
+          /invalid hashSize/,
+        );
+      });
+    });
+
     it("rejects truncated input", () => {
       assert.throws(() => MTCProof.parse(Buffer.from(proofHex, "hex").subarray(0, 12)));
     });
