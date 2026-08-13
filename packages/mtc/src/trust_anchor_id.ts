@@ -56,6 +56,9 @@ export class TrustAnchorID {
 
   /** Encodes the binary representation. Inverse of {@link fromBinary}. */
   public toBinary(): Uint8Array {
+    if (!this.value) {
+      return new Uint8Array(0);
+    }
     const res: number[] = [];
     for (const part of this.value.split(".")) {
       let value = BigInt(part);

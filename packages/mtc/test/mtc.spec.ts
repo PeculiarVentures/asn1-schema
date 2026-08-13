@@ -77,6 +77,18 @@ describe("mtc", () => {
       assert.strictEqual(TrustAnchorID.fromBinary(id.toBinary()).value, id.value);
     });
 
+    it("encodes an empty id as empty bytes", () => {
+      // Regression: "".split(".") is [""] and BigInt("") throws; an empty
+      // TrustAnchorID must encode to an empty byte array.
+      assert.strictEqual(new TrustAnchorID().toBinary().length, 0);
+      assert.deepStrictEqual(Array.from(new TrustAnchorID().toBinary()), []);
+    });
+
+    it("round trips an empty id", () => {
+      assert.strictEqual(TrustAnchorID.fromBinary(new Uint8Array(0)).value, "");
+      assert.strictEqual(TrustAnchorID.fromBinary(new TrustAnchorID().toBinary()).value, "");
+    });
+
     it("encodes a RELATIVE-OID", () => {
       const der = AsnConvert.serialize(new TrustAnchorID("32473.1"));
       assert.strictEqual(Buffer.from(der).toString("hex"), "0d0481fd5901");
