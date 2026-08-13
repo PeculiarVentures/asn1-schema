@@ -1,4 +1,3 @@
-export * from "./byte_stream";
 export * from "./certification_authority";
 export * from "./log_entry";
 export * from "./object_identifiers";
