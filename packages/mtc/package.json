@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.8.0",
+    "@peculiar/asn1-tls": "^2.8.0",
     "@peculiar/asn1-x509": "^2.8.0",
     "@peculiar/utils": "^2.0.2",
     "asn1js": "^3.0.10",

@@ -1,6 +1,6 @@
 import { hex } from "@peculiar/utils/encoding";
 import type { BufferSourceLike } from "@peculiar/utils/bytes";
-import { ByteStream } from "./byte_stream";
+import { ByteStream } from "@peculiar/asn1-tls";
 import { TrustAnchorID } from "./trust_anchor_id";
 
 /**

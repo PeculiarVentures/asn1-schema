@@ -26,6 +26,7 @@
 - [rfc8226](packages/rfc8226/README.md) (RFC 8226)
 - [rsa](packages/rsa/README.md) (RFC 8017)
 - [tsp](packages/tsp/README.md) (RFC 3161)
+- [tls](packages/tls/README.md)
 - [x509](packages/x509/README.md) (RFC 5280)
 - [x509 attr](packages/x509-attr/README.md) (RFC 5755)
 - [x509 logotype](packages/x509-logotype/README.md) (RFC 3709)
