@@ -1,11 +1,23 @@
 import * as assert from "node:assert";
-import { AsnConvert } from "@peculiar/asn1-schema";
+import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import {
-  Certificate, SubjectKeyIdentifier, id_alg_unsigned, id_ce_subjectKeyIdentifier,
+  AlgorithmIdentifier,
+  AttributeTypeAndValue,
+  AttributeValue,
+  Certificate,
+  Extension,
+  Extensions,
+  Name,
+  RelativeDistinguishedName,
+  SubjectKeyIdentifier,
+  Validity,
+  id_alg_unsigned,
+  id_ce_subjectKeyIdentifier,
 } from "@peculiar/asn1-x509";
 import {
   MTCCertificationAuthority,
   MTCProof,
+  TBSCertificateLogEntry,
   TrustAnchorID,
   decodeSerialNumber,
   encodeSerialNumber,
@@ -333,6 +345,141 @@ describe("mtc", () => {
       assert.ok(ski);
       const keyId = AsnConvert.parse(ski.extnValue, SubjectKeyIdentifier);
       assert.strictEqual(TrustAnchorID.fromBinary(new Uint8Array(keyId.buffer)).value, "44494.3.1.1");
+    });
+  });
+
+  describe("TBSCertificateLogEntry", () => {
+    const buildName = (commonName: string, organization: string) => new Name([
+      new RelativeDistinguishedName([
+        new AttributeTypeAndValue({
+          type: "2.5.4.3", // id-at-commonName
+          value: new AttributeValue({ utf8String: commonName }),
+        }),
+      ]),
+      new RelativeDistinguishedName([
+        new AttributeTypeAndValue({
+          type: "2.5.4.10", // id-at-organizationName
+          value: new AttributeValue({ utf8String: organization }),
+        }),
+      ]),
+    ]);
+
+    it("round trips a fully populated entry", () => {
+      const entry = new TBSCertificateLogEntry({
+        version: 1,
+        issuer: buildName("MTC CA", "Peculiar Ventures"),
+        validity: new Validity({
+          notBefore: new Date("2024-01-01T00:00:00Z"),
+          notAfter: new Date("2034-01-01T00:00:00Z"),
+        }),
+        subject: buildName("example.com", "Example Inc"),
+        subjectPublicKeyAlgorithm: new AlgorithmIdentifier({ algorithm: "1.2.840.10045.2.1" }),
+        subjectPublicKeyInfoHash: new OctetString(new Uint8Array([0x01, 0x02, 0x03, 0x04])),
+        issuerUniqueID: new Uint8Array([0xa1, 0xb2, 0xc3]).buffer,
+        subjectUniqueID: new Uint8Array([0xd4, 0xe5]).buffer,
+        extensions: new Extensions([
+          new Extension({
+            extnID: id_ce_subjectKeyIdentifier,
+            critical: true,
+            extnValue: new OctetString(new Uint8Array([0x04, 0x02, 0xaa, 0xbb])),
+          }),
+        ]),
+      });
+
+      const der = AsnConvert.serialize(entry);
+      assert.ok(der.byteLength > 0, "serialized DER must not be empty");
+
+      const parsed = AsnConvert.parse(der, TBSCertificateLogEntry);
+
+      // version (non-default value is present in the DER)
+      assert.strictEqual(parsed.version, 1);
+
+      // issuer
+      assert.strictEqual(parsed.issuer.length, 2);
+      assert.strictEqual(parsed.issuer[0][0].type, "2.5.4.3");
+      assert.strictEqual(parsed.issuer[0][0].value.utf8String, "MTC CA");
+      assert.strictEqual(parsed.issuer[1][0].type, "2.5.4.10");
+      assert.strictEqual(parsed.issuer[1][0].value.utf8String, "Peculiar Ventures");
+
+      // subject
+      assert.strictEqual(parsed.subject[0][0].value.utf8String, "example.com");
+      assert.strictEqual(parsed.subject[1][0].value.utf8String, "Example Inc");
+
+      // validity
+      assert.strictEqual(
+        parsed.validity.notBefore.getTime().getTime(),
+        new Date("2024-01-01T00:00:00Z").getTime(),
+      );
+      assert.strictEqual(
+        parsed.validity.notAfter.getTime().getTime(),
+        new Date("2034-01-01T00:00:00Z").getTime(),
+      );
+
+      // subjectPublicKeyAlgorithm
+      assert.strictEqual(parsed.subjectPublicKeyAlgorithm.algorithm, "1.2.840.10045.2.1");
+
+      // subjectPublicKeyInfoHash
+      assert.strictEqual(
+        Buffer.from(parsed.subjectPublicKeyInfoHash.buffer).toString("hex"),
+        "01020304",
+      );
+
+      // optional unique IDs (implicit [1]/[2] BitString)
+      assert.ok(parsed.issuerUniqueID);
+      assert.strictEqual(Buffer.from(parsed.issuerUniqueID).toString("hex"), "a1b2c3");
+      assert.ok(parsed.subjectUniqueID);
+      assert.strictEqual(Buffer.from(parsed.subjectUniqueID).toString("hex"), "d4e5");
+
+      // optional extensions ([3] EXPLICIT)
+      assert.ok(parsed.extensions);
+      assert.strictEqual(parsed.extensions.length, 1);
+      assert.strictEqual(parsed.extensions[0].extnID, id_ce_subjectKeyIdentifier);
+      assert.strictEqual(parsed.extensions[0].critical, true);
+      assert.strictEqual(
+        Buffer.from(parsed.extensions[0].extnValue.buffer).toString("hex"),
+        "0402aabb",
+      );
+    });
+
+    it("round trips a minimal entry with default version", () => {
+      const entry = new TBSCertificateLogEntry({
+        issuer: new Name([
+          new RelativeDistinguishedName([
+            new AttributeTypeAndValue({
+              type: "2.5.4.3",
+              value: new AttributeValue({ utf8String: "MTC CA" }),
+            }),
+          ]),
+        ]),
+        validity: new Validity({
+          notBefore: new Date("2024-01-01T00:00:00Z"),
+          notAfter: new Date("2025-01-01T00:00:00Z"),
+        }),
+        subject: new Name([
+          new RelativeDistinguishedName([
+            new AttributeTypeAndValue({
+              type: "2.5.4.3",
+              value: new AttributeValue({ utf8String: "example.com" }),
+            }),
+          ]),
+        ]),
+        subjectPublicKeyAlgorithm: new AlgorithmIdentifier({ algorithm: "1.2.840.10045.2.1" }),
+        subjectPublicKeyInfoHash: new OctetString(new Uint8Array([0x11, 0x22])),
+      });
+
+      const der = AsnConvert.serialize(entry);
+      assert.ok(der.byteLength > 0);
+
+      const parsed = AsnConvert.parse(der, TBSCertificateLogEntry);
+
+      // version defaults to 0 and is omitted from the DER
+      assert.strictEqual(parsed.version, 0);
+      assert.strictEqual(parsed.issuer[0][0].value.utf8String, "MTC CA");
+      assert.strictEqual(parsed.subject[0][0].value.utf8String, "example.com");
+      assert.strictEqual(parsed.subjectPublicKeyInfoHash.buffer.byteLength, 2);
+      assert.strictEqual(parsed.issuerUniqueID, undefined);
+      assert.strictEqual(parsed.subjectUniqueID, undefined);
+      assert.strictEqual(parsed.extensions, undefined);
     });
   });
 });
