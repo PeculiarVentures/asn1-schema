@@ -1,11 +1,4 @@
-import {
-  AsnProp,
-  AsnPropTypes,
-  AsnArray,
-  AsnType,
-  AsnTypeTypes,
-  OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier, Attribute } from "@peculiar/asn1-x509";
 
 /**
@@ -30,7 +23,8 @@ export class PrivateKey extends OctetString {}
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: Attribute,
+  type: AsnTypeTypes.Sequence,
+  itemType: Attribute,
 })
 export class Attributes extends AsnArray<Attribute> {
   constructor(items?: Attribute[]) {
@@ -61,7 +55,10 @@ export class PrivateKeyInfo {
   public privateKey = new PrivateKey();
 
   @AsnProp({
-    type: Attributes, implicit: true, context: 0, optional: true,
+    type: Attributes,
+    implicit: true,
+    context: 0,
+    optional: true,
   })
   public attributes?: Attributes;
 

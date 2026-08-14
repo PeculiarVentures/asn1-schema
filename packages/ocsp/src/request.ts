@@ -14,7 +14,9 @@ export class Request {
   public reqCert = new CertID();
 
   @AsnProp({
-    type: Extension, repeated: "sequence", optional: true,
+    type: Extension,
+    repeated: "sequence",
+    optional: true,
   })
   public singleRequestExtensions?: Extensions;
 

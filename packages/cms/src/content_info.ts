@@ -13,7 +13,8 @@ export class ContentInfo {
   public contentType: ContentType = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, context: 0,
+    type: AsnPropTypes.Any,
+    context: 0,
   })
   public content = new ArrayBuffer(0);
 

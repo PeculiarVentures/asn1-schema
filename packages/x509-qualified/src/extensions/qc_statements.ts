@@ -5,9 +5,7 @@
 // -- non-critical.
 
 import { id_pe, GeneralName } from "@peculiar/asn1-x509";
-import {
-  AsnTypeTypes, AsnType, AsnArray, AsnProp, AsnPropTypes,
-} from "@peculiar/asn1-schema";
+import { AsnTypeTypes, AsnType, AsnArray, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { id_qcs } from "../object_identifiers";
 
 /**
@@ -29,7 +27,8 @@ export class QCStatement {
   public statementId = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, optional: true,
+    type: AsnPropTypes.Any,
+    optional: true,
   })
   public statementInfo?: ArrayBuffer;
 }
@@ -63,7 +62,8 @@ export const id_qcs_pkixQCSyntax_v2 = `${id_qcs}.2`;
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: GeneralName,
+  type: AsnTypeTypes.Sequence,
+  itemType: GeneralName,
 })
 export class NameRegistrationAuthorities extends AsnArray<GeneralName> {
   constructor(items?: GeneralName[]) {
@@ -84,12 +84,14 @@ export class NameRegistrationAuthorities extends AsnArray<GeneralName> {
  */
 export class SemanticsInformation {
   @AsnProp({
-    type: AsnPropTypes.ObjectIdentifier, optional: true,
+    type: AsnPropTypes.ObjectIdentifier,
+    optional: true,
   })
   public semanticsIdentifier?: string;
 
   @AsnProp({
-    type: NameRegistrationAuthorities, optional: true,
+    type: NameRegistrationAuthorities,
+    optional: true,
   })
   public nameRegistrationAuthorities?: NameRegistrationAuthorities;
 
@@ -104,7 +106,8 @@ export class SemanticsInformation {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: QCStatement,
+  type: AsnTypeTypes.Sequence,
+  itemType: QCStatement,
 })
 export class QCStatements extends AsnArray<QCStatement> {
   constructor(items?: QCStatement[]) {

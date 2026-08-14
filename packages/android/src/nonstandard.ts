@@ -1,14 +1,5 @@
-import {
-  AsnProp,
-  AsnPropTypes,
-  AsnArray,
-  AsnType,
-  AsnTypeTypes,
-  OctetString,
-} from "@peculiar/asn1-schema";
-import {
-  AuthorizationList, SecurityLevel, Version,
-} from "./key_description";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
+import { AuthorizationList, SecurityLevel, Version } from "./key_description";
 
 /**
  * This file contains classes to handle non-standard key descriptions and authorizations.
@@ -40,7 +31,8 @@ export class NonStandardAuthorization extends AuthorizationList {}
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: NonStandardAuthorization,
+  type: AsnTypeTypes.Sequence,
+  itemType: NonStandardAuthorization,
 })
 export class NonStandardAuthorizationList extends AsnArray<NonStandardAuthorization> {
   constructor(items?: NonStandardAuthorization[]) {

@@ -19,7 +19,8 @@ export class Attribute {
   public attrType = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, repeated: "set",
+    type: AsnPropTypes.Any,
+    repeated: "set",
   })
   public attrValues: AttributeValue[] = [];
 

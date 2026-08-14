@@ -1,10 +1,4 @@
-import {
-  AsnProp,
-  AsnPropTypes,
-  AsnType,
-  AsnTypeTypes,
-  AsnIntegerArrayBufferConverter,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
 
 /**
@@ -22,7 +16,8 @@ export const id_ce_inhibitAnyPolicy = `${id_ce}.54`;
 @AsnType({ type: AsnTypeTypes.Choice })
 export class InhibitAnyPolicy {
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public value: ArrayBuffer;
 

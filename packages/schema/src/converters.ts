@@ -1,8 +1,6 @@
 import * as asn1js from "asn1js";
 import { toArrayBuffer } from "@peculiar/utils/bytes";
-import {
-  AnyConverterType, IAsnConverter, IntegerConverterType,
-} from "./types";
+import { AnyConverterType, IAsnConverter, IntegerConverterType } from "./types";
 import { AsnPropTypes } from "./enums";
 import { OctetString } from "./types/index";
 /**
@@ -14,10 +12,7 @@ import { OctetString } from "./types/index";
  * ASN.1 ANY converter
  */
 export const AsnAnyConverter: IAsnConverter<AnyConverterType> = {
-  fromASN: (value: asn1js.AsnType) =>
-    value instanceof asn1js.Null
-      ? null
-      : toArrayBuffer(value.valueBeforeDecodeView),
+  fromASN: (value: asn1js.AsnType) => (value instanceof asn1js.Null ? null : toArrayBuffer(value.valueBeforeDecodeView)),
   toASN: (value: AnyConverterType): asn1js.AsnType => {
     if (value === null) {
       return new asn1js.Null();
@@ -113,9 +108,7 @@ export const AsnConstructedOctetStringConverter: IAsnConverter<OctetString, asn1
   toASN: (value: OctetString) => value.toASN(),
 };
 
-function createStringConverter<T extends asn1js.BaseStringBlock>(
-  Asn1Type: new (params: { value: string }) => T,
-): IAsnConverter<string> {
+function createStringConverter<T extends asn1js.BaseStringBlock>(Asn1Type: new (params: { value: string }) => T): IAsnConverter<string> {
   return {
     fromASN: (value: T) => value.valueBlock.value,
     toASN: (value: string) => new Asn1Type({ value }),

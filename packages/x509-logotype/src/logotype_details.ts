@@ -15,12 +15,14 @@ export class LogotypeDetails {
   public mediaType = "";
 
   @AsnProp({
-    type: HashAlgAndValue, repeated: "sequence",
+    type: HashAlgAndValue,
+    repeated: "sequence",
   })
   public logotypeHash: HashAlgAndValue[] = [];
 
   @AsnProp({
-    type: AsnPropTypes.IA5String, repeated: "sequence",
+    type: AsnPropTypes.IA5String,
+    repeated: "sequence",
   })
   public logotypeURI: string[] = [];
 

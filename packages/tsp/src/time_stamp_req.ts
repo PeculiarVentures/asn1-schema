@@ -1,6 +1,4 @@
-import {
-  AsnIntegerArrayBufferConverter, AsnProp, AsnPropTypes,
-} from "@peculiar/asn1-schema";
+import { AsnIntegerArrayBufferConverter, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { Extensions } from "@peculiar/asn1-x509";
 import { MessageImprint } from "./message_imprint";
 
@@ -37,7 +35,8 @@ export class TimeStampReq {
   public messageImprint = new MessageImprint();
 
   @AsnProp({
-    type: AsnPropTypes.ObjectIdentifier, optional: true,
+    type: AsnPropTypes.ObjectIdentifier,
+    optional: true,
   })
   public reqPolicy?: TSAPolicyId;
 
@@ -49,12 +48,16 @@ export class TimeStampReq {
   public nonce?: ArrayBuffer;
 
   @AsnProp({
-    type: AsnPropTypes.Boolean, defaultValue: false,
+    type: AsnPropTypes.Boolean,
+    defaultValue: false,
   })
   public certReq = false;
 
   @AsnProp({
-    type: Extensions, optional: true, context: 0, implicit: true,
+    type: Extensions,
+    optional: true,
+    context: 0,
+    implicit: true,
   })
   public extensions?: Extensions;
 

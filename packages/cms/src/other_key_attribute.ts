@@ -12,7 +12,8 @@ export class OtherKeyAttribute {
   public keyAttrId = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, optional: true,
+    type: AsnPropTypes.Any,
+    optional: true,
   })
   public keyAttr?: ArrayBuffer;
 

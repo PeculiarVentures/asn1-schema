@@ -18,7 +18,8 @@ export class SvceAuthInfo {
   public ident = new GeneralName();
 
   @AsnProp({
-    type: OctetString, optional: true,
+    type: OctetString,
+    optional: true,
   })
   public authInfo?: OctetString;
 

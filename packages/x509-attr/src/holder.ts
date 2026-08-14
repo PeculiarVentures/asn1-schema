@@ -19,17 +19,26 @@ import { ObjectDigestInfo } from "./object_digest_info";
  */
 export class Holder {
   @AsnProp({
-    type: IssuerSerial, implicit: true, context: 0, optional: true,
+    type: IssuerSerial,
+    implicit: true,
+    context: 0,
+    optional: true,
   })
   public baseCertificateID?: IssuerSerial;
 
   @AsnProp({
-    type: GeneralNames, implicit: true, context: 1, optional: true,
+    type: GeneralNames,
+    implicit: true,
+    context: 1,
+    optional: true,
   })
   public entityName?: GeneralNames;
 
   @AsnProp({
-    type: ObjectDigestInfo, implicit: true, context: 2, optional: true,
+    type: ObjectDigestInfo,
+    implicit: true,
+    context: 2,
+    optional: true,
   })
   public objectDigestInfo?: ObjectDigestInfo;
 

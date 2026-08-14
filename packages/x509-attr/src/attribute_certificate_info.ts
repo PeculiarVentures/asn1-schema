@@ -1,13 +1,5 @@
-import {
-  AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter,
-} from "@peculiar/asn1-schema";
-import {
-  AlgorithmIdentifier,
-  Attribute,
-  UniqueIdentifier,
-  Extensions,
-  CertificateSerialNumber,
-} from "@peculiar/asn1-x509";
+import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
+import { AlgorithmIdentifier, Attribute, UniqueIdentifier, Extensions, CertificateSerialNumber } from "@peculiar/asn1-x509";
 import { Holder } from "./holder";
 import { AttCertIssuer } from "./attr_cert_issuer";
 import { AttCertValidityPeriod } from "./attr_cert_validity_period";
@@ -50,7 +42,8 @@ export class AttributeCertificateInfo {
   public signature = new AlgorithmIdentifier();
 
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public serialNumber: CertificateSerialNumber = new ArrayBuffer(0);
 
@@ -58,17 +51,20 @@ export class AttributeCertificateInfo {
   public attrCertValidityPeriod = new AttCertValidityPeriod();
 
   @AsnProp({
-    type: Attribute, repeated: "sequence",
+    type: Attribute,
+    repeated: "sequence",
   })
   public attributes: Attribute[] = [];
 
   @AsnProp({
-    type: AsnPropTypes.BitString, optional: true,
+    type: AsnPropTypes.BitString,
+    optional: true,
   })
   public issuerUniqueID?: UniqueIdentifier;
 
   @AsnProp({
-    type: Extensions, optional: true,
+    type: Extensions,
+    optional: true,
   })
   public extensions?: Extensions;
 

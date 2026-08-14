@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { ContentInfo } from "@peculiar/asn1-cms";
 
 /**
@@ -12,7 +10,8 @@ import { ContentInfo } from "@peculiar/asn1-cms";
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: ContentInfo,
+  type: AsnTypeTypes.Sequence,
+  itemType: ContentInfo,
 })
 export class AuthenticatedSafe extends AsnArray<ContentInfo> {
   constructor(items?: ContentInfo[]) {

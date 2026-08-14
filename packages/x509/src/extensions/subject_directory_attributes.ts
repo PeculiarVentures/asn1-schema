@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { Attribute } from "../attribute";
 import { id_ce } from "../object_identifiers";
 
@@ -17,7 +15,8 @@ export const id_ce_subjectDirectoryAttributes = `${id_ce}.9`;
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: Attribute,
+  type: AsnTypeTypes.Sequence,
+  itemType: Attribute,
 })
 export class SubjectDirectoryAttributes extends AsnArray<Attribute> {
   constructor(items?: Attribute[]) {

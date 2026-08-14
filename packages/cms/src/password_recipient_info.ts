@@ -1,12 +1,5 @@
-import {
-  AsnProp, AsnPropTypes, OctetString,
-} from "@peculiar/asn1-schema";
-import {
-  CMSVersion,
-  KeyDerivationAlgorithmIdentifier,
-  KeyEncryptionAlgorithmIdentifier,
-  EncryptedKey,
-} from "./types";
+import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import { CMSVersion, KeyDerivationAlgorithmIdentifier, KeyEncryptionAlgorithmIdentifier, EncryptedKey } from "./types";
 
 /**
  * ```asn
@@ -22,7 +15,9 @@ export class PasswordRecipientInfo {
   public version: CMSVersion = CMSVersion.v0;
 
   @AsnProp({
-    type: KeyDerivationAlgorithmIdentifier, context: 0, optional: true,
+    type: KeyDerivationAlgorithmIdentifier,
+    context: 0,
+    optional: true,
   })
   public keyDerivationAlgorithm?: KeyDerivationAlgorithmIdentifier;
 

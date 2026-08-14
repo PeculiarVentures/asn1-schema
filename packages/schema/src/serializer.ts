@@ -49,9 +49,7 @@ export class AsnSerializer {
         // primitive
         const converter = converters.defaultConverter(schema.itemType);
         if (!converter) {
-          throw new Error(
-            `Cannot get default converter for array item of ${target.name} ASN1 schema`,
-          );
+          throw new Error(`Cannot get default converter for array item of ${target.name} ASN1 schema`);
         }
         asn1Value = obj.map((o) => converter.toASN(o));
       } else {
@@ -65,11 +63,9 @@ export class AsnSerializer {
 
         // Default value
         if (
-          objProp === undefined
-          || schemaItem.defaultValue === objProp
-          || (typeof schemaItem.defaultValue === "object"
-            && typeof objProp === "object"
-            && isArrayEqual(this.serialize(schemaItem.defaultValue), this.serialize(objProp)))
+          objProp === undefined ||
+          schemaItem.defaultValue === objProp ||
+          (typeof schemaItem.defaultValue === "object" && typeof objProp === "object" && isArrayEqual(this.serialize(schemaItem.defaultValue), this.serialize(objProp)))
         ) {
           continue; // skip item
         }
@@ -79,15 +75,9 @@ export class AsnSerializer {
           // CONTEXT-SPECIFIC
           if (schemaItem.implicit) {
             // IMPLICIT
-            if (
-              !schemaItem.repeated
-              && (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))
-            ) {
+            if (!schemaItem.repeated && (typeof schemaItem.type === "number" || isConvertible(schemaItem.type))) {
               const value: { valueHex?: ArrayBuffer; value?: ArrayBuffer } = {};
-              value.valueHex
-                = asn1Item instanceof asn1js.Null
-                  ? toArrayBuffer(asn1Item.valueBeforeDecodeView)
-                  : asn1Item.valueBlock.toBER();
+              value.valueHex = asn1Item instanceof asn1js.Null ? toArrayBuffer(asn1Item.valueBeforeDecodeView) : asn1Item.valueBlock.toBER();
               asn1Value.push(
                 new asn1js.Primitive({
                   optional: schemaItem.optional,
@@ -153,21 +143,14 @@ export class AsnSerializer {
   }
 
   // @internal
-  private static toAsnItem(
-    schemaItem: IAsnSchemaItem,
-    key: string,
-    target: IEmptyConstructor,
-    objProp: unknown,
-  ): asn1js.AsnType {
+  private static toAsnItem(schemaItem: IAsnSchemaItem, key: string, target: IEmptyConstructor, objProp: unknown): asn1js.AsnType {
     let asn1Item: asn1js.AsnType;
     if (typeof schemaItem.type === "number") {
       // type is AsnPropType Enum
       // we MUST to use Converters
       const converter = schemaItem.converter;
       if (!converter) {
-        throw new Error(
-          `Property '${key}' doesn't have converter for type ${AsnPropTypes[schemaItem.type]} in schema '${target.name}'`,
-        );
+        throw new Error(`Property '${key}' doesn't have converter for type ${AsnPropTypes[schemaItem.type]} in schema '${target.name}'`);
       }
       if (schemaItem.repeated) {
         if (!Array.isArray(objProp)) {

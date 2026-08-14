@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { id_pe } from "../object_identifiers";
 import { AccessDescription } from "./authority_information_access";
 
@@ -18,7 +16,8 @@ export const id_pe_subjectInfoAccess = `${id_pe}.11`;
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: AccessDescription,
+  type: AsnTypeTypes.Sequence,
+  itemType: AccessDescription,
 })
 export class SubjectInfoAccessSyntax extends AsnArray<AccessDescription> {
   constructor(items?: AccessDescription[]) {

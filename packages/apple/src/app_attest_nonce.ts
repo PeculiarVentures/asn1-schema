@@ -20,7 +20,9 @@ export const id_appAttestNonce = "1.2.840.113635.100.8.2";
  */
 export class AppAttestNonce {
   @AsnProp({
-    type: OctetString, context: 1, implicit: false,
+    type: OctetString,
+    context: 1,
+    implicit: false,
   })
   public nonce!: OctetString;
 

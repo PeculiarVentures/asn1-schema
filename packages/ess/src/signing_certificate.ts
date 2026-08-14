@@ -1,12 +1,5 @@
-import {
-  AsnProp, AsnPropTypes, OctetString,
-} from "@peculiar/asn1-schema";
-import {
-  AlgorithmIdentifier,
-  CertificateSerialNumber,
-  GeneralNames,
-  PolicyInformation,
-} from "@peculiar/asn1-x509";
+import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
+import { AlgorithmIdentifier, CertificateSerialNumber, GeneralNames, PolicyInformation } from "@peculiar/asn1-x509";
 import { id_sha256 } from "@peculiar/asn1-rsa";
 import { Hash } from "./types";
 
@@ -43,7 +36,8 @@ export class ESSCertID {
   public certHash: Hash = new OctetString();
 
   @AsnProp({
-    type: IssuerSerial, optional: true,
+    type: IssuerSerial,
+    optional: true,
   })
   public issuerSerial?: IssuerSerial;
 
@@ -62,12 +56,15 @@ export class ESSCertID {
  */
 export class SigningCertificate {
   @AsnProp({
-    type: ESSCertID, repeated: "sequence",
+    type: ESSCertID,
+    repeated: "sequence",
   })
   public certs: ESSCertID[] = [];
 
   @AsnProp({
-    type: PolicyInformation, repeated: "sequence", optional: true,
+    type: PolicyInformation,
+    repeated: "sequence",
+    optional: true,
   })
   public policies?: PolicyInformation[];
 
@@ -88,7 +85,8 @@ export class SigningCertificate {
  */
 export class ESSCertIDv2 {
   @AsnProp({
-    type: AlgorithmIdentifier, defaultValue: id_sha256,
+    type: AlgorithmIdentifier,
+    defaultValue: id_sha256,
   })
   public hashAlgorithm?: AlgorithmIdentifier;
 
@@ -96,7 +94,8 @@ export class ESSCertIDv2 {
   public certHash: Hash = new OctetString();
 
   @AsnProp({
-    type: IssuerSerial, optional: true,
+    type: IssuerSerial,
+    optional: true,
   })
   public issuerSerial?: IssuerSerial;
 
@@ -115,12 +114,15 @@ export class ESSCertIDv2 {
  */
 export class SigningCertificateV2 {
   @AsnProp({
-    type: ESSCertIDv2, repeated: "sequence",
+    type: ESSCertIDv2,
+    repeated: "sequence",
   })
   public certs: ESSCertIDv2[] = [];
 
   @AsnProp({
-    type: PolicyInformation, repeated: "sequence", optional: true,
+    type: PolicyInformation,
+    repeated: "sequence",
+    optional: true,
   })
   public policies?: PolicyInformation[];
 

@@ -1,6 +1,4 @@
-import {
-  AsnArray, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { Attribute } from "@peculiar/asn1-x509";
 
 /**
@@ -9,7 +7,8 @@ import { Attribute } from "@peculiar/asn1-x509";
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: Attribute,
+  type: AsnTypeTypes.Sequence,
+  itemType: Attribute,
 })
 export class Attributes extends AsnArray<Attribute> {
   constructor(items?: Attribute[]) {

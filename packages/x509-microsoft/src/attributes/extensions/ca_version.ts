@@ -1,10 +1,4 @@
-import {
-  AsnType,
-  AsnTypeTypes,
-  AsnProp,
-  AsnPropTypes,
-  AsnIntegerArrayBufferConverter,
-} from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
 import { hex } from "@peculiar/utils/encoding";
 
 export const id_caVersion = "1.3.6.1.4.1.311.21.1";
@@ -21,7 +15,8 @@ export interface ICaVersion {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class CaVersion {
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public value = new ArrayBuffer(0);
 

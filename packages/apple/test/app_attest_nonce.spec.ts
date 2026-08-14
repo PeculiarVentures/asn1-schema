@@ -1,6 +1,4 @@
-import {
-  AsnParser, AsnConvert, OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnParser, AsnConvert, OctetString } from "@peculiar/asn1-schema";
 
 import { AppAttestNonce } from "@peculiar/asn1-apple";
 

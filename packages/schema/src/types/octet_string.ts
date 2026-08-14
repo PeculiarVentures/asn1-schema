@@ -1,7 +1,5 @@
 import * as asn1js from "asn1js";
-import {
-  BufferSourceLike, isBufferSource, toArrayBuffer,
-} from "@peculiar/utils/bytes";
+import { BufferSourceLike, isBufferSource, toArrayBuffer } from "@peculiar/utils/bytes";
 import { IAsnConvertible } from "../types";
 
 // Implement ArrayBufferView, cause ES5 doesn't allow to extend ArrayBuffer class
@@ -12,7 +10,6 @@ export class OctetString implements IAsnConvertible, ArrayBufferView {
     return this.buffer.byteLength;
   }
 
-  // eslint-disable-next-line @typescript-eslint/class-literal-property-style
   public get byteOffset(): number {
     return 0;
   }

@@ -1,11 +1,5 @@
 import * as assert from "node:assert";
-import {
-  AsnAnyConverter,
-  AsnConstructedOctetStringConverter,
-  AsnGeneralizedTimeConverter,
-  AsnUTCTimeConverter,
-  OctetString,
-} from "../src";
+import { AsnAnyConverter, AsnConstructedOctetStringConverter, AsnGeneralizedTimeConverter, AsnUTCTimeConverter, OctetString } from "../src";
 
 describe("converters", () => {
   describe("Any", () => {
@@ -41,10 +35,7 @@ describe("converters", () => {
       const asn = AsnGeneralizedTimeConverter.toASN(new Date(dateNum));
 
       const der = asn.toBER();
-      assert.strictEqual(
-        Buffer.from(der).toString("hex"),
-        "181332303138303932313230303332342e3435355a",
-      );
+      assert.strictEqual(Buffer.from(der).toString("hex"), "181332303138303932313230303332342e3435355a");
 
       const value = AsnGeneralizedTimeConverter.fromASN(asn);
       assert.strictEqual(value.getTime(), dateNum);

@@ -1,6 +1,4 @@
-import {
-  AsnType, AsnTypeTypes, AsnProp, AsnPropTypes,
-} from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { id_ntQWAC } from "./oids";
 
 export const id_ValuationRanking = `${id_ntQWAC}.9`;

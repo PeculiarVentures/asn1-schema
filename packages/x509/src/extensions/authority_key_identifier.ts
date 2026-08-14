@@ -1,9 +1,4 @@
-import {
-  AsnProp,
-  AsnPropTypes,
-  AsnIntegerArrayBufferConverter,
-  OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter, OctetString } from "@peculiar/asn1-schema";
 import { GeneralName } from "../general_name";
 import { id_ce } from "../object_identifiers";
 import { CertificateSerialNumber } from "../types";
@@ -33,12 +28,19 @@ export class KeyIdentifier extends OctetString {}
 
 export class AuthorityKeyIdentifier {
   @AsnProp({
-    type: KeyIdentifier, context: 0, optional: true, implicit: true,
+    type: KeyIdentifier,
+    context: 0,
+    optional: true,
+    implicit: true,
   })
   public keyIdentifier?: KeyIdentifier;
 
   @AsnProp({
-    type: GeneralName, context: 1, optional: true, implicit: true, repeated: "sequence",
+    type: GeneralName,
+    context: 1,
+    optional: true,
+    implicit: true,
+    repeated: "sequence",
   })
   public authorityCertIssuer?: GeneralName[];
 
