@@ -116,7 +116,8 @@ export class MTCProof {
       }
       prevType = extensionType;
       res.extensions.push({
-        extensionType, extensionData: extensions.readVector(2).slice(),
+        extensionType,
+        extensionData: extensions.readVector(2).slice(),
       });
     }
 
@@ -128,9 +129,7 @@ export class MTCProof {
 
     const proof = stream.readVector(2);
     if (proof.length % hashSize) {
-      throw new Error(
-        `MTCProof: inclusion_proof is ${proof.length} bytes, not a multiple of hash size ${hashSize}`,
-      );
+      throw new Error(`MTCProof: inclusion_proof is ${proof.length} bytes, not a multiple of hash size ${hashSize}`);
     }
     for (let i = 0; i < proof.length; i += hashSize) {
       res.inclusionProof.push(proof.slice(i, i + hashSize));
@@ -147,9 +146,7 @@ export class MTCProof {
         throw new Error("MTCProof: signatures must be ordered by cosigner_id without duplicates");
       }
       prevId = id;
-      res.signatures.push(
-        new MTCSignature(TrustAnchorID.fromBinary(id), signatures.readVector(2).slice()),
-      );
+      res.signatures.push(new MTCSignature(TrustAnchorID.fromBinary(id), signatures.readVector(2).slice()));
     }
 
     if (stream.left) {

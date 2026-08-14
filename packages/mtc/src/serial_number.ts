@@ -14,9 +14,7 @@ export interface IMTCSerialNumber {
  * issuance log and the entry within it.
  */
 export function decodeSerialNumber(serialNumber: BufferSourceLike | string): IMTCSerialNumber {
-  const value = typeof serialNumber === "string"
-    ? BigInt(`0x${serialNumber.replace(/^0x/, "")}`)
-    : toUint8Array(serialNumber).reduce((acc, byte) => (acc << 8n) | BigInt(byte), 0n);
+  const value = typeof serialNumber === "string" ? BigInt(`0x${serialNumber.replace(/^0x/, "")}`) : toUint8Array(serialNumber).reduce((acc, byte) => (acc << 8n) | BigInt(byte), 0n);
 
   return {
     logNumber: Number(value >> 48n),

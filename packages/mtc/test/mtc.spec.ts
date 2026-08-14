@@ -64,6 +64,22 @@ const caCert = [
   "AQA=",
 ].join("");
 
+const buildName = (commonName: string, organization: string) =>
+  new Name([
+    new RelativeDistinguishedName([
+      new AttributeTypeAndValue({
+        type: "2.5.4.3", // id-at-commonName
+        value: new AttributeValue({ utf8String: commonName }),
+      }),
+    ]),
+    new RelativeDistinguishedName([
+      new AttributeTypeAndValue({
+        type: "2.5.4.10", // id-at-organizationName
+        value: new AttributeValue({ utf8String: organization }),
+      }),
+    ]),
+  ]);
+
 describe("mtc", () => {
   describe("TrustAnchorID", () => {
     it("decodes the binary representation", () => {
@@ -102,30 +118,15 @@ describe("mtc", () => {
 
     it("matches the draft binary representation for 32473.1", () => {
       // draft-ietf-tls-trust-anchor-ids section 3
-      assert.deepStrictEqual(
-        Array.from(new TrustAnchorID("32473.1").toBinary()),
-        [0x81, 0xfd, 0x59, 0x01],
-      );
+      assert.deepStrictEqual(Array.from(new TrustAnchorID("32473.1").toBinary()), [0x81, 0xfd, 0x59, 0x01]);
     });
 
     it("matches the draft SVCB wire-format encodings", () => {
       // draft-ietf-tls-trust-anchor-ids section 6.1, tls-trust-anchors example
-      assert.deepStrictEqual(
-        Array.from(new TrustAnchorID("32473.2.1").toBinary()),
-        [0x81, 0xfd, 0x59, 0x02, 0x01],
-      );
-      assert.deepStrictEqual(
-        Array.from(new TrustAnchorID("32473.2.2").toBinary()),
-        [0x81, 0xfd, 0x59, 0x02, 0x02],
-      );
-      assert.strictEqual(
-        TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x01])).value,
-        "32473.2.1",
-      );
-      assert.strictEqual(
-        TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x02])).value,
-        "32473.2.2",
-      );
+      assert.deepStrictEqual(Array.from(new TrustAnchorID("32473.2.1").toBinary()), [0x81, 0xfd, 0x59, 0x02, 0x01]);
+      assert.deepStrictEqual(Array.from(new TrustAnchorID("32473.2.2").toBinary()), [0x81, 0xfd, 0x59, 0x02, 0x02]);
+      assert.strictEqual(TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x01])).value, "32473.2.1");
+      assert.strictEqual(TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x02])).value, "32473.2.2");
     });
 
     it("round trips MTC landmark trust anchor IDs", () => {
@@ -152,8 +153,7 @@ describe("mtc", () => {
 
   describe("MTCCertificationAuthority", () => {
     it("parses the extension value", () => {
-      const hex = "3028300b0609608648016503040201300b0609608648016503040311020100"
-        + "020900ffffffffffffffff";
+      const hex = "3028300b0609608648016503040201300b0609608648016503040311020100020900ffffffffffffffff";
       const ca = AsnConvert.parse(Buffer.from(hex, "hex"), MTCCertificationAuthority);
 
       assert.strictEqual(ca.logHash.algorithm, "2.16.840.1.101.3.4.2.1");
@@ -239,10 +239,7 @@ describe("mtc", () => {
 
   describe("MTCProof", () => {
     // extensions(0) start=4 end=8 proof(2x32B) signatures(1: 32473.1, 4B sig)
-    const proofHex = "0000"
-      + "000000000004" + "000000000008"
-      + "0040" + "01".repeat(32) + "02".repeat(32)
-      + "000b" + "04" + "81fd5901" + "0004" + "aabbccdd";
+    const proofHex = "00000000000000040000000000080040" + "01".repeat(32) + "02".repeat(32) + "000b0481fd59010004aabbccdd";
 
     it("parses a standalone certificate proof", () => {
       const proof = MTCProof.parse(Buffer.from(proofHex, "hex"));
@@ -257,7 +254,7 @@ describe("mtc", () => {
     });
 
     it("flags a landmark-relative certificate", () => {
-      const hex = "0000" + "000000000000" + "000000001000" + "0020" + "03".repeat(32) + "0000";
+      const hex = "00000000000000000000000010000020" + "03".repeat(32) + "0000";
       const proof = MTCProof.parse(Buffer.from(hex, "hex"));
 
       assert.strictEqual(proof.isLandmarkRelative, true);
@@ -265,13 +262,13 @@ describe("mtc", () => {
     });
 
     it("rejects an inclusion proof that is not a multiple of the hash size", () => {
-      const hex = "0000" + "000000000000" + "000000000002" + "0010" + "01".repeat(16) + "0000";
+      const hex = "00000000000000000000000000020010" + "01".repeat(16) + "0000";
 
       assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /multiple of hash size/);
     });
 
     it("honours a non-default hash size", () => {
-      const hex = "0000" + "000000000000" + "000000000002" + "0030" + "01".repeat(48) + "0000";
+      const hex = "00000000000000000000000000020030" + "01".repeat(48) + "0000";
       const proof = MTCProof.parse(Buffer.from(hex, "hex"), { hashSize: 48 });
 
       assert.strictEqual(proof.inclusionProof.length, 1);
@@ -279,38 +276,29 @@ describe("mtc", () => {
 
     describe("parse hashSize validation", () => {
       it("rejects hashSize 0 even with a non-empty proof buffer", () => {
-        assert.throws(
-          () => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 0 }),
-          RangeError,
-        );
+        assert.throws(() => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 0 }), RangeError);
       });
 
       it("rejects a negative hashSize", () => {
-        assert.throws(
-          () => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: -1 }),
-          /invalid hashSize/,
-        );
+        assert.throws(() => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: -1 }), /invalid hashSize/);
       });
 
       it("rejects a non-integer hashSize", () => {
-        assert.throws(
-          () => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 1.5 }),
-          /invalid hashSize/,
-        );
+        assert.throws(() => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 1.5 }), /invalid hashSize/);
       });
     });
 
     describe("parse start/end validation", () => {
       it("rejects start equal to end", () => {
         // extensions(0) start=5 end=5 proof(empty) signatures(0)
-        const hex = "0000" + "000000000005" + "000000000005" + "0000" + "0000";
+        const hex = "000000000000000500000000000500000000";
 
         assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /start must be less than end/);
       });
 
       it("rejects start greater than end", () => {
         // extensions(0) start=8 end=4 proof(empty) signatures(0)
-        const hex = "0000" + "000000000008" + "000000000004" + "0000" + "0000";
+        const hex = "000000000000000800000000000400000000";
 
         assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /start must be less than end/);
       });
@@ -327,10 +315,7 @@ describe("mtc", () => {
     });
 
     it("rejects unordered cosigner ids", () => {
-      const hex = "0000" + "000000000000" + "000000000002" + "0000"
-        + "0012"
-        + "04" + "81fd5901" + "0002" + "aaaa"
-        + "04" + "81fd5900" + "0002" + "bbbb";
+      const hex = "0000000000000000000000000002000000120481fd59010002aaaa0481fd59000002bbbb";
 
       assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /ordered by cosigner_id/);
     });
@@ -345,10 +330,7 @@ describe("mtc", () => {
     it("does not alias the input buffer in parsed byte fields", () => {
       // One extension (type 1, data "aabb"), start=4 end=8, proof(2x32B),
       // signatures(1: 32473.1, 4B sig)
-      const hex = "0006" + "0001" + "0002" + "aabb"
-        + "000000000004" + "000000000008"
-        + "0040" + "01".repeat(32) + "02".repeat(32)
-        + "000b" + "04" + "81fd5901" + "0004" + "aabbccdd";
+      const hex = "000600010002aabb0000000000040000000000080040" + "01".repeat(32) + "02".repeat(32) + "000b0481fd59010004aabbccdd";
       const raw = Buffer.from(hex, "hex");
       const before = Buffer.from(raw);
       const proof = MTCProof.parse(raw);
@@ -378,9 +360,7 @@ describe("mtc", () => {
       assert.strictEqual(rdn.type, id_rdna_trustAnchorID_experimental);
       assert.strictEqual(rdn.value.toString(), "44494.3.1.1");
 
-      const ext = tbs.extensions?.find(
-        (o) => o.extnID === id_pe_mtcCertificationAuthority_experimental,
-      );
+      const ext = tbs.extensions?.find((o) => o.extnID === id_pe_mtcCertificationAuthority_experimental);
       assert.ok(ext);
       assert.strictEqual(ext.critical, true);
 
@@ -397,21 +377,6 @@ describe("mtc", () => {
   });
 
   describe("TBSCertificateLogEntry", () => {
-    const buildName = (commonName: string, organization: string) => new Name([
-      new RelativeDistinguishedName([
-        new AttributeTypeAndValue({
-          type: "2.5.4.3", // id-at-commonName
-          value: new AttributeValue({ utf8String: commonName }),
-        }),
-      ]),
-      new RelativeDistinguishedName([
-        new AttributeTypeAndValue({
-          type: "2.5.4.10", // id-at-organizationName
-          value: new AttributeValue({ utf8String: organization }),
-        }),
-      ]),
-    ]);
-
     it("round trips a fully populated entry", () => {
       const entry = new TBSCertificateLogEntry({
         version: 1,
@@ -454,23 +419,14 @@ describe("mtc", () => {
       assert.strictEqual(parsed.subject[1][0].value.utf8String, "Example Inc");
 
       // validity
-      assert.strictEqual(
-        parsed.validity.notBefore.getTime().getTime(),
-        new Date("2024-01-01T00:00:00Z").getTime(),
-      );
-      assert.strictEqual(
-        parsed.validity.notAfter.getTime().getTime(),
-        new Date("2034-01-01T00:00:00Z").getTime(),
-      );
+      assert.strictEqual(parsed.validity.notBefore.getTime().getTime(), new Date("2024-01-01T00:00:00Z").getTime());
+      assert.strictEqual(parsed.validity.notAfter.getTime().getTime(), new Date("2034-01-01T00:00:00Z").getTime());
 
       // subjectPublicKeyAlgorithm
       assert.strictEqual(parsed.subjectPublicKeyAlgorithm.algorithm, "1.2.840.10045.2.1");
 
       // subjectPublicKeyInfoHash
-      assert.strictEqual(
-        Buffer.from(parsed.subjectPublicKeyInfoHash.buffer).toString("hex"),
-        "01020304",
-      );
+      assert.strictEqual(Buffer.from(parsed.subjectPublicKeyInfoHash.buffer).toString("hex"), "01020304");
 
       // optional unique IDs (implicit [1]/[2] BitString)
       assert.ok(parsed.issuerUniqueID);
@@ -483,10 +439,7 @@ describe("mtc", () => {
       assert.strictEqual(parsed.extensions.length, 1);
       assert.strictEqual(parsed.extensions[0].extnID, id_ce_subjectKeyIdentifier);
       assert.strictEqual(parsed.extensions[0].critical, true);
-      assert.strictEqual(
-        Buffer.from(parsed.extensions[0].extnValue.buffer).toString("hex"),
-        "0402aabb",
-      );
+      assert.strictEqual(Buffer.from(parsed.extensions[0].extnValue.buffer).toString("hex"), "0402aabb");
     });
 
     it("round trips a minimal entry with default version", () => {

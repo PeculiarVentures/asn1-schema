@@ -1,9 +1,5 @@
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString,
-} from "@peculiar/asn1-schema";
-import {
-  AlgorithmIdentifier, Extensions, Name, Validity,
-} from "@peculiar/asn1-x509";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
+import { AlgorithmIdentifier, Extensions, Name, Validity } from "@peculiar/asn1-x509";
 
 /**
  * ```asn1
@@ -27,7 +23,9 @@ import {
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class TBSCertificateLogEntry {
   @AsnProp({
-    type: AsnPropTypes.Integer, context: 0, defaultValue: 0,
+    type: AsnPropTypes.Integer,
+    context: 0,
+    defaultValue: 0,
   })
   public version = 0;
 
@@ -47,17 +45,25 @@ export class TBSCertificateLogEntry {
   public subjectPublicKeyInfoHash = new OctetString();
 
   @AsnProp({
-    type: AsnPropTypes.BitString, context: 1, implicit: true, optional: true,
+    type: AsnPropTypes.BitString,
+    context: 1,
+    implicit: true,
+    optional: true,
   })
   public issuerUniqueID?: ArrayBuffer;
 
   @AsnProp({
-    type: AsnPropTypes.BitString, context: 2, implicit: true, optional: true,
+    type: AsnPropTypes.BitString,
+    context: 2,
+    implicit: true,
+    optional: true,
   })
   public subjectUniqueID?: ArrayBuffer;
 
   @AsnProp({
-    type: Extensions, context: 3, optional: true,
+    type: Extensions,
+    context: 3,
+    optional: true,
   })
   public extensions?: Extensions;
 

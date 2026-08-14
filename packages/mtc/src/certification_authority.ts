@@ -1,6 +1,4 @@
-import {
-  AsnIntegerBigIntConverter, AsnProp, AsnPropTypes,
-} from "@peculiar/asn1-schema";
+import { AsnIntegerBigIntConverter, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 /**
@@ -28,12 +26,14 @@ export class MTCCertificationAuthority {
   public sigAlg = new AlgorithmIdentifier();
 
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerBigIntConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerBigIntConverter,
   })
   public minSerial = 0n;
 
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerBigIntConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerBigIntConverter,
   })
   public maxSerial = 0n;
 
