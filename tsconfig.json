@@ -29,13 +29,15 @@
       "@peculiar/asn1-pkcs9": ["./packages/pkcs9/src"],
       "@peculiar/asn1-x509-qualified-etsi": ["./packages/x509-qualified-etsi/src"],
       "@peculiar/asn1-tsp": ["./packages/tsp/src"],
+      "@peculiar/asn1-tls": ["./packages/tls/src"],
       "@peculiar/asn1-rfc8226": ["./packages/rfc8226/src"],
       "@peculiar/asn1-ess": ["./packages/ess/src"],
       "@peculiar/asn1-x509-post-quantum": ["./packages/x509-post-quantum/src"],
       "@peculiar/asn1-asym-key": ["./packages/asym-key/src"],
       "@peculiar/asn1-crmf": ["./packages/crmf/src"],
       "@peculiar/asn1-private-key-stmt": ["./packages/private-key-stmt/src"],
-      "@peculiar/asn1-apple": ["./packages/apple/src"]
+      "@peculiar/asn1-apple": ["./packages/apple/src"],
+      "@peculiar/asn1-mtc": ["./packages/mtc/src"]
     }
   },
   "exclude": ["packages/*/build"]

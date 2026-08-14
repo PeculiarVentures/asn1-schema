@@ -1,15 +1,12 @@
 {
-  "name": "@peculiar/asn1-cert-transparency",
+  "name": "@peculiar/asn1-tls",
   "version": "2.8.0",
-  "description": "ASN.1 schema for Certificate Transparency structures and signed certificate timestamp data defined in RFC 6962.",
+  "description": "TLS presentation language byte stream reader shared by Certificate Transparency and Merkle Tree Certificate packages.",
   "keywords": [
     "asn",
     "asn1",
-    "certificate-transparency",
-    "ct",
-    "sct",
-    "rfc6962",
-    "x509"
+    "tls",
+    "byte-stream"
   ],
   "author": "PeculiarVentures, LLC",
   "license": "MIT",
@@ -36,12 +33,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/PeculiarVentures/asn1-schema",
-    "directory": "packages/cert-transparency"
+    "directory": "packages/tls"
   },
   "bugs": {
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
   },
-  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/cert-transparency#readme",
+  "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/tls#readme",
   "scripts": {
     "clear": "rimraf build",
     "build": "npm run build:module && npm run build:types",
@@ -54,10 +51,7 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.8.0",
-    "@peculiar/asn1-tls": "^2.8.0",
     "@peculiar/utils": "^2.0.2",
-    "asn1js": "^3.0.10",
     "tslib": "^2.8.1"
   }
 }
