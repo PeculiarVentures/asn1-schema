@@ -1,7 +1,5 @@
 import * as asn1js from "asn1js";
-import {
-  type BufferSourceLike, isBufferSource, toArrayBuffer,
-} from "@peculiar/utils/bytes";
+import { type BufferSourceLike, isBufferSource, toArrayBuffer } from "@peculiar/utils/bytes";
 import { AsnParser } from "./parser";
 import { IEmptyConstructor, IAsnParseOptions } from "./types";
 import { AsnSerializer } from "./serializer";
@@ -11,11 +9,7 @@ export class AsnConvert {
     return AsnSerializer.serialize(obj);
   }
 
-  public static parse<T>(
-    data: BufferSourceLike,
-    target: IEmptyConstructor<T>,
-    options?: IAsnParseOptions,
-  ): T {
+  public static parse<T>(data: BufferSourceLike, target: IEmptyConstructor<T>, options?: IAsnParseOptions): T {
     return AsnParser.parse(data, target, options);
   }
 
@@ -34,9 +28,7 @@ export class AsnConvert {
    */
   public static toString(obj: unknown, options?: IAsnParseOptions): string;
   public static toString(data: unknown, options?: IAsnParseOptions): string {
-    const buf = isBufferSource(data)
-      ? toArrayBuffer(data)
-      : AsnConvert.serialize(data);
+    const buf = isBufferSource(data) ? toArrayBuffer(data) : AsnConvert.serialize(data);
     const asn = asn1js.fromBER(buf, options?.berOptions);
 
     if (asn.offset === -1) {

@@ -56,11 +56,7 @@ describe("EC parameters", () => {
 
       // Serialize and compare
       const der = AsnConvert.serialize(ecParams);
-      assert.strictEqual(
-        Buffer.from(der).compare(ecParamsEnc),
-        0,
-        "Encoded EC parameters are not equal",
-      );
+      assert.strictEqual(Buffer.from(der).compare(ecParamsEnc), 0, "Encoded EC parameters are not equal");
     });
   });
 });

@@ -1,15 +1,6 @@
-/* eslint-disable no-undef */
 import { execSync } from "node:child_process";
-import {
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  renameSync,
-  writeFileSync,
-} from "node:fs";
-import {
-  dirname, join, resolve,
-} from "node:path";
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as rimraf from "rimraf";
 
@@ -32,7 +23,7 @@ function orderedObject(entries) {
 }
 
 function sortObject(input) {
-  return Object.fromEntries(Object.entries(input).sort(([left], [right]) => left.localeCompare(right)));
+  return Object.fromEntries(Object.entries(input).toSorted(([left], [right]) => left.localeCompare(right)));
 }
 
 function createPackageDescription(name) {
@@ -91,20 +82,26 @@ function createPackageJson(packageJson, name, moduleName) {
     ["main", "build/cjs/index.js"],
     ["module", "build/es2015/index.js"],
     ["types", "build/types/index.d.ts"],
-    ["exports", {
-      ".": {
-        types: "./build/types/index.d.ts",
-        import: "./build/es2015/index.js",
-        require: "./build/cjs/index.js",
+    [
+      "exports",
+      {
+        ".": {
+          types: "./build/types/index.d.ts",
+          import: "./build/es2015/index.js",
+          require: "./build/cjs/index.js",
+        },
+        "./package.json": "./package.json",
       },
-      "./package.json": "./package.json",
-    }],
+    ],
     ["publishConfig", { access: "public" }],
-    ["repository", {
-      type: "git",
-      url: "https://github.com/PeculiarVentures/asn1-schema",
-      directory: `packages/${name}`,
-    }],
+    [
+      "repository",
+      {
+        type: "git",
+        url: "https://github.com/PeculiarVentures/asn1-schema",
+        directory: `packages/${name}`,
+      },
+    ],
     ["bugs", { url: "https://github.com/PeculiarVentures/asn1-schema/issues" }],
     ["homepage", `https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/${name}#readme`],
     ["scripts", COMMON_SCRIPTS],
@@ -124,9 +121,7 @@ async function main(name) {
   }
 
   // Create package
-  execSync(
-    `lerna create ${moduleName} --dependencies @peculiar/asn1-schema asn1js tslib --yes`,
-  );
+  execSync(`lerna create ${moduleName} --dependencies @peculiar/asn1-schema asn1js tslib --yes`);
   renameSync(join(projectDir, "packages", `asn1-${name}`), moduleDir);
 
   // Update package.json
@@ -170,16 +165,11 @@ SOFTWARE.
     compilerOptions: { rootDir: "src" },
     include: ["src"],
   };
-  writeFileSync(
-    join(moduleDir, "tsconfig.compile.json"),
-    `${JSON.stringify(tsconfig, null, "  ")}\n`,
-  );
+  writeFileSync(join(moduleDir, "tsconfig.compile.json"), `${JSON.stringify(tsconfig, null, "  ")}\n`);
 
   // Add TS alias
   const globalTsConfig = JSON.parse(readFileSync(join(projectDir, "tsconfig.json"), "utf8"));
-  globalTsConfig.compilerOptions.paths[moduleName] = [
-    `./packages/${name}/src`,
-  ];
+  globalTsConfig.compilerOptions.paths[moduleName] = [`./packages/${name}/src`];
   writeFileSync(join(projectDir, "tsconfig.json"), `${JSON.stringify(globalTsConfig, null, "  ")}\n`);
 
   console.log(`Package '${moduleName}' created`);

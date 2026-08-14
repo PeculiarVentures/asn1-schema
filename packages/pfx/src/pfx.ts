@@ -19,7 +19,8 @@ export class PFX {
   public authSafe = new ContentInfo();
 
   @AsnProp({
-    type: MacData, optional: true,
+    type: MacData,
+    optional: true,
   })
   public macData = new MacData();
 

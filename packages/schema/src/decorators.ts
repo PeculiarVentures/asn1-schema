@@ -31,18 +31,18 @@ export interface IAsn1PropOptions {
 
 export type AsnTypeDecorator = (target: IEmptyConstructor) => void;
 
-export const AsnType
-  = (options: IAsn1TypeOptions): AsnTypeDecorator =>
-    (target: IEmptyConstructor): void => {
-      let schema: IAsnSchema;
-      if (!schemaStorage.has(target)) {
-        schema = schemaStorage.createDefault(target);
-        schemaStorage.set(target, schema);
-      } else {
-        schema = schemaStorage.get(target);
-      }
-      Object.assign(schema, options);
-    };
+export const AsnType =
+  (options: IAsn1TypeOptions): AsnTypeDecorator =>
+  (target: IEmptyConstructor): void => {
+    let schema: IAsnSchema;
+    if (!schemaStorage.has(target)) {
+      schema = schemaStorage.createDefault(target);
+      schemaStorage.set(target, schema);
+    } else {
+      schema = schemaStorage.get(target);
+    }
+    Object.assign(schema, options);
+  };
 
 export const AsnChoiceType = (): AsnTypeDecorator => AsnType({ type: AsnTypeTypes.Choice });
 
@@ -52,7 +52,8 @@ export interface IAsn1SetOptions {
 
 export const AsnSetType = (options: IAsn1SetOptions): AsnTypeDecorator =>
   AsnType({
-    type: AsnTypeTypes.Set, ...options,
+    type: AsnTypeTypes.Set,
+    ...options,
   });
 
 export interface IAsn1SequenceOptions {
@@ -61,34 +62,33 @@ export interface IAsn1SequenceOptions {
 
 export const AsnSequenceType = (options: IAsn1SequenceOptions): AsnTypeDecorator =>
   AsnType({
-    type: AsnTypeTypes.Sequence, ...options,
+    type: AsnTypeTypes.Sequence,
+    ...options,
   });
 
 export type AsnPropDecorator = (target: object, propertyKey: string) => void;
-export const AsnProp
-  = (options: IAsn1PropOptions): AsnPropDecorator =>
-    (target: object, propertyKey: string) => {
-      let schema: IAsnSchema;
-      if (!schemaStorage.has(target.constructor)) {
-        schema = schemaStorage.createDefault(target.constructor);
-        schemaStorage.set(target.constructor, schema);
-      } else {
-        schema = schemaStorage.get(target.constructor as IEmptyConstructor);
-      }
+export const AsnProp =
+  (options: IAsn1PropOptions): AsnPropDecorator =>
+  (target: object, propertyKey: string) => {
+    let schema: IAsnSchema;
+    if (!schemaStorage.has(target.constructor)) {
+      schema = schemaStorage.createDefault(target.constructor);
+      schemaStorage.set(target.constructor, schema);
+    } else {
+      schema = schemaStorage.get(target.constructor as IEmptyConstructor);
+    }
 
-      const copyOptions = Object.assign({}, options) as IAsnSchemaItem;
+    const copyOptions = Object.assign({}, options) as IAsnSchemaItem;
 
-      if (typeof copyOptions.type === "number" && !copyOptions.converter) {
+    if (typeof copyOptions.type === "number" && !copyOptions.converter) {
       // Set default converters
-        const defaultConverter = converters.defaultConverter(options.type as AsnPropTypes);
-        if (!defaultConverter) {
-          throw new Error(
-            `Cannot get default converter for property '${propertyKey}' of ${target.constructor.name}`,
-          );
-        }
-        copyOptions.converter = defaultConverter;
+      const defaultConverter = converters.defaultConverter(options.type as AsnPropTypes);
+      if (!defaultConverter) {
+        throw new Error(`Cannot get default converter for property '${propertyKey}' of ${target.constructor.name}`);
       }
+      copyOptions.converter = defaultConverter;
+    }
 
-      copyOptions.raw = options.raw;
-      schema.items[propertyKey] = copyOptions;
-    };
+    copyOptions.raw = options.raw;
+    schema.items[propertyKey] = copyOptions;
+  };

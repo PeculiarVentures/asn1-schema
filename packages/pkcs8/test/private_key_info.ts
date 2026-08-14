@@ -1,8 +1,6 @@
 import * as assert from "node:assert";
 import { AlgorithmIdentifier, Attribute } from "@peculiar/asn1-x509";
-import {
-  AsnConvert, AsnOctetStringConverter, OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnConvert, AsnOctetStringConverter, OctetString } from "@peculiar/asn1-schema";
 import { PrivateKeyInfo, Attributes } from "../src";
 
 describe("PrivateKeyInfo", () => {
@@ -18,9 +16,7 @@ describe("PrivateKeyInfo", () => {
       attributes: new Attributes([
         new Attribute({
           type: "2.3.4.5",
-          values: [
-            AsnConvert.serialize(AsnOctetStringConverter.toASN(new Uint8Array([128, 0, 2]).buffer)),
-          ],
+          values: [AsnConvert.serialize(AsnOctetStringConverter.toASN(new Uint8Array([128, 0, 2]).buffer))],
         }),
       ]),
     });

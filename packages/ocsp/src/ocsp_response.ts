@@ -14,7 +14,9 @@ export class OCSPResponse {
   public responseStatus = OCSPResponseStatus.successful;
 
   @AsnProp({
-    type: ResponseBytes, context: 0, optional: true,
+    type: ResponseBytes,
+    context: 0,
+    optional: true,
   })
   public responseBytes?: ResponseBytes;
 

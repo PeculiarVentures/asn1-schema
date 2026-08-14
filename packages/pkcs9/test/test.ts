@@ -6,8 +6,7 @@ import { ExtensionRequest, id_pkcs9_at_extensionRequest } from "../src";
 
 describe("PKCS#9", () => {
   it("ExtensionRequest", () => {
-    const hexString
-      = "303a06092a864886f70d01090e312d302b30290603551d0e04220420da80914ab1c14b4113d5939781fbdc4632793f7794f5a1c96bacf261040f1654";
+    const hexString = "303a06092a864886f70d01090e312d302b30290603551d0e04220420da80914ab1c14b4113d5939781fbdc4632793f7794f5a1c96bacf261040f1654";
 
     const attr = AsnConvert.parse(hex.decode(hexString), Attribute);
     assert.strictEqual(attr.type, id_pkcs9_at_extensionRequest);

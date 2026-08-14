@@ -1,14 +1,10 @@
-import {
-  AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "./algorithm_identifier";
 import { Name } from "./name";
 import { SubjectPublicKeyInfo } from "./subject_public_key_info";
 import { Validity } from "./validity";
 import { Extensions } from "./extension";
-import {
-  Version, CertificateSerialNumber, UniqueIdentifier,
-} from "./types";
+import { Version, CertificateSerialNumber, UniqueIdentifier } from "./types";
 
 /**
  * ```asn1
@@ -66,12 +62,17 @@ export class TBSCertificate {
   public issuerUniqueID?: UniqueIdentifier;
 
   @AsnProp({
-    type: AsnPropTypes.BitString, context: 2, implicit: true, optional: true,
+    type: AsnPropTypes.BitString,
+    context: 2,
+    implicit: true,
+    optional: true,
   })
   public subjectUniqueID?: UniqueIdentifier;
 
   @AsnProp({
-    type: Extensions, context: 3, optional: true,
+    type: Extensions,
+    context: 3,
+    optional: true,
   })
   public extensions?: Extensions;
 

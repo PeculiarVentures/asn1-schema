@@ -1,6 +1,4 @@
-import {
-  AsnType, AsnTypeTypes, AsnArray,
-} from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 import { Targets } from "./target";
 
 /**
@@ -9,7 +7,8 @@ import { Targets } from "./target";
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: Targets,
+  type: AsnTypeTypes.Sequence,
+  itemType: Targets,
 })
 export class ProxyInfo extends AsnArray<Targets> {
   constructor(items?: Targets[]) {

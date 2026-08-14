@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { CertTemplate } from "./cert_template";
 import { Controls } from "./controls";
 
@@ -21,7 +19,8 @@ export class CertRequest {
   public certTemplate = new CertTemplate();
 
   @AsnProp({
-    type: Controls, optional: true,
+    type: Controls,
+    optional: true,
   })
   public controls?: Controls;
 

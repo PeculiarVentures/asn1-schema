@@ -13,7 +13,9 @@ export class RevokedInfo {
   public revocationTime = new Date();
 
   @AsnProp({
-    type: CRLReason, context: 0, optional: true,
+    type: CRLReason,
+    context: 0,
+    optional: true,
   })
   public revocationReason?: CRLReason;
 

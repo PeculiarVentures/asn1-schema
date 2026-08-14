@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -12,12 +10,16 @@ import {
  */
 export class SecurityCategory {
   @AsnProp({
-    type: AsnPropTypes.ObjectIdentifier, context: 0, implicit: true,
+    type: AsnPropTypes.ObjectIdentifier,
+    context: 0,
+    implicit: true,
   })
   public type = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, context: 1, implicit: true,
+    type: AsnPropTypes.Any,
+    context: 1,
+    implicit: true,
   })
   public value: ArrayBuffer = new ArrayBuffer(0);
 
@@ -34,7 +36,8 @@ export class SecurityCategory {
  * @todo - implement size constraint
  */
 @AsnType({
-  type: AsnTypeTypes.Set, itemType: SecurityCategory,
+  type: AsnTypeTypes.Set,
+  itemType: SecurityCategory,
 })
 export class SecurityCategories extends AsnArray<SecurityCategory> {
   constructor(items?: SecurityCategory[]) {

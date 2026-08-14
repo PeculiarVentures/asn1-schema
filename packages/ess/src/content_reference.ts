@@ -1,7 +1,5 @@
 import { ContentType } from "@peculiar/asn1-cms";
-import {
-  AsnProp, AsnPropTypes, OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
 import { ContentIdentifier } from "./types";
 
 /**

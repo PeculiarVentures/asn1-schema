@@ -16,12 +16,14 @@ export class Clearance {
   public policyId = "";
 
   @AsnProp({
-    type: ClassList, defaultValue: new ClassList(ClassListFlags.unclassified),
+    type: ClassList,
+    defaultValue: new ClassList(ClassListFlags.unclassified),
   })
   public classList = new ClassList(ClassListFlags.unclassified);
 
   @AsnProp({
-    type: SecurityCategory, repeated: "set",
+    type: SecurityCategory,
+    repeated: "set",
   })
   public securityCategories?: SecurityCategory[];
 

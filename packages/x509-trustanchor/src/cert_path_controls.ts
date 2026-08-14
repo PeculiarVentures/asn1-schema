@@ -1,9 +1,5 @@
-import {
-  Name, Certificate, CertificatePolicies, NameConstraints,
-} from "@peculiar/asn1-x509";
-import {
-  AsnProp, AsnPropTypes, BitString,
-} from "@peculiar/asn1-schema";
+import { Name, Certificate, CertificatePolicies, NameConstraints } from "@peculiar/asn1-x509";
+import { AsnProp, AsnPropTypes, BitString } from "@peculiar/asn1-schema";
 
 export type CertPolicyType = "inhibitPolicyMapping" | "requireExplicitPolicy" | "inhibitAnyPolicy";
 
@@ -58,27 +54,42 @@ export class CertPathControls {
   public taName = new Name();
 
   @AsnProp({
-    type: Certificate, implicit: true, context: 0, optional: true,
+    type: Certificate,
+    implicit: true,
+    context: 0,
+    optional: true,
   })
   public certificate?: Certificate;
 
   @AsnProp({
-    type: CertificatePolicies, implicit: true, context: 1, optional: true,
+    type: CertificatePolicies,
+    implicit: true,
+    context: 1,
+    optional: true,
   })
   public policySet?: CertificatePolicies;
 
   @AsnProp({
-    type: CertPolicy, implicit: true, context: 2, optional: true,
+    type: CertPolicy,
+    implicit: true,
+    context: 2,
+    optional: true,
   })
   public policyFlags?: CertPolicy;
 
   @AsnProp({
-    type: NameConstraints, implicit: true, context: 3, optional: true,
+    type: NameConstraints,
+    implicit: true,
+    context: 3,
+    optional: true,
   })
   public nameConstr?: NameConstraints;
 
   @AsnProp({
-    type: AsnPropTypes.Integer, implicit: true, context: 4, optional: true,
+    type: AsnPropTypes.Integer,
+    implicit: true,
+    context: 4,
+    optional: true,
   })
   public pathLenConstraint?: number;
 

@@ -29,12 +29,9 @@ export class AlgorithmIdentifier {
 
   public isEqual(data: unknown): data is this {
     return (
-      data instanceof AlgorithmIdentifier
-      && data.algorithm == this.algorithm
-      && ((data.parameters
-        && this.parameters
-        && equal(data.parameters, this.parameters))
-      || data.parameters === this.parameters)
+      data instanceof AlgorithmIdentifier &&
+      data.algorithm == this.algorithm &&
+      ((data.parameters && this.parameters && equal(data.parameters, this.parameters)) || data.parameters === this.parameters)
     );
   }
 }

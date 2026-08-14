@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { CMSVersion } from "./types";
 import { Attribute } from "./attribute";
 import { RecipientInfos } from "./recipient_infos";
@@ -13,7 +11,8 @@ import { EncryptedContentInfo } from "./encrypted_content_info";
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Set, itemType: Attribute,
+  type: AsnTypeTypes.Set,
+  itemType: Attribute,
 })
 export class UnprotectedAttributes extends AsnArray<Attribute> {
   constructor(items?: Attribute[]) {
@@ -39,7 +38,10 @@ export class EnvelopedData {
   public version: CMSVersion = CMSVersion.v0;
 
   @AsnProp({
-    type: OriginatorInfo, context: 0, implicit: true, optional: true,
+    type: OriginatorInfo,
+    context: 0,
+    implicit: true,
+    optional: true,
   })
   public originatorInfo?: OriginatorInfo;
 
@@ -50,7 +52,10 @@ export class EnvelopedData {
   public encryptedContentInfo = new EncryptedContentInfo();
 
   @AsnProp({
-    type: UnprotectedAttributes, context: 1, implicit: true, optional: true,
+    type: UnprotectedAttributes,
+    context: 1,
+    implicit: true,
+    optional: true,
   })
   public unprotectedAttrs?: UnprotectedAttributes;
 

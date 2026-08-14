@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnType, AsnTypeTypes, AsnPropTypes,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnType, AsnTypeTypes, AsnPropTypes } from "@peculiar/asn1-schema";
 
 // re-ocsp-archive-cutoff EXTENSION ::= { SYNTAX ArchiveCutoff
 //                                        IDENTIFIED BY

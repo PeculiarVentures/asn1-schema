@@ -1,8 +1,5 @@
-/* eslint-disable no-undef */
 import { existsSync } from "node:fs";
-import {
-  readdir, readFile, writeFile,
-} from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 function addJsExtension(specifier, importerPath) {
@@ -57,10 +54,7 @@ async function main() {
 
   const distDir = path.resolve(process.cwd(), targetDir);
   await rewriteImports(distDir);
-  await writeFile(
-    path.join(distDir, "package.json"),
-    `${JSON.stringify({ type: "module" }, null, 2)}\n`,
-  );
+  await writeFile(path.join(distDir, "package.json"), `${JSON.stringify({ type: "module" }, null, 2)}\n`);
 }
 
 await main();

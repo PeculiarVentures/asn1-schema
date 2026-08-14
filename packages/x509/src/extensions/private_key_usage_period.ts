@@ -17,12 +17,18 @@ export const id_ce_privateKeyUsagePeriod = `${id_ce}.16`;
  */
 export class PrivateKeyUsagePeriod {
   @AsnProp({
-    type: AsnPropTypes.GeneralizedTime, context: 0, implicit: true, optional: true,
+    type: AsnPropTypes.GeneralizedTime,
+    context: 0,
+    implicit: true,
+    optional: true,
   })
   public notBefore?: Date;
 
   @AsnProp({
-    type: AsnPropTypes.GeneralizedTime, context: 1, implicit: true, optional: true,
+    type: AsnPropTypes.GeneralizedTime,
+    context: 1,
+    implicit: true,
+    optional: true,
   })
   public notAfter?: Date;
 

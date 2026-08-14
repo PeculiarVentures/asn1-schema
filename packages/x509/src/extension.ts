@@ -1,11 +1,4 @@
-import {
-  AsnProp,
-  AsnPropTypes,
-  AsnArray,
-  AsnType,
-  AsnTypeTypes,
-  OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnArray, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 
 /**
  * ```asn1
@@ -45,7 +38,8 @@ export class Extension {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: Extension,
+  type: AsnTypeTypes.Sequence,
+  itemType: Extension,
 })
 export class Extensions extends AsnArray<Extension> {
   constructor(items?: Extension[]) {

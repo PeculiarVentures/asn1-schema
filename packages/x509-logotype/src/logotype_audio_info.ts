@@ -39,7 +39,10 @@ export class LogotypeAudioInfo {
    * Samples per second
    */
   @AsnProp({
-    type: AsnPropTypes.Integer, implicit: true, context: 3, optional: true,
+    type: AsnPropTypes.Integer,
+    implicit: true,
+    context: 3,
+    optional: true,
   })
   public sampleRate?: number;
 
@@ -47,7 +50,10 @@ export class LogotypeAudioInfo {
    * RFC 3066 Language Tag
    */
   @AsnProp({
-    type: AsnPropTypes.IA5String, implicit: true, context: 4, optional: true,
+    type: AsnPropTypes.IA5String,
+    implicit: true,
+    context: 4,
+    optional: true,
   })
   public language?: string;
 
