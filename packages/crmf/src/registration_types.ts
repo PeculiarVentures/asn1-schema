@@ -276,7 +276,7 @@ export class PBMParameter {
   public owf = new AlgorithmIdentifier();
 
   @AsnProp({ type: AsnPropTypes.Integer })
-  public iterationCount = new ArrayBuffer(0);
+  public iterationCount = 1;
 
   @AsnProp({ type: AlgorithmIdentifier })
   public mac = new AlgorithmIdentifier();
