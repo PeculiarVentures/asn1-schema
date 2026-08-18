@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-tls",
-  "version": "2.9.2",
+  "version": "2.9.3",
   "description": "TLS presentation language byte stream reader shared by Certificate Transparency and Merkle Tree Certificate packages.",
   "keywords": [
     "asn",
