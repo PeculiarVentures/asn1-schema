@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-crmf",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "description": "ASN.1 schema for Certificate Request Message Format (CRMF) defined in RFC 4211.",
   "keywords": [
     "asn",
