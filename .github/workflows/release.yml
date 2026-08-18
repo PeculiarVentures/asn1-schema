@@ -12,6 +12,11 @@ on:
           - patch
           - minor
           - major
+      publish_all:
+        description: Publish all packages, including unchanged packages
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: release-${{ github.ref }}
@@ -64,7 +69,9 @@ jobs:
         run: |
           set -euo pipefail
 
-          if ! npx lerna changed; then
+          if [ "${{ inputs.publish_all }}" = "true" ]; then
+            echo "Publishing all packages; skipping changed-package check."
+          elif ! npx lerna changed; then
             echo "No changed packages detected by Lerna." >&2
             exit 1
           fi
@@ -81,15 +88,19 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Bump versions of changed packages only
+      - name: Bump versions of selected packages
         shell: bash
         run: |
           set -euo pipefail
 
-          # Important:
-          # Do NOT add --force-publish here.
-          # Without --force-publish, Lerna updates only changed packages.
-          npx lerna version "${{ inputs.version }}" \
+          version_args=("${{ inputs.version }}")
+
+          if [ "${{ inputs.publish_all }}" = "true" ]; then
+            version_args+=(--force-publish)
+            echo "Force-publishing all packages."
+          fi
+
+          npx lerna version "${version_args[@]}" \
             --yes \
             --no-push \
             --no-git-tag-version \
@@ -181,7 +192,7 @@ jobs:
         env:
           RELEASE_TYPE: ${{ inputs.version }}
 
-      - name: Pack changed packages
+      - name: Pack packages selected for publication
         shell: bash
         run: |
           set -euo pipefail
@@ -364,12 +375,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Recreate version bump
+      - name: Recreate selected version bump
         shell: bash
         run: |
           set -euo pipefail
 
-          npx lerna version "${{ inputs.version }}" \
+          version_args=("${{ inputs.version }}")
+
+          if [ "${{ inputs.publish_all }}" = "true" ]; then
+            version_args+=(--force-publish)
+          fi
+
+          npx lerna version "${version_args[@]}" \
             --yes \
             --no-push \
             --no-git-tag-version \
