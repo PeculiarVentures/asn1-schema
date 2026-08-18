@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { Time } from "@peculiar/asn1-x509";
 
 /**
@@ -13,12 +11,18 @@ import { Time } from "@peculiar/asn1-x509";
 @AsnType({ type: AsnTypeTypes.Sequence })
 export class OptionalValidity {
   @AsnProp({
-    type: Time, context: 0, optional: true, implicit: false,
+    type: Time,
+    context: 0,
+    optional: true,
+    implicit: false,
   })
   public notBefore?: Time;
 
   @AsnProp({
-    type: Time, context: 1, optional: true, implicit: false,
+    type: Time,
+    context: 1,
+    optional: true,
+    implicit: false,
   })
   public notAfter?: Time;
 

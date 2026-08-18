@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnArray, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 // re-ocsp-preferred-signature-algorithms EXTENSION ::= {
@@ -19,7 +17,8 @@ export class PreferredSignatureAlgorithm {
   public sigIdentifier = new AlgorithmIdentifier();
 
   @AsnProp({
-    type: AlgorithmIdentifier, optional: true,
+    type: AlgorithmIdentifier,
+    optional: true,
   })
   public certIdentifier?: AlgorithmIdentifier;
 
@@ -34,7 +33,8 @@ export class PreferredSignatureAlgorithm {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: PreferredSignatureAlgorithm,
+  type: AsnTypeTypes.Sequence,
+  itemType: PreferredSignatureAlgorithm,
 })
 export class PreferredSignatureAlgorithms extends AsnArray<PreferredSignatureAlgorithm> {
   constructor(items?: PreferredSignatureAlgorithm[]) {

@@ -12,12 +12,14 @@ import { HashAlgAndValue } from "./hash_alg_and_value";
  */
 export class LogotypeReference {
   @AsnProp({
-    type: HashAlgAndValue, repeated: "sequence",
+    type: HashAlgAndValue,
+    repeated: "sequence",
   })
   public refStructHash: HashAlgAndValue[] = [];
 
   @AsnProp({
-    type: AsnPropTypes.IA5String, repeated: "sequence",
+    type: AsnPropTypes.IA5String,
+    repeated: "sequence",
   })
   public refStructURI: string[] = [];
 

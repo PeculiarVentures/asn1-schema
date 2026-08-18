@@ -1,7 +1,5 @@
 import { OneAsymmetricKey } from "@peculiar/asn1-asym-key";
-import {
-  AsnArray, AsnType, AsnTypeTypes, BitString, OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnType, AsnTypeTypes, BitString, OctetString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier, SubjectPublicKeyInfo } from "@peculiar/asn1-x509";
 
 /**
@@ -41,7 +39,8 @@ export class CompositeAlgorithmIdentifier extends AlgorithmIdentifier {}
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: SubjectPublicKeyInfo,
+  type: AsnTypeTypes.Sequence,
+  itemType: SubjectPublicKeyInfo,
 })
 export class CompositePublicKey extends AsnArray<SubjectPublicKeyInfo> {
   constructor(items?: SubjectPublicKeyInfo[]) {
@@ -72,7 +71,8 @@ export class CompositePublicKeyBs extends BitString {}
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: OneAsymmetricKey,
+  type: AsnTypeTypes.Sequence,
+  itemType: OneAsymmetricKey,
 })
 export class CompositePrivateKey extends AsnArray<OneAsymmetricKey> {
   constructor(items?: OneAsymmetricKey[]) {

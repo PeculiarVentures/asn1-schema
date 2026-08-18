@@ -1,13 +1,5 @@
 import { Attributes } from "@peculiar/asn1-pkcs8";
-import {
-  AsnArray,
-  AsnProp,
-  AsnPropTypes,
-  AsnType,
-  AsnTypeTypes,
-  BitString,
-  OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, BitString, OctetString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 /**
@@ -120,7 +112,10 @@ export class OneAsymmetricKey {
    * [RFC2985] MAY be supported.
    */
   @AsnProp({
-    type: Attributes, context: 0, implicit: true, optional: true,
+    type: Attributes,
+    context: 0,
+    implicit: true,
+    optional: true,
   })
   public attributes?: Attributes;
 
@@ -136,7 +131,10 @@ export class OneAsymmetricKey {
    * publicKey field), as per [RFC5915].
    */
   @AsnProp({
-    type: AsnPropTypes.BitString, context: 1, implicit: true, optional: true,
+    type: AsnPropTypes.BitString,
+    context: 1,
+    implicit: true,
+    optional: true,
   })
   public publicKey?: ArrayBuffer;
 }
@@ -155,7 +153,8 @@ export class PrivateKeyInfo extends OneAsymmetricKey {}
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: OneAsymmetricKey,
+  type: AsnTypeTypes.Sequence,
+  itemType: OneAsymmetricKey,
 })
 export class AsymmetricKeyPackage extends AsnArray<OneAsymmetricKey> {
   constructor(items?: OneAsymmetricKey[]) {

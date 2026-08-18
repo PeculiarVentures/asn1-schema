@@ -95,3 +95,18 @@ export const id_ad_caRepository = `${id_ad}.5`;
  * ```
  */
 export const id_ce = "2.5.29";
+
+/**
+ * ```asn1
+ * id-alg-unsigned OBJECT IDENTIFIER ::= { iso(1) identified-organization(3)
+ *     dod(6) internet(1) security(5) mechanisms(5) pkix(7) alg(6) 36 }
+ * ```
+ *
+ * Placeholder signature algorithm for unsigned certificates. The parameters
+ * MUST be absent and `signatureValue` MUST be a zero-length BIT STRING. An
+ * unsigned certificate is never self-signed, even when its issuer equals its
+ * subject, and MUST be rejected in a certification path.
+ *
+ * @see {@link https://www.rfc-editor.org/rfc/rfc9925.html | RFC 9925}
+ */
+export const id_alg_unsigned = "1.3.6.1.5.5.7.6.36";

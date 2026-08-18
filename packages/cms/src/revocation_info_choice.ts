@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 import { id_pkix } from "@peculiar/asn1-x509";
 
 /**
@@ -55,7 +53,9 @@ export class OtherRevocationInfoFormat {
 @AsnType({ type: AsnTypeTypes.Choice })
 export class RevocationInfoChoice {
   @AsnProp({
-    type: OtherRevocationInfoFormat, context: 1, implicit: true,
+    type: OtherRevocationInfoFormat,
+    context: 1,
+    implicit: true,
   })
   public other = new OtherRevocationInfoFormat();
 
@@ -69,7 +69,8 @@ export class RevocationInfoChoice {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Set, itemType: RevocationInfoChoice,
+  type: AsnTypeTypes.Set,
+  itemType: RevocationInfoChoice,
 })
 export class RevocationInfoChoices extends AsnArray<RevocationInfoChoice> {
   constructor(items?: RevocationInfoChoice[]) {

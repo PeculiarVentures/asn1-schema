@@ -22,7 +22,8 @@ export class ReceiptRequest {
   public receiptsFrom: ReceiptsFrom = new ReceiptsFrom();
 
   @AsnProp({
-    type: GeneralNames, repeated: "sequence",
+    type: GeneralNames,
+    repeated: "sequence",
   })
   public receiptsTo: GeneralNames[] = [];
 

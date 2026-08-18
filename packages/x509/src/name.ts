@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 import { hex } from "@peculiar/utils/encoding";
 
 /**
@@ -45,14 +43,7 @@ export class DirectoryString {
    * Returns a string representation of an object.
    */
   public toString(): string {
-    return (
-      this.bmpString
-      || this.printableString
-      || this.teletexString
-      || this.universalString
-      || this.utf8String
-      || ""
-    );
+    return this.bmpString || this.printableString || this.teletexString || this.universalString || this.utf8String || "";
   }
 }
 
@@ -105,7 +96,8 @@ export class AttributeTypeAndValue {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Set, itemType: AttributeTypeAndValue,
+  type: AsnTypeTypes.Set,
+  itemType: AttributeTypeAndValue,
 })
 export class RelativeDistinguishedName extends AsnArray<AttributeTypeAndValue> {
   constructor(items?: AttributeTypeAndValue[]) {
@@ -122,7 +114,8 @@ export class RelativeDistinguishedName extends AsnArray<AttributeTypeAndValue> {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: RelativeDistinguishedName,
+  type: AsnTypeTypes.Sequence,
+  itemType: RelativeDistinguishedName,
 })
 export class RDNSequence extends AsnArray<RelativeDistinguishedName> {
   constructor(items?: RelativeDistinguishedName[]) {

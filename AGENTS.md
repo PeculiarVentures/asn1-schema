@@ -68,7 +68,8 @@
 ## Validation Commands
 
 - Minimum validation before handing work off:
-  - `npm run lint`
+  - `npm run lint` (oxlint)
+  - `npm run format:check` (oxfmt)
   - `npm test`
   - `npm run build` when changing source, exported types, or tracked build output
 - For CI parity, also run:

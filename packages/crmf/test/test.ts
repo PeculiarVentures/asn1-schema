@@ -1,8 +1,6 @@
 import * as assert from "node:assert";
 import { AsnConvert } from "@peculiar/asn1-schema";
-import {
-  CertReqMsg, CertReqMessages, CertRequest,
-} from "@peculiar/asn1-crmf";
+import { CertReqMsg, CertReqMessages, CertRequest } from "@peculiar/asn1-crmf";
 
 describe("crmf", () => {
   const pem = [

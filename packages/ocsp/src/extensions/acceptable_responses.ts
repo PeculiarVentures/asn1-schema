@@ -1,6 +1,4 @@
-import {
-  AsnPropTypes, AsnArray, AsnType, AsnTypeTypes,
-} from "@peculiar/asn1-schema";
+import { AsnPropTypes, AsnArray, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 
 // re-ocsp-response EXTENSION ::= { SYNTAX AcceptableResponses IDENTIFIED
 //   BY id-pkix-ocsp-response }
@@ -11,7 +9,8 @@ import {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: AsnPropTypes.ObjectIdentifier,
+  type: AsnTypeTypes.Sequence,
+  itemType: AsnPropTypes.ObjectIdentifier,
 })
 export class AcceptableResponses extends AsnArray<string> {
   constructor(items?: string[]) {

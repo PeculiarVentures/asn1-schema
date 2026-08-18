@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
 import { Name } from "@peculiar/asn1-x509";
 
 /**
@@ -15,7 +13,8 @@ export class IssuerAndSerialNumber {
   public issuer = new Name();
 
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public serialNumber = new ArrayBuffer(0);
 

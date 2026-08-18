@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20]
+        node-version: [24]
 
     steps:
       - uses: actions/checkout@v6
@@ -32,6 +32,12 @@ jobs:
 
       - name: Run lint
         run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Type check
+        run: npm run typecheck
 
       - name: Run test with coverage
         run: npm run coverage

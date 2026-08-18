@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "./algorithm_identifier";
 import { Name } from "./name";
 import { Time } from "./time";
@@ -23,7 +21,8 @@ export class RevokedCertificate {
    * Serial number of the certificate
    */
   @AsnProp({
-    type: AsnPropTypes.Integer, converter: AsnIntegerArrayBufferConverter,
+    type: AsnPropTypes.Integer,
+    converter: AsnIntegerArrayBufferConverter,
   })
   public userCertificate: ArrayBuffer = new ArrayBuffer(0);
 
@@ -34,7 +33,9 @@ export class RevokedCertificate {
   public revocationDate = new Time();
 
   @AsnProp({
-    type: Extension, optional: true, repeated: "sequence",
+    type: Extension,
+    optional: true,
+    repeated: "sequence",
   })
   public crlEntryExtensions?: Extension[];
 
@@ -64,7 +65,8 @@ export class RevokedCertificate {
  */
 export class TBSCertList {
   @AsnProp({
-    type: AsnPropTypes.Integer, optional: true,
+    type: AsnPropTypes.Integer,
+    optional: true,
   })
   public version?: Version;
 
@@ -78,17 +80,23 @@ export class TBSCertList {
   public thisUpdate = new Time();
 
   @AsnProp({
-    type: Time, optional: true,
+    type: Time,
+    optional: true,
   })
   public nextUpdate?: Time;
 
   @AsnProp({
-    type: RevokedCertificate, repeated: "sequence", optional: true,
+    type: RevokedCertificate,
+    repeated: "sequence",
+    optional: true,
   })
   public revokedCertificates?: RevokedCertificate[];
 
   @AsnProp({
-    type: Extension, optional: true, context: 0, repeated: "sequence",
+    type: Extension,
+    optional: true,
+    context: 0,
+    repeated: "sequence",
   })
   public crlExtensions?: Extension[];
 

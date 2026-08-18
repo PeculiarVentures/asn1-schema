@@ -27,12 +27,17 @@ export class SingleResponse {
   public thisUpdate = new Date();
 
   @AsnProp({
-    type: AsnPropTypes.GeneralizedTime, context: 0, optional: true,
+    type: AsnPropTypes.GeneralizedTime,
+    context: 0,
+    optional: true,
   })
   public nextUpdate?: Date;
 
   @AsnProp({
-    type: Extension, context: 1, repeated: "sequence", optional: true,
+    type: Extension,
+    context: 1,
+    repeated: "sequence",
+    optional: true,
   })
   public singleExtensions?: Extension[];
 

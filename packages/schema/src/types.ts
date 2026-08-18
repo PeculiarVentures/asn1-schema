@@ -7,6 +7,18 @@ import * as asn1js from "asn1js";
 export type IEmptyConstructor<T = unknown> = new () => T;
 
 /**
+ * Options for parsing ASN.1 encoded data
+ */
+export interface IAsnParseOptions {
+  /**
+   * Resource limits forwarded to `asn1js.fromBER` for untrusted input
+   * (`maxDepth`, `maxNodes`, `maxContentLength`). When omitted, the asn1js
+   * defaults apply (maxDepth: 100, maxNodes: 10000, maxContentLength: 16MB).
+   */
+  berOptions?: asn1js.FromBerOptions;
+}
+
+/**
  * Allows to convert ASN.1 object to JS value and back
  */
 export interface IAsnConverter<T = unknown, AsnType = asn1js.AsnType> {

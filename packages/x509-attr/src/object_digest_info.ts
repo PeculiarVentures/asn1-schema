@@ -27,7 +27,8 @@ export class ObjectDigestInfo {
   public digestedObjectType = DigestedObjectType.publicKey;
 
   @AsnProp({
-    type: AsnPropTypes.ObjectIdentifier, optional: true,
+    type: AsnPropTypes.ObjectIdentifier,
+    optional: true,
   })
   public otherObjectTypeID?: string;
 

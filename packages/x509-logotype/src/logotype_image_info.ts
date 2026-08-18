@@ -56,7 +56,10 @@ export class LogotypeImageInfo {
    * RFC 3066 Language Tag
    */
   @AsnProp({
-    type: AsnPropTypes.IA5String, context: 4, implicit: true, optional: true,
+    type: AsnPropTypes.IA5String,
+    context: 4,
+    implicit: true,
+    optional: true,
   })
   public language?: string;
 

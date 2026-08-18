@@ -55,10 +55,7 @@ describe("x509-qualified-etsi", () => {
        *     IA5String http://some.url
        *     PrintableString en
        */
-      assert.strictEqual(
-        Buffer.from(raw).toString("hex"),
-        "30173015160f687474703a2f2f736f6d652e75726c1302656e",
-      );
+      assert.strictEqual(Buffer.from(raw).toString("hex"), "30173015160f687474703a2f2f736f6d652e75726c1302656e");
 
       const test = AsnConvert.parse(raw, etsi.QcEuPDS);
       assert.deepStrictEqual(test, qc);
@@ -81,11 +78,7 @@ describe("x509-qualified-etsi", () => {
 
   describe("QcType", () => {
     it("serialize/parse", () => {
-      const qc = new etsi.QcType([
-        etsi.id_etsi_qct_esign,
-        etsi.id_etsi_qct_eseal,
-        etsi.id_etsi_qct_web,
-      ]);
+      const qc = new etsi.QcType([etsi.id_etsi_qct_esign, etsi.id_etsi_qct_eseal, etsi.id_etsi_qct_web]);
       const raw = AsnConvert.serialize(qc);
       /**
        * SEQUENCE (3 elem)
@@ -93,10 +86,7 @@ describe("x509-qualified-etsi", () => {
        *   OBJECT IDENTIFIER 0.4.0.1862.1.6.2
        *   OBJECT IDENTIFIER 0.4.0.1862.1.6.3
        */
-      assert.strictEqual(
-        Buffer.from(raw).toString("hex"),
-        "301b060704008e46010601060704008e46010602060704008e46010603",
-      );
+      assert.strictEqual(Buffer.from(raw).toString("hex"), "301b060704008e46010601060704008e46010602060704008e46010603");
 
       const test = AsnConvert.parse(raw, etsi.QcType);
       assert.deepStrictEqual(test, qc);

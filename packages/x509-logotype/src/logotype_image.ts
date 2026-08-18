@@ -14,7 +14,8 @@ export class LogotypeImage {
   public imageDetails = new LogotypeDetails();
 
   @AsnProp({
-    type: LogotypeImageInfo, optional: true,
+    type: LogotypeImageInfo,
+    optional: true,
   })
   public imageInfo?: LogotypeImageInfo;
 

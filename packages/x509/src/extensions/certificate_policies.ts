@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnArray } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
 
 /**
@@ -61,7 +59,8 @@ export class NoticeReference {
   public organization = new DisplayText();
 
   @AsnProp({
-    type: AsnPropTypes.Integer, repeated: "sequence",
+    type: AsnPropTypes.Integer,
+    repeated: "sequence",
   })
   public noticeNumbers: number[] = [];
 
@@ -79,12 +78,14 @@ export class NoticeReference {
  */
 export class UserNotice {
   @AsnProp({
-    type: NoticeReference, optional: true,
+    type: NoticeReference,
+    optional: true,
   })
   public noticeRef?: NoticeReference;
 
   @AsnProp({
-    type: DisplayText, optional: true,
+    type: DisplayText,
+    optional: true,
   })
   public explicitText?: DisplayText;
 
@@ -166,7 +167,9 @@ export class PolicyInformation {
   public policyIdentifier: CertPolicyId = "";
 
   @AsnProp({
-    type: PolicyQualifierInfo, repeated: "sequence", optional: true,
+    type: PolicyQualifierInfo,
+    repeated: "sequence",
+    optional: true,
   })
   public policyQualifiers?: PolicyQualifierInfo[];
 
@@ -181,7 +184,8 @@ export class PolicyInformation {
  * ```
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: PolicyInformation,
+  type: AsnTypeTypes.Sequence,
+  itemType: PolicyInformation,
 })
 export class CertificatePolicies extends AsnArray<PolicyInformation> {
   constructor(items?: PolicyInformation[]) {

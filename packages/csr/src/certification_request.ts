@@ -13,7 +13,8 @@ import { CertificationRequestInfo } from "./certification_request_info";
  */
 export class CertificationRequest {
   @AsnProp({
-    type: CertificationRequestInfo, raw: true,
+    type: CertificationRequestInfo,
+    raw: true,
   })
   public certificationRequestInfo = new CertificationRequestInfo();
 

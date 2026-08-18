@@ -1,11 +1,4 @@
-import {
-  AsnConstructedOctetStringConverter,
-  AsnProp,
-  AsnPropTypes,
-  AsnType,
-  AsnTypeTypes,
-  OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnConstructedOctetStringConverter, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
 import { ContentType, ContentEncryptionAlgorithmIdentifier } from "./types";
 
 /**
@@ -17,7 +10,10 @@ import { ContentType, ContentEncryptionAlgorithmIdentifier } from "./types";
 export class EncryptedContent {
   // primitive OctetString
   @AsnProp({
-    type: OctetString, context: 0, implicit: true, optional: true,
+    type: OctetString,
+    context: 0,
+    implicit: true,
+    optional: true,
   })
   public value?: OctetString;
 
@@ -53,7 +49,8 @@ export class EncryptedContentInfo {
   public contentEncryptionAlgorithm = new ContentEncryptionAlgorithmIdentifier();
 
   @AsnProp({
-    type: EncryptedContent, optional: true,
+    type: EncryptedContent,
+    optional: true,
   })
   public encryptedContent?: EncryptedContent;
 

@@ -1,7 +1,7 @@
 import { toArrayBuffer } from "@peculiar/utils/bytes";
 import { hex, base64 } from "@peculiar/utils/encoding";
+import { ByteStream } from "@peculiar/asn1-tls";
 import { Structure } from "./structure";
-import { ByteStream } from "./byte_stream";
 
 export interface IJsonSignedCertificateTimestamp {
   version: number;

@@ -42,4 +42,5 @@ export enum AsnPropTypes {
   Duration,
   TIME,
   Null,
+  RelativeObjectIdentifier,
 }

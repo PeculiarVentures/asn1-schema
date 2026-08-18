@@ -14,22 +14,30 @@ import { Version } from "./types";
  */
 export class TBSRequest {
   @AsnProp({
-    type: AsnPropTypes.Integer, context: 0, defaultValue: Version.v1,
+    type: AsnPropTypes.Integer,
+    context: 0,
+    defaultValue: Version.v1,
   })
   public version = Version.v1;
 
   @AsnProp({
-    type: GeneralName, context: 1, optional: true,
+    type: GeneralName,
+    context: 1,
+    optional: true,
   })
   public requestorName?: GeneralName;
 
   @AsnProp({
-    type: Request, repeated: "sequence",
+    type: Request,
+    repeated: "sequence",
   })
   public requestList: Request[] = [];
 
   @AsnProp({
-    type: Extension, context: 2, optional: true, repeated: "sequence",
+    type: Extension,
+    context: 2,
+    optional: true,
+    repeated: "sequence",
   })
   public requestExtensions?: Extension[];
 

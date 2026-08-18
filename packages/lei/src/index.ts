@@ -1,6 +1,4 @@
-import {
-  AsnType, AsnTypeTypes, AsnProp, AsnPropTypes,
-} from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import * as asn1js from "asn1js";
 
 /**
@@ -25,7 +23,9 @@ export class Lei {
   public leiCode = "";
 
   @AsnProp({
-    type: asn1js.PrintableString, context: 0, optional: true,
+    type: asn1js.PrintableString,
+    context: 0,
+    optional: true,
   })
   public leiRole?: string;
 

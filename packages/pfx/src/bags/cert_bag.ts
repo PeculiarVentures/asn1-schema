@@ -14,7 +14,8 @@ export class CertBag {
   public certId = "";
 
   @AsnProp({
-    type: AsnPropTypes.Any, context: 0,
+    type: AsnPropTypes.Any,
+    context: 0,
   })
   public certValue = new ArrayBuffer(0);
 

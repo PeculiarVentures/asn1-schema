@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-schema",
-  "version": "2.7.0",
+  "version": "2.9.3",
   "description": "Decorators and helper APIs for declaring ASN.1 schemas in TypeScript.",
   "keywords": [
     "asn",
@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@peculiar/utils": "^2.0.2",
-    "asn1js": "^3.0.6",
+    "asn1js": "^3.0.10",
     "tslib": "^2.8.1"
   },
   "contributors": [

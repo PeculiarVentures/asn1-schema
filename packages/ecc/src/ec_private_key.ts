@@ -1,6 +1,4 @@
-import {
-  AsnProp, AsnPropTypes, OctetString,
-} from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
 import { ECParameters } from "./ec_parameters";
 /**
  * ```asn1
@@ -20,12 +18,16 @@ export class ECPrivateKey {
   public privateKey = new OctetString();
 
   @AsnProp({
-    type: ECParameters, context: 0, optional: true,
+    type: ECParameters,
+    context: 0,
+    optional: true,
   })
   public parameters?: ECParameters;
 
   @AsnProp({
-    type: AsnPropTypes.BitString, context: 1, optional: true,
+    type: AsnPropTypes.BitString,
+    context: 1,
+    optional: true,
   })
   public publicKey?: ArrayBuffer;
 

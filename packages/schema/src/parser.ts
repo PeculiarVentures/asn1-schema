@@ -5,9 +5,7 @@ import * as converters from "./converters";
 import { AsnSchemaValidationError } from "./errors";
 import { isConvertible, isTypeOfArray } from "./helper";
 import { schemaStorage } from "./storage";
-import {
-  IEmptyConstructor, IAsnConverter, IAsnConvertibleConstructor,
-} from "./types";
+import { IEmptyConstructor, IAsnConverter, IAsnConvertibleConstructor, IAsnParseOptions } from "./types";
 import { AsnSchemaType } from "./schema";
 
 /**
@@ -19,13 +17,13 @@ export class AsnParser {
    * @param data ASN.1 encoded buffer
    * @param target Target schema for object deserialization
    */
-  public static parse<T>(data: BufferSourceLike, target: IEmptyConstructor<T>): T {
-    const asn1Parsed = asn1js.fromBER(toArrayBuffer(data));
+  public static parse<T>(data: BufferSourceLike, target: IEmptyConstructor<T>, options?: IAsnParseOptions): T {
+    const asn1Parsed = asn1js.fromBER(toArrayBuffer(data), options?.berOptions);
     if (asn1Parsed.result.error) {
       throw new Error(asn1Parsed.result.error);
     }
 
-    const res = this.fromASN(asn1Parsed.result, target);
+    const res = this.fromASN(asn1Parsed.result, target, options);
     return res;
   }
 
@@ -34,8 +32,8 @@ export class AsnParser {
    * @param asn1Schema asn1js object
    * @param target Target schema for object deserialization
    */
-  public static fromASN<T>(asn1Schema: asn1js.AsnType, target: IEmptyConstructor<T>): T;
-  public static fromASN<T>(asn1Schema: asn1js.AsnType, target: IEmptyConstructor<T>): unknown {
+  public static fromASN<T>(asn1Schema: asn1js.AsnType, target: IEmptyConstructor<T>, options?: IAsnParseOptions): T;
+  public static fromASN<T>(asn1Schema: asn1js.AsnType, target: IEmptyConstructor<T>, options?: IAsnParseOptions): unknown {
     try {
       if (isConvertible(target)) {
         const value = new (target as IAsnConvertibleConstructor)();
@@ -47,7 +45,7 @@ export class AsnParser {
       let targetSchema = schema.schema as AsnSchemaType;
 
       // Handle special cases for Choice types and IMPLICIT tagging
-      const choiceResult = this.handleChoiceTypes(asn1Schema, schema, target, targetSchema);
+      const choiceResult = this.handleChoiceTypes(asn1Schema, schema, target, targetSchema, options);
       if (choiceResult?.result) {
         return choiceResult.result;
       }
@@ -61,11 +59,11 @@ export class AsnParser {
 
       // Handle array types
       if (isTypeOfArray(target)) {
-        return this.handleArrayTypes(asn1Schema, schema, target);
+        return this.handleArrayTypes(asn1Schema, schema, target, options);
       }
 
       // Process schema items
-      this.processSchemaItems(schema, sequenceResult, res);
+      this.processSchemaItems(schema, sequenceResult, res, options);
 
       return res;
     } catch (error) {
@@ -84,35 +82,23 @@ export class AsnParser {
 
     schema: any,
     target: IEmptyConstructor<T>,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     targetSchema: AsnSchemaType,
+    options?: IAsnParseOptions,
   ): { result?: unknown; targetSchema?: AsnSchemaType } | null {
     // Special handling for Choice types with context tags (IMPLICIT)
-    if (
-      asn1Schema.constructor === asn1js.Constructed
-      && schema.type === AsnTypeTypes.Choice
-      && asn1Schema.idBlock.tagClass === 3
-    ) {
+    if (asn1Schema.constructor === asn1js.Constructed && schema.type === AsnTypeTypes.Choice && asn1Schema.idBlock.tagClass === 3) {
       for (const key in schema.items) {
         const schemaItem = schema.items[key];
         if (schemaItem.context === asn1Schema.idBlock.tagNumber && schemaItem.implicit) {
-          if (
-            typeof schemaItem.type === "function"
-            && schemaStorage.has(schemaItem.type as IEmptyConstructor)
-          ) {
+          if (typeof schemaItem.type === "function" && schemaStorage.has(schemaItem.type as IEmptyConstructor)) {
             const fieldSchema = schemaStorage.get(schemaItem.type as IEmptyConstructor);
             if (fieldSchema && fieldSchema.type === AsnTypeTypes.Sequence) {
               const newSeq = new asn1js.Sequence();
-              if (
-                "value" in asn1Schema.valueBlock
-                && Array.isArray((asn1Schema.valueBlock as { value: asn1js.AsnType[] }).value)
-                && "value" in newSeq.valueBlock
-              ) {
-                (newSeq.valueBlock as { value: asn1js.AsnType[] }).value = (
-                  asn1Schema.valueBlock as { value: asn1js.AsnType[] }
-                ).value;
+              if ("value" in asn1Schema.valueBlock && Array.isArray((asn1Schema.valueBlock as { value: asn1js.AsnType[] }).value) && "value" in newSeq.valueBlock) {
+                (newSeq.valueBlock as { value: asn1js.AsnType[] }).value = (asn1Schema.valueBlock as { value: asn1js.AsnType[] }).value;
 
-                const fieldValue = this.fromASN(newSeq, schemaItem.type as IEmptyConstructor);
+                const fieldValue = this.fromASN(newSeq, schemaItem.type as IEmptyConstructor, options);
                 const res = new target() as unknown as Record<string, unknown>;
                 res[key] = fieldValue;
                 return { result: res };
@@ -121,10 +107,7 @@ export class AsnParser {
           }
         }
       }
-    } else if (
-      asn1Schema.constructor === asn1js.Constructed
-      && schema.type !== AsnTypeTypes.Choice
-    ) {
+    } else if (asn1Schema.constructor === asn1js.Constructed && schema.type !== AsnTypeTypes.Choice) {
       // Fix tag value for IMPLICIT
       const newTargetSchema = new asn1js.Constructed({
         idBlock: {
@@ -136,7 +119,6 @@ export class AsnParser {
 
       // Delete all parsed values, because asn1js adds duplicated values to arrays
       for (const key in schema.items) {
-        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete (asn1Schema as unknown as Record<string, unknown>)[key];
       }
 
@@ -159,30 +141,18 @@ export class AsnParser {
   ): asn1js.CompareSchemaResult {
     if (schema.type === AsnTypeTypes.Sequence) {
       // Try normal schema comparison
-      const asn1ComparedSchema = asn1js.compareSchema(
-        {} as unknown as asn1js.AsnType,
-        asn1Schema,
-        targetSchema,
-      );
+      const asn1ComparedSchema = asn1js.compareSchema({} as unknown as asn1js.AsnType, asn1Schema, targetSchema);
 
       if (!asn1ComparedSchema.verified) {
-        throw new AsnSchemaValidationError(
-          `Data does not match to ${target.name} ASN1 schema.${asn1ComparedSchema.result.error ? ` ${asn1ComparedSchema.result.error}` : ""}`,
-        );
+        throw new AsnSchemaValidationError(`Data does not match to ${target.name} ASN1 schema.${asn1ComparedSchema.result.error ? ` ${asn1ComparedSchema.result.error}` : ""}`);
       }
 
       return asn1ComparedSchema;
     } else {
       // Check the schema is valid for non-SEQUENCE types
-      const asn1ComparedSchema = asn1js.compareSchema(
-        {} as unknown as asn1js.AsnType,
-        asn1Schema,
-        targetSchema,
-      );
+      const asn1ComparedSchema = asn1js.compareSchema({} as unknown as asn1js.AsnType, asn1Schema, targetSchema);
       if (!asn1ComparedSchema.verified) {
-        throw new AsnSchemaValidationError(
-          `Data does not match to ${target.name} ASN1 schema.${asn1ComparedSchema.result.error ? ` ${asn1ComparedSchema.result.error}` : ""}`,
-        );
+        throw new AsnSchemaValidationError(`Data does not match to ${target.name} ASN1 schema.${asn1ComparedSchema.result.error ? ` ${asn1ComparedSchema.result.error}` : ""}`);
       }
       return asn1ComparedSchema;
     }
@@ -250,15 +220,12 @@ export class AsnParser {
   /**
    * Checks if a schema item is an optional CHOICE field
    */
-  private static isOptionalChoiceField(
-
-    schemaItem: any,
-  ): boolean {
+  private static isOptionalChoiceField(schemaItem: any): boolean {
     return (
-      schemaItem.optional
-      && typeof schemaItem.type === "function"
-      && schemaStorage.has(schemaItem.type as IEmptyConstructor)
-      && schemaStorage.get(schemaItem.type as IEmptyConstructor).type === AsnTypeTypes.Choice
+      schemaItem.optional &&
+      typeof schemaItem.type === "function" &&
+      schemaStorage.has(schemaItem.type as IEmptyConstructor) &&
+      schemaStorage.get(schemaItem.type as IEmptyConstructor).type === AsnTypeTypes.Choice
     );
   }
 
@@ -273,13 +240,11 @@ export class AsnParser {
     try {
       const value = this.fromASN(asn1Element, schemaItem.type as IEmptyConstructor);
       return {
-        processed: true, value,
+        processed: true,
+        value,
       };
     } catch (err) {
-      if (
-        err instanceof AsnSchemaValidationError
-        && /Wrong values for Choice type/.test(err.message)
-      ) {
+      if (err instanceof AsnSchemaValidationError && /Wrong values for Choice type/.test(err.message)) {
         return { processed: false };
       }
       throw err;
@@ -295,43 +260,29 @@ export class AsnParser {
     schema: any,
 
     target: IEmptyConstructor<any>,
+    options?: IAsnParseOptions,
   ): unknown {
     if (!("value" in asn1Schema.valueBlock && Array.isArray(asn1Schema.valueBlock.value))) {
-      throw new Error(
-        "Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.",
-      );
+      throw new Error("Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.");
     }
 
     const itemType = schema.itemType;
     if (typeof itemType === "number") {
       const converter = converters.defaultConverter(itemType);
       if (!converter) {
-        throw new Error(
-          `Cannot get default converter for array item of ${target.name} ASN1 schema`,
-        );
+        throw new Error(`Cannot get default converter for array item of ${target.name} ASN1 schema`);
       }
 
-      return (target as any).from(
-        asn1Schema.valueBlock.value as asn1js.AsnType[],
-        (element: asn1js.AsnType) => converter.fromASN(element),
-      );
+      return (target as any).from(asn1Schema.valueBlock.value as asn1js.AsnType[], (element: asn1js.AsnType) => converter.fromASN(element));
     } else {
-      return (target as any).from(
-        asn1Schema.valueBlock.value as asn1js.AsnType[],
-        (element: asn1js.AsnType) => this.fromASN(element, itemType),
-      );
+      return (target as any).from(asn1Schema.valueBlock.value as asn1js.AsnType[], (element: asn1js.AsnType) => this.fromASN(element, itemType, options));
     }
   }
 
   /**
    * Processes all schema items
    */
-  private static processSchemaItems(
-
-    schema: any,
-    asn1ComparedSchema: asn1js.CompareSchemaResult,
-    res: Record<string, unknown>,
-  ): void {
+  private static processSchemaItems(schema: any, asn1ComparedSchema: asn1js.CompareSchemaResult, res: Record<string, unknown>, options?: IAsnParseOptions): void {
     for (const key in schema.items) {
       const asn1SchemaValue = (asn1ComparedSchema.result as any)[key] as asn1js.AsnType | undefined;
       if (!asn1SchemaValue) {
@@ -343,18 +294,13 @@ export class AsnParser {
 
       let parsedValue: unknown;
       if (typeof schemaItemType === "number" || isConvertible(schemaItemType)) {
-        parsedValue = this.processPrimitiveSchemaItem(asn1SchemaValue, schemaItem, schemaItemType);
+        parsedValue = this.processPrimitiveSchemaItem(asn1SchemaValue, schemaItem, schemaItemType, options);
       } else {
-        parsedValue = this.processComplexSchemaItem(asn1SchemaValue, schemaItem, schemaItemType);
+        parsedValue = this.processComplexSchemaItem(asn1SchemaValue, schemaItem, schemaItemType, options);
       }
 
       // Handle raw data if returned as object
-      if (
-        parsedValue
-        && typeof parsedValue === "object"
-        && "value" in parsedValue
-        && "raw" in parsedValue
-      ) {
+      if (parsedValue && typeof parsedValue === "object" && "value" in parsedValue && "raw" in parsedValue) {
         res[key] = (parsedValue as any).value;
 
         res[`${key}Raw`] = (parsedValue as any).raw;
@@ -373,25 +319,17 @@ export class AsnParser {
     schemaItem: any,
 
     schemaItemType: any,
+    options?: IAsnParseOptions,
   ): unknown {
-    const converter: IAsnConverter | null
-      = schemaItem.converter
-        ?? (isConvertible(schemaItemType)
-          ? new (schemaItemType as unknown as IAsnConvertibleConstructor)()
-          : null);
+    const converter: IAsnConverter | null = schemaItem.converter ?? (isConvertible(schemaItemType) ? new (schemaItemType as unknown as IAsnConvertibleConstructor)() : null);
     if (!converter) {
       throw new Error("Converter is empty");
     }
 
     if (schemaItem.repeated) {
-      return this.processRepeatedPrimitiveItem(asn1SchemaValue, schemaItem, converter);
+      return this.processRepeatedPrimitiveItem(asn1SchemaValue, schemaItem, converter, options);
     } else {
-      return this.processSinglePrimitiveItem(
-        asn1SchemaValue,
-        schemaItem,
-        schemaItemType,
-        converter,
-      );
+      return this.processSinglePrimitiveItem(asn1SchemaValue, schemaItem, schemaItemType, converter, options);
     }
   }
 
@@ -403,32 +341,24 @@ export class AsnParser {
 
     schemaItem: any,
     converter: IAsnConverter,
+    options?: IAsnParseOptions,
   ): unknown[] {
     if (schemaItem.implicit) {
       const Container = schemaItem.repeated === "sequence" ? asn1js.Sequence : asn1js.Set;
       const newItem = new Container();
 
       newItem.valueBlock = asn1SchemaValue.valueBlock as any;
-      const newItemAsn = asn1js.fromBER(newItem.toBER(false));
+      const newItemAsn = asn1js.fromBER(newItem.toBER(false), options?.berOptions);
       if (newItemAsn.offset === -1) {
         throw new Error(`Cannot parse the child item. ${newItemAsn.result.error}`);
       }
-      if (
-        !(
-          "value" in newItemAsn.result.valueBlock
-          && Array.isArray(newItemAsn.result.valueBlock.value)
-        )
-      ) {
-        throw new Error(
-          "Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.",
-        );
+      if (!("value" in newItemAsn.result.valueBlock && Array.isArray(newItemAsn.result.valueBlock.value))) {
+        throw new Error("Cannot get items from the ASN.1 parsed value. ASN.1 object is not constructed.");
       }
       const value = newItemAsn.result.valueBlock.value as asn1js.AsnType[];
       return Array.from(value, (element) => converter.fromASN(element));
     } else {
-      return Array.from(asn1SchemaValue as unknown as asn1js.AsnType[], (element) =>
-        converter.fromASN(element),
-      );
+      return Array.from(asn1SchemaValue as unknown as asn1js.AsnType[], (element) => converter.fromASN(element));
     }
   }
 
@@ -442,6 +372,7 @@ export class AsnParser {
 
     schemaItemType: any,
     converter: IAsnConverter,
+    options?: IAsnParseOptions,
   ): unknown {
     let value = asn1SchemaValue;
     if (schemaItem.implicit) {
@@ -450,16 +381,14 @@ export class AsnParser {
         newItem = new (schemaItemType as unknown as IAsnConvertibleConstructor)().toSchema("");
       } else {
         const Asn1TypeName = AsnPropTypes[schemaItemType as number];
-        const Asn1Type = (
-          asn1js as unknown as Record<string, (new () => asn1js.AsnType) | undefined>
-        )[Asn1TypeName];
+        const Asn1Type = (asn1js as unknown as Record<string, (new () => asn1js.AsnType) | undefined>)[Asn1TypeName];
         if (!Asn1Type) {
           throw new Error(`Cannot get '${Asn1TypeName}' class from asn1js module`);
         }
         newItem = new Asn1Type();
       }
       newItem.valueBlock = value.valueBlock;
-      value = asn1js.fromBER(newItem.toBER(false)).result;
+      value = asn1js.fromBER(newItem.toBER(false), options?.berOptions).result;
     }
     return converter.fromASN(value);
   }
@@ -473,38 +402,28 @@ export class AsnParser {
     schemaItem: any,
 
     schemaItemType: any,
+    options?: IAsnParseOptions,
   ): unknown {
     if (schemaItem.repeated) {
       if (!Array.isArray(asn1SchemaValue)) {
-        throw new Error(
-          "Cannot get list of items from the ASN.1 parsed value. ASN.1 value should be iterable.",
-        );
+        throw new Error("Cannot get list of items from the ASN.1 parsed value. ASN.1 value should be iterable.");
       }
-      return Array.from(asn1SchemaValue, (element: asn1js.AsnType) =>
-        this.fromASN(element, schemaItemType),
-      );
+      return Array.from(asn1SchemaValue, (element: asn1js.AsnType) => this.fromASN(element, schemaItemType, options));
     } else {
-      const valueToProcess = this.handleImplicitTagging(
-        asn1SchemaValue,
-        schemaItem,
-        schemaItemType,
-      );
+      const valueToProcess = this.handleImplicitTagging(asn1SchemaValue, schemaItem, schemaItemType);
 
       // Handle optional CHOICE with try/catch
       if (this.isOptionalChoiceField(schemaItem)) {
         try {
-          return this.fromASN(valueToProcess, schemaItemType);
+          return this.fromASN(valueToProcess, schemaItemType, options);
         } catch (err) {
-          if (
-            err instanceof AsnSchemaValidationError
-            && /Wrong values for Choice type/.test(err.message)
-          ) {
+          if (err instanceof AsnSchemaValidationError && /Wrong values for Choice type/.test(err.message)) {
             return undefined; // Skip this optional CHOICE field
           }
           throw err;
         }
       } else {
-        const parsedValue = this.fromASN(valueToProcess, schemaItemType);
+        const parsedValue = this.fromASN(valueToProcess, schemaItemType, options);
         // If raw is requested, return an object with value and raw
         if (schemaItem.raw) {
           return {
@@ -532,26 +451,14 @@ export class AsnParser {
 
       if (schema.type === AsnTypeTypes.Sequence) {
         const newSeq = new asn1js.Sequence();
-        if (
-          "value" in asn1SchemaValue.valueBlock
-          && Array.isArray((asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value)
-          && "value" in newSeq.valueBlock
-        ) {
-          (newSeq.valueBlock as { value: asn1js.AsnType[] }).value = (
-            asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }
-          ).value;
+        if ("value" in asn1SchemaValue.valueBlock && Array.isArray((asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value) && "value" in newSeq.valueBlock) {
+          (newSeq.valueBlock as { value: asn1js.AsnType[] }).value = (asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value;
           return newSeq;
         }
       } else if (schema.type === AsnTypeTypes.Set) {
         const newSet = new asn1js.Set();
-        if (
-          "value" in asn1SchemaValue.valueBlock
-          && Array.isArray((asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value)
-          && "value" in newSet.valueBlock
-        ) {
-          (newSet.valueBlock as { value: asn1js.AsnType[] }).value = (
-            asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }
-          ).value;
+        if ("value" in asn1SchemaValue.valueBlock && Array.isArray((asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value) && "value" in newSet.valueBlock) {
+          (newSet.valueBlock as { value: asn1js.AsnType[] }).value = (asn1SchemaValue.valueBlock as { value: asn1js.AsnType[] }).value;
           return newSet;
         }
       }

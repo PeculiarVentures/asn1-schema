@@ -1,11 +1,4 @@
-import {
-  AsnType,
-  AsnTypeTypes,
-  AsnPropTypes,
-  AsnProp,
-  OctetString,
-  AsnArray,
-} from "@peculiar/asn1-schema";
+import { AsnType, AsnTypeTypes, AsnPropTypes, AsnProp, OctetString, AsnArray } from "@peculiar/asn1-schema";
 import * as cms from "@peculiar/asn1-cms";
 import * as pfx from "@peculiar/asn1-pfx";
 import * as pkcs8 from "@peculiar/asn1-pkcs8";
@@ -744,7 +737,8 @@ export class ExtensionRequest extends x509.Extensions {
  * }
  */
 @AsnType({
-  type: AsnTypeTypes.Set, itemType: cms.Attribute,
+  type: AsnTypeTypes.Set,
+  itemType: cms.Attribute,
 })
 export class ExtendedCertificateAttributes extends AsnArray<cms.Attribute> {
   constructor(items?: cms.Attribute[]) {
@@ -821,7 +815,8 @@ export class SMIMECapability extends x509.AlgorithmIdentifier {}
  * }
  */
 @AsnType({
-  type: AsnTypeTypes.Sequence, itemType: SMIMECapability,
+  type: AsnTypeTypes.Sequence,
+  itemType: SMIMECapability,
 })
 export class SMIMECapabilities extends AsnArray<SMIMECapability> {
   constructor(items?: SMIMECapability[]) {
