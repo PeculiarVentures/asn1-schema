@@ -8,5 +8,5 @@
   "quoteProps": "as-needed",
   "sortImports": false,
   "sortPackageJson": false,
-  "ignorePatterns": ["node_modules", "coverage", ".nyc_output", "**/build/**", "*.tsbuildinfo"]
+  "ignorePatterns": ["node_modules", "coverage", ".nyc_output", "**/build/**", "*.tsbuildinfo", "lerna.json"]
 }
