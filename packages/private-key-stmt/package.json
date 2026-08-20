@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-private-key-stmt",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "description": "ASN.1 schema for the Private Key Statement attribute defined by the IETF LAMPS private-key-statement draft.",
   "keywords": [
     "asn",
@@ -56,9 +56,9 @@
     "rebuild": "npm run clear && npm run build"
   },
   "dependencies": {
-    "@peculiar/asn1-cms": "^2.9.3",
-    "@peculiar/asn1-schema": "^2.9.3",
-    "@peculiar/asn1-x509": "^2.9.3",
+    "@peculiar/asn1-cms": "^2.9.4",
+    "@peculiar/asn1-schema": "^2.9.4",
+    "@peculiar/asn1-x509": "^2.9.4",
     "asn1js": "^3.0.10",
     "tslib": "^2.8.1"
   }
