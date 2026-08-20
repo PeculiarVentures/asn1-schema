@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import * as rimraf from "rimraf";
 
 const COMMON_FILES = ["build/**/*.{js,d.ts}", "build/es2015/package.json", "LICENSE", "README.md"];
+const PACKAGE_ENGINES = { node: ">=14" };
 
 const COMMON_SCRIPTS = {
   clear: "rimraf build",
@@ -78,6 +79,7 @@ function createPackageJson(packageJson, name, moduleName) {
     ["keywords", createPackageKeywords(name)],
     ["author", "PeculiarVentures, LLC"],
     ["license", "MIT"],
+    ["engines", PACKAGE_ENGINES],
     ["files", COMMON_FILES],
     ["main", "build/cjs/index.js"],
     ["module", "build/es2015/index.js"],
