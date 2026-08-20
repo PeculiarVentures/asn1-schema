@@ -1,5 +1,5 @@
 import * as asn1js from "asn1js";
-import { type BufferSourceLike, toArrayBuffer } from "@peculiar/utils/bytes";
+import { type BufferSourceLike, toArrayBuffer } from "@peculiar/utils";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import * as converters from "./converters";
 import { AsnSchemaValidationError } from "./errors";
