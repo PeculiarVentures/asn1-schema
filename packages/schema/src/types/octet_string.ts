@@ -1,5 +1,5 @@
 import * as asn1js from "asn1js";
-import { BufferSourceLike, isBufferSource, toArrayBuffer } from "@peculiar/utils/bytes";
+import { BufferSourceLike, isBufferSource, toArrayBuffer } from "@peculiar/utils";
 import { IAsnConvertible } from "../types";
 
 // Implement ArrayBufferView, cause ES5 doesn't allow to extend ArrayBuffer class

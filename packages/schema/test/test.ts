@@ -1,6 +1,6 @@
 import * as assert from "node:assert";
 import * as asn1js from "asn1js";
-import type { BufferSourceLike } from "@peculiar/utils/bytes";
+import type { BufferSourceLike } from "@peculiar/utils";
 import * as src from "../src";
 
 function assertBuffer(actual: Buffer, expected: Buffer): void {

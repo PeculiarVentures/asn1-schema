@@ -1,5 +1,5 @@
 import * as asn1js from "asn1js";
-import { toArrayBuffer } from "@peculiar/utils/bytes";
+import { toArrayBuffer } from "@peculiar/utils";
 import * as converters from "./converters";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible, isArrayEqual } from "./helper";
