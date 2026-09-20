@@ -2,8 +2,8 @@ import * as assert from "node:assert";
 import { AsnParser, AsnSerializer, OctetString } from "@peculiar/asn1-schema";
 import * as encoding from "@peculiar/utils/encoding";
 import * as bytes from "@peculiar/utils/bytes";
-import { GeneralName, AlgorithmIdentifier } from "@peculiar/asn1-x509";
-import { OCSPRequest, TBSRequest, CertID, Request } from "../src";
+import { GeneralName, AlgorithmIdentifier, Extension, Extensions } from "@peculiar/asn1-x509";
+import { OCSPRequest, TBSRequest, CertID, Request, id_pkix_ocsp_nonce } from "../src";
 
 describe("ocsp", () => {
   it("request", () => {
@@ -41,5 +41,32 @@ describe("ocsp", () => {
     });
     const der = AsnSerializer.serialize(request);
     assert.strictEqual(encoding.hex.encode(der), "302b3029a106870401000100301f301d301b300706052b0e03021a04047f01020304047f01020302047f010203");
+  });
+
+  it("request with singleRequestExtensions uses [0] EXPLICIT tag (RFC 6960)", () => {
+    const request = new Request({
+      reqCert: new CertID({
+        hashAlgorithm: new AlgorithmIdentifier({ algorithm: "1.3.14.3.2.26" }),
+        issuerNameHash: new OctetString(encoding.hex.decode("7F010203")),
+        issuerKeyHash: new OctetString(encoding.hex.decode("7F010203")),
+        serialNumber: bytes.toArrayBuffer(encoding.hex.decode("7F010203")),
+      }),
+      singleRequestExtensions: new Extensions([
+        new Extension({
+          extnID: id_pkix_ocsp_nonce,
+          extnValue: new OctetString(encoding.hex.decode("010203")),
+        }),
+      ]),
+    });
+
+    const der = AsnSerializer.serialize(request);
+    // singleRequestExtensions MUST be wrapped in [0] EXPLICIT (A0),
+    // not encoded as a bare SEQUENCE OF Extension.
+    assert.strictEqual(encoding.hex.encode(der), "3033301b300706052b0e03021a04047f01020304047f01020302047f010203a0143012301006092b06010505073001020403010203");
+
+    const parsed = AsnParser.parse(der, Request);
+    assert.strictEqual(parsed.singleRequestExtensions?.length, 1);
+    assert.strictEqual(parsed.singleRequestExtensions?.[0].extnID, id_pkix_ocsp_nonce);
+    assert.strictEqual(encoding.hex.encode(parsed.singleRequestExtensions?.[0].extnValue.buffer as ArrayBuffer), "010203");
   });
 });

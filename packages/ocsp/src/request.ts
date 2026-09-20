@@ -15,6 +15,7 @@ export class Request {
 
   @AsnProp({
     type: Extension,
+    context: 0,
     repeated: "sequence",
     optional: true,
   })
