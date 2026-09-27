@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-attr",
-  "version": "2.9.5",
+  "version": "3.0.0",
   "description": "ASN.1 schema for X.509 attribute certificates defined in RFC 5755.",
   "keywords": [
     "asn",
@@ -16,12 +16,21 @@
   },
   "files": [
     "build/**/*.{js,d.ts}",
+    "build/es2015/package.json",
     "LICENSE",
     "README.md"
   ],
   "main": "build/cjs/index.js",
   "module": "build/es2015/index.js",
   "types": "build/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./build/types/index.d.ts",
+      "import": "./build/es2015/index.js",
+      "require": "./build/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -40,14 +49,15 @@
     "build:module": "npm run build:cjs && npm run build:es2015",
     "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
     "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+    "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
     "prebuild:types": "rimraf build/types",
     "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
     "rebuild": "npm run clear && npm run build",
     "test": "mocha"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.9.5",
-    "@peculiar/asn1-x509": "^2.9.5",
+    "@peculiar/asn1-schema": "^3.0.0",
+    "@peculiar/asn1-x509": "^3.0.0",
     "asn1js": "^3.0.10",
     "tslib": "^2.8.1"
   }

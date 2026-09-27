@@ -4,7 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as rimraf from "rimraf";
 
-const COMMON_FILES = ["build/**/*.{js,d.ts}", "LICENSE", "README.md"];
+const COMMON_FILES = ["build/**/*.{js,d.ts}", "build/es2015/package.json", "LICENSE", "README.md"];
 const PACKAGE_ENGINES = { node: ">=14" };
 
 const COMMON_SCRIPTS = {
@@ -13,6 +13,7 @@ const COMMON_SCRIPTS = {
   "build:module": "npm run build:cjs && npm run build:es2015",
   "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
   "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
+  "postbuild:es2015": "node ../../scripts/prepare_esm_package.mjs build/es2015",
   "prebuild:types": "rimraf build/types",
   "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
   rebuild: "npm run clear && npm run build",
@@ -83,6 +84,17 @@ function createPackageJson(packageJson, name, moduleName) {
     ["main", "build/cjs/index.js"],
     ["module", "build/es2015/index.js"],
     ["types", "build/types/index.d.ts"],
+    [
+      "exports",
+      {
+        ".": {
+          types: "./build/types/index.d.ts",
+          import: "./build/es2015/index.js",
+          require: "./build/cjs/index.js",
+        },
+        "./package.json": "./package.json",
+      },
+    ],
     ["publishConfig", { access: "public" }],
     [
       "repository",
