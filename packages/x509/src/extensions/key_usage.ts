@@ -8,7 +8,7 @@ import { id_ce } from "../object_identifiers";
  */
 export const id_ce_keyUsage = `${id_ce}.15`;
 
-export type KeyUsageType = "digitalSignature" | "nonRepudiation" | "keyEncipherment" | "dataEncipherment" | "keyAgreement" | "keyCertSign" | "crlSign" | "encipherOnly" | "decipherOnly";
+export type KeyUsageType = "digitalSignature" | "nonRepudiation" | "keyEncipherment" | "dataEncipherment" | "keyAgreement" | "keyCertSign" | "cRLSign" | "encipherOnly" | "decipherOnly";
 
 export enum KeyUsageFlags {
   digitalSignature = 0x0001,
@@ -42,7 +42,7 @@ export class KeyUsage extends BitString {
     const flag = this.toNumber();
     const res: KeyUsageType[] = [];
     if (flag & KeyUsageFlags.cRLSign) {
-      res.push("crlSign");
+      res.push("cRLSign");
     }
     if (flag & KeyUsageFlags.dataEncipherment) {
       res.push("dataEncipherment");
