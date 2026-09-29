@@ -17,7 +17,9 @@ export const AsnAnyConverter: IAsnConverter<AnyConverterType> = {
     if (value === null) {
       return new asn1js.Null();
     }
-    const schema = asn1js.fromBER(value);
+    // fromBER limits guard untrusted input. This is the serialize path, where the value
+    // is the caller's own and AsnConvert.serialize has no options to raise them.
+    const schema = asn1js.fromBER(value, { maxDepth: Infinity, maxNodes: Infinity, maxContentLength: Infinity });
     if (schema.result.error) {
       throw new Error(schema.result.error);
     }
