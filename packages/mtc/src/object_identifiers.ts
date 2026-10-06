@@ -1,13 +1,20 @@
 /**
  * Object identifiers for Merkle Tree Certificates.
  *
- * The draft reserves `TBD` values under the PKIX arcs and pins the
- * `1.3.6.1.4.1.44363.47.*` arc "for initial experimentation". Only the
- * experimental values are exported, because the PKIX values are not yet
- * allocated. Deployed test hierarchies use the experimental arc.
+ * The assigned PKIX proof and trust anchor name identifiers coexist with
+ * the `1.3.6.1.4.1.44363.47.*` values used for initial experimentation.
+ * Experimental CA extensions are not aliases for subsequently assigned
+ * extension identifiers, which may have different ASN.1 schemas.
  *
  * @see {@link https://datatracker.ietf.org/doc/draft-ietf-plants-merkle-tree-certs/ | draft-ietf-plants-merkle-tree-certs}
+ * @see {@link https://www.iana.org/assignments/smi-numbers/ | IANA SMI Numbers}
  */
+
+/** Assigned `id-alg-mtcProof`; `signatureValue` contains an {@link MTCProof}. */
+export const id_alg_mtcProof = "1.3.6.1.5.5.7.6.67";
+
+/** Assigned `id-rdna-trustAnchorID`; the attribute value is a `RELATIVE-OID`. */
+export const id_rdna_trustAnchorID = "1.3.6.1.5.5.7.25.3";
 
 /**
  * Experimental value for `id-alg-mtcProof`, the signature algorithm of a
