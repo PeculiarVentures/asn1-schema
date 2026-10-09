@@ -19,7 +19,7 @@ on:
         type: boolean
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release
   cancel-in-progress: false
 
 jobs:
@@ -31,6 +31,7 @@ jobs:
       contents: read
 
     outputs:
+      release_branch: ${{ steps.release_branch.outputs.release_branch }}
       release_tag: ${{ steps.release_metadata.outputs.release_tag }}
       release_version: ${{ steps.release_metadata.outputs.release_version }}
       package_count: ${{ steps.release_metadata.outputs.package_count }}
@@ -42,17 +43,26 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Ensure default branch release
+      - name: Validate release branch
+        id: release_branch
         shell: bash
+        env:
+          RELEASE_TYPE: ${{ inputs.version }}
         run: |
           set -euo pipefail
 
-          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
-
-          if [ "${GITHUB_REF_NAME}" != "$DEFAULT_BRANCH" ]; then
-            echo "Release workflow must run from ${DEFAULT_BRANCH}." >&2
-            exit 1
+          case "$GITHUB_REF" in
+            refs/heads/master|refs/heads/v2) ;;
+            *) echo "Releases require the master or v2 branch." >&2; exit 1 ;;
+          esac
+          if [ "$GITHUB_REF_NAME" = "v2" ]; then
+            node -e 'const v = require("./lerna.json").version; if (!/^2\.\d+\.\d+$/.test(v)) throw Error("v2 requires fixed 2.x versioning")'
+            if [ "$RELEASE_TYPE" = "major" ]; then
+              echo "A v2 release must remain in major version 2." >&2
+              exit 1
+            fi
           fi
+          echo "release_branch=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -166,7 +176,14 @@ jobs:
             ? `release-${process.env.GITHUB_RUN_NUMBER}`
             : `v${releaseVersion}`;
 
+          if (process.env.GITHUB_REF_NAME === "v2" &&
+              (isIndependent || !/^2\.\d+\.\d+$/.test(releaseVersion) ||
+               packages.some((pkg) => pkg.private || pkg.version !== releaseVersion))) {
+            throw new Error("v2 must publish fixed-version 2.x packages only.");
+          }
+
           const manifest = {
+            releaseBranch: process.env.GITHUB_REF_NAME,
             releaseType: process.env.RELEASE_TYPE,
             releaseVersion,
             releaseTag,
@@ -322,6 +339,9 @@ jobs:
 
     environment: npm
 
+    env:
+      RELEASE_BRANCH: ${{ needs.prepare-release.outputs.release_branch }}
+
     permissions:
       contents: write
       id-token: write
@@ -332,22 +352,20 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Ensure default branch has not moved
+      - name: Ensure release branch has not moved
         shell: bash
         run: |
           set -euo pipefail
 
-          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
-
-          git fetch origin "$DEFAULT_BRANCH"
-
-          REMOTE_HEAD="$(git rev-parse "origin/${DEFAULT_BRANCH}")"
-
-          if [ "$REMOTE_HEAD" != "$GITHUB_SHA" ]; then
-            echo "Default branch moved after release preparation." >&2
-            echo "Prepared SHA: ${GITHUB_SHA}" >&2
-            echo "Current origin/${DEFAULT_BRANCH}: ${REMOTE_HEAD}" >&2
-            echo "Re-run the release workflow from the latest ${DEFAULT_BRANCH}." >&2
+          case "$RELEASE_BRANCH" in
+            master|v2) ;;
+            *) echo "Invalid release branch." >&2; exit 1 ;;
+          esac
+          test "$GITHUB_REF" = "refs/heads/$RELEASE_BRANCH"
+          git fetch origin "refs/heads/$RELEASE_BRANCH:refs/remotes/origin/$RELEASE_BRANCH"
+          REMOTE_HEAD="$(git rev-parse "refs/remotes/origin/$RELEASE_BRANCH")"
+          if [ "$REMOTE_HEAD" != "$GITHUB_SHA" ] || [ "$(git rev-parse HEAD)" != "$GITHUB_SHA" ]; then
+            echo "Release branch moved after preparation; rerun from its latest SHA." >&2
             exit 1
           fi
 
@@ -402,6 +420,16 @@ jobs:
 
           const prepared = require("./.release/release-manifest.json");
 
+          if (prepared.gitHead !== process.env.GITHUB_SHA ||
+              prepared.releaseBranch !== process.env.RELEASE_BRANCH) {
+            throw new Error("Prepared source SHA or release branch mismatch.");
+          }
+          if (process.env.RELEASE_BRANCH === "v2" &&
+              (prepared.independent || !/^2\.\d+\.\d+$/.test(prepared.releaseVersion) ||
+               prepared.packages.some((pkg) => pkg.private || pkg.version !== prepared.releaseVersion))) {
+            throw new Error("v2 must publish fixed-version 2.x packages only.");
+          }
+
           for (const pkg of prepared.packages) {
             const current = JSON.parse(fs.readFileSync(pkg.manifestPath, "utf8"));
 
@@ -436,6 +464,12 @@ jobs:
 
           RELEASE_TAG="$(node -p "require('./.release/release-manifest.json').releaseTag")"
 
+          REMOTE_TAGS="$(git ls-remote --tags origin "refs/tags/$RELEASE_TAG")"
+          if [ -n "$REMOTE_TAGS" ]; then
+            echo "Release tag already exists remotely." >&2
+            exit 1
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -454,6 +488,7 @@ jobs:
 
           RELEASE_COMMIT_SHA="$(git rev-parse HEAD)"
 
+          test "$(git rev-parse HEAD^)" = "$GITHUB_SHA"
           git tag "$RELEASE_TAG"
 
           echo "RELEASE_TAG=${RELEASE_TAG}" >> "$GITHUB_ENV"
@@ -464,10 +499,20 @@ jobs:
         run: |
           set -euo pipefail
 
-          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+          git fetch origin "refs/heads/$RELEASE_BRANCH:refs/remotes/origin/$RELEASE_BRANCH"
+          test "$(git rev-parse "refs/remotes/origin/$RELEASE_BRANCH")" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD)" = "$RELEASE_COMMIT_SHA"
+          test "$(git rev-parse HEAD^)" = "$GITHUB_SHA"
+          git push --atomic origin "HEAD:refs/heads/$RELEASE_BRANCH" "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
+          echo "RELEASE_PUSHED=true" >> "$GITHUB_ENV"
 
-          git push origin "HEAD:${DEFAULT_BRANCH}"
-          git push origin "$RELEASE_TAG"
+      - name: Verify pushed release commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "refs/heads/$RELEASE_BRANCH:refs/remotes/origin/$RELEASE_BRANCH"
+          test "$(git rev-parse "refs/remotes/origin/$RELEASE_BRANCH")" = "$RELEASE_COMMIT_SHA"
+          test "$(git rev-parse "refs/tags/$RELEASE_TAG")" = "$RELEASE_COMMIT_SHA"
 
       - name: Publish prepared package tarballs
         shell: bash
@@ -515,6 +560,7 @@ jobs:
               name: pkg.name,
               version: pkg.version,
               tarball: pkg.tarball,
+              distTag: process.env.RELEASE_BRANCH === "v2" ? "v2" : "latest",
               ...extra,
             };
           }
@@ -567,10 +613,32 @@ jobs:
               continue;
             }
 
-            console.log(`Publishing ${pkg.tarball}`);
+            const distTag = process.env.RELEASE_BRANCH === "v2" ? "v2" : "latest";
+            if (process.env.RELEASE_BRANCH === "v2") {
+              const latest = runNpm(["view", pkg.name, "dist-tags.latest", "--json"]);
+              let latestVersion;
+              try {
+                latestVersion = JSON.parse(latest.stdout);
+                if (latest.status !== 0 || typeof latestVersion !== "string" ||
+                    !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/.test(latestVersion)) {
+                  throw new Error("Cannot determine npm latest version.");
+                }
+              } catch (error) {
+                report.failed_publish.push(packageInfo(pkg, {
+                  reason: "Cannot safely determine npm dist-tag; publication refused.",
+                  npmViewOutput: latest.output,
+                }));
+                continue;
+              }
+              // Always use the maintenance tag: a concurrent master release may
+              // advance latest after this registry read but before npm publish.
+            }
+            console.log(`Publishing ${pkg.tarball} with tag ${distTag}`);
             const publish = runNpm([
               "publish",
               pkg.tarball,
+              "--tag",
+              distTag,
               "--provenance",
               "--access",
               "public",
@@ -630,6 +698,7 @@ jobs:
             for (const pkg of packages) {
               console.log(`- \`${pkg.name}@${pkg.version}\``);
               console.log(`  - Tarball: \`${pkg.tarball}\``);
+              console.log(`  - npm dist-tag: \`${pkg.distTag}\``);
 
               if (includeDetails && pkg.reason) {
                 console.log(`  - Reason: ${pkg.reason}`);
@@ -687,7 +756,7 @@ jobs:
             console.log("3. Publish the specific prepared tarball from the artifact:");
             console.log("");
             console.log("```bash");
-            console.log("npm publish .release/tarballs/<package-file>.tgz --access public");
+            console.log(`npm publish .release/tarballs/<package-file>.tgz --provenance --access public --tag ${process.env.RELEASE_BRANCH === "v2" ? "v2" : "latest"}`);
             console.log("```");
             console.log("");
             console.log("For first-time package publication, Trusted Publisher / provenance setup may need to be configured for the package before automated publishing can work.");
@@ -696,7 +765,7 @@ jobs:
           NODE
 
       - name: Create GitHub Release body
-        if: always() && env.RELEASE_TAG != '' && env.RELEASE_COMMIT_SHA != ''
+        if: always() && env.RELEASE_PUSHED == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -747,6 +816,7 @@ jobs:
             for (const pkg of packages) {
               console.log(`- \`${pkg.name}@${pkg.version}\``);
               console.log(`  - Tarball: \`${pkg.tarball}\``);
+              console.log(`  - npm dist-tag: \`${pkg.distTag}\``);
 
               if (pkg.reason) {
                 console.log(`  - Reason: ${pkg.reason}`);
@@ -764,14 +834,14 @@ jobs:
           console.log("Download the `release-artifacts` artifact from this GitHub Actions run, extract it locally, and publish the relevant tarball manually:");
           console.log("");
           console.log("```bash");
-          console.log("npm publish .release/tarballs/<package-file>.tgz --access public");
+          console.log(`npm publish .release/tarballs/<package-file>.tgz --provenance --access public --tag ${process.env.RELEASE_BRANCH === "v2" ? "v2" : "latest"}`);
           console.log("```");
           console.log("");
           console.log("For first-time package publication, Trusted Publisher / provenance setup may need to be configured before automated publishing can work.");
           NODE
 
       - name: Update major release branch
-        if: always() && env.RELEASE_TAG != '' && env.RELEASE_COMMIT_SHA != ''
+        if: always() && env.RELEASE_PUSHED == 'true' && env.RELEASE_BRANCH == 'master'
         shell: bash
         run: |
           set -euo pipefail
@@ -786,11 +856,15 @@ jobs:
           MAJOR_VERSION="${RELEASE_VERSION%%.*}"
           MAJOR_BRANCH="v${MAJOR_VERSION}"
 
+          if [ "$RELEASE_BRANCH" = "$MAJOR_BRANCH" ]; then
+            exit 0
+          fi
+
           git branch -f "$MAJOR_BRANCH" "$RELEASE_COMMIT_SHA"
           git push origin "$MAJOR_BRANCH" --force
 
       - name: Create GitHub Release
-        if: always() && env.RELEASE_TAG != '' && env.RELEASE_COMMIT_SHA != ''
+        if: always() && env.RELEASE_PUSHED == 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
