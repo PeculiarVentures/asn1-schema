@@ -239,7 +239,7 @@ describe("mtc", () => {
 
   describe("MTCProof", () => {
     // extensions(0) start=4 end=8 proof(2x32B) signatures(1: 32473.1, 4B sig)
-    const proofHex = "00000000000000040000000000080040" + "01".repeat(32) + "02".repeat(32) + "000b0481fd59010004aabbccdd";
+    const proofHex = "00000000000000040000000000080040" + "01".repeat(32) + "02".repeat(32) + "00000b0481fd59010004aabbccdd";
 
     it("parses a standalone certificate proof", () => {
       const proof = MTCProof.parse(Buffer.from(proofHex, "hex"));
@@ -254,7 +254,7 @@ describe("mtc", () => {
     });
 
     it("flags a landmark-relative certificate", () => {
-      const hex = "00000000000000000000000010000020" + "03".repeat(32) + "0000";
+      const hex = "00000000000000000000000010000020" + "03".repeat(32) + "000000";
       const proof = MTCProof.parse(Buffer.from(hex, "hex"));
 
       assert.strictEqual(proof.isLandmarkRelative, true);
@@ -262,13 +262,13 @@ describe("mtc", () => {
     });
 
     it("rejects an inclusion proof that is not a multiple of the hash size", () => {
-      const hex = "00000000000000000000000000020010" + "01".repeat(16) + "0000";
+      const hex = "00000000000000000000000000020010" + "01".repeat(16) + "000000";
 
       assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /multiple of hash size/);
     });
 
     it("honours a non-default hash size", () => {
-      const hex = "00000000000000000000000000020030" + "01".repeat(48) + "0000";
+      const hex = "00000000000000000000000000020030" + "01".repeat(48) + "000000";
       const proof = MTCProof.parse(Buffer.from(hex, "hex"), { hashSize: 48 });
 
       assert.strictEqual(proof.inclusionProof.length, 1);
@@ -291,14 +291,14 @@ describe("mtc", () => {
     describe("parse start/end validation", () => {
       it("rejects start equal to end", () => {
         // extensions(0) start=5 end=5 proof(empty) signatures(0)
-        const hex = "000000000000000500000000000500000000";
+        const hex = "00000000000000050000000000050000000000";
 
         assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /start must be less than end/);
       });
 
       it("rejects start greater than end", () => {
         // extensions(0) start=8 end=4 proof(empty) signatures(0)
-        const hex = "000000000000000800000000000400000000";
+        const hex = "00000000000000080000000000040000000000";
 
         assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /start must be less than end/);
       });
@@ -315,7 +315,7 @@ describe("mtc", () => {
     });
 
     it("rejects unordered cosigner ids", () => {
-      const hex = "0000000000000000000000000002000000120481fd59010002aaaa0481fd59000002bbbb";
+      const hex = "000000000000000000000000000200000000120481fd59010002aaaa0481fd59000002bbbb";
 
       assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /ordered by cosigner_id/);
     });
@@ -330,7 +330,7 @@ describe("mtc", () => {
     it("does not alias the input buffer in parsed byte fields", () => {
       // One extension (type 1, data "aabb"), start=4 end=8, proof(2x32B),
       // signatures(1: 32473.1, 4B sig)
-      const hex = "000600010002aabb0000000000040000000000080040" + "01".repeat(32) + "02".repeat(32) + "000b0481fd59010004aabbccdd";
+      const hex = "000600010002aabb0000000000040000000000080040" + "01".repeat(32) + "02".repeat(32) + "00000b0481fd59010004aabbccdd";
       const raw = Buffer.from(hex, "hex");
       const before = Buffer.from(raw);
       const proof = MTCProof.parse(raw);
