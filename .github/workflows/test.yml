@@ -2,10 +2,10 @@ name: Test
 
 on:
   pull_request:
-    branches: [main, master]
+    branches: [main, master, v2]
     types: [opened, synchronize]
   push:
-    branches: [main, master]
+    branches: [main, master, v2]
 
 jobs:
   build:
