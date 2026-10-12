@@ -69,7 +69,7 @@ export interface IJsonMTCProof {
  *     uint48 start;
  *     uint48 end;
  *     HashValue inclusion_proof<0..2^16-1>;
- *     MTCSignature signatures<0..2^16-1>;
+ *     MTCSignature signatures<0..2^24-1>;
  * } MTCProof;
  * ```
  *
@@ -135,7 +135,8 @@ export class MTCProof {
       res.inclusionProof.push(proof.slice(i, i + hashSize));
     }
 
-    const signatures = new ByteStream(stream.readVector(2));
+    // The outer vector has a uint24 length; each signature still uses uint16.
+    const signatures = new ByteStream(stream.readVector(3));
     let prevId: Uint8Array | null = null;
     while (signatures.left) {
       const id = signatures.readVector(1);
