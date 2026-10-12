@@ -980,5 +980,29 @@ describe("Test", () => {
       const parsed = src.AsnConvert.parse(der, Implicit, { berOptions: { maxNodes: bigCount + 100 } });
       assert.strictEqual(parsed.items.length, bigCount);
     });
+
+    it("serializes an ANY value that exceeds the default parse limits", () => {
+      // AsnAnyConverter.toASN re-parses the value to build the schema. That is the
+      // serialize path, where the data comes from the caller and AsnConvert.serialize
+      // has no options to raise the limits, so the limits must not apply there.
+      class WithAny {
+        @src.AsnProp({ type: src.AsnPropTypes.Any })
+        public value!: ArrayBuffer;
+      }
+
+      let deep: asn1js.AsnType = new asn1js.Integer({ value: 1 });
+      for (let i = 0; i < 150; i++) {
+        deep = new asn1js.Sequence({ value: [deep] });
+      }
+
+      for (const value of [bigListDer, deep.toBER(false)]) {
+        const obj = new WithAny();
+        obj.value = value;
+        const der = src.AsnConvert.serialize(obj);
+        // Reading it back is the parse path, where the limits still apply.
+        const parsed = src.AsnConvert.parse(der, WithAny, { berOptions: { maxNodes: Infinity, maxDepth: Infinity } });
+        assertBuffer(Buffer.from(parsed.value), Buffer.from(value));
+      }
+    });
   });
 });
