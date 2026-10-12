@@ -7,6 +7,24 @@ function assertBuffer(actual: Buffer, expected: Buffer): void {
   assert.strictEqual(Buffer.compare(actual, expected), 0, `Buffers are not equal.\n\tActual:   ${actual.toString("hex")}\n\tExpected: ${expected.toString("hex")}`);
 }
 
+function test<T>(cls: new () => { value: T }, hex: string, expected: T, assertCb?: (value: T, excepted: T) => void): void {
+  it("serialize", () => {
+    const obj = new cls();
+    obj.value = expected;
+    const res = Buffer.from(src.AsnSerializer.serialize(obj));
+    assertBuffer(res, Buffer.from(hex, "hex"));
+  });
+  it("parse", () => {
+    const obj = src.AsnParser.parse(new Uint8Array(Buffer.from(hex, "hex")).buffer, cls);
+    // console.log(obj);
+    if (assertCb) {
+      assertCb(obj.value, expected);
+    } else {
+      assert.strictEqual(obj.value, expected);
+    }
+  });
+}
+
 describe("Test", () => {
   describe("Default value", () => {
     class Test {
@@ -207,23 +225,6 @@ describe("Test", () => {
   });
 
   describe("Converter", () => {
-    function test<T>(cls: new () => { value: T }, hex: string, expected: T, assertCb?: (value: T, excepted: T) => void): void {
-      it("serialize", () => {
-        const obj = new cls();
-        obj.value = expected;
-        const res = Buffer.from(src.AsnSerializer.serialize(obj));
-        assertBuffer(res, Buffer.from(hex, "hex"));
-      });
-      it("parse", () => {
-        const obj = src.AsnParser.parse(new Uint8Array(Buffer.from(hex, "hex")).buffer, cls);
-        // console.log(obj);
-        if (assertCb) {
-          assertCb(obj.value, expected);
-        } else {
-          assert.strictEqual(obj.value, expected);
-        }
-      });
-    }
     describe("Default", () => {
       describe("IntegerConverter", () => {
         class Test {
