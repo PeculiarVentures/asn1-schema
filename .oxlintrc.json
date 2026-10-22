@@ -13,7 +13,8 @@
     "typescript/no-non-null-assertion": "off",
     "typescript/prefer-for-of": "off",
     "typescript/unified-signatures": "off",
-    "unicorn/no-array-reverse": "off"
+    "unicorn/no-array-reverse": "off",
+    "unicorn/no-array-sort": "off"
   },
-  "ignorePatterns": ["**/build/**"]
+  "ignorePatterns": ["**/build/**", "coverage/**"]
 }

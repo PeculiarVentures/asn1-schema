@@ -1,15 +1,6 @@
-.vscode/
-node_modules/
-
-/packages/*/build/
-
-# coverage
-.nyc_output/
-coverage/
-
-# Mac
+coverage
+node_modules
+build
 .DS_Store
-
-#TS
-
+# tsc incremental output; removed with the tsc build
 *.tsbuildinfo
