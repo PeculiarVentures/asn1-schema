@@ -2,5 +2,3 @@ coverage
 node_modules
 build
 .DS_Store
-# tsc incremental output; removed with the tsc build
-*.tsbuildinfo

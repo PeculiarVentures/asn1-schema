@@ -15,6 +15,15 @@ Use the exported classes with `@peculiar/asn1-schema` helpers such as `AsnConver
 npm install @peculiar/asn1-x509-post-quantum
 ```
 
+## Breaking Changes In v3
+
+v3 is ESM-only and requires Node.js `^20.19.0 || >=22.12.0` (was `>=14`). CommonJS code can still `require("@peculiar/asn1-x509-post-quantum")` on these versions; Node.js 22.0–22.11 can't. The public API is unchanged. See the [full notes](https://github.com/PeculiarVentures/asn1-schema#breaking-changes-in-v3).
+
+- **TypeScript compiling to CommonJS:** use `"module": "node20"` or `"nodenext"` (`node16` fails with TS1479). ESM and bundler setups need no changes.
+- **Jest in CommonJS mode:** switch to ESM mode or Vitest, or configure an ESM-to-CommonJS transformer and make sure `transformIgnorePatterns` doesn't exclude the `@peculiar/*` packages and `asn1js`.
+- **Deep imports** (`@peculiar/asn1-x509-post-quantum/build/...`) are blocked by `exports`; import from `@peculiar/asn1-x509-post-quantum`.
+- **Peer dependencies:** `@peculiar/asn1-schema` (`^3.0.0`) is a peer instead of a dependency, so your app shares one copy with the other `@peculiar/asn1-*` packages. npm installs peers automatically.
+
 ## Specifications
 
 - [Composite Public and Private Keys For Use In Internet PKI](https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-keys-03)
