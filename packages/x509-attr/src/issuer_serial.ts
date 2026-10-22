@@ -1,5 +1,5 @@
 import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter } from "@peculiar/asn1-schema";
-import { GeneralNames, CertificateSerialNumber, UniqueIdentifier } from "@peculiar/asn1-x509";
+import { GeneralNames, type CertificateSerialNumber, type UniqueIdentifier } from "@peculiar/asn1-x509";
 
 /**
  * ```asn1

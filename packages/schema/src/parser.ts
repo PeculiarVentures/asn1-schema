@@ -5,8 +5,8 @@ import * as converters from "./converters";
 import { AsnSchemaValidationError } from "./errors";
 import { isConvertible, isTypeOfArray } from "./helper";
 import { schemaStorage } from "./storage";
-import { IEmptyConstructor, IAsnConverter, IAsnConvertibleConstructor, IAsnParseOptions } from "./types";
-import { AsnSchemaType } from "./schema";
+import type { IEmptyConstructor, IAsnConverter, IAsnConvertibleConstructor, IAsnParseOptions } from "./types";
+import type { AsnSchemaType } from "./schema";
 
 /**
  * Deserializes objects from ASN.1 encoded data

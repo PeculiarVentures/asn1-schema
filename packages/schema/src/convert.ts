@@ -1,7 +1,7 @@
 import * as asn1js from "asn1js";
 import { type BufferSourceLike, isBufferSource, toArrayBuffer } from "@peculiar/utils";
 import { AsnParser } from "./parser";
-import { IEmptyConstructor, IAsnParseOptions } from "./types";
+import type { IEmptyConstructor, IAsnParseOptions } from "./types";
 import { AsnSerializer } from "./serializer";
 
 export class AsnConvert {

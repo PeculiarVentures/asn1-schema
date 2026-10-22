@@ -1,4 +1,4 @@
-import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnOctetStringConverter, IAsnConverter } from "@peculiar/asn1-schema";
+import { AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, AsnOctetStringConverter, type IAsnConverter } from "@peculiar/asn1-schema";
 import * as asn1js from "asn1js";
 import { IpConverter } from "./ip_converter";
 import { DirectoryString, Name } from "./name";

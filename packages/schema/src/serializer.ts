@@ -4,8 +4,8 @@ import * as converters from "./converters";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
 import { isConvertible, isArrayEqual } from "./helper";
 import { schemaStorage } from "./storage";
-import { IAsnSchemaItem } from "./schema";
-import { IEmptyConstructor } from "./types";
+import type { IAsnSchemaItem } from "./schema";
+import type { IEmptyConstructor } from "./types";
 
 /**
  * Serializes objects into ASN.1 encoded data

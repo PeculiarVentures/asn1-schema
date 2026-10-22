@@ -1,8 +1,8 @@
 import * as converters from "./converters";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
-import { IAsnSchema, IAsnSchemaItem } from "./schema";
+import type { IAsnSchema, IAsnSchemaItem } from "./schema";
 import { schemaStorage } from "./storage";
-import { IAsnConverter, IEmptyConstructor } from "./types";
+import type { IAsnConverter, IEmptyConstructor } from "./types";
 
 export type AsnItemType<T = unknown> = AsnPropTypes | IEmptyConstructor<T>;
 

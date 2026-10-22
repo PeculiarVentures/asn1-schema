@@ -1,6 +1,6 @@
 import { AsnProp, AsnPropTypes, OctetString } from "@peculiar/asn1-schema";
 import { OtherKeyAttribute } from "./other_key_attribute";
-import { CMSVersion, EncryptedKey, KeyEncryptionAlgorithmIdentifier } from "./types";
+import { CMSVersion, type EncryptedKey, KeyEncryptionAlgorithmIdentifier } from "./types";
 
 /**
  * ```asn

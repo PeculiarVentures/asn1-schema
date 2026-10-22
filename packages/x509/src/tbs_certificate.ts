@@ -4,7 +4,7 @@ import { Name } from "./name";
 import { SubjectPublicKeyInfo } from "./subject_public_key_info";
 import { Validity } from "./validity";
 import { Extensions } from "./extension";
-import { Version, CertificateSerialNumber, UniqueIdentifier } from "./types";
+import { Version, type CertificateSerialNumber, type UniqueIdentifier } from "./types";
 
 /**
  * ```asn1

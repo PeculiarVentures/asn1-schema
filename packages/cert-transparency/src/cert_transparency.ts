@@ -1,7 +1,7 @@
 import { OctetString } from "@peculiar/asn1-schema";
 import type * as asn1js from "asn1js";
 import { ByteStream } from "@peculiar/asn1-tls";
-import { IJsonSignedCertificateTimestamp, SignedCertificateTimestamp } from "./timestamp";
+import { type IJsonSignedCertificateTimestamp, SignedCertificateTimestamp } from "./timestamp";
 
 export const id_certificateTransparency = "1.3.6.1.4.1.11129.2.4.2";
 /**

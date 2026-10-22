@@ -1,6 +1,6 @@
 import * as asn1js from "asn1js";
 import { isBufferSource, toArrayBuffer, type BufferSourceLike } from "@peculiar/utils";
-import { IAsnConvertible } from "../types";
+import type { IAsnConvertible } from "../types";
 
 export class BitString<T extends number = number> implements IAsnConvertible {
   public unusedBits = 0;

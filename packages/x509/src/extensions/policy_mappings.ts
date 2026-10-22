@@ -1,6 +1,6 @@
 import { AsnArray, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { id_ce } from "../object_identifiers";
-import { CertPolicyId } from "./certificate_policies";
+import type { CertPolicyId } from "./certificate_policies";
 
 /**
  * ```asn1
