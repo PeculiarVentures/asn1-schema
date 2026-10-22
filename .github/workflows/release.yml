@@ -1,325 +1,57 @@
 name: Release
 
 on:
+  push:
+    branches:
+      - master
+  # Retries publishing a released version, e.g. after a failed npm publish; run it from the v<version> tag.
   workflow_dispatch:
-    inputs:
-      version:
-        description: Release type
-        required: true
-        default: patch
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
-      publish_all:
-        description: Publish all packages, including unchanged packages
-        required: false
-        default: false
-        type: boolean
+
+permissions:
+  contents: read
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: publish
   cancel-in-progress: false
 
 jobs:
-  prepare-release:
-    name: Prepare release
-    runs-on: ubuntu-latest
+  # Gates release-please, so a commit that fails checks never gets a tag or a GitHub Release.
+  check:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/test.yml
+
+  release-please:
+    runs-on: ubuntu-24.04
+    needs: check
 
     permissions:
-      contents: read
+      contents: write
+      issues: write
+      pull-requests: write
 
     outputs:
-      release_tag: ${{ steps.release_metadata.outputs.release_tag }}
-      release_version: ${{ steps.release_metadata.outputs.release_version }}
-      package_count: ${{ steps.release_metadata.outputs.package_count }}
+      release_created: ${{ steps.release.outputs.release_created }}
+      sha: ${{ steps.release.outputs.sha }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      # Opens or updates the release PR from Conventional Commits; once that PR is merged,
+      # creates the v<version> tag and the GitHub Release with the notes from the PR.
+      - name: Release Please
+        id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
-          fetch-depth: 0
-          persist-credentials: false
-
-      - name: Ensure default branch release
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
-
-          if [ "${GITHUB_REF_NAME}" != "$DEFAULT_BRANCH" ]; then
-            echo "Release workflow must run from ${DEFAULT_BRANCH}." >&2
-            exit 1
-          fi
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Check changed packages before version bump
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if [ "${{ inputs.publish_all }}" = "true" ]; then
-            echo "Publishing all packages; skipping changed-package check."
-          elif ! npx lerna changed; then
-            echo "No changed packages detected by Lerna." >&2
-            exit 1
-          fi
-
-      - name: Run lint
-        run: npm run lint
-
-      - name: Check formatting
-        run: npm run format:check
-
-      - name: Type check
-        run: npm run typecheck
-
-      - name: Run tests
-        run: npm test
-
-      - name: Bump versions of selected packages
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          version_args=("${{ inputs.version }}")
-
-          if [ "${{ inputs.publish_all }}" = "true" ]; then
-            version_args+=(--force-publish)
-            echo "Force-publishing all packages."
-          fi
-
-          npx lerna version "${version_args[@]}" \
-            --yes \
-            --no-push \
-            --no-git-tag-version \
-            --no-commit-hooks
-
-      - name: Build packages
-        run: npm run build
-
-      - name: Create release manifest
-        id: release_metadata
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          mkdir -p .release
-
-          # Package manifests changed by "lerna version".
-          mapfile -t changed_package_manifests < <(
-            git diff --name-only -- 'packages/*/package.json' \
-              | sort
-          )
-
-          if [ "${#changed_package_manifests[@]}" -eq 0 ]; then
-            echo "No package versions were changed by Lerna." >&2
-            echo "This usually means Lerna did not detect changed public packages." >&2
-            exit 1
-          fi
-
-          node - "${changed_package_manifests[@]}" <<'NODE'
-          const fs = require("node:fs");
-          const path = require("node:path");
-
-          const packageManifestFiles = process.argv.slice(2);
-
-          const lerna = JSON.parse(fs.readFileSync("lerna.json", "utf8"));
-          const isIndependent = lerna.version === "independent";
-
-          const packages = packageManifestFiles.map((manifestPath) => {
-            const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
-
-            return {
-              name: manifest.name,
-              version: manifest.version,
-              dir: path.dirname(manifestPath),
-              manifestPath,
-              private: manifest.private === true,
-              tarball: null,
-            };
-          });
-
-          const filesToCommit = [
-            "package.json",
-            "package-lock.json",
-            "lerna.json",
-            ...packageManifestFiles,
-          ].filter((file) => fs.existsSync(file));
-
-          const releaseVersion = isIndependent
-            ? null
-            : String(lerna.version);
-
-          const releaseTag = isIndependent
-            ? `release-${process.env.GITHUB_RUN_NUMBER}`
-            : `v${releaseVersion}`;
-
-          const manifest = {
-            releaseType: process.env.RELEASE_TYPE,
-            releaseVersion,
-            releaseTag,
-            gitHead: process.env.GITHUB_SHA,
-            independent: isIndependent,
-            filesToCommit,
-            packages,
-          };
-
-          fs.writeFileSync(
-            ".release/release-manifest.json",
-            JSON.stringify(manifest, null, 2)
-          );
-          NODE
-
-          RELEASE_TAG="$(node -p "require('./.release/release-manifest.json').releaseTag")"
-          RELEASE_VERSION="$(node -p "require('./.release/release-manifest.json').releaseVersion || ''")"
-          PACKAGE_COUNT="$(node -p "require('./.release/release-manifest.json').packages.length")"
-
-          echo "release_tag=${RELEASE_TAG}" >> "$GITHUB_OUTPUT"
-          echo "release_version=${RELEASE_VERSION}" >> "$GITHUB_OUTPUT"
-          echo "package_count=${PACKAGE_COUNT}" >> "$GITHUB_OUTPUT"
-        env:
-          RELEASE_TYPE: ${{ inputs.version }}
-
-      - name: Pack packages selected for publication
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          PACK_DIR=".release/tarballs"
-          mkdir -p "$PACK_DIR"
-
-          node - <<'NODE' > .release/package-dirs.txt
-          const manifest = require("./.release/release-manifest.json");
-
-          for (const pkg of manifest.packages) {
-            console.log(pkg.dir);
-          }
-          NODE
-
-          while IFS= read -r package_dir; do
-            [ -n "$package_dir" ] || continue
-
-            echo "Packing ${package_dir}"
-            npm pack "./${package_dir}" \
-              --pack-destination "$PACK_DIR" \
-              --json
-          done < .release/package-dirs.txt
-
-      - name: Attach tarballs to release manifest
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          node - <<'NODE'
-          const fs = require("node:fs");
-          const path = require("node:path");
-
-          const manifestPath = ".release/release-manifest.json";
-          const manifest = require("./" + manifestPath);
-          const tarballDir = ".release/tarballs";
-
-          const tarballs = fs.readdirSync(tarballDir)
-            .filter((file) => file.endsWith(".tgz"))
-            .map((file) => path.join(tarballDir, file));
-
-          for (const pkg of manifest.packages) {
-            const normalizedName = pkg.name
-              .replace(/^@/, "")
-              .replace(/\//g, "-");
-
-            const expectedSuffix = `${normalizedName}-${pkg.version}.tgz`;
-
-            const match = tarballs.find((file) => {
-              return path.basename(file) === expectedSuffix;
-            });
-
-            if (!match) {
-              throw new Error(
-                `Cannot find tarball for ${pkg.name}@${pkg.version}. Expected ${expectedSuffix}`
-              );
-            }
-
-            pkg.tarball = match;
-          }
-
-          fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
-          NODE
-
-      - name: Create checksums
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          cd .release
-          sha256sum release-manifest.json tarballs/*.tgz > SHA256SUMS
-
-      - name: Generate release summary
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          RELEASE_TAG="$(node -p "require('./.release/release-manifest.json').releaseTag")"
-
-          echo "## Release preview" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Release type:** \`${{ inputs.version }}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Release tag:** \`${RELEASE_TAG}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "**Source SHA:** \`${GITHUB_SHA}\`" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-
-          echo "### Packages to publish" >> "$GITHUB_STEP_SUMMARY"
-          node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
-          const manifest = require("./.release/release-manifest.json");
-
-          for (const pkg of manifest.packages) {
-            console.log(`- \`${pkg.name}@${pkg.version}\``);
-          }
-          NODE
-
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "### Tarballs" >> "$GITHUB_STEP_SUMMARY"
-          node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
-          const manifest = require("./.release/release-manifest.json");
-
-          for (const pkg of manifest.packages) {
-            console.log(`- \`${pkg.tarball}\``);
-          }
-          NODE
-
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "### SHA256" >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          cat .release/SHA256SUMS >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload release artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: release-artifacts
-          path: |
-            .release/release-manifest.json
-            .release/SHA256SUMS
-            .release/tarballs/*.tgz
-          retention-days: 7
-          if-no-files-found: error
+          # PRs opened with GITHUB_TOKEN do not trigger other workflows; set RELEASE_TOKEN so Test runs on the release PR.
+          token: ${{ secrets.RELEASE_TOKEN || github.token }}
 
   publish:
-    name: Publish release
-    runs-on: ubuntu-latest
-    needs: prepare-release
-
+    runs-on: ubuntu-24.04
+    needs: release-please
+    # Manual runs skip check and release-please, so they must not depend on their results.
+    if: >-
+      !cancelled() && (
+        github.event_name == 'workflow_dispatch' ||
+        needs.release-please.outputs.release_created == 'true'
+      )
     environment: npm
 
     permissions:
@@ -327,508 +59,111 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - name: Ensure default branch has not moved
-        shell: bash
+      # npm provenance records GITHUB_SHA, so the published commit must be exactly that commit.
+      - name: Verify the release commit
+        env:
+          RELEASE_SHA: ${{ needs.release-please.outputs.sha }}
         run: |
-          set -euo pipefail
-
-          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
-
-          git fetch origin "$DEFAULT_BRANCH"
-
-          REMOTE_HEAD="$(git rev-parse "origin/${DEFAULT_BRANCH}")"
-
-          if [ "$REMOTE_HEAD" != "$GITHUB_SHA" ]; then
-            echo "Default branch moved after release preparation." >&2
-            echo "Prepared SHA: ${GITHUB_SHA}" >&2
-            echo "Current origin/${DEFAULT_BRANCH}: ${REMOTE_HEAD}" >&2
-            echo "Re-run the release workflow from the latest ${DEFAULT_BRANCH}." >&2
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            if [ "$GITHUB_REF_TYPE" != tag ] || [[ ! "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+              echo "::error::Run Publish from a v<version> release tag, not from $GITHUB_REF_NAME"
+              exit 1
+            fi
+          elif [ "$RELEASE_SHA" != "$GITHUB_SHA" ]; then
+            echo "::error::Release commit $RELEASE_SHA differs from $GITHUB_SHA; run Publish manually from the release tag"
             exit 1
           fi
 
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Read the version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ] && [ "v$VERSION" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::package.json version $VERSION does not match tag $GITHUB_REF_NAME"
+            exit 1
+          fi
+
+          # All packages are released in lockstep with the root version.
+          node -e '
+            const fs = require("node:fs");
+            const version = process.argv[1];
+            const mismatched = fs
+              .readdirSync("packages")
+              .map((dir) => require(`./packages/${dir}/package.json`))
+              .filter((pkg) => pkg.version !== version);
+            for (const pkg of mismatched) console.log(`::error::${pkg.name} is ${pkg.version}, expected ${version}`);
+            process.exitCode = mismatched.length ? 1 : 0;
+          ' "$VERSION"
+
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
           cache: npm
 
-      - name: Download release artifacts
-        uses: actions/download-artifact@v7
-        with:
-          name: release-artifacts
-          path: .release
-
-      - name: Verify release artifacts
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          cd .release
-          sha256sum -c SHA256SUMS
-
+      # This job holds id-token and contents: write, so dependency lifecycle scripts never run here.
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
-      - name: Recreate selected version bump
-        shell: bash
+      - name: Build packages
+        run: npm run build
+
+      - name: Check generated package exports are committed
+        run: git diff --exit-code package.json 'packages/*/package.json'
+
+      # Publishes dependencies before their dependents and skips versions already on npm,
+      # so a retry after a partial publish only publishes the missing packages.
+      - name: Publish to npm via Trusted Publisher
         run: |
-          set -euo pipefail
-
-          version_args=("${{ inputs.version }}")
-
-          if [ "${{ inputs.publish_all }}" = "true" ]; then
-            version_args+=(--force-publish)
-          fi
-
-          npx lerna version "${version_args[@]}" \
-            --yes \
-            --no-push \
-            --no-git-tag-version \
-            --no-commit-hooks
-
-      - name: Verify recreated release matches prepared manifest
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          node - <<'NODE'
-          const fs = require("node:fs");
-
-          const prepared = require("./.release/release-manifest.json");
-
-          for (const pkg of prepared.packages) {
-            const current = JSON.parse(fs.readFileSync(pkg.manifestPath, "utf8"));
-
-            if (current.name !== pkg.name) {
-              throw new Error(
-                `Package name mismatch in ${pkg.manifestPath}: expected ${pkg.name}, got ${current.name}`
-              );
+          DIRS=$(node -e '
+            const fs = require("node:fs");
+            const packages = new Map();
+            for (const dir of fs.readdirSync("packages")) {
+              const pkg = require(`./packages/${dir}/package.json`);
+              packages.set(pkg.name, { dir: `packages/${dir}`, deps: Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies }) });
             }
-
-            if (current.version !== pkg.version) {
-              throw new Error(
-                `Package version mismatch for ${pkg.name}: expected ${pkg.version}, got ${current.version}`
-              );
-            }
-          }
-
-          const lerna = JSON.parse(fs.readFileSync("lerna.json", "utf8"));
-
-          if (!prepared.independent && String(lerna.version) !== String(prepared.releaseVersion)) {
-            throw new Error(
-              `Lerna version mismatch: expected ${prepared.releaseVersion}, got ${lerna.version}`
-            );
-          }
-
-          console.log("Prepared manifest matches recreated release.");
-          NODE
-
-      - name: Commit and tag release
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          RELEASE_TAG="$(node -p "require('./.release/release-manifest.json').releaseTag")"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          mapfile -t version_files < <(
-            node -e "const manifest = require('./.release/release-manifest.json'); for (const file of manifest.filesToCommit) console.log(file);"
-          )
-
-          git add "${version_files[@]}"
-
-          if git diff --cached --quiet; then
-            echo "No version changes to commit." >&2
-            exit 1
-          fi
-
-          git commit -m "chore(release): ${RELEASE_TAG}"
-
-          RELEASE_COMMIT_SHA="$(git rev-parse HEAD)"
-
-          git tag "$RELEASE_TAG"
-
-          echo "RELEASE_TAG=${RELEASE_TAG}" >> "$GITHUB_ENV"
-          echo "RELEASE_COMMIT_SHA=${RELEASE_COMMIT_SHA}" >> "$GITHUB_ENV"
-
-      - name: Push release commit and tag
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
-
-          git push origin "HEAD:${DEFAULT_BRANCH}"
-          git push origin "$RELEASE_TAG"
-
-      - name: Publish prepared package tarballs
-        shell: bash
-        env:
-          NPM_CONFIG_PROVENANCE: true
-        run: |
-          set -euo pipefail
-
-          node - <<'NODE'
-          const fs = require("node:fs");
-          const { spawnSync } = require("node:child_process");
-
-          const manifestPath = ".release/release-manifest.json";
-          const reportPath = ".release/publish-report.json";
-          const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
-
-          const report = {
-            published: [],
-            first_publish_required: [],
-            failed_publish: [],
-          };
-
-          function runNpm(args) {
-            const result = spawnSync("npm", args, {
-              encoding: "utf8",
-              env: {
-                ...process.env,
-                NPM_CONFIG_PROVENANCE: "true",
-              },
-            });
-
-            return {
-              status: result.status,
-              signal: result.signal,
-              stdout: result.stdout || "",
-              stderr: result.stderr || "",
-              output: [result.stdout || "", result.stderr || ""]
-                .join("\n")
-                .trim(),
+            const visited = new Set();
+            const visit = (name) => {
+              if (visited.has(name) || !packages.has(name)) return;
+              visited.add(name);
+              packages.get(name).deps.forEach(visit);
+              console.log(packages.get(name).dir);
             };
-          }
+            [...packages.keys()].forEach(visit);
+          ')
 
-          function packageInfo(pkg, extra = {}) {
-            return {
-              name: pkg.name,
-              version: pkg.version,
-              tarball: pkg.tarball,
-              ...extra,
-            };
-          }
+          for DIR in $DIRS; do
+            NAME=$(node -p "require('./$DIR/package.json').name")
 
-          function packageExists(pkg) {
-            const view = runNpm([
-              "view",
-              pkg.name,
-              "version",
-              "--json",
-            ]);
+            if npm view "$NAME@$VERSION" version > /dev/null 2>&1; then
+              echo "$NAME@$VERSION is already published"
+            else
+              # Skips prepack: the build above is the one the exports check verified.
+              npm publish --ignore-scripts --workspace "$DIR"
+            fi
+          done
 
-            if (view.status === 0) {
-              return {
-                exists: true,
-                output: view.output,
-              };
-            }
-
-            return {
-              exists: false,
-              output: view.output,
-            };
-          }
-
-          for (const pkg of manifest.packages) {
-            if (!pkg.tarball) {
-              report.failed_publish.push(packageInfo(pkg, {
-                reason: "Package tarball is missing from .release/release-manifest.json.",
-              }));
-              continue;
-            }
-
-            if (!fs.existsSync(pkg.tarball)) {
-              report.failed_publish.push(packageInfo(pkg, {
-                reason: `Package tarball does not exist at ${pkg.tarball}.`,
-              }));
-              continue;
-            }
-
-            console.log(`Checking npm package existence for ${pkg.name}`);
-            const existence = packageExists(pkg);
-
-            if (!existence.exists) {
-              console.log(`Skipping ${pkg.name}@${pkg.version}: package does not exist in npm yet.`);
-              report.first_publish_required.push(packageInfo(pkg, {
-                reason: "Package does not exist in npm yet. First publish must be done manually.",
-                npmViewOutput: existence.output,
-              }));
-              continue;
-            }
-
-            console.log(`Publishing ${pkg.tarball}`);
-            const publish = runNpm([
-              "publish",
-              pkg.tarball,
-              "--provenance",
-              "--access",
-              "public",
-            ]);
-
-            if (publish.status === 0) {
-              report.published.push(packageInfo(pkg, {
-                npmPublishOutput: publish.output,
-              }));
-              continue;
-            }
-
-            console.error(`Failed to publish ${pkg.name}@${pkg.version}`);
-            report.failed_publish.push(packageInfo(pkg, {
-              reason: "npm publish failed.",
-              status: publish.status,
-              signal: publish.signal,
-              npmPublishOutput: publish.output,
-            }));
-          }
-
-          fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
-          NODE
-
-      - name: Render publish report
-        if: always()
-        shell: bash
+      # Never moves the major tag backwards, e.g. when retrying an older version.
+      - name: Move major tag
         run: |
-          set -euo pipefail
+          MAJOR="v${VERSION%%.*}"
+          LATEST=$(git ls-remote --tags --refs origin "refs/tags/$MAJOR.*" \
+            | sed 's|.*refs/tags/||' \
+            | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sort -V \
+            | tail -n 1)
 
-          node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
-          const fs = require("node:fs");
-
-          const reportPath = ".release/publish-report.json";
-
-          console.log("");
-          console.log("## npm publish report");
-          console.log("");
-
-          if (!fs.existsSync(reportPath)) {
-            console.log("Publish report was not generated.");
-            process.exit(0);
-          }
-
-          const report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
-
-          function printPackageList(title, packages, includeDetails = false) {
-            console.log(`### ${title}`);
-            console.log("");
-
-            if (packages.length === 0) {
-              console.log("None.");
-              console.log("");
-              return;
-            }
-
-            for (const pkg of packages) {
-              console.log(`- \`${pkg.name}@${pkg.version}\``);
-              console.log(`  - Tarball: \`${pkg.tarball}\``);
-
-              if (includeDetails && pkg.reason) {
-                console.log(`  - Reason: ${pkg.reason}`);
-              }
-
-              if (includeDetails && pkg.npmViewOutput) {
-                console.log("  - npm view output:");
-                console.log("");
-                console.log("    ```text");
-                for (const line of String(pkg.npmViewOutput).split("\n")) {
-                  console.log(`    ${line}`);
-                }
-                console.log("    ```");
-              }
-
-              if (includeDetails && pkg.npmPublishOutput) {
-                console.log("  - npm publish output:");
-                console.log("");
-                console.log("    ```text");
-                for (const line of String(pkg.npmPublishOutput).split("\n")) {
-                  console.log(`    ${line}`);
-                }
-                console.log("    ```");
-              }
-            }
-
-            console.log("");
-          }
-
-          printPackageList("Successfully published packages", report.published || []);
-          printPackageList(
-            "Packages requiring first manual publish",
-            report.first_publish_required || [],
-            true
-          );
-          printPackageList(
-            "Packages that failed automatic publishing",
-            report.failed_publish || [],
-            true
-          );
-
-          const hasProblems =
-            (report.first_publish_required || []).length > 0 ||
-            (report.failed_publish || []).length > 0;
-
-          if (hasProblems) {
-            console.log("### Manual recovery instructions");
-            console.log("");
-            console.log("Some packages were not published automatically.");
-            console.log("");
-            console.log("To recover manually:");
-            console.log("");
-            console.log("1. Download the `release-artifacts` artifact from this failed GitHub Actions run.");
-            console.log("2. Extract the artifact locally.");
-            console.log("3. Publish the specific prepared tarball from the artifact:");
-            console.log("");
-            console.log("```bash");
-            console.log("npm publish .release/tarballs/<package-file>.tgz --access public");
-            console.log("```");
-            console.log("");
-            console.log("For first-time package publication, Trusted Publisher / provenance setup may need to be configured for the package before automated publishing can work.");
-            console.log("");
-          }
-          NODE
-
-      - name: Create GitHub Release body
-        if: always() && env.RELEASE_TAG != '' && env.RELEASE_COMMIT_SHA != ''
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          node - <<'NODE' > .release/github-release-body.md
-          const fs = require("node:fs");
-
-          const reportPath = ".release/publish-report.json";
-
-          console.log(`# ${process.env.RELEASE_TAG}`);
-          console.log("");
-          console.log("## npm publish status");
-          console.log("");
-
-          if (!fs.existsSync(reportPath)) {
-            console.log("Publish report was not generated.");
-            console.log("");
-            process.exit(0);
-          }
-
-          const report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
-
-          const published = report.published || [];
-          const firstPublishRequired = report.first_publish_required || [];
-          const failedPublish = report.failed_publish || [];
-
-          if (firstPublishRequired.length === 0 && failedPublish.length === 0) {
-            console.log("All intended npm packages were published successfully.");
-            console.log("");
-            process.exit(0);
-          }
-
-          console.log("This release was partially published to npm.");
-          console.log("");
-          console.log(`- Successfully published: ${published.length}`);
-          console.log(`- First manual publish required: ${firstPublishRequired.length}`);
-          console.log(`- Failed automatic publish: ${failedPublish.length}`);
-          console.log("");
-
-          function printPackages(title, packages) {
-            if (packages.length === 0) {
-              return;
-            }
-
-            console.log(`### ${title}`);
-            console.log("");
-
-            for (const pkg of packages) {
-              console.log(`- \`${pkg.name}@${pkg.version}\``);
-              console.log(`  - Tarball: \`${pkg.tarball}\``);
-
-              if (pkg.reason) {
-                console.log(`  - Reason: ${pkg.reason}`);
-              }
-            }
-
-            console.log("");
-          }
-
-          printPackages("Packages requiring first manual publish", firstPublishRequired);
-          printPackages("Packages that failed automatic publishing", failedPublish);
-
-          console.log("### Manual recovery");
-          console.log("");
-          console.log("Download the `release-artifacts` artifact from this GitHub Actions run, extract it locally, and publish the relevant tarball manually:");
-          console.log("");
-          console.log("```bash");
-          console.log("npm publish .release/tarballs/<package-file>.tgz --access public");
-          console.log("```");
-          console.log("");
-          console.log("For first-time package publication, Trusted Publisher / provenance setup may need to be configured before automated publishing can work.");
-          NODE
-
-      - name: Update major release branch
-        if: always() && env.RELEASE_TAG != '' && env.RELEASE_COMMIT_SHA != ''
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          RELEASE_VERSION="$(node -p "require('./.release/release-manifest.json').releaseVersion || ''")"
-
-          if [ -z "$RELEASE_VERSION" ]; then
-            echo "Skipping major release branch update for independent version mode."
+          if [ "$LATEST" != "v$VERSION" ]; then
+            echo "Leaving $MAJOR unchanged: v$VERSION is not the latest release ($LATEST)"
             exit 0
           fi
 
-          MAJOR_VERSION="${RELEASE_VERSION%%.*}"
-          MAJOR_BRANCH="v${MAJOR_VERSION}"
-
-          git branch -f "$MAJOR_BRANCH" "$RELEASE_COMMIT_SHA"
-          git push origin "$MAJOR_BRANCH" --force
-
-      - name: Create GitHub Release
-        if: always() && env.RELEASE_TAG != '' && env.RELEASE_COMMIT_SHA != ''
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-
-          gh release create "$RELEASE_TAG" \
-            --verify-tag \
-            --title "$RELEASE_TAG" \
-            --target "$RELEASE_COMMIT_SHA" \
-            --notes "$(< .release/github-release-body.md)" \
-            --generate-notes
-
-      - name: Validate publish result
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          node - <<'NODE'
-          const fs = require("node:fs");
-
-          const reportPath = ".release/publish-report.json";
-
-          if (!fs.existsSync(reportPath)) {
-            throw new Error("Publish report was not generated.");
-          }
-
-          const report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
-
-          const firstPublishRequired = report.first_publish_required || [];
-          const failedPublish = report.failed_publish || [];
-
-          if (firstPublishRequired.length > 0 || failedPublish.length > 0) {
-            console.error("npm publish did not complete successfully for all intended packages.");
-            console.error(`first_publish_required: ${firstPublishRequired.length}`);
-            console.error(`failed_publish: ${failedPublish.length}`);
-            process.exit(1);
-          }
-
-          console.log("All intended packages were published successfully.");
-          NODE
+          git tag -f "$MAJOR" HEAD
+          # Full ref: the repository also has v2/v3 branches.
+          git push -f origin "refs/tags/$MAJOR"

@@ -1,7 +1,7 @@
 # `asn1-schema`
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/asn1-schema/master/LICENSE.md)
-[![Test](https://github.com/PeculiarVentures/asn1-schema/actions/workflows/test.yml/badge.svg)](https://github.com/PeculiarVentures/asn1-schema/actions/workflows/test.yml)
+[![Release](https://github.com/PeculiarVentures/asn1-schema/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/PeculiarVentures/asn1-schema/actions/workflows/release.yml)
 [![Coverage Status](https://coveralls.io/repos/github/PeculiarVentures/asn1-schema/badge.svg)](https://coveralls.io/github/PeculiarVentures/asn1-schema)
 
 `asn1-schema` is a collection of TypeScript schemas that make working with common ASN.1 objects easy.
