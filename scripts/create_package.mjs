@@ -121,7 +121,6 @@ async function main(name) {
 
   rimraf.sync(join(moduleDir, "__tests__"));
   rimraf.sync(join(moduleDir, "lib"));
-  mkdirSync(join(moduleDir, "test"));
   mkdirSync(join(moduleDir, "src"));
 
   writeFileSync(join(moduleDir, "README.md"), createReadme(moduleName, name));
