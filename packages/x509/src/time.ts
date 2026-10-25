@@ -22,7 +22,7 @@ export class Time {
         // dates in 2050 or later MUST be encoded as GeneralizedTime
         const date = new Date(time);
         // Strip milliseconds to comply with RFC 5280: GeneralizedTime MUST NOT include fractional seconds
-        date.setMilliseconds(0);
+        date.setUTCMilliseconds(0);
         if (date.getUTCFullYear() > 2049) {
           this.generalTime = date;
         } else {
