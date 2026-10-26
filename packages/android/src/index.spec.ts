@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { utf8 } from "@peculiar/utils/encoding";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import * as android from "@peculiar/asn1-android";
@@ -12,27 +12,27 @@ describe("Android", () => {
 
       const kd = AsnConvert.parse(Buffer.from(hex, "hex"), android.KeyDescription);
 
-      assert.strictEqual(kd.attestationVersion, android.Version.KM3);
-      assert.strictEqual(kd.attestationSecurityLevel, android.SecurityLevel.software);
-      assert.strictEqual(kd.keymasterVersion, 1);
-      assert.strictEqual(kd.keymasterSecurityLevel, android.SecurityLevel.software);
-      assert.strictEqual(kd.attestationChallenge.byteLength, 32);
-      assert.strictEqual(kd.uniqueId.byteLength, 0);
-      assert.strictEqual(kd.softwareEnforced.creationDateTime, "1506793476000");
-      assert.ok(kd.softwareEnforced.attestationApplicationId);
-      assert.strictEqual(kd.softwareEnforced.attestationApplicationId.byteLength, 87);
-      assert.ok(kd.teeEnforced.purpose);
-      assert.strictEqual(kd.teeEnforced.purpose.length, 1);
-      assert.strictEqual(kd.teeEnforced.purpose[0], 2);
-      assert.strictEqual(kd.teeEnforced.algorithm, 3);
-      assert.strictEqual(kd.teeEnforced.keySize, 256);
-      assert.ok(kd.teeEnforced.digest);
-      assert.strictEqual(kd.teeEnforced.digest.length, 1);
-      assert.strictEqual(kd.teeEnforced.digest[0], 4);
-      assert.strictEqual(kd.teeEnforced.ecCurve, 1);
-      assert.strictEqual(kd.teeEnforced.userAuthType, 2);
-      assert.strictEqual(kd.teeEnforced.origin, 0);
-      assert.strictEqual(kd.teeEnforced.rollbackResistant, null);
+      expect(kd.attestationVersion).toBe(android.Version.KM3);
+      expect(kd.attestationSecurityLevel).toBe(android.SecurityLevel.software);
+      expect(kd.keymasterVersion).toBe(1);
+      expect(kd.keymasterSecurityLevel).toBe(android.SecurityLevel.software);
+      expect(kd.attestationChallenge.byteLength).toBe(32);
+      expect(kd.uniqueId.byteLength).toBe(0);
+      expect(kd.softwareEnforced.creationDateTime).toBe("1506793476000");
+      expect(kd.softwareEnforced.attestationApplicationId).toBeTruthy();
+      expect(kd.softwareEnforced.attestationApplicationId!.byteLength).toBe(87);
+      expect(kd.teeEnforced.purpose).toBeTruthy();
+      expect(kd.teeEnforced.purpose!.length).toBe(1);
+      expect(kd.teeEnforced.purpose![0]).toBe(2);
+      expect(kd.teeEnforced.algorithm).toBe(3);
+      expect(kd.teeEnforced.keySize).toBe(256);
+      expect(kd.teeEnforced.digest).toBeTruthy();
+      expect(kd.teeEnforced.digest!.length).toBe(1);
+      expect(kd.teeEnforced.digest![0]).toBe(4);
+      expect(kd.teeEnforced.ecCurve).toBe(1);
+      expect(kd.teeEnforced.userAuthType).toBe(2);
+      expect(kd.teeEnforced.origin).toBe(0);
+      expect(kd.teeEnforced.rollbackResistant).toBe(null);
     });
   });
 
@@ -42,14 +42,14 @@ describe("Android", () => {
         "308201820201640A01010201640A01010420316231616461333561633432366562316638343563383765653239663065633304003057BF8545530451304F312930270421636F6D2E7469636B7069636B6C6C632E63656F627269656E2E7469636B7069636B0202012931220420CE016851B704DA76FDEDDE34AB314A155CA5A5DB31266D2685FCBF281AB510283081F6A1083106020103020102A203020103A30402020100A5053103020104AA03020101BF8377020500BF853E03020100BF85404C304A04209FB52F0954613F221AF4F4070C31415ED44C1A81D51889DB0946632599B3E9460101FF0A01000420FFAEEC3477824DD82E09B6400602DCB274EB4E89DCB6093AD1F6EDE964ED73C3BF854105020301D4C0BF8542050203031644BF854D1604146D6F746F726F6C61206564676520283230323229BF854C0A04086D6F746F726F6C61BF85480D040B7465736C615F675F737973BF85470704057465736C61BF85460A04086D6F746F726F6C61BF854E0602040134B291BF854F0602040134B291";
 
       const kd = AsnConvert.parse(Buffer.from(hex, "hex"), android.NonStandardKeyDescription);
-      assert.strictEqual(kd.attestationVersion, 100);
-      assert.strictEqual(kd.attestationSecurityLevel, android.SecurityLevel.trustedEnvironment);
-      assert.strictEqual(kd.keymasterVersion, 100);
-      assert.strictEqual(kd.keymasterSecurityLevel, android.SecurityLevel.trustedEnvironment);
-      assert.strictEqual(kd.attestationChallenge.byteLength, 32);
-      assert.strictEqual(kd.uniqueId.byteLength, 0);
-      assert.strictEqual(kd.softwareEnforced.findProperty("attestationApplicationId")?.byteLength, 81);
-      assert.strictEqual(kd.teeEnforced.findProperty("origin"), 0);
+      expect(kd.attestationVersion).toBe(100);
+      expect(kd.attestationSecurityLevel).toBe(android.SecurityLevel.trustedEnvironment);
+      expect(kd.keymasterVersion).toBe(100);
+      expect(kd.keymasterSecurityLevel).toBe(android.SecurityLevel.trustedEnvironment);
+      expect(kd.attestationChallenge.byteLength).toBe(32);
+      expect(kd.uniqueId.byteLength).toBe(0);
+      expect(kd.softwareEnforced.findProperty("attestationApplicationId")?.byteLength).toBe(81);
+      expect(kd.teeEnforced.findProperty("origin")).toBe(0);
     });
 
     it("should create standard KeyDescription and parse using NonStandardKeyDescription", () => {
@@ -88,7 +88,7 @@ describe("Android", () => {
       const raw = AsnConvert.serialize(kd);
       const kd2 = AsnConvert.parse(raw, android.NonStandardKeyDescription);
 
-      assert.strictEqual(kd2.attestationVersion, 200);
+      expect(kd2.attestationVersion).toBe(200);
     });
   });
 
@@ -106,11 +106,11 @@ describe("Android", () => {
       const raw = AsnConvert.serialize(attestation);
 
       const attestation2 = AsnConvert.parse(raw, android.AttestationApplicationId);
-      assert.strictEqual(attestation2.packageInfos.length, 1);
-      assert.strictEqual(attestation2.packageInfos[0].packageName.byteLength, 3);
-      assert.strictEqual(attestation2.packageInfos[0].version, 1);
-      assert.strictEqual(attestation2.signatureDigests.length, 1);
-      assert.strictEqual(attestation2.signatureDigests[0].byteLength, 3);
+      expect(attestation2.packageInfos.length).toBe(1);
+      expect(attestation2.packageInfos[0].packageName.byteLength).toBe(3);
+      expect(attestation2.packageInfos[0].version).toBe(1);
+      expect(attestation2.signatureDigests.length).toBe(1);
+      expect(attestation2.signatureDigests[0].byteLength).toBe(3);
     });
   });
 
@@ -157,26 +157,26 @@ describe("Android", () => {
       });
 
       const raw = AsnConvert.serialize(keyMintDesc);
-      assert.ok(raw);
-      assert.ok(raw.byteLength > 0);
+      expect(raw).toBeTruthy();
+      expect(raw.byteLength > 0).toBeTruthy();
 
       // Verify we can parse it back
       const parsed = AsnConvert.parse(raw, android.KeyMintKeyDescription);
-      assert.strictEqual(parsed.attestationVersion, android.Version.keyMint3);
-      assert.strictEqual(parsed.keyMintVersion, 1);
-      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
-      assert.ok(parsed.hardwareEnforced.attestationIdSecondImei);
-      assert.strictEqual(utf8.decode(parsed.hardwareEnforced.attestationIdSecondImei.buffer), "second-imei");
+      expect(parsed.attestationVersion).toBe(android.Version.keyMint3);
+      expect(parsed.keyMintVersion).toBe(1);
+      expect(parsed.keyMintSecurityLevel).toBe(android.SecurityLevel.trustedEnvironment);
+      expect(parsed.hardwareEnforced.attestationIdSecondImei).toBeTruthy();
+      expect(utf8.decode(parsed.hardwareEnforced.attestationIdSecondImei!.buffer)).toBe("second-imei");
 
       // Check RootOfTrust's verifiedBootHash
-      assert.ok(parsed.hardwareEnforced.rootOfTrust);
-      assert.ok(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash);
-      assert.strictEqual(utf8.decode(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash.buffer), "boot-hash-data");
+      expect(parsed.hardwareEnforced.rootOfTrust).toBeTruthy();
+      expect(parsed.hardwareEnforced.rootOfTrust!.verifiedBootHash).toBeTruthy();
+      expect(utf8.decode(parsed.hardwareEnforced.rootOfTrust!.verifiedBootHash!.buffer)).toBe("boot-hash-data");
 
       // Test conversion to legacy format
       const legacy = parsed.toLegacyKeyDescription();
-      assert.strictEqual(legacy.keymasterVersion, parsed.keyMintVersion);
-      assert.strictEqual(legacy.teeEnforced, parsed.hardwareEnforced);
+      expect(legacy.keymasterVersion).toBe(parsed.keyMintVersion);
+      expect(legacy.teeEnforced).toBe(parsed.hardwareEnforced);
     });
 
     it("should parse v300 with NonStandardKeyMintKeyDescription", () => {
@@ -201,14 +201,14 @@ describe("Android", () => {
       const parsed = AsnConvert.parse(raw, android.NonStandardKeyMintKeyDescription);
 
       // Verify fields
-      assert.strictEqual(parsed.attestationVersion, android.Version.keyMint3);
-      assert.strictEqual(parsed.keyMintVersion, 1);
-      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
+      expect(parsed.attestationVersion).toBe(android.Version.keyMint3);
+      expect(parsed.keyMintVersion).toBe(1);
+      expect(parsed.keyMintSecurityLevel).toBe(android.SecurityLevel.trustedEnvironment);
 
       // Check fields using the findProperty method
       const secondImei = parsed.hardwareEnforced.findProperty("attestationIdSecondImei");
-      assert.ok(secondImei);
-      assert.strictEqual(utf8.decode(secondImei.buffer), "second-imei");
+      expect(secondImei).toBeTruthy();
+      expect(utf8.decode(secondImei!.buffer)).toBe("second-imei");
     });
 
     it("should create and serialize KeyMintKeyDescription", () => {
@@ -253,23 +253,23 @@ describe("Android", () => {
       });
 
       const raw = AsnConvert.serialize(keyMintDesc);
-      assert.ok(raw);
-      assert.ok(raw.byteLength > 0);
+      expect(raw).toBeTruthy();
+      expect(raw.byteLength > 0).toBeTruthy();
 
       // Verify we can parse it back
       const parsed = AsnConvert.parse(raw, android.KeyMintKeyDescription);
-      assert.strictEqual(parsed.attestationVersion, android.Version.keyMint4);
-      assert.strictEqual(parsed.keyMintVersion, 1);
-      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
-      assert.ok(parsed.hardwareEnforced.moduleHash);
-      assert.strictEqual(utf8.decode(parsed.hardwareEnforced.moduleHash.buffer), "module-hash-value");
-      assert.ok(parsed.hardwareEnforced.attestationIdSecondImei);
-      assert.strictEqual(utf8.decode(parsed.hardwareEnforced.attestationIdSecondImei.buffer), "second-imei");
+      expect(parsed.attestationVersion).toBe(android.Version.keyMint4);
+      expect(parsed.keyMintVersion).toBe(1);
+      expect(parsed.keyMintSecurityLevel).toBe(android.SecurityLevel.trustedEnvironment);
+      expect(parsed.hardwareEnforced.moduleHash).toBeTruthy();
+      expect(utf8.decode(parsed.hardwareEnforced.moduleHash!.buffer)).toBe("module-hash-value");
+      expect(parsed.hardwareEnforced.attestationIdSecondImei).toBeTruthy();
+      expect(utf8.decode(parsed.hardwareEnforced.attestationIdSecondImei!.buffer)).toBe("second-imei");
 
       // Check RootOfTrust's verifiedBootHash
-      assert.ok(parsed.hardwareEnforced.rootOfTrust);
-      assert.ok(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash);
-      assert.strictEqual(utf8.decode(parsed.hardwareEnforced.rootOfTrust.verifiedBootHash.buffer), "boot-hash-data");
+      expect(parsed.hardwareEnforced.rootOfTrust).toBeTruthy();
+      expect(parsed.hardwareEnforced.rootOfTrust!.verifiedBootHash).toBeTruthy();
+      expect(utf8.decode(parsed.hardwareEnforced.rootOfTrust!.verifiedBootHash!.buffer)).toBe("boot-hash-data");
     });
 
     it("should parse v400 with NonStandardKeyMintKeyDescription", () => {
@@ -295,18 +295,18 @@ describe("Android", () => {
       const parsed = AsnConvert.parse(raw, android.NonStandardKeyMintKeyDescription);
 
       // Verify fields
-      assert.strictEqual(parsed.attestationVersion, android.Version.keyMint4);
-      assert.strictEqual(parsed.keyMintVersion, 1);
-      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
+      expect(parsed.attestationVersion).toBe(android.Version.keyMint4);
+      expect(parsed.keyMintVersion).toBe(1);
+      expect(parsed.keyMintSecurityLevel).toBe(android.SecurityLevel.trustedEnvironment);
 
       // Check the new fields using the findProperty method
       const moduleHash = parsed.hardwareEnforced.findProperty("moduleHash");
-      assert.ok(moduleHash);
-      assert.strictEqual(utf8.decode(moduleHash.buffer), "module-hash-value");
+      expect(moduleHash).toBeTruthy();
+      expect(utf8.decode(moduleHash!.buffer)).toBe("module-hash-value");
 
       const secondImei = parsed.hardwareEnforced.findProperty("attestationIdSecondImei");
-      assert.ok(secondImei);
-      assert.strictEqual(utf8.decode(secondImei.buffer), "second-imei");
+      expect(secondImei).toBeTruthy();
+      expect(utf8.decode(secondImei!.buffer)).toBe("second-imei");
     });
 
     it("should convert between KeyDescription and KeyMintKeyDescription", () => {
@@ -330,19 +330,19 @@ describe("Android", () => {
       const keyMint = android.KeyMintKeyDescription.fromLegacyKeyDescription(legacy);
 
       // Verify conversion
-      assert.strictEqual(keyMint.attestationVersion, legacy.attestationVersion);
-      assert.strictEqual(keyMint.keyMintVersion, legacy.keymasterVersion);
-      assert.strictEqual(keyMint.keyMintSecurityLevel, legacy.keymasterSecurityLevel);
-      assert.deepStrictEqual(keyMint.hardwareEnforced, legacy.teeEnforced);
+      expect(keyMint.attestationVersion).toBe(legacy.attestationVersion);
+      expect(keyMint.keyMintVersion).toBe(legacy.keymasterVersion);
+      expect(keyMint.keyMintSecurityLevel).toBe(legacy.keymasterSecurityLevel);
+      expect(keyMint.hardwareEnforced).toStrictEqual(legacy.teeEnforced);
 
       // Convert back to legacy
       const convertedBack = keyMint.toLegacyKeyDescription();
 
       // Verify conversion back
-      assert.strictEqual(convertedBack.attestationVersion, legacy.attestationVersion);
-      assert.strictEqual(convertedBack.keymasterVersion, legacy.keymasterVersion);
-      assert.strictEqual(convertedBack.keymasterSecurityLevel, legacy.keymasterSecurityLevel);
-      assert.deepStrictEqual(convertedBack.teeEnforced, legacy.teeEnforced);
+      expect(convertedBack.attestationVersion).toBe(legacy.attestationVersion);
+      expect(convertedBack.keymasterVersion).toBe(legacy.keymasterVersion);
+      expect(convertedBack.keymasterSecurityLevel).toBe(legacy.keymasterSecurityLevel);
+      expect(convertedBack.teeEnforced).toStrictEqual(legacy.teeEnforced);
     });
 
     it("should access v400 fields via original NonStandardKeyDescription", () => {
@@ -363,17 +363,17 @@ describe("Android", () => {
       const parsed = AsnConvert.parse(raw, android.NonStandardKeyDescription);
 
       // Should access v400 fields via accessors
-      assert.strictEqual(parsed.keyMintVersion, 1);
-      assert.strictEqual(parsed.keyMintSecurityLevel, android.SecurityLevel.trustedEnvironment);
+      expect(parsed.keyMintVersion).toBe(1);
+      expect(parsed.keyMintSecurityLevel).toBe(android.SecurityLevel.trustedEnvironment);
 
       // Check module hash and second IMEI with hardwareEnforced getter
       const moduleHash = parsed.hardwareEnforced.findProperty("moduleHash");
-      assert.ok(moduleHash);
-      assert.strictEqual(utf8.decode(moduleHash.buffer), "module-hash");
+      expect(moduleHash).toBeTruthy();
+      expect(utf8.decode(moduleHash!.buffer)).toBe("module-hash");
 
       const secondImei = parsed.hardwareEnforced.findProperty("attestationIdSecondImei");
-      assert.ok(secondImei);
-      assert.strictEqual(utf8.decode(secondImei.buffer), "second-imei");
+      expect(secondImei).toBeTruthy();
+      expect(utf8.decode(secondImei!.buffer)).toBe("second-imei");
     });
   });
 });

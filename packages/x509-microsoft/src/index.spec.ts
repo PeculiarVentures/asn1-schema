@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { CaVersion } from "./attributes/extensions/ca_version";
 import { EnrollCertTypeChoice } from "./attributes/index";
@@ -23,7 +23,7 @@ describe("Microsoft X509", () => {
       for (const key in vectors) {
         it(key, () => {
           const caVersion = AsnConvert.parse(vectors[key], CaVersion);
-          assert.strictEqual(caVersion.toString(), key);
+          expect(caVersion.toString()).toBe(key);
         });
       }
     });
@@ -33,14 +33,14 @@ describe("Microsoft X509", () => {
     it("BMPString", () => {
       const hex = "1E0A00530075006200430041";
       const enrollCertType = AsnConvert.parse(Buffer.from(hex, "hex"), EnrollCertTypeChoice);
-      assert.strictEqual(enrollCertType.toString(), "SubCA");
+      expect(enrollCertType.toString()).toBe("SubCA");
       // console.log(enrollCertType);
     });
 
     it("UTF8String", () => {
       const hex = "0C086365727454797065";
       const enrollCertType = AsnConvert.parse(Buffer.from(hex, "hex"), EnrollCertTypeChoice);
-      assert.strictEqual(enrollCertType.toString(), "certType");
+      expect(enrollCertType.toString()).toBe("certType");
       // console.log(enrollCertType);
     });
   });

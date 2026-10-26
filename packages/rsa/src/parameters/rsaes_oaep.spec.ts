@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert, AsnOctetStringConverter } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 import { RsaEsOaepParams, id_md5, id_sha1 } from "../index";
@@ -8,7 +8,7 @@ describe("RSAES-OAEP params", () => {
     const params = new RsaEsOaepParams();
 
     const der = AsnConvert.serialize(params);
-    assert.strictEqual(Buffer.from(der).toString("hex"), "3000");
+    expect(Buffer.from(der).toString("hex")).toBe("3000");
   });
 
   it("serialize hash:md5 ", () => {
@@ -49,6 +49,6 @@ describe("RSAES-OAEP params", () => {
     //     SEQUENCE (2 elem)
     //       OBJECT IDENTIFIER 1.3.14.3.2.26 sha1 (OIW)
     //       OCTET STRING (5 byte) 0102030405
-    assert.strictEqual(Buffer.from(der).toString("hex"), "3038a00e300c06082a864886f70d02050500a114301206052b0e03021a300906052b0e03021a0500a210300e06052b0e03021a04050102030405");
+    expect(Buffer.from(der).toString("hex")).toBe("3038a00e300c06082a864886f70d02050500a114301206052b0e03021a300906052b0e03021a0500a210300e06052b0e03021a04050102030405");
   });
 });

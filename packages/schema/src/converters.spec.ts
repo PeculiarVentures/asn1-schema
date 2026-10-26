@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnAnyConverter, AsnConstructedOctetStringConverter, AsnGeneralizedTimeConverter, AsnUTCTimeConverter, OctetString } from "./index";
 
 describe("converters", () => {
@@ -7,25 +7,25 @@ describe("converters", () => {
       const asn = AsnAnyConverter.toASN(null);
 
       const der = asn.toBER();
-      assert.strictEqual(Buffer.from(der).toString("hex"), "0500");
+      expect(Buffer.from(der).toString("hex")).toBe("0500");
 
       const value = AsnAnyConverter.fromASN(asn);
-      assert.strictEqual(value, null);
+      expect(value).toBe(null);
     });
     it("Integer", () => {
       const asn = AsnAnyConverter.toASN(new Uint8Array([2, 1, 1]).buffer);
 
       const der = asn.toBER();
-      assert.strictEqual(Buffer.from(der).toString("hex"), "020101");
+      expect(Buffer.from(der).toString("hex")).toBe("020101");
 
       const value = AsnAnyConverter.fromASN(asn);
-      assert.ok(value);
-      assert.strictEqual(value.byteLength, 3);
+      expect(value).toBeTruthy();
+      expect(value!.byteLength).toBe(3);
     });
     it("Throw error on wrong encoded value", () => {
-      assert.throws(() => {
+      expect(() => {
         AsnAnyConverter.toASN(new Uint8Array([2, 5, 1]).buffer); // wrong length
-      });
+      }).toThrow();
     });
   });
 
@@ -35,10 +35,10 @@ describe("converters", () => {
       const asn = AsnGeneralizedTimeConverter.toASN(new Date(dateNum));
 
       const der = asn.toBER();
-      assert.strictEqual(Buffer.from(der).toString("hex"), "181332303138303932313230303332342e3435355a");
+      expect(Buffer.from(der).toString("hex")).toBe("181332303138303932313230303332342e3435355a");
 
       const value = AsnGeneralizedTimeConverter.fromASN(asn);
-      assert.strictEqual(value.getTime(), dateNum);
+      expect(value.getTime()).toBe(dateNum);
     });
   });
 
@@ -48,10 +48,10 @@ describe("converters", () => {
       const asn = AsnUTCTimeConverter.toASN(new Date(dateNum));
 
       const der = asn.toBER();
-      assert.strictEqual(Buffer.from(der).toString("hex"), "170d3138303932313230303332345a");
+      expect(Buffer.from(der).toString("hex")).toBe("170d3138303932313230303332345a");
 
       const value = AsnUTCTimeConverter.fromASN(asn);
-      assert.strictEqual(value.getTime(), dateNum);
+      expect(value.getTime()).toBe(dateNum);
     });
   });
 
@@ -61,10 +61,10 @@ describe("converters", () => {
       const asn = AsnConstructedOctetStringConverter.toASN(new OctetString(buffer));
 
       const der = asn.toBER();
-      assert.strictEqual(Buffer.from(der).toString("hex"), "04053132333435");
+      expect(Buffer.from(der).toString("hex")).toBe("04053132333435");
 
       const value = AsnConstructedOctetStringConverter.fromASN(asn);
-      assert.notStrictEqual(Buffer.from(value.buffer), buffer);
+      expect(Buffer.from(value.buffer)).not.toBe(buffer);
     });
   });
 });

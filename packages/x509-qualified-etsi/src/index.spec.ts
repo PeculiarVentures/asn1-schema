@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import * as etsi from "./index";
 
@@ -12,10 +12,10 @@ describe("x509-qualified-etsi", () => {
        *   PrintableString UK
        *   PrintableString GR
        */
-      assert.strictEqual(Buffer.from(raw).toString("hex"), "30081302554b13024752");
+      expect(Buffer.from(raw).toString("hex")).toBe("30081302554b13024752");
 
       const test = AsnConvert.parse(raw, etsi.QcCClegislation);
-      assert.deepStrictEqual(test, qc);
+      expect(test).toStrictEqual(qc);
     });
   });
 
@@ -33,10 +33,10 @@ describe("x509-qualified-etsi", () => {
        *   INTEGER 1
        *   INTEGER 2
        */
-      assert.strictEqual(Buffer.from(raw).toString("hex"), "300b1303616263020101020102");
+      expect(Buffer.from(raw).toString("hex")).toBe("300b1303616263020101020102");
 
       const test = AsnConvert.parse(raw, etsi.QcEuLimitValue);
-      assert.deepStrictEqual(test, qc);
+      expect(test).toStrictEqual(qc);
     });
   });
 
@@ -55,10 +55,10 @@ describe("x509-qualified-etsi", () => {
        *     IA5String http://some.url
        *     PrintableString en
        */
-      assert.strictEqual(Buffer.from(raw).toString("hex"), "30173015160f687474703a2f2f736f6d652e75726c1302656e");
+      expect(Buffer.from(raw).toString("hex")).toBe("30173015160f687474703a2f2f736f6d652e75726c1302656e");
 
       const test = AsnConvert.parse(raw, etsi.QcEuPDS);
-      assert.deepStrictEqual(test, qc);
+      expect(test).toStrictEqual(qc);
     });
   });
 
@@ -69,10 +69,10 @@ describe("x509-qualified-etsi", () => {
       /**
        * INTEGER 1
        */
-      assert.strictEqual(Buffer.from(raw).toString("hex"), "020101");
+      expect(Buffer.from(raw).toString("hex")).toBe("020101");
 
       const test = AsnConvert.parse(raw, etsi.QcEuRetentionPeriod);
-      assert.deepStrictEqual(test, qc);
+      expect(test).toStrictEqual(qc);
     });
   });
 
@@ -86,10 +86,10 @@ describe("x509-qualified-etsi", () => {
        *   OBJECT IDENTIFIER 0.4.0.1862.1.6.2
        *   OBJECT IDENTIFIER 0.4.0.1862.1.6.3
        */
-      assert.strictEqual(Buffer.from(raw).toString("hex"), "301b060704008e46010601060704008e46010602060704008e46010603");
+      expect(Buffer.from(raw).toString("hex")).toBe("301b060704008e46010601060704008e46010602060704008e46010603");
 
       const test = AsnConvert.parse(raw, etsi.QcType);
-      assert.deepStrictEqual(test, qc);
+      expect(test).toStrictEqual(qc);
     });
   });
 });

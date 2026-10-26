@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert, BitString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier, SubjectPublicKeyInfo } from "@peculiar/asn1-x509";
 import { OneAsymmetricKey, Version } from "@peculiar/asn1-asym-key";
@@ -43,10 +43,10 @@ describe("x509-post-quantum", () => {
         ].join("");
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), SubjectPublicKeyInfo);
-        assert.strictEqual(keyInfo.algorithm.algorithm, id_composite_key);
+        expect(keyInfo.algorithm.algorithm).toBe(id_composite_key);
 
         const compositeKeys = AsnConvert.parse(keyInfo.subjectPublicKey, CompositePublicKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
 
       it("private key", () => {
@@ -82,11 +82,11 @@ describe("x509-post-quantum", () => {
         ].join("");
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
-        assert.strictEqual(keyInfo.privateKeyAlgorithm.algorithm, id_composite_key);
-        assert.strictEqual(keyInfo.version, Version.v1);
+        expect(keyInfo.privateKeyAlgorithm.algorithm).toBe(id_composite_key);
+        expect(keyInfo.version).toBe(Version.v1);
 
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
     });
 
@@ -106,7 +106,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), SubjectPublicKeyInfo);
         const compositeKeys = AsnConvert.parse(keyInfo.subjectPublicKey, CompositePublicKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
 
       it("private key", () => {
@@ -143,7 +143,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
     });
 
@@ -192,7 +192,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), SubjectPublicKeyInfo);
         const compositeKeys = AsnConvert.parse(keyInfo.subjectPublicKey, CompositePublicKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
 
       it("private key", () => {
@@ -310,7 +310,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
     });
 
@@ -362,7 +362,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), SubjectPublicKeyInfo);
         const compositeKeys = AsnConvert.parse(keyInfo.subjectPublicKey, CompositePublicKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
 
       it("private key", () => {
@@ -500,7 +500,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
     });
 
@@ -530,7 +530,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), SubjectPublicKeyInfo);
         const compositeKeys = AsnConvert.parse(keyInfo.subjectPublicKey, CompositePublicKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
 
       it("private key", () => {
@@ -580,7 +580,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
     });
 
@@ -595,7 +595,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), SubjectPublicKeyInfo);
         const compositeKeys = AsnConvert.parse(keyInfo.subjectPublicKey, CompositePublicKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
 
       it("private key", () => {
@@ -610,7 +610,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
-        assert.strictEqual(compositeKeys.length, 2);
+        expect(compositeKeys.length).toBe(2);
       });
     });
 
@@ -704,7 +704,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), SubjectPublicKeyInfo);
         const compositeKeys = AsnConvert.parse(keyInfo.subjectPublicKey, CompositePublicKey);
-        assert.strictEqual(compositeKeys.length, 3);
+        expect(compositeKeys.length).toBe(3);
       });
 
       it("private key", () => {
@@ -922,7 +922,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
-        assert.strictEqual(compositeKeys.length, 3);
+        expect(compositeKeys.length).toBe(3);
       });
     });
 
@@ -1020,7 +1020,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), SubjectPublicKeyInfo);
         const compositeKeys = AsnConvert.parse(keyInfo.subjectPublicKey, CompositePublicKey);
-        assert.strictEqual(compositeKeys.length, 3);
+        expect(compositeKeys.length).toBe(3);
       });
 
       it("private key", () => {
@@ -1268,7 +1268,7 @@ describe("x509-post-quantum", () => {
 
         const keyInfo = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
         const compositeKeys = AsnConvert.parse(keyInfo.privateKey, CompositePrivateKey);
-        assert.strictEqual(compositeKeys.length, 3);
+        expect(compositeKeys.length).toBe(3);
       });
     });
   });
@@ -1278,10 +1278,10 @@ describe("x509-post-quantum", () => {
       const pem = "MCkGCisGAQQBgY4zAgEwGzANBgsrBgEEAQKCCwcGBTAKBggqhkjOPQQDAg==";
 
       const signatureAlgorithm = AsnConvert.parse(Buffer.from(pem, "base64"), AlgorithmIdentifier);
-      assert.strictEqual(signatureAlgorithm.algorithm, id_alg_composite);
-      assert.ok(signatureAlgorithm.parameters);
-      const composote = AsnConvert.parse(signatureAlgorithm.parameters, CompositeParams);
-      assert.strictEqual(composote.length, 2);
+      expect(signatureAlgorithm.algorithm).toBe(id_alg_composite);
+      expect(signatureAlgorithm.parameters).toBeTruthy();
+      const composote = AsnConvert.parse(signatureAlgorithm.parameters!, CompositeParams);
+      expect(composote.length).toBe(2);
     });
 
     it("signature value", () => {
@@ -1362,38 +1362,38 @@ describe("x509-post-quantum", () => {
 
       const signatureValue = AsnConvert.parse(Buffer.from(pem, "base64"), BitString);
       const composote = AsnConvert.parse(signatureValue.value, CompositeSignatureValue);
-      assert.strictEqual(composote.length, 2);
+      expect(composote.length).toBe(2);
     });
   });
 
   describe("FIPS 204 / FIPS 205 object identifiers", () => {
     it("ML-DSA OIDs match NIST CSOR sigAlgs assignments", () => {
-      assert.strictEqual(id_ml_dsa_44, "2.16.840.1.101.3.4.3.17");
-      assert.strictEqual(id_ml_dsa_65, "2.16.840.1.101.3.4.3.18");
-      assert.strictEqual(id_ml_dsa_87, "2.16.840.1.101.3.4.3.19");
+      expect(id_ml_dsa_44).toBe("2.16.840.1.101.3.4.3.17");
+      expect(id_ml_dsa_65).toBe("2.16.840.1.101.3.4.3.18");
+      expect(id_ml_dsa_87).toBe("2.16.840.1.101.3.4.3.19");
     });
 
     it("SLH-DSA OIDs match NIST CSOR sigAlgs assignments", () => {
-      assert.strictEqual(id_slh_dsa_sha2_128s, "2.16.840.1.101.3.4.3.20");
-      assert.strictEqual(id_slh_dsa_sha2_128f, "2.16.840.1.101.3.4.3.21");
-      assert.strictEqual(id_slh_dsa_sha2_192s, "2.16.840.1.101.3.4.3.22");
-      assert.strictEqual(id_slh_dsa_sha2_192f, "2.16.840.1.101.3.4.3.23");
-      assert.strictEqual(id_slh_dsa_sha2_256s, "2.16.840.1.101.3.4.3.24");
-      assert.strictEqual(id_slh_dsa_sha2_256f, "2.16.840.1.101.3.4.3.25");
-      assert.strictEqual(id_slh_dsa_shake_128s, "2.16.840.1.101.3.4.3.26");
-      assert.strictEqual(id_slh_dsa_shake_128f, "2.16.840.1.101.3.4.3.27");
-      assert.strictEqual(id_slh_dsa_shake_192s, "2.16.840.1.101.3.4.3.28");
-      assert.strictEqual(id_slh_dsa_shake_192f, "2.16.840.1.101.3.4.3.29");
-      assert.strictEqual(id_slh_dsa_shake_256s, "2.16.840.1.101.3.4.3.30");
-      assert.strictEqual(id_slh_dsa_shake_256f, "2.16.840.1.101.3.4.3.31");
+      expect(id_slh_dsa_sha2_128s).toBe("2.16.840.1.101.3.4.3.20");
+      expect(id_slh_dsa_sha2_128f).toBe("2.16.840.1.101.3.4.3.21");
+      expect(id_slh_dsa_sha2_192s).toBe("2.16.840.1.101.3.4.3.22");
+      expect(id_slh_dsa_sha2_192f).toBe("2.16.840.1.101.3.4.3.23");
+      expect(id_slh_dsa_sha2_256s).toBe("2.16.840.1.101.3.4.3.24");
+      expect(id_slh_dsa_sha2_256f).toBe("2.16.840.1.101.3.4.3.25");
+      expect(id_slh_dsa_shake_128s).toBe("2.16.840.1.101.3.4.3.26");
+      expect(id_slh_dsa_shake_128f).toBe("2.16.840.1.101.3.4.3.27");
+      expect(id_slh_dsa_shake_192s).toBe("2.16.840.1.101.3.4.3.28");
+      expect(id_slh_dsa_shake_192f).toBe("2.16.840.1.101.3.4.3.29");
+      expect(id_slh_dsa_shake_256s).toBe("2.16.840.1.101.3.4.3.30");
+      expect(id_slh_dsa_shake_256f).toBe("2.16.840.1.101.3.4.3.31");
     });
 
     it("round-trips an AlgorithmIdentifier with an ML-DSA-87 OID and absent parameters", () => {
       const input = new AlgorithmIdentifier({ algorithm: id_ml_dsa_87 });
       const der = AsnConvert.serialize(input);
       const output = AsnConvert.parse(der, AlgorithmIdentifier);
-      assert.strictEqual(output.algorithm, id_ml_dsa_87);
-      assert.strictEqual(output.parameters, undefined);
+      expect(output.algorithm).toBe(id_ml_dsa_87);
+      expect(output.parameters).toBe(undefined);
     });
   });
 });

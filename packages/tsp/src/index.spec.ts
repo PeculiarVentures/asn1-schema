@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import { AlgorithmIdentifier, Extension, Extensions, id_ce_keyUsage, KeyUsage, KeyUsageFlags } from "@peculiar/asn1-x509";
 import * as src from "./index";
@@ -10,20 +10,20 @@ describe("TSP", () => {
     const raw = Buffer.from(hex, "hex");
 
     const contentInfo = AsnConvert.parse(raw, src.TimeStampToken);
-    assert.strictEqual(contentInfo.contentType, src.id_ct_tstInfo);
+    expect(contentInfo.contentType).toBe(src.id_ct_tstInfo);
 
     const content = AsnConvert.parse(contentInfo.content, OctetString);
     const tstInfo = AsnConvert.parse(content, src.TSTInfo);
 
-    assert.strictEqual(tstInfo.version, src.TSTInfoVersion.v1);
-    assert.strictEqual(tstInfo.policy, "1.1.1.1");
-    assert.strictEqual(tstInfo.messageImprint.hashAlgorithm.algorithm, "1.3.14.3.2.26");
-    assert.strictEqual(tstInfo.messageImprint.hashAlgorithm.parameters, null);
-    assert.strictEqual(Buffer.from(tstInfo.messageImprint.hashedMessage.buffer).toString("hex"), "95811474539b0d71c20a2107fbaccdcbcd53a8ac");
-    assert.strictEqual(Buffer.from(tstInfo.serialNumber).toString("hex"), "01e023b628463246e5488b0c3f04b9a3503e2e2b");
-    assert.ok(tstInfo.genTime);
-    assert.strictEqual(tstInfo.ordering, false);
-    assert.ok(tstInfo.tsa);
+    expect(tstInfo.version).toBe(src.TSTInfoVersion.v1);
+    expect(tstInfo.policy).toBe("1.1.1.1");
+    expect(tstInfo.messageImprint.hashAlgorithm.algorithm).toBe("1.3.14.3.2.26");
+    expect(tstInfo.messageImprint.hashAlgorithm.parameters).toBe(null);
+    expect(Buffer.from(tstInfo.messageImprint.hashedMessage.buffer).toString("hex")).toBe("95811474539b0d71c20a2107fbaccdcbcd53a8ac");
+    expect(Buffer.from(tstInfo.serialNumber).toString("hex")).toBe("01e023b628463246e5488b0c3f04b9a3503e2e2b");
+    expect(tstInfo.genTime).toBeTruthy();
+    expect(tstInfo.ordering).toBe(false);
+    expect(tstInfo.tsa).toBeTruthy();
   });
 
   it("create TSP request", () => {
@@ -63,8 +63,7 @@ describe("TSP", () => {
     //       OBJECT IDENTIFIER 2.5.29.15 keyUsage (X.509 extension)
     //       OCTET STRING (4 byte) 0302020C
     //         BIT STRING (6 bit) 000011
-    assert.strictEqual(
-      Buffer.from(raw).toString("hex"),
+    expect(Buffer.from(raw).toString("hex")).toBe(
       "304f0201013021300906052b0e03021a05000414000000000000000000000000000000000000000006032901010210000000000000000000000000000000000101ffa00d300b0603551d0f04040302020c",
     );
   });
@@ -87,6 +86,6 @@ describe("TSP", () => {
     //       UTF8String text 1
     //       UTF8String text 2
     //     BIT STRING (5 bit) 00001
-    assert.strictEqual(Buffer.from(raw).toString("hex"), "301b301902010230100c067465787420310c0674657874203203020308");
+    expect(Buffer.from(raw).toString("hex")).toBe("301b301902010230100c067465787420310c0674657874203203020308");
   });
 });

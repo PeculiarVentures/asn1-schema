@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import * as src from "./index";
 
@@ -7,34 +7,34 @@ describe("ECC algorithms", () => {
     const raw = AsnConvert.serialize(src.ecdsaWithSHA1);
 
     const hex = Buffer.from(raw).toString("hex");
-    assert.strictEqual(hex, "300906072a8648ce3d0401");
+    expect(hex).toBe("300906072a8648ce3d0401");
   });
 
   it("ECDSA with SHA-224", () => {
     const raw = AsnConvert.serialize(src.ecdsaWithSHA224);
 
     const hex = Buffer.from(raw).toString("hex");
-    assert.strictEqual(hex, "300a06082a8648ce3d040301");
+    expect(hex).toBe("300a06082a8648ce3d040301");
   });
 
   it("ECDSA with SHA-256", () => {
     const raw = AsnConvert.serialize(src.ecdsaWithSHA256);
 
     const hex = Buffer.from(raw).toString("hex");
-    assert.strictEqual(hex, "300a06082a8648ce3d040302");
+    expect(hex).toBe("300a06082a8648ce3d040302");
   });
 
   it("ECDSA with SHA-384", () => {
     const raw = AsnConvert.serialize(src.ecdsaWithSHA384);
 
     const hex = Buffer.from(raw).toString("hex");
-    assert.strictEqual(hex, "300a06082a8648ce3d040303");
+    expect(hex).toBe("300a06082a8648ce3d040303");
   });
 
   it("ECDSA with SHA-512", () => {
     const raw = AsnConvert.serialize(src.ecdsaWithSHA512);
 
     const hex = Buffer.from(raw).toString("hex");
-    assert.strictEqual(hex, "300a06082a8648ce3d040304");
+    expect(hex).toBe("300a06082a8648ce3d040304");
   });
 });

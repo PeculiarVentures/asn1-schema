@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import {
   AlgorithmIdentifier,
@@ -85,48 +85,48 @@ describe("mtc", () => {
     it("decodes the binary representation", () => {
       // 1.3.6.1.4.1.44363.47.1=#0d0481fd5901 from the draft
       const id = TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x01]));
-      assert.strictEqual(id.value, "32473.1");
+      expect(id.value).toBe("32473.1");
     });
 
     it("round trips", () => {
       const id = new TrustAnchorID("44494.3.1.1");
-      assert.strictEqual(TrustAnchorID.fromBinary(id.toBinary()).value, id.value);
+      expect(TrustAnchorID.fromBinary(id.toBinary()).value).toBe(id.value);
     });
 
     it("encodes an empty id as empty bytes", () => {
       // Regression: "".split(".") is [""] and BigInt("") throws; an empty
       // TrustAnchorID must encode to an empty byte array.
-      assert.strictEqual(new TrustAnchorID().toBinary().length, 0);
-      assert.deepStrictEqual(Array.from(new TrustAnchorID().toBinary()), []);
+      expect(new TrustAnchorID().toBinary().length).toBe(0);
+      expect(Array.from(new TrustAnchorID().toBinary())).toStrictEqual([]);
     });
 
     it("round trips an empty id", () => {
-      assert.strictEqual(TrustAnchorID.fromBinary(new Uint8Array(0)).value, "");
-      assert.strictEqual(TrustAnchorID.fromBinary(new TrustAnchorID().toBinary()).value, "");
+      expect(TrustAnchorID.fromBinary(new Uint8Array(0)).value).toBe("");
+      expect(TrustAnchorID.fromBinary(new TrustAnchorID().toBinary()).value).toBe("");
     });
 
     it("encodes a RELATIVE-OID", () => {
       const der = AsnConvert.serialize(new TrustAnchorID("32473.1"));
-      assert.strictEqual(Buffer.from(der).toString("hex"), "0d0481fd5901");
+      expect(Buffer.from(der).toString("hex")).toBe("0d0481fd5901");
     });
 
     it("parses a RELATIVE-OID", () => {
       const id = AsnConvert.parse(Buffer.from("0d0481fd5901", "hex"), TrustAnchorID);
 
-      assert.strictEqual(id.value, "32473.1");
+      expect(id.value).toBe("32473.1");
     });
 
     it("matches the draft binary representation for 32473.1", () => {
       // draft-ietf-tls-trust-anchor-ids section 3
-      assert.deepStrictEqual(Array.from(new TrustAnchorID("32473.1").toBinary()), [0x81, 0xfd, 0x59, 0x01]);
+      expect(Array.from(new TrustAnchorID("32473.1").toBinary())).toStrictEqual([0x81, 0xfd, 0x59, 0x01]);
     });
 
     it("matches the draft SVCB wire-format encodings", () => {
       // draft-ietf-tls-trust-anchor-ids section 6.1, tls-trust-anchors example
-      assert.deepStrictEqual(Array.from(new TrustAnchorID("32473.2.1").toBinary()), [0x81, 0xfd, 0x59, 0x02, 0x01]);
-      assert.deepStrictEqual(Array.from(new TrustAnchorID("32473.2.2").toBinary()), [0x81, 0xfd, 0x59, 0x02, 0x02]);
-      assert.strictEqual(TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x01])).value, "32473.2.1");
-      assert.strictEqual(TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x02])).value, "32473.2.2");
+      expect(Array.from(new TrustAnchorID("32473.2.1").toBinary())).toStrictEqual([0x81, 0xfd, 0x59, 0x02, 0x01]);
+      expect(Array.from(new TrustAnchorID("32473.2.2").toBinary())).toStrictEqual([0x81, 0xfd, 0x59, 0x02, 0x02]);
+      expect(TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x01])).value).toBe("32473.2.1");
+      expect(TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd, 0x59, 0x02, 0x02])).value).toBe("32473.2.2");
     });
 
     it("round trips MTC landmark trust anchor IDs", () => {
@@ -134,20 +134,20 @@ describe("mtc", () => {
       // 32473.1 and log 8, and its landmark group
       for (const value of ["32473.1.1.8.42", "32473.1.2.8.42"]) {
         const id = new TrustAnchorID(value);
-        assert.strictEqual(TrustAnchorID.fromBinary(id.toBinary()).value, value);
+        expect(TrustAnchorID.fromBinary(id.toBinary()).value).toBe(value);
       }
     });
 
     it("builds the cosigner_name origin string", () => {
-      assert.strictEqual(new TrustAnchorID("32473.1").toOriginString(), "oid/1.3.6.1.4.1.32473.1");
+      expect(new TrustAnchorID("32473.1").toOriginString()).toBe("oid/1.3.6.1.4.1.32473.1");
     });
 
     it("rejects a truncated sub-identifier", () => {
-      assert.throws(() => TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd])));
+      expect(() => TrustAnchorID.fromBinary(new Uint8Array([0x81, 0xfd]))).toThrow();
     });
 
     it("rejects a non-minimal sub-identifier", () => {
-      assert.throws(() => TrustAnchorID.fromBinary(new Uint8Array([0x80, 0x01])));
+      expect(() => TrustAnchorID.fromBinary(new Uint8Array([0x80, 0x01]))).toThrow();
     });
   });
 
@@ -156,17 +156,17 @@ describe("mtc", () => {
       const hex = "3028300b0609608648016503040201300b0609608648016503040311020100020900ffffffffffffffff";
       const ca = AsnConvert.parse(Buffer.from(hex, "hex"), MTCCertificationAuthority);
 
-      assert.strictEqual(ca.logHash.algorithm, "2.16.840.1.101.3.4.2.1");
-      assert.strictEqual(ca.sigAlg.algorithm, "2.16.840.1.101.3.4.3.17");
-      assert.strictEqual(ca.minSerial, 0n);
-      assert.strictEqual(ca.maxSerial, 18446744073709551615n);
+      expect(ca.logHash.algorithm).toBe("2.16.840.1.101.3.4.2.1");
+      expect(ca.sigAlg.algorithm).toBe("2.16.840.1.101.3.4.3.17");
+      expect(ca.minSerial).toBe(0n);
+      expect(ca.maxSerial).toBe(18446744073709551615n);
     });
 
     it("round trips maxSerial without precision loss", () => {
       const ca = new MTCCertificationAuthority({ maxSerial: 18446744073709551615n });
       const parsed = AsnConvert.parse(AsnConvert.serialize(ca), MTCCertificationAuthority);
 
-      assert.strictEqual(parsed.maxSerial, 18446744073709551615n);
+      expect(parsed.maxSerial).toBe(18446744073709551615n);
     });
   });
 
@@ -174,14 +174,14 @@ describe("mtc", () => {
     it("decomposes into log number and index", () => {
       const res = decodeSerialNumber("000100000000d431");
 
-      assert.strictEqual(res.logNumber, 1);
-      assert.strictEqual(res.index, 54321n);
+      expect(res.logNumber).toBe(1);
+      expect(res.index).toBe(54321n);
     });
 
     it("round trips", () => {
       const value = encodeSerialNumber(3, 987654321n);
 
-      assert.deepStrictEqual(decodeSerialNumber(value.toString(16).padStart(16, "0")), {
+      expect(decodeSerialNumber(value.toString(16).padStart(16, "0"))).toStrictEqual({
         logNumber: 3,
         index: 987654321n,
       });
@@ -193,8 +193,8 @@ describe("mtc", () => {
       // largest serial is 2^64-1, mtcMaxSerial.
       const value = encodeSerialNumber(0xffff, 0xffffffffffffn);
 
-      assert.strictEqual(value, mtcMaxSerial);
-      assert.deepStrictEqual(decodeSerialNumber(mtcMaxSerial.toString(16).padStart(16, "0")), {
+      expect(value).toBe(mtcMaxSerial);
+      expect(decodeSerialNumber(mtcMaxSerial.toString(16).padStart(16, "0"))).toStrictEqual({
         logNumber: 0xffff,
         index: 0xffffffffffffn,
       });
@@ -204,36 +204,36 @@ describe("mtc", () => {
       const min = encodeSerialNumber(1, 0n);
       const max = encodeSerialNumber(65535, 0xffffffffffffn);
 
-      assert.strictEqual(min, 1n << 48n);
-      assert.strictEqual(max, mtcMaxSerial);
-      assert.deepStrictEqual(decodeSerialNumber(min.toString(16).padStart(16, "0")), {
+      expect(min).toBe(1n << 48n);
+      expect(max).toBe(mtcMaxSerial);
+      expect(decodeSerialNumber(min.toString(16).padStart(16, "0"))).toStrictEqual({
         logNumber: 1,
         index: 0n,
       });
-      assert.deepStrictEqual(decodeSerialNumber(max.toString(16).padStart(16, "0")), {
+      expect(decodeSerialNumber(max.toString(16).padStart(16, "0"))).toStrictEqual({
         logNumber: 65535,
         index: 0xffffffffffffn,
       });
     });
 
     it("rejects out-of-range log numbers", () => {
-      assert.throws(() => encodeSerialNumber(0, 0n), RangeError);
-      assert.throws(() => encodeSerialNumber(65536, 0n), RangeError);
-      assert.throws(() => encodeSerialNumber(1.5, 0n), RangeError);
-      assert.throws(() => encodeSerialNumber(NaN, 0n), RangeError);
+      expect(() => encodeSerialNumber(0, 0n)).toThrow(RangeError);
+      expect(() => encodeSerialNumber(65536, 0n)).toThrow(RangeError);
+      expect(() => encodeSerialNumber(1.5, 0n)).toThrow(RangeError);
+      expect(() => encodeSerialNumber(NaN, 0n)).toThrow(RangeError);
     });
 
     it("rejects out-of-range indices", () => {
-      assert.throws(() => encodeSerialNumber(1, -1n), RangeError);
-      assert.throws(() => encodeSerialNumber(1, 2n ** 48n), RangeError);
+      expect(() => encodeSerialNumber(1, -1n)).toThrow(RangeError);
+      expect(() => encodeSerialNumber(1, 2n ** 48n)).toThrow(RangeError);
     });
 
     it("rejects out-of-range inputs with a clear message", () => {
-      assert.throws(() => encodeSerialNumber(0, 0n), /logNumber must be in 1\.\.65535/);
-      assert.throws(() => encodeSerialNumber(65536, 0n), /logNumber must be in 1\.\.65535/);
-      assert.throws(() => encodeSerialNumber(1.5, 0n), /logNumber must be in 1\.\.65535/);
-      assert.throws(() => encodeSerialNumber(1, -1n), /index must be in 0\.\.2\^48-1/);
-      assert.throws(() => encodeSerialNumber(1, 2n ** 48n), /index must be in 0\.\.2\^48-1/);
+      expect(() => encodeSerialNumber(0, 0n)).toThrow(/logNumber must be in 1\.\.65535/);
+      expect(() => encodeSerialNumber(65536, 0n)).toThrow(/logNumber must be in 1\.\.65535/);
+      expect(() => encodeSerialNumber(1.5, 0n)).toThrow(/logNumber must be in 1\.\.65535/);
+      expect(() => encodeSerialNumber(1, -1n)).toThrow(/index must be in 0\.\.2\^48-1/);
+      expect(() => encodeSerialNumber(1, 2n ** 48n)).toThrow(/index must be in 0\.\.2\^48-1/);
     });
   });
 
@@ -244,47 +244,47 @@ describe("mtc", () => {
     it("parses a standalone certificate proof", () => {
       const proof = MTCProof.parse(Buffer.from(proofHex, "hex"));
 
-      assert.strictEqual(proof.start, 4);
-      assert.strictEqual(proof.end, 8);
-      assert.strictEqual(proof.subtreeSize, 4);
-      assert.strictEqual(proof.inclusionProof.length, 2);
-      assert.strictEqual(proof.signatures.length, 1);
-      assert.strictEqual(proof.signatures[0].cosignerId.value, "32473.1");
-      assert.strictEqual(proof.isLandmarkRelative, false);
+      expect(proof.start).toBe(4);
+      expect(proof.end).toBe(8);
+      expect(proof.subtreeSize).toBe(4);
+      expect(proof.inclusionProof.length).toBe(2);
+      expect(proof.signatures.length).toBe(1);
+      expect(proof.signatures[0].cosignerId.value).toBe("32473.1");
+      expect(proof.isLandmarkRelative).toBe(false);
     });
 
     it("flags a landmark-relative certificate", () => {
       const hex = "00000000000000000000000010000020" + "03".repeat(32) + "000000";
       const proof = MTCProof.parse(Buffer.from(hex, "hex"));
 
-      assert.strictEqual(proof.isLandmarkRelative, true);
-      assert.strictEqual(proof.signatures.length, 0);
+      expect(proof.isLandmarkRelative).toBe(true);
+      expect(proof.signatures.length).toBe(0);
     });
 
     it("rejects an inclusion proof that is not a multiple of the hash size", () => {
       const hex = "00000000000000000000000000020010" + "01".repeat(16) + "000000";
 
-      assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /multiple of hash size/);
+      expect(() => MTCProof.parse(Buffer.from(hex, "hex"))).toThrow(/multiple of hash size/);
     });
 
     it("honours a non-default hash size", () => {
       const hex = "00000000000000000000000000020030" + "01".repeat(48) + "000000";
       const proof = MTCProof.parse(Buffer.from(hex, "hex"), { hashSize: 48 });
 
-      assert.strictEqual(proof.inclusionProof.length, 1);
+      expect(proof.inclusionProof.length).toBe(1);
     });
 
     describe("parse hashSize validation", () => {
       it("rejects hashSize 0 even with a non-empty proof buffer", () => {
-        assert.throws(() => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 0 }), RangeError);
+        expect(() => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 0 })).toThrow(RangeError);
       });
 
       it("rejects a negative hashSize", () => {
-        assert.throws(() => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: -1 }), /invalid hashSize/);
+        expect(() => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: -1 })).toThrow(/invalid hashSize/);
       });
 
       it("rejects a non-integer hashSize", () => {
-        assert.throws(() => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 1.5 }), /invalid hashSize/);
+        expect(() => MTCProof.parse(Buffer.from(proofHex, "hex"), { hashSize: 1.5 })).toThrow(/invalid hashSize/);
       });
     });
 
@@ -293,38 +293,38 @@ describe("mtc", () => {
         // extensions(0) start=5 end=5 proof(empty) signatures(0)
         const hex = "00000000000000050000000000050000000000";
 
-        assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /start must be less than end/);
+        expect(() => MTCProof.parse(Buffer.from(hex, "hex"))).toThrow(/start must be less than end/);
       });
 
       it("rejects start greater than end", () => {
         // extensions(0) start=8 end=4 proof(empty) signatures(0)
         const hex = "00000000000000080000000000040000000000";
 
-        assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /start must be less than end/);
+        expect(() => MTCProof.parse(Buffer.from(hex, "hex"))).toThrow(/start must be less than end/);
       });
     });
 
     it("rejects truncated input", () => {
-      assert.throws(() => MTCProof.parse(Buffer.from(proofHex, "hex").subarray(0, 12)));
+      expect(() => MTCProof.parse(Buffer.from(proofHex, "hex").subarray(0, 12))).toThrow();
     });
 
     it("rejects trailing bytes", () => {
       const raw = Buffer.concat([Buffer.from(proofHex, "hex"), Buffer.from([0x00])]);
 
-      assert.throws(() => MTCProof.parse(raw), /trailing byte/);
+      expect(() => MTCProof.parse(raw)).toThrow(/trailing byte/);
     });
 
     it("rejects unordered cosigner ids", () => {
       const hex = "000000000000000000000000000200000000120481fd59010002aaaa0481fd59000002bbbb";
 
-      assert.throws(() => MTCProof.parse(Buffer.from(hex, "hex")), /ordered by cosigner_id/);
+      expect(() => MTCProof.parse(Buffer.from(hex, "hex"))).toThrow(/ordered by cosigner_id/);
     });
 
     it("serializes to JSON", () => {
       const json = MTCProof.parse(Buffer.from(proofHex, "hex")).toJSON();
 
-      assert.strictEqual(json.signatures[0].cosignerId, "32473.1");
-      assert.strictEqual(json.signatures[0].signature, "aabbccdd");
+      expect(json.signatures[0].cosignerId).toBe("32473.1");
+      expect(json.signatures[0].signature).toBe("aabbccdd");
     });
 
     it("does not alias the input buffer in parsed byte fields", () => {
@@ -335,15 +335,15 @@ describe("mtc", () => {
       const before = Buffer.from(raw);
       const proof = MTCProof.parse(raw);
 
-      assert.strictEqual(proof.extensions.length, 1);
-      assert.strictEqual(proof.inclusionProof.length, 2);
+      expect(proof.extensions.length).toBe(1);
+      expect(proof.inclusionProof.length).toBe(2);
 
       proof.inclusionProof[0][0] = 0xff;
       proof.inclusionProof[1][0] = 0xfe;
       proof.signatures[0].signature[0] = 0xfd;
       proof.extensions[0].extensionData[0] = 0xfc;
 
-      assert.ok(raw.equals(before), "parsed byte fields must not alias the input buffer");
+      expect(raw.equals(before), "parsed byte fields must not alias the input buffer").toBeTruthy();
     });
   });
 
@@ -353,26 +353,26 @@ describe("mtc", () => {
       const tbs = cert.tbsCertificate;
 
       // RFC 9925 unsigned certificate, not self-signed despite issuer == subject
-      assert.strictEqual(cert.signatureAlgorithm.algorithm, id_alg_unsigned);
-      assert.strictEqual(cert.signatureValue.byteLength, 0);
+      expect(cert.signatureAlgorithm.algorithm).toBe(id_alg_unsigned);
+      expect(cert.signatureValue.byteLength).toBe(0);
 
       const rdn = tbs.subject[0][0];
-      assert.strictEqual(rdn.type, id_rdna_trustAnchorID_experimental);
-      assert.strictEqual(rdn.value.toString(), "44494.3.1.1");
+      expect(rdn.type).toBe(id_rdna_trustAnchorID_experimental);
+      expect(rdn.value.toString()).toBe("44494.3.1.1");
 
       const ext = tbs.extensions?.find((o) => o.extnID === id_pe_mtcCertificationAuthority_experimental);
-      assert.ok(ext);
-      assert.strictEqual(ext.critical, true);
+      expect(ext).toBeTruthy();
+      expect(ext!.critical).toBe(true);
 
-      const ca = AsnConvert.parse(ext.extnValue, MTCCertificationAuthority);
-      assert.strictEqual(ca.logHash.algorithm, "2.16.840.1.101.3.4.2.1");
-      assert.strictEqual(ca.maxSerial, 18446744073709551615n);
+      const ca = AsnConvert.parse(ext!.extnValue, MTCCertificationAuthority);
+      expect(ca.logHash.algorithm).toBe("2.16.840.1.101.3.4.2.1");
+      expect(ca.maxSerial).toBe(18446744073709551615n);
 
       // Subject key identifier is the CA ID in binary trust anchor ID form
       const ski = tbs.extensions?.find((o) => o.extnID === id_ce_subjectKeyIdentifier);
-      assert.ok(ski);
-      const keyId = AsnConvert.parse(ski.extnValue, SubjectKeyIdentifier);
-      assert.strictEqual(TrustAnchorID.fromBinary(new Uint8Array(keyId.buffer)).value, "44494.3.1.1");
+      expect(ski).toBeTruthy();
+      const keyId = AsnConvert.parse(ski!.extnValue, SubjectKeyIdentifier);
+      expect(TrustAnchorID.fromBinary(new Uint8Array(keyId.buffer)).value).toBe("44494.3.1.1");
     });
   });
 
@@ -400,46 +400,46 @@ describe("mtc", () => {
       });
 
       const der = AsnConvert.serialize(entry);
-      assert.ok(der.byteLength > 0, "serialized DER must not be empty");
+      expect(der.byteLength > 0, "serialized DER must not be empty").toBeTruthy();
 
       const parsed = AsnConvert.parse(der, TBSCertificateLogEntry);
 
       // version (non-default value is present in the DER)
-      assert.strictEqual(parsed.version, 1);
+      expect(parsed.version).toBe(1);
 
       // issuer
-      assert.strictEqual(parsed.issuer.length, 2);
-      assert.strictEqual(parsed.issuer[0][0].type, "2.5.4.3");
-      assert.strictEqual(parsed.issuer[0][0].value.utf8String, "MTC CA");
-      assert.strictEqual(parsed.issuer[1][0].type, "2.5.4.10");
-      assert.strictEqual(parsed.issuer[1][0].value.utf8String, "Peculiar Ventures");
+      expect(parsed.issuer.length).toBe(2);
+      expect(parsed.issuer[0][0].type).toBe("2.5.4.3");
+      expect(parsed.issuer[0][0].value.utf8String).toBe("MTC CA");
+      expect(parsed.issuer[1][0].type).toBe("2.5.4.10");
+      expect(parsed.issuer[1][0].value.utf8String).toBe("Peculiar Ventures");
 
       // subject
-      assert.strictEqual(parsed.subject[0][0].value.utf8String, "example.com");
-      assert.strictEqual(parsed.subject[1][0].value.utf8String, "Example Inc");
+      expect(parsed.subject[0][0].value.utf8String).toBe("example.com");
+      expect(parsed.subject[1][0].value.utf8String).toBe("Example Inc");
 
       // validity
-      assert.strictEqual(parsed.validity.notBefore.getTime().getTime(), new Date("2024-01-01T00:00:00Z").getTime());
-      assert.strictEqual(parsed.validity.notAfter.getTime().getTime(), new Date("2034-01-01T00:00:00Z").getTime());
+      expect(parsed.validity.notBefore.getTime().getTime()).toBe(new Date("2024-01-01T00:00:00Z").getTime());
+      expect(parsed.validity.notAfter.getTime().getTime()).toBe(new Date("2034-01-01T00:00:00Z").getTime());
 
       // subjectPublicKeyAlgorithm
-      assert.strictEqual(parsed.subjectPublicKeyAlgorithm.algorithm, "1.2.840.10045.2.1");
+      expect(parsed.subjectPublicKeyAlgorithm.algorithm).toBe("1.2.840.10045.2.1");
 
       // subjectPublicKeyInfoHash
-      assert.strictEqual(Buffer.from(parsed.subjectPublicKeyInfoHash.buffer).toString("hex"), "01020304");
+      expect(Buffer.from(parsed.subjectPublicKeyInfoHash.buffer).toString("hex")).toBe("01020304");
 
       // optional unique IDs (implicit [1]/[2] BitString)
-      assert.ok(parsed.issuerUniqueID);
-      assert.strictEqual(Buffer.from(parsed.issuerUniqueID).toString("hex"), "a1b2c3");
-      assert.ok(parsed.subjectUniqueID);
-      assert.strictEqual(Buffer.from(parsed.subjectUniqueID).toString("hex"), "d4e5");
+      expect(parsed.issuerUniqueID).toBeTruthy();
+      expect(Buffer.from(parsed.issuerUniqueID!).toString("hex")).toBe("a1b2c3");
+      expect(parsed.subjectUniqueID).toBeTruthy();
+      expect(Buffer.from(parsed.subjectUniqueID!).toString("hex")).toBe("d4e5");
 
       // optional extensions ([3] EXPLICIT)
-      assert.ok(parsed.extensions);
-      assert.strictEqual(parsed.extensions.length, 1);
-      assert.strictEqual(parsed.extensions[0].extnID, id_ce_subjectKeyIdentifier);
-      assert.strictEqual(parsed.extensions[0].critical, true);
-      assert.strictEqual(Buffer.from(parsed.extensions[0].extnValue.buffer).toString("hex"), "0402aabb");
+      expect(parsed.extensions).toBeTruthy();
+      expect(parsed.extensions!.length).toBe(1);
+      expect(parsed.extensions![0].extnID).toBe(id_ce_subjectKeyIdentifier);
+      expect(parsed.extensions![0].critical).toBe(true);
+      expect(Buffer.from(parsed.extensions![0].extnValue.buffer).toString("hex")).toBe("0402aabb");
     });
 
     it("round trips a minimal entry with default version", () => {
@@ -469,18 +469,18 @@ describe("mtc", () => {
       });
 
       const der = AsnConvert.serialize(entry);
-      assert.ok(der.byteLength > 0);
+      expect(der.byteLength > 0).toBeTruthy();
 
       const parsed = AsnConvert.parse(der, TBSCertificateLogEntry);
 
       // version defaults to 0 and is omitted from the DER
-      assert.strictEqual(parsed.version, 0);
-      assert.strictEqual(parsed.issuer[0][0].value.utf8String, "MTC CA");
-      assert.strictEqual(parsed.subject[0][0].value.utf8String, "example.com");
-      assert.strictEqual(parsed.subjectPublicKeyInfoHash.buffer.byteLength, 2);
-      assert.strictEqual(parsed.issuerUniqueID, undefined);
-      assert.strictEqual(parsed.subjectUniqueID, undefined);
-      assert.strictEqual(parsed.extensions, undefined);
+      expect(parsed.version).toBe(0);
+      expect(parsed.issuer[0][0].value.utf8String).toBe("MTC CA");
+      expect(parsed.subject[0][0].value.utf8String).toBe("example.com");
+      expect(parsed.subjectPublicKeyInfoHash.buffer.byteLength).toBe(2);
+      expect(parsed.issuerUniqueID).toBe(undefined);
+      expect(parsed.subjectUniqueID).toBe(undefined);
+      expect(parsed.extensions).toBe(undefined);
     });
   });
 });

@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { ECParameters, id_secp256r1 } from "./index";
 
@@ -9,12 +9,12 @@ describe("EC parameters", () => {
     it("serialize", () => {
       const ecParams = new ECParameters({ namedCurve: id_secp256r1 });
       const der = AsnConvert.serialize(ecParams);
-      assert.strictEqual(Buffer.from(der).toString("hex"), ecParamsHex);
+      expect(Buffer.from(der).toString("hex")).toBe(ecParamsHex);
     });
 
     it("parse", () => {
       const ecParams = AsnConvert.parse(Buffer.from(ecParamsHex, "hex"), ECParameters);
-      assert.strictEqual(ecParams.namedCurve, id_secp256r1);
+      expect(ecParams.namedCurve).toBe(id_secp256r1);
     });
   });
 
@@ -28,35 +28,35 @@ describe("EC parameters", () => {
 
     it("parse/serialize", () => {
       const ecParams = AsnConvert.parse(ecParamsEnc, ECParameters);
-      assert.ok(ecParams.specifiedCurve);
+      expect(ecParams.specifiedCurve).toBeTruthy();
       const specifiedCurve = ecParams.specifiedCurve;
 
       // Check version
-      assert.strictEqual(specifiedCurve.version, 1);
+      expect(specifiedCurve!.version).toBe(1);
 
       // Check fieldID
-      const fieldID = specifiedCurve.fieldID;
-      assert.strictEqual(fieldID.fieldType, "1.2.840.10045.1.1");
-      assert.strictEqual(fieldID.parameters.byteLength, 35);
+      const fieldID = specifiedCurve!.fieldID;
+      expect(fieldID.fieldType).toBe("1.2.840.10045.1.1");
+      expect(fieldID.parameters.byteLength).toBe(35);
 
       // Check curve
-      const curve = specifiedCurve.curve;
-      assert.strictEqual(curve.a.byteLength, 32);
-      assert.strictEqual(curve.b.byteLength, 32);
-      assert.strictEqual(curve.seed!.byteLength, 20);
+      const curve = specifiedCurve!.curve;
+      expect(curve.a.byteLength).toBe(32);
+      expect(curve.b.byteLength).toBe(32);
+      expect(curve.seed!.byteLength).toBe(20);
 
       // Check base
-      assert.strictEqual(specifiedCurve.base.byteLength, 65);
+      expect(specifiedCurve!.base.byteLength).toBe(65);
 
       // Check order
-      assert.strictEqual(specifiedCurve.order.byteLength, 33);
+      expect(specifiedCurve!.order.byteLength).toBe(33);
 
       // Check cofactor
-      assert.strictEqual(specifiedCurve.cofactor, 1);
+      expect(specifiedCurve!.cofactor).toBe(1);
 
       // Serialize and compare
       const der = AsnConvert.serialize(ecParams);
-      assert.strictEqual(Buffer.from(der).compare(ecParamsEnc), 0, "Encoded EC parameters are not equal");
+      expect(Buffer.from(der).compare(ecParamsEnc), "Encoded EC parameters are not equal").toBe(0);
     });
   });
 });

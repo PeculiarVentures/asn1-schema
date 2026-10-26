@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "./index";
 import { schemaStorage } from "./storage";
 
@@ -14,16 +14,16 @@ describe("Schema", () => {
     }
     const parentSchema = schemaStorage.get(Parent);
     const childSchema = schemaStorage.get(Child);
-    assert.strictEqual(Object.keys(parentSchema.items).length, 1);
-    assert.strictEqual(Object.keys(childSchema.items).length, 2);
+    expect(Object.keys(parentSchema.items).length).toBe(1);
+    expect(Object.keys(childSchema.items).length).toBe(2);
   });
   it("throw error on a non-existent schema", () => {
     class Parent {
       public value = 1;
     }
-    assert.throws(() => {
+    expect(() => {
       schemaStorage.get(Parent);
-    });
+    }).toThrow();
   });
 
   it("Null valueBlock does not have toBER", () => {
@@ -57,11 +57,11 @@ describe("Schema", () => {
     asn.good = null;
 
     const raw = AsnConvert.serialize(asn);
-    assert.strictEqual(Buffer.from(raw).toString("hex"), "8000");
+    expect(Buffer.from(raw).toString("hex")).toBe("8000");
 
     AsnConvert.parse(raw, CertStatus);
 
-    assert.strictEqual(asn.good, null);
+    expect(asn.good).toBe(null);
   });
 
   it.skip("empty sequence", () => {
@@ -75,6 +75,6 @@ describe("Schema", () => {
     }
 
     const asn = AsnConvert.parse(Buffer.from("30023000", "hex"), Test);
-    assert.ok(asn.items); // TODO It throws exception. Looks like asn1js doesn't assign empty structures to schema
+    expect(asn.items).toBeTruthy(); // TODO It throws exception. Looks like asn1js doesn't assign empty structures to schema
   });
 });

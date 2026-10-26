@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { Time, Validity } from "./index";
 
@@ -8,8 +8,8 @@ describe("Time across DST transitions (issue #182)", () => {
   beforeAll(() => {
     // Exercise the repeated local hour even when the test runner starts in UTC.
     process.env.TZ = "Europe/Prague";
-    assert.strictEqual(new Date("2026-10-25T00:17:00Z").getTimezoneOffset(), -120);
-    assert.strictEqual(new Date("2026-10-25T01:17:00Z").getTimezoneOffset(), -60);
+    expect(new Date("2026-10-25T00:17:00Z").getTimezoneOffset()).toBe(-120);
+    expect(new Date("2026-10-25T01:17:00Z").getTimezoneOffset()).toBe(-60);
   });
 
   afterAll(() => {
@@ -40,14 +40,14 @@ describe("Time across DST transitions (issue #182)", () => {
           const input = inputType === "Date" ? date : inputType === "string" ? iso : date.getTime();
           const time = new Time(input);
 
-          assert.strictEqual(time.getTime().toISOString(), `${instant}.000Z`);
-          assert.strictEqual(date.toISOString(), iso);
+          expect(time.getTime().toISOString()).toBe(`${instant}.000Z`);
+          expect(date.toISOString()).toBe(iso);
           if (date.getUTCFullYear() < 2050) {
-            assert.strictEqual(time.utcTime, time.getTime());
-            assert.strictEqual(time.generalTime, undefined);
+            expect(time.utcTime).toBe(time.getTime());
+            expect(time.generalTime).toBe(undefined);
           } else {
-            assert.strictEqual(time.generalTime, time.getTime());
-            assert.strictEqual(time.utcTime, undefined);
+            expect(time.generalTime).toBe(time.getTime());
+            expect(time.utcTime).toBe(undefined);
           }
         });
       }
@@ -64,11 +64,11 @@ describe("Time across DST transitions (issue #182)", () => {
         notAfter: new Date(`${day}T01:17:00.173Z`),
       });
       const encoded = AsnConvert.serialize(validity);
-      assert.strictEqual(Buffer.from(encoded).toString("hex"), expectedHex);
+      expect(Buffer.from(encoded).toString("hex")).toBe(expectedHex);
 
       const decoded = AsnConvert.parse(encoded, Validity);
-      assert.strictEqual(decoded.notBefore.getTime().toISOString(), `${day}T00:17:00.000Z`);
-      assert.strictEqual(decoded.notAfter.getTime().toISOString(), `${day}T01:17:00.000Z`);
+      expect(decoded.notBefore.getTime().toISOString()).toBe(`${day}T00:17:00.000Z`);
+      expect(decoded.notAfter.getTime().toISOString()).toBe(`${day}T01:17:00.000Z`);
     });
   }
 });

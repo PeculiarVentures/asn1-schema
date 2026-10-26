@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { TNAuthorizationList } from "./index";
 
@@ -8,11 +8,11 @@ describe("RFC8266", () => {
       const hex = "3008a00616043730394a";
 
       const ext = AsnConvert.parse(Buffer.from(hex, "hex"), TNAuthorizationList);
-      assert.strictEqual(ext.length, 1);
-      assert.strictEqual(ext[0].spc, "709J");
+      expect(ext.length).toBe(1);
+      expect(ext[0].spc).toBe("709J");
 
       const raw = AsnConvert.serialize(ext);
-      assert.strictEqual(Buffer.from(raw).toString("hex"), hex);
+      expect(Buffer.from(raw).toString("hex")).toBe(hex);
     });
   });
 });

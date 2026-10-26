@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import { DigestInfo, sha1, id_sha1 } from "../index";
 
@@ -20,15 +20,15 @@ describe("RSASSA PKCS v1.5", () => {
       //     NULL
       //   OCTET STRING (20 byte) DA39A3EE5E6B4B0D3255BFEF95601890AFD80709
       const hex = Buffer.from(der).toString("hex");
-      assert.strictEqual(hex, digestInfoHex);
+      expect(hex).toBe(digestInfoHex);
     });
 
     it("parse", () => {
       const der = Buffer.from(digestInfoHex, "hex");
 
       const digestInfo = AsnConvert.parse(der, DigestInfo);
-      assert.strictEqual(digestInfo.digestAlgorithm.algorithm, id_sha1);
-      assert.strictEqual(digestInfo.digest.byteLength, 20);
+      expect(digestInfo.digestAlgorithm.algorithm).toBe(id_sha1);
+      expect(digestInfo.digest.byteLength).toBe(20);
     });
   });
 });

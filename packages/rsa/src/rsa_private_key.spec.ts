@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { RSAPrivateKey, OtherPrimeInfos, OtherPrimeInfo } from "./index";
 
@@ -34,22 +34,22 @@ describe("RSA Private Key", () => {
       //   INTEGER 8388615
       //   INTEGER 8388616
       const hex = Buffer.from(der).toString("hex");
-      assert.strictEqual(hex, privateKeyWithoutPrimeInfoHex);
+      expect(hex).toBe(privateKeyWithoutPrimeInfoHex);
     });
 
     it("parse", () => {
       const der = Buffer.from(privateKeyWithoutPrimeInfoHex, "hex");
 
       const privateKey = AsnConvert.parse(der, RSAPrivateKey);
-      assert.strictEqual(privateKey.version, 0);
-      assert.strictEqual(privateKey.modulus.byteLength, 4);
-      assert.strictEqual(privateKey.publicExponent.byteLength, 5);
-      assert.strictEqual(privateKey.privateExponent.byteLength, 6);
-      assert.strictEqual(privateKey.prime1.byteLength, 7);
-      assert.strictEqual(privateKey.prime2.byteLength, 8);
-      assert.strictEqual(privateKey.exponent1.byteLength, 9);
-      assert.strictEqual(privateKey.exponent2.byteLength, 10);
-      assert.strictEqual(privateKey.coefficient.byteLength, 11);
+      expect(privateKey.version).toBe(0);
+      expect(privateKey.modulus.byteLength).toBe(4);
+      expect(privateKey.publicExponent.byteLength).toBe(5);
+      expect(privateKey.privateExponent.byteLength).toBe(6);
+      expect(privateKey.prime1.byteLength).toBe(7);
+      expect(privateKey.prime2.byteLength).toBe(8);
+      expect(privateKey.exponent1.byteLength).toBe(9);
+      expect(privateKey.exponent2.byteLength).toBe(10);
+      expect(privateKey.coefficient.byteLength).toBe(11);
     });
   });
 
@@ -76,18 +76,18 @@ describe("RSA Private Key", () => {
       const der = AsnConvert.serialize(privateKey);
 
       const hex = Buffer.from(der).toString("hex");
-      assert.strictEqual(hex, privateKeyWithPrimeInfoHex);
+      expect(hex).toBe(privateKeyWithPrimeInfoHex);
     });
 
     it("parse", () => {
       const der = Buffer.from(privateKeyWithPrimeInfoHex, "hex");
 
       const privateKey = AsnConvert.parse(der, RSAPrivateKey);
-      assert.strictEqual(privateKey.version, 1);
-      assert.strictEqual(privateKey.otherPrimeInfos?.length, 1);
-      assert.strictEqual(privateKey.otherPrimeInfos?.[0].coefficient.byteLength, 4);
-      assert.strictEqual(privateKey.otherPrimeInfos?.[0].exponent.byteLength, 5);
-      assert.strictEqual(privateKey.otherPrimeInfos?.[0].prime.byteLength, 6);
+      expect(privateKey.version).toBe(1);
+      expect(privateKey.otherPrimeInfos?.length).toBe(1);
+      expect(privateKey.otherPrimeInfos?.[0].coefficient.byteLength).toBe(4);
+      expect(privateKey.otherPrimeInfos?.[0].exponent.byteLength).toBe(5);
+      expect(privateKey.otherPrimeInfos?.[0].prime.byteLength).toBe(6);
     });
   });
 });
