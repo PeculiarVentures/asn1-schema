@@ -14,6 +14,7 @@
         { "type": "revert", "section": "Reverts" }
       ],
       "extra-files": [
+        { "type": "json", "path": "lerna.json", "jsonpath": "$.version" },
         { "type": "json", "path": "packages/*/package.json", "glob": true, "jsonpath": "$.version" },
         {
           "type": "json",

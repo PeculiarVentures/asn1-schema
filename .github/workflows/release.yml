@@ -34,6 +34,15 @@ jobs:
       sha: ${{ steps.release.outputs.sha }}
 
     steps:
+      # Without RELEASE_TOKEN the release PR is opened with GITHUB_TOKEN, and no workflow (Test included) runs on it.
+      - name: Check RELEASE_TOKEN
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          if [ -z "$RELEASE_TOKEN" ]; then
+            echo "::warning::RELEASE_TOKEN is not set: Test will not run on the release pull request"
+          fi
+
       # Opens or updates the release PR from Conventional Commits; once that PR is merged,
       # creates the v<version> tag and the GitHub Release with the notes from the PR.
       - name: Release Please
@@ -66,16 +75,19 @@ jobs:
         run: |
           if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
             if [ "$GITHUB_REF_TYPE" != tag ] || [[ ! "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
-              echo "::error::Run Publish from a v<version> release tag, not from $GITHUB_REF_NAME"
+              echo "::error::Run Release from a v<version> release tag, not from $GITHUB_REF_NAME"
               exit 1
             fi
           elif [ "$RELEASE_SHA" != "$GITHUB_SHA" ]; then
-            echo "::error::Release commit $RELEASE_SHA differs from $GITHUB_SHA; run Publish manually from the release tag"
+            echo "::error::Release commit $RELEASE_SHA differs from $GITHUB_SHA; run Release manually from the release tag"
             exit 1
           fi
 
+      # Build and dependency code run in this job, so the write token is not left in .git/config.
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Read the version
         run: |
@@ -151,8 +163,17 @@ jobs:
 
       # Never moves the major tag backwards, e.g. when retrying an older version.
       - name: Move major tag
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           MAJOR="v${VERSION%%.*}"
+
+          # The repository has v2/v3 maintenance branches; a tag with the same name would make the refname ambiguous.
+          if [ -n "$(git ls-remote --heads origin "refs/heads/$MAJOR")" ]; then
+            echo "::notice::Leaving $MAJOR unchanged: a branch with that name exists"
+            exit 0
+          fi
+
           LATEST=$(git ls-remote --tags --refs origin "refs/tags/$MAJOR.*" \
             | sed 's|.*refs/tags/||' \
             | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
@@ -165,5 +186,4 @@ jobs:
           fi
 
           git tag -f "$MAJOR" HEAD
-          # Full ref: the repository also has v2/v3 branches.
-          git push -f origin "refs/tags/$MAJOR"
+          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "refs/tags/$MAJOR"
