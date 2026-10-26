@@ -1,5 +1,5 @@
 import { AsnConstructedOctetStringConverter, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes, OctetString } from "@peculiar/asn1-schema";
-import { ContentType, ContentEncryptionAlgorithmIdentifier } from "./types";
+import { type ContentType, ContentEncryptionAlgorithmIdentifier } from "./types";
 
 /**
  * ```asn

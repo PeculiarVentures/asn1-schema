@@ -1,4 +1,4 @@
-import { IAsnConvertible, IEmptyConstructor } from "./types";
+import type { IAsnConvertible, IEmptyConstructor } from "./types";
 
 export function isConvertible(target: IEmptyConstructor): target is new () => IAsnConvertible;
 export function isConvertible(target: unknown): target is IAsnConvertible;

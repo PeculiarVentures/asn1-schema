@@ -1,7 +1,7 @@
 import { AsnProp, AsnPropTypes, AsnIntegerArrayBufferConverter, OctetString } from "@peculiar/asn1-schema";
 import { GeneralName } from "../general_name";
 import { id_ce } from "../object_identifiers";
-import { CertificateSerialNumber } from "../types";
+import type { CertificateSerialNumber } from "../types";
 
 /**
  * ```asn1

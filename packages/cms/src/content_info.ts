@@ -1,5 +1,5 @@
 import { AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
-import { ContentType } from "./types";
+import type { ContentType } from "./types";
 
 /**
  * ```asn

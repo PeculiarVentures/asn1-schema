@@ -1,7 +1,7 @@
 import * as asn1js from "asn1js";
-import { AsnRepeatType } from "./decorators";
+import type { AsnRepeatType } from "./decorators";
 import { AsnPropTypes, AsnTypeTypes } from "./enums";
-import { IAsnConverter, IEmptyConstructor, IAsnConvertible } from "./types";
+import type { IAsnConverter, IEmptyConstructor, IAsnConvertible } from "./types";
 import { isConvertible } from "./helper";
 
 export interface IAsnSchemaItem {

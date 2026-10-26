@@ -4,7 +4,7 @@ export { AsnProp, AsnType, AsnChoiceType, AsnSequenceType, AsnSetType } from "./
 export { AsnTypeTypes, AsnPropTypes } from "./enums";
 export { AsnParser } from "./parser";
 export { AsnSerializer } from "./serializer";
-export { IAsnConverter, IAsnConvertible, IAsnParseOptions } from "./types";
+export type { IAsnConverter, IAsnConvertible, IAsnParseOptions } from "./types";
 export * from "./errors";
 export * from "./objects";
 export * from "./convert";

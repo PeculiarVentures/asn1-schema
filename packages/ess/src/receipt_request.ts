@@ -1,6 +1,6 @@
 import { AsnProp, OctetString } from "@peculiar/asn1-schema";
 import { GeneralNames } from "@peculiar/asn1-x509";
-import { ContentIdentifier } from "./types";
+import type { ContentIdentifier } from "./types";
 import { ReceiptsFrom } from "./receipts_from";
 
 export const ub_receiptsTo = 16;
