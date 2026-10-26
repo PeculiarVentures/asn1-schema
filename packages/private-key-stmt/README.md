@@ -1,9 +1,16 @@
-# `@peculiar/asn1-private-key-stmt`
+<h1 align="center">
+  @peculiar/asn1-private-key-stmt
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/private-key-stmt/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-private-key-stmt.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-private-key-stmt)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-private-key-stmt.png)](https://nodei.co/npm/@peculiar/asn1-private-key-stmt/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-private-key-stmt)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-private-key-stmt.svg)](https://www.npmjs.com/package/@peculiar/asn1-private-key-stmt)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-private-key-stmt.svg)](https://www.npmjs.com/package/@peculiar/asn1-private-key-stmt)
+
+</div>
 
 ASN.1 schema for the Private Key Statement attribute defined by the IETF LAMPS private-key-statement draft.
 

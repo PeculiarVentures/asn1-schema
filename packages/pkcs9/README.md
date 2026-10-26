@@ -1,9 +1,16 @@
-# `@peculiar/asn1-pkcs9`
+<h1 align="center">
+  @peculiar/asn1-pkcs9
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/pkcs9/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-pkcs9.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-pkcs9)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-pkcs9.png)](https://nodei.co/npm/@peculiar/asn1-pkcs9/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-pkcs9)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-pkcs9.svg)](https://www.npmjs.com/package/@peculiar/asn1-pkcs9)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-pkcs9.svg)](https://www.npmjs.com/package/@peculiar/asn1-pkcs9)
+
+</div>
 
 ASN.1 schema for PKCS #9 selected attribute types defined in RFC 2985.
 

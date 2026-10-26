@@ -1,9 +1,16 @@
-# `@peculiar/asn1-android`
+<h1 align="center">
+  @peculiar/asn1-android
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/android/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-android.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-android)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-android.png)](https://nodei.co/npm/@peculiar/asn1-android/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-android)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-android.svg)](https://www.npmjs.com/package/@peculiar/asn1-android)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-android.svg)](https://www.npmjs.com/package/@peculiar/asn1-android)
+
+</div>
 
 ASN.1 schema for Android key attestation extensions, including legacy Keymaster and newer KeyMint structures.
 

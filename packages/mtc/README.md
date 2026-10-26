@@ -1,9 +1,16 @@
-# `@peculiar/asn1-mtc`
+<h1 align="center">
+  @peculiar/asn1-mtc
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/mtc/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-mtc.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-mtc)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-mtc.png)](https://nodei.co/npm/@peculiar/asn1-mtc/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-mtc)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-mtc.svg)](https://www.npmjs.com/package/@peculiar/asn1-mtc)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-mtc.svg)](https://www.npmjs.com/package/@peculiar/asn1-mtc)
+
+</div>
 
 ASN.1 schema and TLS-encoded proof structures for Merkle Tree Certificates defined in draft-ietf-plants-merkle-tree-certs.
 
