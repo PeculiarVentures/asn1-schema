@@ -4,7 +4,7 @@
 
 - This repository is an npm workspaces + Lerna monorepo.
 - Package sources live in `packages/*/src`.
-- Tests live mainly in `packages/*/test`, with a smaller number of source-adjacent `*.spec.ts` files.
+- Tests live next to the code they cover as `packages/*/src/**/*.spec.ts`.
 - Many packages also commit generated `build` output. Do not hand-edit `build` files; change `src` first and regenerate when needed.
 - Use npm for package management. Do not switch the repo to yarn or pnpm.
 
@@ -54,16 +54,12 @@
 - Any feature change or bug fix should add or update tests in the affected package.
 - The canonical repo-level test runner is Vitest from the workspace root.
 - Root `npm test` runs `vitest run`.
-- Vitest includes:
-  - `packages/**/*.spec.ts`
-  - `packages/**/test/**/*.ts`
-- Prefer placing new tests under `packages/<package>/test`.
-- Use source-adjacent `*.spec.ts` files only when keeping the test next to the implementation materially improves clarity.
+- Vitest includes `packages/*/src/**/*.spec.ts`.
+- Put new tests next to the module they cover; public-API tests go in `packages/<package>/src/index.spec.ts`.
 - The test environment is Node, and Vitest globals are enabled. Existing tests commonly use `describe` and `it` without importing them.
 - Existing tests mostly use `node:assert`; Vitest `expect` is also acceptable when it makes the assertion clearer. Follow the surrounding style in the package you touch.
 - Keep tests deterministic. Avoid hidden dependencies on wall-clock time, randomness, network access, or external services.
 - For ASN.1 parsing or serialization changes, prefer tests that verify the exact decoded values, serialized output, or a round-trip/regression scenario.
-- Do not treat package-level `npm test` scripts as the source of truth. Some packages still contain legacy `mocha` scripts, while root CI and local full-suite runs now use Vitest.
 
 ## Validation Commands
 
@@ -76,8 +72,7 @@
   - `npm run coverage`
 - Useful targeted checks while iterating:
   - `npm run lint -- packages/<package>`
-  - `npx vitest run "packages/<package>/test/**/*.ts"`
-  - `npx vitest run "packages/<package>/src/**/*.spec.ts"`
+  - `npx vitest run packages/<package>`
   - `npx lerna run build --scope <package-name>`
 - Build maintenance commands:
   - `npm run clear` removes package build directories
