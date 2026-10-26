@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AlgorithmIdentifier, Attribute } from "@peculiar/asn1-x509";
 import { AsnConvert, AsnOctetStringConverter, OctetString } from "@peculiar/asn1-schema";
 import { PrivateKeyInfo, Attributes } from "./index";
@@ -22,14 +22,14 @@ describe("PrivateKeyInfo", () => {
     });
 
     const der = AsnConvert.serialize(obj);
-    assert.strictEqual(Buffer.from(der).toString("hex"), hex);
+    expect(Buffer.from(der).toString("hex")).toBe(hex);
   });
 
   it("parse", () => {
     const obj = AsnConvert.parse(Buffer.from(hex, "hex"), PrivateKeyInfo);
-    assert.strictEqual(obj.version, 0);
-    assert.strictEqual(obj.privateKeyAlgorithm.algorithm, "1.2.3.4.5");
-    assert.strictEqual(obj.privateKey.byteLength, 3);
-    assert.strictEqual(obj.attributes?.length, 1);
+    expect(obj.version).toBe(0);
+    expect(obj.privateKeyAlgorithm.algorithm).toBe("1.2.3.4.5");
+    expect(obj.privateKey.byteLength).toBe(3);
+    expect(obj.attributes?.length).toBe(1);
   });
 });

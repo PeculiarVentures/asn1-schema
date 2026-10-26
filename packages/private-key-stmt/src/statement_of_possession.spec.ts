@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { AsnParser } from "@peculiar/asn1-schema";
 import { PrivateKeyPossessionStatement } from "./index";
 

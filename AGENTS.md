@@ -56,8 +56,7 @@
 - Root `npm test` runs `vitest run`.
 - Vitest includes `packages/*/src/**/*.spec.ts`.
 - Put new tests next to the module they cover; public-API tests go in `packages/<package>/src/index.spec.ts`.
-- The test environment is Node, and Vitest globals are enabled. Existing tests commonly use `describe` and `it` without importing them.
-- Existing tests mostly use `node:assert`; Vitest `expect` is also acceptable when it makes the assertion clearer. Follow the surrounding style in the package you touch.
+- The test environment is Node. Import `describe`, `it` and `expect` from `vitest` (no globals) and assert with `expect`, not `node:assert`.
 - Keep tests deterministic. Avoid hidden dependencies on wall-clock time, randomness, network access, or external services.
 - For ASN.1 parsing or serialization changes, prefer tests that verify the exact decoded values, serialized output, or a round-trip/regression scenario.
 

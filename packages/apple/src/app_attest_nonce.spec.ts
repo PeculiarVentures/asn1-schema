@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { AsnParser, AsnConvert, OctetString } from "@peculiar/asn1-schema";
 
 import { AppAttestNonce } from "@peculiar/asn1-apple";

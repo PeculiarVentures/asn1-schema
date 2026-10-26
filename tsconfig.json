@@ -4,7 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "types": ["vitest/globals", "node"],
+    "types": ["node"],
     "paths": {
       "@peculiar/asn1-cms": ["./packages/cms/src"],
       "@peculiar/asn1-csr": ["./packages/csr/src"],

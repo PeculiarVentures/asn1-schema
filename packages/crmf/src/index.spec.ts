@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { CertReqMsg, CertReqMessages, CertRequest } from "@peculiar/asn1-crmf";
 
@@ -23,16 +23,16 @@ describe("crmf", () => {
     const certReqMsg = new CertReqMsg({ certReq });
 
     const der = AsnConvert.serialize(certReqMsg);
-    assert.ok(der.byteLength > 0);
+    expect(der.byteLength > 0).toBeTruthy();
 
     const parsed = AsnConvert.parse(der, CertReqMsg);
-    assert.strictEqual(parsed.certReq.certReqId, 1);
+    expect(parsed.certReq.certReqId).toBe(1);
   });
 
   it("parse CertReqMessages from PEM", () => {
     const certReqMessages = AsnConvert.parse(Buffer.from(pem, "base64"), CertReqMessages);
-    assert.strictEqual(certReqMessages.length, 2);
-    assert.strictEqual(certReqMessages[0].certReq.certReqId, 1);
+    expect(certReqMessages.length).toBe(2);
+    expect(certReqMessages[0].certReq.certReqId).toBe(1);
   });
 
   describe("parse vectors", () => {

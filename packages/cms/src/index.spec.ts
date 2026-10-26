@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import * as encoding from "@peculiar/utils/encoding";
 import { ContentInfo, EncapsulatedContentInfo, EnvelopedData, id_data, id_envelopedData, id_signedData, SignedData, SignerIdentifier } from "./index";
@@ -34,14 +34,14 @@ describe("cms", () => {
       "d4sO/vmLB9MFCMbdvsEJNvj/4/tedg8cAAAAAAAA";
 
     const contentInfo = AsnConvert.parse(encoding.base64.decode(pem), ContentInfo);
-    assert.strictEqual(contentInfo.contentType, id_signedData);
+    expect(contentInfo.contentType).toBe(id_signedData);
 
     const signedData = AsnConvert.parse(contentInfo.content, SignedData);
-    assert.strictEqual(!!signedData, true);
+    expect(!!signedData).toBe(true);
 
     const signer = signedData.signerInfos[0];
-    assert.strictEqual(signer.version, 1);
-    assert.ok(signer.sid.issuerAndSerialNumber);
+    expect(signer.version).toBe(1);
+    expect(signer.sid.issuerAndSerialNumber).toBeTruthy();
   });
 
   it("parse CMS with SignerInfo version 3", () => {
@@ -84,8 +84,8 @@ describe("cms", () => {
     const signedData = AsnConvert.parse(contentInfo.content, SignedData);
 
     const signer = signedData.signerInfos[0];
-    assert.strictEqual(signer.version, 3);
-    assert.ok(signer.sid.subjectKeyIdentifier);
+    expect(signer.version).toBe(3);
+    expect(signer.sid.subjectKeyIdentifier).toBeTruthy();
   });
 
   describe("EncapsulatedContentInfo", () => {
@@ -93,24 +93,24 @@ describe("cms", () => {
       const pem = "MIAGCSqGSIb3DQEHAaCAJIAAAAAAAAA=";
 
       const contentInfo = AsnConvert.parse(encoding.base64.decode(pem), EncapsulatedContentInfo);
-      assert.strictEqual(contentInfo.eContentType, id_data);
-      assert.strictEqual(contentInfo.eContent?.any?.byteLength, 4);
+      expect(contentInfo.eContentType).toBe(id_data);
+      expect(contentInfo.eContent?.any?.byteLength).toBe(4);
     });
 
     it("parse single OCTET STREAM", () => {
       const pem = "308006092A864886F70D010701A080040000000000";
 
       const contentInfo = AsnConvert.parse(encoding.hex.decode(pem), EncapsulatedContentInfo);
-      assert.strictEqual(contentInfo.eContentType, id_data);
-      assert.strictEqual(contentInfo.eContent?.single?.byteLength, 0);
+      expect(contentInfo.eContentType).toBe(id_data);
+      expect(contentInfo.eContent?.single?.byteLength).toBe(0);
     });
 
     it("parse signer info", () => {
       const sidRaw = "8014448878CF6D19EDC9D4F0BD2391441054B9B87047";
       const sid = AsnConvert.parse(encoding.hex.decode(sidRaw), SignerIdentifier);
 
-      assert.ok(sid.subjectKeyIdentifier);
-      assert.strictEqual(encoding.hex.encode(sid.subjectKeyIdentifier), "448878cf6d19edc9d4f0bd2391441054b9b87047");
+      expect(sid.subjectKeyIdentifier).toBeTruthy();
+      expect(encoding.hex.encode(sid.subjectKeyIdentifier!)).toBe("448878cf6d19edc9d4f0bd2391441054b9b87047");
     });
   });
 
@@ -222,38 +222,38 @@ describe("cms", () => {
       it(`parse CMS with ${type} EnvelopedData - ${constructed ? "constructed" : ""} OctetString`, () => {
         // parse contentInfo
         const contentInfo = AsnConvert.parse(encoding.base64.decode(pem), ContentInfo);
-        assert.strictEqual(contentInfo.contentType, id_envelopedData);
+        expect(contentInfo.contentType).toBe(id_envelopedData);
 
         const envelopedData = AsnConvert.parse(contentInfo.content, EnvelopedData);
-        assert.strictEqual(!!envelopedData, true);
+        expect(!!envelopedData).toBe(true);
 
         const recipientInfo = envelopedData.recipientInfos[0];
 
         switch (type) {
           case "KeyTransfer": {
-            assert.strictEqual(!!recipientInfo.ktri, true);
-            assert.ok(recipientInfo?.ktri?.rid?.issuerAndSerialNumber);
+            expect(!!recipientInfo.ktri).toBe(true);
+            expect(recipientInfo?.ktri?.rid?.issuerAndSerialNumber).toBeTruthy();
             break;
           }
           case "KeyAgreement": {
-            assert.strictEqual(!!recipientInfo.kari, true);
+            expect(!!recipientInfo.kari).toBe(true);
             break;
           }
         }
 
         const encryptedContentInfo = envelopedData.encryptedContentInfo;
-        assert.strictEqual(!!encryptedContentInfo, true);
+        expect(!!encryptedContentInfo).toBe(true);
 
         if (constructed) {
           const constructedValue = encryptedContentInfo.encryptedContent?.constructedValue;
-          assert.strictEqual(!!constructedValue, true);
+          expect(!!constructedValue).toBe(true);
 
           if (constructedValue && expected_buffer) {
             const actualBuffer = Buffer.concat(constructedValue.map((o) => Buffer.from(o.buffer)));
-            assert.notStrictEqual(actualBuffer, expected_buffer);
+            expect(actualBuffer).not.toBe(expected_buffer);
           }
         } else {
-          assert.strictEqual(!!encryptedContentInfo.encryptedContent?.value, true);
+          expect(!!encryptedContentInfo.encryptedContent?.value).toBe(true);
         }
       });
     }

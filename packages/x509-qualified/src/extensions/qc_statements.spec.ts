@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { id_qcs_pkixQCSyntax_v1, QCStatement } from "./qc_statements";
 

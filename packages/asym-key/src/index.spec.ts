@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { id_rsaEncryption } from "@peculiar/asn1-rsa";
 import { OneAsymmetricKey } from "@peculiar/asn1-asym-key";
@@ -35,6 +35,6 @@ describe("RFC5958", () => {
     ].join("");
 
     const key = AsnConvert.parse(Buffer.from(pem, "base64"), OneAsymmetricKey);
-    assert.strictEqual(key.privateKeyAlgorithm.algorithm, id_rsaEncryption);
+    expect(key.privateKeyAlgorithm.algorithm).toBe(id_rsaEncryption);
   });
 });

@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { hex } from "@peculiar/utils/encoding";
 import { BitString, AsnConvert } from "./index";
 
@@ -11,14 +11,14 @@ describe("asn1-schema", () => {
         const obj = new BitString(new Uint8Array([1, 2, 3]), 3);
         const der = AsnConvert.serialize(obj);
 
-        assert.strictEqual(hex.encode(der), hexString);
+        expect(hex.encode(der)).toBe(hexString);
       });
 
       it("parse", () => {
         const obj = AsnConvert.parse(hex.decode(hexString), BitString);
 
-        assert.strictEqual(obj.unusedBits, 3);
-        assert.strictEqual(hex.encode(obj.value), "010203");
+        expect(obj.unusedBits).toBe(3);
+        expect(hex.encode(obj.value)).toBe("010203");
       });
     });
 
@@ -30,21 +30,21 @@ describe("asn1-schema", () => {
         const obj = new BitString(num);
         const der = AsnConvert.serialize(obj);
 
-        assert.strictEqual(hex.encode(der), hexString);
+        expect(hex.encode(der)).toBe(hexString);
       });
 
       it("parse", () => {
         const obj = AsnConvert.parse(hex.decode(hexString), BitString);
 
-        assert.strictEqual(obj.unusedBits, 7);
-        assert.strictEqual(obj.toNumber(), num);
+        expect(obj.unusedBits).toBe(7);
+        expect(obj.toNumber()).toBe(num);
       });
 
       it("parse #2", () => {
         const obj = AsnConvert.parse(hex.decode("03030740ff"), BitString);
 
-        assert.strictEqual(obj.unusedBits, 7);
-        assert.strictEqual(obj.toNumber(), num);
+        expect(obj.unusedBits).toBe(7);
+        expect(obj.toNumber()).toBe(num);
       });
     });
   });

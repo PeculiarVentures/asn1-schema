@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { AsnParser, AsnConvert, OctetString } from "@peculiar/asn1-schema";
 import { CertificateTemplate } from "@peculiar/asn1-x509-microsoft";
 import { base64, base64url, hex } from "@peculiar/utils/encoding";
@@ -9,8 +9,8 @@ describe("x509", () => {
     const pem =
       "MIIDljCCAn6gAwIBAgIOSETcxtRwD/qzf0FjVvEwDQYJKoZIhvcNAQELBQAwZjELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExGjAYBgNVBAsTEUZvciBEZW1vIFVzZSBPbmx5MSAwHgYDVQQDExdHbG9iYWxTaWduIERlbW8gUm9vdCBDQTAeFw0xNjA3MjAwMDAwMDBaFw0zNjA3MjAwMDAwMDBaMGYxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMRowGAYDVQQLExFGb3IgRGVtbyBVc2UgT25seTEgMB4GA1UEAxMXR2xvYmFsU2lnbiBEZW1vIFJvb3QgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC1i9RNgrJ4YAATN0J4KVGZjFGQVGFdcbKvfxrt0Bfusq2g81iVrZZjqTJnPSx4g6TdVcsEXU9GWlkFXKEtZzYM4ycbwLAeJQxQDEqkV03GV8ks2Jq/6jIm2DbByPiS5fvRQFQJLYuQHqXpjpOpmPiostUsg9ydMEqcacYV22a6A6Nrb1c1B6OL+X0u9bo30K+YYSw2Ngp3Tuuj9PDk6JS/0CPLcLo8JIFFc8t78lPDquNAOqTDwY/HTw4751iqLVem9q3EDKEeUS+x4gqsCD2pENA7PlQBza55BGOi/A+UAsmfee1oq2Glo9buXBgX+oJ3HnyelzJU9Ej4+yfH7rcvAgMBAAGjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTqD8ID9OxgG83HZJVtOQMmftrrLzANBgkqhkiG9w0BAQsFAAOCAQEAAECKKpL0A2I+hsY881tIz7WqkLDuLh/ISzRVdsALYAxLhVDUHPckh5XyVRkpbTmirn+b5MpuwAI2R8A7Ld6aWWiibc7zGEZNvEKsUEYoJoYR0fuQs2cF7egiYjhFwFMX75w+kuI0Yelm3/3+BiJVtAXqmnQ4yRpGXqNJ4mQC8yWgQbZCLUpH/nqeQANeoaDr5Yg8IOuHRQzG6YNt/Cl9CetDd8WPrAkGm3T2iG0dXQ48VgkkXcNDtY+55nYjIO+N7i+WTh1fe3ArGxHBR3E44+WoA8ntfI1g65+GR0s6G8M7oS+kAFXIwugUGYEnTWp0m5bAn5NlD314IEOg4mnS8Q==";
     const cert = AsnParser.parse(base64.decode(pem), src.Certificate);
-    assert.strictEqual(!!cert, true);
-    assert.ok(cert.tbsCertificateRaw);
+    expect(!!cert).toBe(true);
+    expect(cert.tbsCertificateRaw).toBeTruthy();
   });
 
   it("cert #2", () => {
@@ -20,14 +20,14 @@ describe("x509", () => {
     cert.tbsCertificate.extensions?.forEach((extension) => {
       if (extension.extnID === src.id_ce_cRLDistributionPoints) {
         const crlDistributionPoints = AsnParser.parse(extension.extnValue, src.CRLDistributionPoints);
-        assert.strictEqual(crlDistributionPoints[0].distributionPoint?.fullName?.[0].uniformResourceIdentifier, "http://crl.globalsign.com/gsdemosha2g3.crl");
+        expect(crlDistributionPoints[0].distributionPoint?.fullName?.[0].uniformResourceIdentifier).toBe("http://crl.globalsign.com/gsdemosha2g3.crl");
       }
       if (extension.extnID === src.id_ce_keyUsage) {
         const keyUsage = AsnParser.parse(extension.extnValue, src.KeyUsage);
-        assert.strictEqual(keyUsage.toString(), "[digitalSignature, keyEncipherment]");
+        expect(keyUsage.toString()).toBe("[digitalSignature, keyEncipherment]");
       }
     });
-    assert.strictEqual(!!cert, true);
+    expect(!!cert).toBe(true);
   });
 
   it("cert with 0 extensions", () => {
@@ -37,13 +37,13 @@ describe("x509", () => {
     const cert = AsnConvert.parse(certRaw, src.Certificate);
     const certRaw2 = AsnConvert.serialize(cert);
 
-    assert.strictEqual(hex, Buffer.from(certRaw2).toString("hex"));
+    expect(hex).toBe(Buffer.from(certRaw2).toString("hex"));
   });
 
   it("Extended key usages", () => {
     const hexString = "300c06042a030405060453040506";
     const eku = AsnParser.parse(hex.decode(hexString), src.ExtendedKeyUsage);
-    assert.strictEqual(eku.join(", "), "1.2.3.4.5, 2.3.4.5.6");
+    expect(eku.join(", ")).toBe("1.2.3.4.5, 2.3.4.5.6");
   });
 
   it("Name constrains", () => {
@@ -59,10 +59,10 @@ describe("x509", () => {
 
     const test = AsnParser.parse(der, src.NameConstraints);
 
-    assert.ok(test.permittedSubtrees);
-    assert.strictEqual(test.permittedSubtrees[0].base.dNSName, "some.dns.com");
-    assert.strictEqual(test.permittedSubtrees[1].base.iPAddress, "192.168.1.1");
-    assert.strictEqual(test.permittedSubtrees[2].base.iPAddress, "2001:db8:11a3:9d7:1f34:8a2e:7a0:765d");
+    expect(test.permittedSubtrees).toBeTruthy();
+    expect(test.permittedSubtrees![0].base.dNSName).toBe("some.dns.com");
+    expect(test.permittedSubtrees![1].base.iPAddress).toBe("192.168.1.1");
+    expect(test.permittedSubtrees![2].base.iPAddress).toBe("2001:db8:11a3:9d7:1f34:8a2e:7a0:765d");
   });
 
   it("Certificate template", () => {
@@ -75,9 +75,9 @@ describe("x509", () => {
     const der = AsnConvert.serialize(certTemplate);
 
     const test = AsnConvert.parse(der, CertificateTemplate);
-    assert.strictEqual(test.templateID, "1.2.3.4.5.6.7.8.9");
-    assert.strictEqual(test.templateMajorVersion, 101);
-    assert.strictEqual(test.templateMinorVersion, 0);
+    expect(test.templateID).toBe("1.2.3.4.5.6.7.8.9");
+    expect(test.templateMajorVersion).toBe(101);
+    expect(test.templateMinorVersion).toBe(0);
   });
 
   it("UserNotice", () => {
@@ -87,8 +87,8 @@ describe("x509", () => {
 
     const userNotice = AsnConvert.parse(raw, src.UserNotice);
 
-    assert.ok(userNotice.explicitText);
-    assert.strictEqual(userNotice.explicitText.bmpString, "Implementa la Politica de la Raiz Costarricense de Certificacion Digital v2");
+    expect(userNotice.explicitText).toBeTruthy();
+    expect(userNotice.explicitText!.bmpString).toBe("Implementa la Politica de la Raiz Costarricense de Certificacion Digital v2");
   });
 
   it("PrivateKeyUsagePeriod", () => {
@@ -97,8 +97,8 @@ describe("x509", () => {
 
     const privateKeyUsagePeriod = AsnConvert.parse(raw, src.PrivateKeyUsagePeriod);
 
-    assert.strictEqual(privateKeyUsagePeriod.notBefore?.getTime(), 1042069043000);
-    assert.strictEqual(privateKeyUsagePeriod.notAfter?.getTime(), 1673222843000);
+    expect(privateKeyUsagePeriod.notBefore?.getTime()).toBe(1042069043000);
+    expect(privateKeyUsagePeriod.notAfter?.getTime()).toBe(1673222843000);
   });
 
   it("EntrustVersionInfo", () => {
@@ -107,8 +107,8 @@ describe("x509", () => {
 
     const entrustVersionInfo = AsnConvert.parse(raw, src.EntrustVersionInfo);
 
-    assert.strictEqual(entrustVersionInfo.entrustVers, "V6.0:4.0");
-    assert.strictEqual(entrustVersionInfo.entrustInfoFlags.toString(), "[keyUpdateAllowed]");
+    expect(entrustVersionInfo.entrustVers).toBe("V6.0:4.0");
+    expect(entrustVersionInfo.entrustInfoFlags.toString()).toBe("[keyUpdateAllowed]");
   });
 
   describe("AlgorithmIdentifier", () => {
@@ -117,13 +117,13 @@ describe("x509", () => {
         const alg1 = new src.AlgorithmIdentifier({ algorithm: "1.2.3" });
         const alg2 = new src.AlgorithmIdentifier({ algorithm: "1.2.3" });
 
-        assert.strictEqual(alg1.isEqual(alg2), true);
+        expect(alg1.isEqual(alg2)).toBe(true);
       });
       it("algorithm: not equal, parameters: equal(default)", () => {
         const alg1 = new src.AlgorithmIdentifier({ algorithm: "1.2.3" });
         const alg2 = new src.AlgorithmIdentifier({ algorithm: "1.2.3.4" });
 
-        assert.strictEqual(alg1.isEqual(alg2), false);
+        expect(alg1.isEqual(alg2)).toBe(false);
       });
       it("algorithm: equal, parameters: not equal(alg1.parameters null)", () => {
         const alg1 = new src.AlgorithmIdentifier({
@@ -132,7 +132,7 @@ describe("x509", () => {
         });
         const alg2 = new src.AlgorithmIdentifier({ algorithm: "1.2.3" });
 
-        assert.strictEqual(alg1.isEqual(alg2), false);
+        expect(alg1.isEqual(alg2)).toBe(false);
       });
       it("algorithm: equal, parameters: not equal(alg2.parameters null)", () => {
         const alg1 = new src.AlgorithmIdentifier({ algorithm: "1.2.3" });
@@ -141,7 +141,7 @@ describe("x509", () => {
           parameters: null,
         });
 
-        assert.strictEqual(alg1.isEqual(alg2), false);
+        expect(alg1.isEqual(alg2)).toBe(false);
       });
       it("algorithm: equal, parameters: equal(null)", () => {
         const alg1 = new src.AlgorithmIdentifier({
@@ -153,7 +153,7 @@ describe("x509", () => {
           parameters: null,
         });
 
-        assert.strictEqual(alg1.isEqual(alg2), true);
+        expect(alg1.isEqual(alg2)).toBe(true);
       });
       it("algorithm: equal, parameters: equal(OcetetString)", () => {
         const alg1 = new src.AlgorithmIdentifier({
@@ -165,7 +165,7 @@ describe("x509", () => {
           parameters: AsnConvert.serialize(new OctetString([1, 2, 3])),
         });
 
-        assert.strictEqual(alg1.isEqual(alg2), true);
+        expect(alg1.isEqual(alg2)).toBe(true);
       });
       it("algorithm: equal, parameters: not equal(OctetString)", () => {
         const alg1 = new src.AlgorithmIdentifier({
@@ -177,7 +177,7 @@ describe("x509", () => {
           parameters: AsnConvert.serialize(new OctetString([1, 2, 3, 4])),
         });
 
-        assert.strictEqual(alg1.isEqual(alg2), false);
+        expect(alg1.isEqual(alg2)).toBe(false);
       });
     });
   });
@@ -187,14 +187,14 @@ describe("x509", () => {
       hex.decode("304e3018060a60864801650302010302060a608648016503020102073018060a60864801650302010303060a608648016503020102083018060a6086480165030201030c060a60864801650302010209"),
       src.PolicyMappings,
     );
-    assert.strictEqual(policyMappings.length, 3);
+    expect(policyMappings.length).toBe(3);
   });
 
   it("subjectInfoAccess", () => {
     const subjectInfoAccess = AsnParser.parse(base64url.decode("MEcwRQYIKwYBBQUHMAWGOWh0dHA6Ly9pcGtpLnVzcHRvLmdvdi9JUEtJL0NlcnRzL0NBY2VydHNJc3N1ZWRCeVVTUFRPLnA3Yw"), src.SubjectInfoAccessSyntax);
-    assert.strictEqual(subjectInfoAccess.length, 1);
-    assert.strictEqual(subjectInfoAccess[0].accessMethod, "1.3.6.1.5.5.7.48.5");
-    assert.strictEqual(subjectInfoAccess[0].accessLocation.uniformResourceIdentifier, "http://ipki.uspto.gov/IPKI/Certs/CAcertsIssuedByUSPTO.p7c");
+    expect(subjectInfoAccess.length).toBe(1);
+    expect(subjectInfoAccess[0].accessMethod).toBe("1.3.6.1.5.5.7.48.5");
+    expect(subjectInfoAccess[0].accessLocation.uniformResourceIdentifier).toBe("http://ipki.uspto.gov/IPKI/Certs/CAcertsIssuedByUSPTO.p7c");
   });
 
   it("issuer #83, IssuingDistributionPoint", () => {
@@ -202,8 +202,8 @@ describe("x509", () => {
       hex.decode("3034a02fa02d862b687474703a2f2f63726c732e706b692e676f6f672f6774733170352f37554375585a754c5549672e63726c8101ff"),
       src.IssuingDistributionPoint,
     );
-    assert.strictEqual(issuingDistributionPoint.distributionPoint?.fullName?.[0].uniformResourceIdentifier, "http://crls.pki.goog/gts1p5/7UCuXZuLUIg.crl");
-    assert.strictEqual(issuingDistributionPoint.onlyContainsUserCerts, true);
+    expect(issuingDistributionPoint.distributionPoint?.fullName?.[0].uniformResourceIdentifier).toBe("http://crls.pki.goog/gts1p5/7UCuXZuLUIg.crl");
+    expect(issuingDistributionPoint.onlyContainsUserCerts).toBe(true);
   });
 
   describe("validity", () => {
@@ -213,7 +213,7 @@ describe("x509", () => {
         notAfter: new Date("2050-01-01T00:00:00Z"),
       });
       const hex = Buffer.from(AsnConvert.serialize(validity)).toString("hex");
-      assert.strictEqual(hex, "3020170d3439313233313233353935395a180f32303530303130313030303030305a");
+      expect(hex).toBe("3020170d3439313233313233353935395a180f32303530303130313030303030305a");
     });
 
     it("generalized time without fractional seconds", () => {
@@ -226,7 +226,7 @@ describe("x509", () => {
       const hex = Buffer.from(AsnConvert.serialize(validity)).toString("hex");
       // Expected: GeneralizedTime should not include fractional seconds (.123)
       // The hex should end with 180f32303530303130313030303030305a (without fractional part)
-      assert.strictEqual(hex, "3020170d3439313233313233353935395a180f32303530303130313030303030305a");
+      expect(hex).toBe("3020170d3439313233313233353935395a180f32303530303130313030303030305a");
     });
   });
 });

@@ -1,4 +1,4 @@
-import * as assert from "node:assert";
+import { beforeAll, describe, expect, it } from "vitest";
 import * as encoding from "@peculiar/utils/encoding";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import * as asn1X509 from "@peculiar/asn1-x509";
@@ -34,44 +34,40 @@ describe("crl", () => {
     });
 
     it("authorityKeyIdentifier", () => {
-      assert.ok(crl.tbsCertList.crlExtensions);
-      const ext = crl.tbsCertList.crlExtensions.find((o) => o.extnID === asn1X509.id_ce_authorityKeyIdentifier);
-      assert.ok(ext);
-      const aki = AsnConvert.parse(ext.extnValue, asn1X509.AuthorityKeyIdentifier);
-      assert.ok(aki.keyIdentifier);
-      assert.strictEqual(encoding.hex.encode(aki.keyIdentifier.buffer), "1bd9d8cb089623db9b5b5e17b3b2e53f89789ce6");
+      expect(crl.tbsCertList.crlExtensions).toBeTruthy();
+      const ext = crl.tbsCertList.crlExtensions!.find((o) => o.extnID === asn1X509.id_ce_authorityKeyIdentifier);
+      expect(ext).toBeTruthy();
+      const aki = AsnConvert.parse(ext!.extnValue, asn1X509.AuthorityKeyIdentifier);
+      expect(aki.keyIdentifier).toBeTruthy();
+      expect(encoding.hex.encode(aki.keyIdentifier!.buffer)).toBe("1bd9d8cb089623db9b5b5e17b3b2e53f89789ce6");
     });
 
     it("cRLNumber", () => {
-      assert.ok(crl.tbsCertList.crlExtensions);
-      const ext = crl.tbsCertList.crlExtensions.find((o) => o.extnID === asn1X509.id_ce_cRLNumber);
-      assert.ok(ext);
-      const crlNumber = AsnConvert.parse(ext.extnValue, asn1X509.CRLNumber);
-      assert.strictEqual(crlNumber.value, 1);
+      expect(crl.tbsCertList.crlExtensions).toBeTruthy();
+      const ext = crl.tbsCertList.crlExtensions!.find((o) => o.extnID === asn1X509.id_ce_cRLNumber);
+      expect(ext).toBeTruthy();
+      const crlNumber = AsnConvert.parse(ext!.extnValue, asn1X509.CRLNumber);
+      expect(crlNumber.value).toBe(1);
     });
 
     it("issuingDistributionPoint", () => {
-      assert.ok(crl.tbsCertList.crlExtensions);
-      const ext = crl.tbsCertList.crlExtensions.find((o) => o.extnID === asn1X509.id_ce_issuingDistributionPoint);
-      assert.ok(ext);
-      const point = AsnConvert.parse(ext.extnValue, asn1X509.IssuingDistributionPoint);
-      assert.strictEqual(point.onlyContainsAttributeCerts, false);
-      assert.strictEqual(point.onlyContainsCACerts, false);
-      assert.strictEqual(point.onlyContainsUserCerts, false);
-      assert.strictEqual(point.indirectCRL, false);
-      assert.strictEqual(
-        point.distributionPoint?.fullName?.[0].uniformResourceIdentifier,
-        "http://kara.primekey.se:8080/ejbca/publicweb/webdist/certdist?cmd=crl&issuer=CN%3DPeculiar+Ventures+Root+CA+-+R1",
-      );
+      expect(crl.tbsCertList.crlExtensions).toBeTruthy();
+      const ext = crl.tbsCertList.crlExtensions!.find((o) => o.extnID === asn1X509.id_ce_issuingDistributionPoint);
+      expect(ext).toBeTruthy();
+      const point = AsnConvert.parse(ext!.extnValue, asn1X509.IssuingDistributionPoint);
+      expect(point.onlyContainsAttributeCerts).toBe(false);
+      expect(point.onlyContainsCACerts).toBe(false);
+      expect(point.onlyContainsUserCerts).toBe(false);
+      expect(point.indirectCRL).toBe(false);
+      expect(point.distributionPoint?.fullName?.[0].uniformResourceIdentifier).toBe("http://kara.primekey.se:8080/ejbca/publicweb/webdist/certdist?cmd=crl&issuer=CN%3DPeculiar+Ventures+Root+CA+-+R1");
     });
 
     it("freshestCRL", () => {
-      assert.ok(crl.tbsCertList.crlExtensions);
-      const ext = crl.tbsCertList.crlExtensions.find((o) => o.extnID === asn1X509.id_ce_freshestCRL);
-      assert.ok(ext);
-      const freshest = AsnConvert.parse(ext.extnValue, asn1X509.FreshestCRL);
-      assert.strictEqual(
-        freshest[0].distributionPoint?.fullName?.[0].uniformResourceIdentifier,
+      expect(crl.tbsCertList.crlExtensions).toBeTruthy();
+      const ext = crl.tbsCertList.crlExtensions!.find((o) => o.extnID === asn1X509.id_ce_freshestCRL);
+      expect(ext).toBeTruthy();
+      const freshest = AsnConvert.parse(ext!.extnValue, asn1X509.FreshestCRL);
+      expect(freshest[0].distributionPoint?.fullName?.[0].uniformResourceIdentifier).toBe(
         "http://kara.primekey.se:8080/ejbca/publicweb/webdist/certdist?cmd=deltacrl&issuer=CN%3DPeculiar+Ventures+Root+CA+-+R1",
       );
     });
@@ -79,33 +75,33 @@ describe("crl", () => {
 
   it("get tbs raw", () => {
     const crl = AsnConvert.parse(crlExtRaw, asn1X509.CertificateList);
-    assert.ok(crl.tbsCertListRaw);
+    expect(crl.tbsCertListRaw).toBeTruthy();
   });
 
   it("parse delta extension", () => {
     const crl = AsnConvert.parse(crlExtDeltaRaw, asn1X509.CertificateList);
-    assert.ok(crl.tbsCertList.crlExtensions);
+    expect(crl.tbsCertList.crlExtensions).toBeTruthy();
 
-    const deltaExt = crl.tbsCertList.crlExtensions.find((o) => o.extnID === asn1X509.id_ce_deltaCRLIndicator);
-    assert.ok(deltaExt);
+    const deltaExt = crl.tbsCertList.crlExtensions!.find((o) => o.extnID === asn1X509.id_ce_deltaCRLIndicator);
+    expect(deltaExt).toBeTruthy();
 
-    const delta = AsnConvert.parse(deltaExt.extnValue, asn1X509.BaseCRLNumber);
-    assert.strictEqual(delta.value, 1);
+    const delta = AsnConvert.parse(deltaExt!.extnValue, asn1X509.BaseCRLNumber);
+    expect(delta.value).toBe(1);
   });
 
   it("parse with revoked certs", () => {
     const crl = AsnConvert.parse(crlCertsRaw, asn1X509.CertificateList);
-    assert.ok(crl.tbsCertList.revokedCertificates);
-    const revokedCert = crl.tbsCertList.revokedCertificates[0];
+    expect(crl.tbsCertList.revokedCertificates).toBeTruthy();
+    const revokedCert = crl.tbsCertList.revokedCertificates![0];
 
-    assert.ok(revokedCert.revocationDate.utcTime);
-    assert.ok(encoding.hex.encode(revokedCert.userCertificate), "047a58");
+    expect(revokedCert.revocationDate.utcTime).toBeTruthy();
+    expect(encoding.hex.encode(revokedCert.userCertificate), "047a58").toBeTruthy();
 
-    assert.ok(revokedCert.crlEntryExtensions);
-    const crlReasonExt = revokedCert.crlEntryExtensions.find((o) => o.extnID === asn1X509.id_ce_cRLReasons);
-    assert.ok(crlReasonExt);
+    expect(revokedCert.crlEntryExtensions).toBeTruthy();
+    const crlReasonExt = revokedCert.crlEntryExtensions!.find((o) => o.extnID === asn1X509.id_ce_cRLReasons);
+    expect(crlReasonExt).toBeTruthy();
 
-    const crlReason = AsnConvert.parse(crlReasonExt.extnValue, asn1X509.CRLReason);
-    assert.strictEqual(crlReason.reason, asn1X509.CRLReasons.cessationOfOperation);
+    const crlReason = AsnConvert.parse(crlReasonExt!.extnValue, asn1X509.CRLReason);
+    expect(crlReason.reason).toBe(asn1X509.CRLReasons.cessationOfOperation);
   });
 });
