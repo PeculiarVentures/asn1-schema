@@ -6,6 +6,18 @@
 
 `asn1-schema` is a collection of TypeScript schemas that make working with common ASN.1 objects easy.
 
+## Breaking Changes In v3
+
+v3 is ESM-only and requires Node.js `^20.19.0 || >=22.12.0` (was `>=14`). All `@peculiar/asn1-*` packages move to v3 together; don't mix them with v2 packages. CommonJS code can still `require()` them on these versions; Node.js 22.0–22.11 can't (`ERR_REQUIRE_ESM`). The public API of every package is unchanged.
+
+- **One ESM build per package:** `build/cjs`, `build/es2015` and `build/types` are replaced by `build/*.js` with `.d.ts` files next to them. `main`, `module` and `types` still point at the root entry for older resolvers.
+- **Deep imports** (`@peculiar/asn1-x509/build/cjs/...`, `.../build/es2015/...`, `.../build/types/...`) are blocked by the new `exports` map; import from the package name.
+- **TypeScript compiling to CommonJS:** use `"module": "node20"` or `"nodenext"` (`node16` fails with TS1479). ESM and bundler setups need no changes. Using the schema classes doesn't need `experimentalDecorators`; only code that declares its own schemas with `@AsnType`/`@AsnProp` does, as before.
+- **Jest in CommonJS mode:** switch to ESM mode or Vitest, or configure an ESM-to-CommonJS transformer and make sure `transformIgnorePatterns` doesn't exclude the `@peculiar/*` packages and `asn1js`.
+- **Peer dependencies:** the decorators register every schema in the storage of the `@peculiar/asn1-schema` copy they were loaded with, and the converters check `instanceof asn1js.*`, so two copies of either break parsing at runtime (`Cannot get schema for '...' target`). Every `@peculiar/asn1-*` package now has `@peculiar/asn1-schema` `^3.0.0` as a peer, and `@peculiar/asn1-schema`, `asn1-x509`, `asn1-cert-transparency` and `asn1-lei` have `asn1js` `^4.0.0` as a peer. npm 7+ installs peers automatically, and a conflicting version now fails at install (`ERESOLVE`) instead of at runtime. Dependencies between the other packages (for example `asn1-cms` → `asn1-x509`) stay regular dependencies.
+- **asn1js 4:** objects built with asn1js 3 fail the `instanceof` checks, and asn1js 4 changes a few encodings; see its [breaking changes](https://github.com/PeculiarVentures/ASN1.js#breaking-changes-in-v4). Libraries built on asn1-schema 2 (such as `@peculiar/x509` 2 and `webcrypto-core` 1) have to move to v3 at the same time.
+- **Dependencies:** `tslib` is gone, and `@peculiar/utils` moves from 2 to 4 (same functions, ESM-only).
+
 ## List of schemas
 
 - [adobe acrobat](packages/adobe-acrobat/README.md)
@@ -89,8 +101,4 @@ Certificate {
 
 ## Development
 
-### Create schema
-
-```shell
-npm run create <name>
-```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the project layout, the checks to run, how to add a package, and how releases work.

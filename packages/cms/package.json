@@ -2,6 +2,26 @@
   "name": "@peculiar/asn1-cms",
   "version": "2.11.1",
   "description": "ASN.1 schema for Cryptographic Message Syntax (CMS) defined in RFC 5652.",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./build/index.js",
+  "module": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": "./build/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "build/",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
   "keywords": [
     "asn",
     "asn1",
@@ -12,20 +32,6 @@
   ],
   "author": "PeculiarVentures, LLC",
   "license": "MIT",
-  "engines": {
-    "node": ">=14"
-  },
-  "files": [
-    "build/**/*.{js,d.ts}",
-    "LICENSE",
-    "README.md"
-  ],
-  "main": "build/cjs/index.js",
-  "module": "build/es2015/index.js",
-  "types": "build/types/index.d.ts",
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/PeculiarVentures/asn1-schema",
@@ -35,21 +41,14 @@
     "url": "https://github.com/PeculiarVentures/asn1-schema/issues"
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/cms#readme",
-  "scripts": {
-    "clear": "rimraf build",
-    "build": "npm run build:module && npm run build:types",
-    "build:module": "npm run build:cjs && npm run build:es2015",
-    "build:cjs": "tsc -p tsconfig.compile.json --removeComments --module commonjs --outDir build/cjs",
-    "build:es2015": "tsc -p tsconfig.compile.json --removeComments --module ES2015 --outDir build/es2015",
-    "prebuild:types": "rimraf build/types",
-    "build:types": "tsc -p tsconfig.compile.json --outDir build/types --declaration --emitDeclarationOnly",
-    "rebuild": "npm run clear && npm run build"
-  },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.11.1",
     "@peculiar/asn1-x509": "^2.11.1",
-    "@peculiar/asn1-x509-attr": "^2.11.1",
-    "asn1js": "^3.0.10",
-    "tslib": "^2.8.1"
+    "@peculiar/asn1-x509-attr": "^2.11.1"
+  },
+  "peerDependencies": {
+    "@peculiar/asn1-schema": "^2.11.1"
+  },
+  "devDependencies": {
+    "@peculiar/asn1-schema": "^2.11.1"
   }
 }
