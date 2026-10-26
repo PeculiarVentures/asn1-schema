@@ -41,14 +41,19 @@ function createPackageJson(name, moduleName, version) {
 }
 
 function createReadme(moduleName, name) {
-  const encodedName = encodeURIComponent(moduleName);
+  return `<h1 align="center">
+  ${moduleName}
+</h1>
 
-  return `# \`${moduleName}\`
+<div align="center">
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/${name}/LICENSE)
-[![npm version](https://badge.fury.io/js/${encodedName}.svg)](https://badge.fury.io/js/${encodedName})
+![NPM License](https://img.shields.io/npm/l/${moduleName})
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/${moduleName}.svg)](https://www.npmjs.com/package/${moduleName})
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/${moduleName}.svg)](https://www.npmjs.com/package/${moduleName})
 
-[![NPM](https://nodei.co/npm/${moduleName}.png)](https://nodei.co/npm/${moduleName}/)
+</div>
 
 ASN.1 schema definitions for ${name}.
 

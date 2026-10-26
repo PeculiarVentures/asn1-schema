@@ -1,9 +1,16 @@
-# `@peculiar/asn1-ecc`
+<h1 align="center">
+  @peculiar/asn1-ecc
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/ecc/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-ecc.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-ecc)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-ecc.png)](https://nodei.co/npm/@peculiar/asn1-ecc/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-ecc)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-ecc.svg)](https://www.npmjs.com/package/@peculiar/asn1-ecc)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-ecc.svg)](https://www.npmjs.com/package/@peculiar/asn1-ecc)
+
+</div>
 
 ASN.1 schema for elliptic-curve private keys and related identifiers defined in RFC 5915, RFC 5480, and RFC 3279.
 

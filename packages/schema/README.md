@@ -1,9 +1,16 @@
-# `@peculiar/asn1-schema`
+<h1 align="center">
+  @peculiar/asn1-schema
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/schema/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-schema.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-schema)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-schema.png)](https://nodei.co/npm/@peculiar/asn1-schema/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-schema)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-schema.svg)](https://www.npmjs.com/package/@peculiar/asn1-schema)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-schema.svg)](https://www.npmjs.com/package/@peculiar/asn1-schema)
+
+</div>
 
 Decorators and helper APIs for declaring ASN.1 schemas in TypeScript.
 

@@ -1,9 +1,16 @@
-# `@peculiar/asn1-x509-qualified`
+<h1 align="center">
+  @peculiar/asn1-x509-qualified
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/x509-qualified/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-qualified.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-qualified)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-x509-qualified.png)](https://nodei.co/npm/@peculiar/asn1-x509-qualified/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-x509-qualified)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-x509-qualified.svg)](https://www.npmjs.com/package/@peculiar/asn1-x509-qualified)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-x509-qualified.svg)](https://www.npmjs.com/package/@peculiar/asn1-x509-qualified)
+
+</div>
 
 ASN.1 schema for qualified certificate statements and profiles defined in RFC 3739.
 

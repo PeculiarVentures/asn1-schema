@@ -1,9 +1,16 @@
-# `@peculiar/asn1-pfx`
+<h1 align="center">
+  @peculiar/asn1-pfx
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/pfx/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-pfx.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-pfx)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-pfx.png)](https://nodei.co/npm/@peculiar/asn1-pfx/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-pfx)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-pfx.svg)](https://www.npmjs.com/package/@peculiar/asn1-pfx)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-pfx.svg)](https://www.npmjs.com/package/@peculiar/asn1-pfx)
+
+</div>
 
 ASN.1 schema for PKCS #12 personal information exchange structures defined in RFC 7292.
 

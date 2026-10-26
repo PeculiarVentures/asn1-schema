@@ -1,9 +1,16 @@
-# `@peculiar/asn1-x509-trustanchor`
+<h1 align="center">
+  @peculiar/asn1-x509-trustanchor
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/x509-trustanchor/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-trustanchor.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-trustanchor)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-x509-trustanchor.png)](https://nodei.co/npm/@peculiar/asn1-x509-trustanchor/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-x509-trustanchor)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-x509-trustanchor.svg)](https://www.npmjs.com/package/@peculiar/asn1-x509-trustanchor)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-x509-trustanchor.svg)](https://www.npmjs.com/package/@peculiar/asn1-x509-trustanchor)
+
+</div>
 
 ASN.1 schema for the Trust Anchor Format defined in RFC 5914.
 

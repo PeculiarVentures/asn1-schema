@@ -1,9 +1,16 @@
-# `@peculiar/asn1-x509-netscape`
+<h1 align="center">
+  @peculiar/asn1-x509-netscape
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/x509-netscape/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-netscape.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-x509-netscape)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-x509-netscape.png)](https://nodei.co/npm/@peculiar/asn1-x509-netscape/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-x509-netscape)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-x509-netscape.svg)](https://www.npmjs.com/package/@peculiar/asn1-x509-netscape)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-x509-netscape.svg)](https://www.npmjs.com/package/@peculiar/asn1-x509-netscape)
+
+</div>
 
 ASN.1 schema for legacy Netscape X.509 certificate extensions.
 

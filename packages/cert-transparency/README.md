@@ -1,9 +1,16 @@
-# `@peculiar/asn1-cert-transparency`
+<h1 align="center">
+  @peculiar/asn1-cert-transparency
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/cert-transparency/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-cert-transparency.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-cert-transparency)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-cert-transparency.png)](https://nodei.co/npm/@peculiar/asn1-cert-transparency/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-cert-transparency)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-cert-transparency.svg)](https://www.npmjs.com/package/@peculiar/asn1-cert-transparency)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-cert-transparency.svg)](https://www.npmjs.com/package/@peculiar/asn1-cert-transparency)
+
+</div>
 
 ASN.1 schema for Certificate Transparency structures and signed certificate timestamp data defined in RFC 6962.
 

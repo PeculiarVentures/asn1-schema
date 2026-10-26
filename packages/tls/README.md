@@ -1,9 +1,16 @@
-# `@peculiar/asn1-tls`
+<h1 align="center">
+  @peculiar/asn1-tls
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/PeculiarVentures/asn1-schema/blob/master/packages/tls/LICENSE)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fasn1-tls.svg)](https://badge.fury.io/js/%40peculiar%2Fasn1-tls)
+<div align="center">
 
-[![NPM](https://nodei.co/npm/@peculiar/asn1-tls.png)](https://nodei.co/npm/@peculiar/asn1-tls/)
+![NPM License](https://img.shields.io/npm/l/@peculiar/asn1-tls)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/asn1-schema/release.yml?branch=master&label=release)
+[![npm version](https://img.shields.io/npm/v/@peculiar/asn1-tls.svg)](https://www.npmjs.com/package/@peculiar/asn1-tls)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/asn1-schema)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/asn1-tls.svg)](https://www.npmjs.com/package/@peculiar/asn1-tls)
+
+</div>
 
 TLS presentation language byte stream reader shared by Certificate Transparency and Merkle Tree Certificate packages.
 
