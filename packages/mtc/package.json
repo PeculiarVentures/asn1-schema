@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-mtc",
-  "version": "2.11.1",
+  "version": "3.0.0",
   "description": "ASN.1 schema and TLS-encoded proof structures for Merkle Tree Certificates defined in draft-ietf-plants-merkle-tree-certs.",
   "type": "module",
   "sideEffects": false,
@@ -43,14 +43,14 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/mtc#readme",
   "dependencies": {
-    "@peculiar/asn1-tls": "^2.11.1",
-    "@peculiar/asn1-x509": "^2.11.1",
+    "@peculiar/asn1-tls": "^3.0.0",
+    "@peculiar/asn1-x509": "^3.0.0",
     "@peculiar/utils": "^4.1.0"
   },
   "peerDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1"
+    "@peculiar/asn1-schema": "^3.0.0"
   },
   "devDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1"
+    "@peculiar/asn1-schema": "^3.0.0"
   }
 }

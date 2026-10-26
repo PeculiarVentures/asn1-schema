@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-qualified-etsi",
-  "version": "2.11.1",
+  "version": "3.0.0",
   "description": "ASN.1 schema for ETSI EN 319 412-5 qualified certificate statements and QC types.",
   "type": "module",
   "sideEffects": false,
@@ -42,9 +42,9 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-qualified-etsi#readme",
   "peerDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1"
+    "@peculiar/asn1-schema": "^3.0.0"
   },
   "devDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1"
+    "@peculiar/asn1-schema": "^3.0.0"
   }
 }
