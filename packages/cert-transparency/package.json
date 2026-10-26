@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-cert-transparency",
-  "version": "2.11.1",
+  "version": "3.0.0",
   "description": "ASN.1 schema for Certificate Transparency structures and signed certificate timestamp data defined in RFC 6962.",
   "type": "module",
   "sideEffects": false,
@@ -43,15 +43,15 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/cert-transparency#readme",
   "dependencies": {
-    "@peculiar/asn1-tls": "^2.11.1",
+    "@peculiar/asn1-tls": "^3.0.0",
     "@peculiar/utils": "^4.1.0"
   },
   "peerDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1",
+    "@peculiar/asn1-schema": "^3.0.0",
     "asn1js": "^4.0.0"
   },
   "devDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1",
+    "@peculiar/asn1-schema": "^3.0.0",
     "asn1js": "^4.0.0"
   }
 }

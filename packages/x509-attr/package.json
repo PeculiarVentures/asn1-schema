@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-attr",
-  "version": "2.11.1",
+  "version": "3.0.0",
   "description": "ASN.1 schema for X.509 attribute certificates defined in RFC 5755.",
   "type": "module",
   "sideEffects": false,
@@ -41,12 +41,12 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-attr#readme",
   "dependencies": {
-    "@peculiar/asn1-x509": "^2.11.1"
+    "@peculiar/asn1-x509": "^3.0.0"
   },
   "peerDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1"
+    "@peculiar/asn1-schema": "^3.0.0"
   },
   "devDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1"
+    "@peculiar/asn1-schema": "^3.0.0"
   }
 }

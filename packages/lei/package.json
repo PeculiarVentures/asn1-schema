@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-lei",
-  "version": "2.11.1",
+  "version": "3.0.0",
   "description": "ASN.1 schema for Legal Entity Identifier (LEI) attributes used in digital certificates and ISO 17442-2 profiles.",
   "type": "module",
   "sideEffects": false,
@@ -42,11 +42,11 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/lei#readme",
   "peerDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1",
+    "@peculiar/asn1-schema": "^3.0.0",
     "asn1js": "^4.0.0"
   },
   "devDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1",
+    "@peculiar/asn1-schema": "^3.0.0",
     "asn1js": "^4.0.0"
   }
 }

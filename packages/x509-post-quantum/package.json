@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-x509-post-quantum",
-  "version": "2.11.1",
+  "version": "3.0.0",
   "description": "ASN.1 schema for composite public keys, private keys, and signatures for post-quantum Internet PKI drafts.",
   "type": "module",
   "sideEffects": false,
@@ -43,13 +43,13 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/x509-post-quantum#readme",
   "dependencies": {
-    "@peculiar/asn1-asym-key": "^2.11.1",
-    "@peculiar/asn1-x509": "^2.11.1"
+    "@peculiar/asn1-asym-key": "^3.0.0",
+    "@peculiar/asn1-x509": "^3.0.0"
   },
   "peerDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1"
+    "@peculiar/asn1-schema": "^3.0.0"
   },
   "devDependencies": {
-    "@peculiar/asn1-schema": "^2.11.1"
+    "@peculiar/asn1-schema": "^3.0.0"
   }
 }
