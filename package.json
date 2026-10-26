@@ -1,5 +1,6 @@
 {
   "name": "asn1-schema-monorepo",
+  "version": "2.11.1",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -31,8 +32,6 @@
     "format:check": "oxfmt --check .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "create": "node scripts/create_package.mjs",
-    "prepub": "npm run build",
-    "pub": "lerna publish",
     "coverage": "vitest run --coverage"
   }
 }
