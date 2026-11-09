@@ -111,7 +111,7 @@ export class AsnParser {
       // Fix tag value for IMPLICIT
       const newTargetSchema = new asn1js.Constructed({
         idBlock: {
-          tagClass: 3,
+          tagClass: asn1Schema.idBlock.tagClass,
           tagNumber: asn1Schema.idBlock.tagNumber,
         },
         value: (schema.schema as asn1js.Sequence).valueBlock.value,
