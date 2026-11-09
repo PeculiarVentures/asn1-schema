@@ -18,6 +18,7 @@ export interface IAsn1PropOptions {
   type: AsnItemType;
   optional?: boolean;
   defaultValue?: unknown;
+  application?: number;
   context?: number;
   implicit?: boolean;
   converter?: IAsnConverter;
