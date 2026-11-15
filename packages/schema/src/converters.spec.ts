@@ -1,7 +1,67 @@
 import { describe, expect, it } from "vitest";
-import { AsnAnyConverter, AsnConstructedOctetStringConverter, AsnGeneralizedTimeConverter, AsnUTCTimeConverter, OctetString } from "./index";
+import { AsnAnyConverter, AsnConstructedOctetStringConverter, AsnConvert, AsnGeneralizedTimeConverter, AsnIntegerConverter, AsnProp, AsnPropTypes, AsnUTCTimeConverter, OctetString } from "./index";
 
 describe("converters", () => {
+  describe("Integer", () => {
+    class Test {
+      @AsnProp({ type: AsnPropTypes.Integer })
+      public value!: string | number;
+    }
+
+    // Fixed DER fixtures cover sign padding, the number/string parse boundary,
+    // the safe integer limit, and values larger than 64 bits.
+    const integers = [
+      ["0", "020100"],
+      ["127", "02017f"],
+      ["128", "02020080"],
+      ["-128", "020180"],
+      ["-129", "0202ff7f"],
+      ["-32767", "02028001"],
+      ["8388607", "02037fffff"],
+      ["8388608", "020400800000"],
+      ["-8388608", "0203800000"],
+      ["-8388609", "0204ff7fffff"],
+      ["9007199254740991", "02071fffffffffffff"],
+      ["9007199254740992", "020720000000000000"],
+      ["9007199254740993", "020720000000000001"],
+      ["-9007199254740991", "0207e0000000000001"],
+      ["-9007199254740992", "0207e0000000000000"],
+      ["-9007199254740993", "0207dfffffffffffff"],
+      ["18446744073709551616", "0209010000000000000000"],
+      ["-18446744073709551616", "0209ff0000000000000000"],
+      ["123456789012345678901234567890", "020d018ee90ff6c373e0ee4e3f0ad2"],
+      ["-123456789012345678901234567890", "020dfe7116f0093c8c1f11b1c0f52e"],
+    ];
+
+    it.each(integers)("serializes decimal string %s exactly", (value, hex) => {
+      const asn = AsnIntegerConverter.toASN(value);
+      expect(Buffer.from(asn.toBER()).toString("hex")).toBe(hex);
+    });
+
+    it.each(integers)("serializes a directly assigned decimal string %s", (value, hex) => {
+      const obj = new Test();
+      obj.value = value;
+      const integer = Buffer.from(hex, "hex");
+      const expected = Buffer.concat([Buffer.from([0x30, integer.length]), integer]);
+
+      expect(Buffer.from(AsnConvert.serialize(obj))).toEqual(expected);
+    });
+
+    it.each(integers)("preserves %s when parsing and serializing", (value, hex) => {
+      const integer = Buffer.from(hex, "hex");
+      const der = Buffer.concat([Buffer.from([0x30, integer.length]), integer]);
+      const obj = AsnConvert.parse(der, Test);
+
+      expect(obj.value).toBe(integer[1] >= 4 ? value : Number(value));
+      expect(Buffer.from(AsnConvert.serialize(obj))).toEqual(der);
+    });
+
+    it.each(integers.filter(([value]) => Number.isSafeInteger(Number(value))))("preserves numeric input %s", (value, hex) => {
+      const asn = AsnIntegerConverter.toASN(Number(value));
+      expect(Buffer.from(asn.toBER()).toString("hex")).toBe(hex);
+    });
+  });
+
   describe("Any", () => {
     it("null", () => {
       const asn = AsnAnyConverter.toASN(null);

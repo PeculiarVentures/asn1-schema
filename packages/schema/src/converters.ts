@@ -35,7 +35,7 @@ export const AsnIntegerConverter: IAsnConverter<IntegerConverterType, asn1js.Int
     value.valueBlock.valueHexView.byteLength >= 4
       ? value.valueBlock.toString() // use string format
       : value.valueBlock.valueDec, // use number format
-  toASN: (value: IntegerConverterType) => new asn1js.Integer({ value: +value }),
+  toASN: (value: IntegerConverterType) => (typeof value === "string" ? asn1js.Integer.fromBigInt(value) : new asn1js.Integer({ value })),
 };
 
 /**
