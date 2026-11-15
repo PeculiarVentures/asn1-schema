@@ -49,6 +49,10 @@ import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
 
 // Pass the 16-byte IV supplied by your encryption implementation.
 function aesCbcIdentifier(iv: Uint8Array): AlgorithmIdentifier {
+  if (iv.byteLength !== 16) {
+    throw new RangeError("AES-CBC IV must be 16 bytes");
+  }
+
   return new AlgorithmIdentifier({
     algorithm: id_aes256_CBC,
     parameters: AsnConvert.serialize(new OctetString(iv)),
