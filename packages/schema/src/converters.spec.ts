@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import * as asn1js from "asn1js";
+import { describe, expect, it, vi } from "vitest";
 import { AsnAnyConverter, AsnConstructedOctetStringConverter, AsnConvert, AsnGeneralizedTimeConverter, AsnIntegerConverter, AsnProp, AsnPropTypes, AsnUTCTimeConverter, OctetString } from "./index";
 
 describe("converters", () => {
@@ -58,6 +59,65 @@ describe("converters", () => {
 
     it.each(integers.filter(([value]) => Number.isSafeInteger(Number(value))))("preserves numeric input %s", (value, hex) => {
       const asn = AsnIntegerConverter.toASN(Number(value));
+      expect(Buffer.from(asn.toBER()).toString("hex")).toBe(hex);
+    });
+
+    it.each([
+      [2 ** 53, "020720000000000000"],
+      [2 ** 60, "02081000000000000000"],
+      [2 ** 64, "0209010000000000000000"],
+    ] as const)("preserves integer number input %s above the safe integer limit", (value, hex) => {
+      const asn = AsnIntegerConverter.toASN(value);
+      expect(Buffer.from(asn.toBER()).toString("hex")).toBe(hex);
+    });
+
+    it.each([
+      ["1e3", "020203e8"],
+      ["1.0", "020101"],
+      [" 42 ", "02012a"],
+      ["0x10", "020110"],
+    ])("preserves legacy numeric string input %s", (value, hex) => {
+      const asn = AsnIntegerConverter.toASN(value);
+      expect(Buffer.from(asn.toBER()).toString("hex")).toBe(hex);
+    });
+
+    it.each(["invalid", "1.5", "1e-3", "Infinity", "1e309", "9007199254740992.0", "9007199254740993.0", "9007199254740993e0"])("rejects invalid or unsafe numeric string input %s", (value) => {
+      expect(() => AsnIntegerConverter.toASN(value)).toThrow(SyntaxError);
+    });
+
+    it("propagates unrelated errors from the string encoder", () => {
+      const error = new RangeError("Cannot encode integer");
+      const fromBigInt = vi.spyOn(asn1js.Integer, "fromBigInt").mockImplementationOnce(() => {
+        throw error;
+      });
+      try {
+        expect(() => AsnIntegerConverter.toASN("1e3")).toThrow(error);
+      } finally {
+        fromBigInt.mockRestore();
+      }
+    });
+
+    it("rejects undefined runtime input", () => {
+      expect(() => AsnIntegerConverter.toASN(undefined as unknown as number)).toThrow(RangeError);
+    });
+
+    it("rejects holes in repeated INTEGER properties", () => {
+      class RepeatedTest {
+        @AsnProp({ type: AsnPropTypes.Integer, repeated: "sequence" })
+        public values: number[] = [1, 2];
+      }
+      const obj = new RepeatedTest();
+      delete obj.values[0];
+
+      expect(() => AsnConvert.serialize(obj)).toThrow();
+    });
+
+    it.each([
+      [null, "020100"],
+      [false, "020100"],
+      [true, "020101"],
+    ] as const)("preserves numeric coercion for runtime input %s", (value, hex) => {
+      const asn = AsnIntegerConverter.toASN(value as unknown as number);
       expect(Buffer.from(asn.toBER()).toString("hex")).toBe(hex);
     });
   });

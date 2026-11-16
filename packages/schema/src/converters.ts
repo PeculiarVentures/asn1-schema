@@ -35,7 +35,19 @@ export const AsnIntegerConverter: IAsnConverter<IntegerConverterType, asn1js.Int
     value.valueBlock.valueHexView.byteLength >= 4
       ? value.valueBlock.toString() // use string format
       : value.valueBlock.valueDec, // use number format
-  toASN: (value: IntegerConverterType) => (typeof value === "string" ? asn1js.Integer.fromBigInt(value) : new asn1js.Integer({ value })),
+  toASN: (value: IntegerConverterType) => {
+    if (typeof value === "string") {
+      try {
+        return asn1js.Integer.fromBigInt(value);
+      } catch (error) {
+        // Preserve legacy numeric syntax only when it produces a safe integer.
+        if (!(error instanceof SyntaxError) || !Number.isSafeInteger(+value)) {
+          throw error;
+        }
+      }
+    }
+    return new asn1js.Integer({ value: +value });
+  },
 };
 
 /**
