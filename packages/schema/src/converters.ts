@@ -36,15 +36,14 @@ export const AsnIntegerConverter: IAsnConverter<IntegerConverterType, asn1js.Int
       ? value.valueBlock.toString() // use string format
       : value.valueBlock.valueDec, // use number format
   toASN: (value: IntegerConverterType) => {
-    if (typeof value === "string") {
-      try {
-        return asn1js.Integer.fromBigInt(value);
-      } catch (error) {
-        // Preserve legacy numeric syntax only when it produces a safe integer.
-        if (!(error instanceof SyntaxError) || !Number.isSafeInteger(+value)) {
-          throw error;
-        }
+    if (typeof value === "string" && /^\s*[+-]?\d+\s*$/.test(value)) {
+      const exact = BigInt(value);
+      const numeric = +value;
+      // Preserve the legacy Integer metadata whenever Number retains the exact value.
+      if (Number.isInteger(numeric) && BigInt(numeric) === exact) {
+        return new asn1js.Integer({ value: numeric });
       }
+      return asn1js.Integer.fromBigInt(exact);
     }
     return new asn1js.Integer({ value: +value });
   },
