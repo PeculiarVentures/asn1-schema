@@ -34,3 +34,33 @@ v3 is ESM-only and requires Node.js `^20.19.0 || >=22.12.0` (was `>=14`). Common
 ## Specifications
 
 - [RFC 5652: Cryptographic Message Syntax (CMS)](https://datatracker.ietf.org/doc/html/rfc5652)
+- [RFC 3565: Use of the Advanced Encryption Standard (AES) Encryption Algorithm in Cryptographic Message Syntax (CMS)](https://datatracker.ietf.org/doc/html/rfc3565)
+
+## AES Algorithm Identifiers
+
+RFC 3565 OIDs are exported as `id_aes128_CBC`, `id_aes192_CBC`, `id_aes256_CBC`, `id_aes128_wrap`, `id_aes192_wrap`, and `id_aes256_wrap`, with `id_aes` as their base arc.
+
+For CMS `AlgorithmIdentifier` values, AES-CBC parameters contain a 16-byte IV encoded as an ASN.1 OCTET STRING. AES key wrap parameters are absent (omit `parameters`; do not use `null`).
+
+```typescript
+import { id_aes256_CBC, id_aes256_wrap } from "@peculiar/asn1-cms";
+import { AsnConvert, OctetString } from "@peculiar/asn1-schema";
+import { AlgorithmIdentifier } from "@peculiar/asn1-x509";
+
+// Pass the 16-byte IV supplied by your encryption implementation.
+function aes256CbcIdentifier(iv: Uint8Array): AlgorithmIdentifier {
+  if (iv.byteLength !== 16) {
+    throw new RangeError("AES-CBC IV must be 16 bytes");
+  }
+
+  return new AlgorithmIdentifier({
+    algorithm: id_aes256_CBC,
+    parameters: AsnConvert.serialize(new OctetString(iv)),
+  });
+}
+
+const keyWrapIdentifier = new AlgorithmIdentifier({ algorithm: id_aes256_wrap });
+const keyWrapDer = AsnConvert.serialize(keyWrapIdentifier);
+```
+
+These examples describe algorithm identifiers used by CMS encryption and key management. `SMIMECapabilities` advertises algorithm support and has separate parameter rules: RFC 3565 AES-CBC capability entries omit parameters. These OIDs do not add cryptographic operations or parameter validation.
