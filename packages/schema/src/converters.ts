@@ -35,7 +35,18 @@ export const AsnIntegerConverter: IAsnConverter<IntegerConverterType, asn1js.Int
     value.valueBlock.valueHexView.byteLength >= 4
       ? value.valueBlock.toString() // use string format
       : value.valueBlock.valueDec, // use number format
-  toASN: (value: IntegerConverterType) => new asn1js.Integer({ value: +value }),
+  toASN: (value: IntegerConverterType) => {
+    if (typeof value === "string" && /^\s*[+-]?\d+\s*$/.test(value)) {
+      const exact = BigInt(value);
+      const numeric = +value;
+      // Preserve the legacy Integer metadata whenever Number retains the exact value.
+      if (Number.isInteger(numeric) && BigInt(numeric) === exact) {
+        return new asn1js.Integer({ value: numeric });
+      }
+      return asn1js.Integer.fromBigInt(exact);
+    }
+    return new asn1js.Integer({ value: +value });
+  },
 };
 
 /**
