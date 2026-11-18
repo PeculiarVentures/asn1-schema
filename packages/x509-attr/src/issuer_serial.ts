@@ -24,7 +24,7 @@ export class IssuerSerial {
     type: AsnPropTypes.BitString,
     optional: true,
   })
-  public issuerUID: UniqueIdentifier = new ArrayBuffer(0);
+  public issuerUID?: UniqueIdentifier;
 
   constructor(params: Partial<IssuerSerial> = {}) {
     Object.assign(this, params);
