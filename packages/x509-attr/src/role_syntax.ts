@@ -20,7 +20,6 @@ export class RoleSyntax {
 
   @AsnProp({
     type: GeneralName,
-    implicit: true,
     context: 1,
   })
   public roleName?: GeneralName;
