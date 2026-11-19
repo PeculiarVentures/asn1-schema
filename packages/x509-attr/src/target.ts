@@ -47,14 +47,12 @@ export class Target {
   @AsnProp({
     type: GeneralName,
     context: 0,
-    implicit: true,
   })
   public targetName?: GeneralName;
 
   @AsnProp({
     type: GeneralName,
     context: 1,
-    implicit: true,
   })
   public targetGroup?: GeneralName;
 
