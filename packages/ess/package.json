@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-ess",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "ASN.1 schema for Enhanced Security Services (ESS) for S/MIME defined in RFC 2634 and RFC 5035.",
   "type": "module",
   "sideEffects": false,
@@ -43,15 +43,15 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/ess#readme",
   "dependencies": {
-    "@peculiar/asn1-cms": "^3.0.0",
-    "@peculiar/asn1-pkcs9": "^3.0.0",
-    "@peculiar/asn1-rsa": "^3.0.0",
-    "@peculiar/asn1-x509": "^3.0.0"
+    "@peculiar/asn1-cms": "^3.1.0",
+    "@peculiar/asn1-pkcs9": "^3.1.0",
+    "@peculiar/asn1-rsa": "^3.1.0",
+    "@peculiar/asn1-x509": "^3.1.0"
   },
   "peerDependencies": {
-    "@peculiar/asn1-schema": "^3.0.0"
+    "@peculiar/asn1-schema": "^3.1.0"
   },
   "devDependencies": {
-    "@peculiar/asn1-schema": "^3.0.0"
+    "@peculiar/asn1-schema": "^3.1.0"
   }
 }
