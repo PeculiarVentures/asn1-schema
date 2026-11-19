@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-adobe-acrobat",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "ASN.1 schema for Adobe Acrobat DC digital signature OIDs and X.509 extensions.",
   "type": "module",
   "sideEffects": false,
@@ -42,12 +42,12 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/adobe-acrobat#readme",
   "dependencies": {
-    "@peculiar/asn1-x509": "^3.0.0"
+    "@peculiar/asn1-x509": "^3.1.0"
   },
   "peerDependencies": {
-    "@peculiar/asn1-schema": "^3.0.0"
+    "@peculiar/asn1-schema": "^3.1.0"
   },
   "devDependencies": {
-    "@peculiar/asn1-schema": "^3.0.0"
+    "@peculiar/asn1-schema": "^3.1.0"
   }
 }

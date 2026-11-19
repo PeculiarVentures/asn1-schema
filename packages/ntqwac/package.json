@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/asn1-ntqwac",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "ASN.1 schema for ntQWAC profile extensions, including domain-name roles, activity descriptions, GDPR attestations, insurance values, and valuation rankings.",
   "type": "module",
   "sideEffects": false,
@@ -43,12 +43,12 @@
   },
   "homepage": "https://github.com/PeculiarVentures/asn1-schema/tree/master/packages/ntqwac#readme",
   "dependencies": {
-    "@peculiar/asn1-x509": "^3.0.0"
+    "@peculiar/asn1-x509": "^3.1.0"
   },
   "peerDependencies": {
-    "@peculiar/asn1-schema": "^3.0.0"
+    "@peculiar/asn1-schema": "^3.1.0"
   },
   "devDependencies": {
-    "@peculiar/asn1-schema": "^3.0.0"
+    "@peculiar/asn1-schema": "^3.1.0"
   }
 }
